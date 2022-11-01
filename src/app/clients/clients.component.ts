@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "../dialog/dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-clients',
@@ -14,6 +14,7 @@ export class ClientsComponent implements OnInit {
 
   openDialog() {
     this.dialog.open(DialogComponent,{
+
       width: '70%',
       height: '60%',
 

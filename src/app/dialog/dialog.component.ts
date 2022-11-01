@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
+import {first} from "rxjs";
+import {ClientService} from "../_service/client.service";
 
 
 
@@ -14,7 +16,7 @@ export class DialogComponent implements OnInit {
   clientForm!: FormGroup;
 
 
-  constructor(private formBuilder:FormBuilder) { }
+  constructor(private formBuilder:FormBuilder,private httpClient:HttpClient,private clientService: ClientService) { }
 
   ngOnInit(): void {
 
@@ -35,7 +37,25 @@ export class DialogComponent implements OnInit {
 
 
 
+  createUser() {
+      this.clientService.register(this.clientForm.value)
+        .pipe(first())
+        .subscribe({
+          next: () => {
+            console.log(this.clientForm.value)
+           ;
+          },
+          error: error => {
+            console.log(error)
+          }
+        });
+    }
+
+  }
 
 
 
-}
+
+
+
+

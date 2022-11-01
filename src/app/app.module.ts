@@ -15,6 +15,7 @@ import {MatInputModule} from "@angular/material/input";
 import {HttpClientModule} from "@angular/common/http";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSidenavModule} from "@angular/material/sidenav";
+import {MatDialogModule} from "@angular/material/dialog";
 
 const appRoutes: Routes = [];
 
@@ -37,7 +38,8 @@ const appRoutes: Routes = [];
     MatIconModule,
     MatInputModule,
     ReactiveFormsModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
