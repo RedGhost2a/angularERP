@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {DialogComponent} from "../dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {map} from "rxjs";
+import {Client} from "../_models/client";
 
 @Component({
   selector: 'app-clients',
@@ -23,6 +25,17 @@ export class ClientsComponent implements OnInit {
 
 
   ngOnInit(): void {
-  }
+    //get all clients
+    // @ts-ignore
+    console.log( this.httpClient.get<Client>("/clients").pipe(source => {
+        return this.httpClient.get("/clients").pipe(
+          map(res => {
+            console.log(res);
+            return res;
 
-}
+          })
+        )
+      }
+      )
+
+    )}}

@@ -15,7 +15,13 @@ export class ClientService {
                private http: HttpClient) { }
 
   register(client: Client) {
-    return this.http.post(`/clients/new`, client);
-    console.log(client)
+    return this.http.post(`/new`, client);
   }
+
+
+  getAll() {
+    console.log( this.http.get<Client[]>(`/`));
+
+  }
+
 }
