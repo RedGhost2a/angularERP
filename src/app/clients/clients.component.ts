@@ -4,6 +4,8 @@ import {DialogComponent} from "../dialog/dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {map} from "rxjs";
 import {Client} from "../_models/client";
+import {ClientService} from "src/app/_service/client.service"
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-clients',
@@ -11,8 +13,9 @@ import {Client} from "../_models/client";
   styleUrls: ['./clients.component.scss']
 })
 export class ClientsComponent implements OnInit {
-
-  constructor(private httpClient: HttpClient, private dialog : MatDialog) { }
+  client!: Client[];
+  constructor(private httpClient: HttpClient, private dialog : MatDialog, private clientService: ClientService
+  ) { }
 
   openDialog() {
     this.dialog.open(DialogComponent,{
@@ -24,18 +27,14 @@ export class ClientsComponent implements OnInit {
   }
 
 
-  ngOnInit(): void {
-    //get all clients
-    // @ts-ignore
-    console.log( this.httpClient.get<Client>("/clients").pipe(source => {
-        return this.httpClient.get("/clients").pipe(
-          map(res => {
-            console.log(res);
-            return res;
+  ngOnInit() {
 
-          })
-        )
-      }
-      )
+    this.clientService.getAll().subscribe(data => {
+      this.client= data
 
-    )}}
+    })
+
+
+}
+
+  }

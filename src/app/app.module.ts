@@ -16,6 +16,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatDialogModule} from "@angular/material/dialog";
+import { EditComponent } from './clients/edit/edit.component';
 
 const appRoutes: Routes = [];
 
@@ -24,7 +25,8 @@ const appRoutes: Routes = [];
     AppComponent,
     ClientsComponent,
     SidenavComponent,
-    DialogComponent
+    DialogComponent,
+    EditComponent
   ],
   imports: [
     BrowserModule,

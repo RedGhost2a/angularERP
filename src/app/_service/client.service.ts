@@ -9,18 +9,25 @@ import {Client} from "../_models/client";
   providedIn: 'root'
 })
 export class ClientService {
-  public client !:Observable<Client>;
 
   constructor( private router: Router,
                private http: HttpClient) { }
 
   register(client: Client) {
-    return this.http.post(`/new`, client);
+    return this.http.post('http://localhost:4000/clients/new', client);
   }
 
 
   getAll() {
-    console.log( this.http.get<Client[]>(`/`));
+    return this.http.get<Client[]>(`http://localhost:4000/clients`)
+
+  }
+  update(client:Client,id:string){
+    return this.http.put<Client[]>(`http://localhost:4000/clients/${id}`,client)
+  }
+
+  getById(id:any){
+    return this.http.get<Client[]>(`http://localhost:4000/clients/${id}`)
 
   }
 

@@ -21,8 +21,8 @@ export class DialogComponent implements OnInit {
   ngOnInit(): void {
 
     this.clientForm= this.formBuilder.group({
-      firstname:"",
-      lastname:"",
+      firstName:"",
+      lastName:"",
       adresses:"",
       zipcode:"",
       city:"",

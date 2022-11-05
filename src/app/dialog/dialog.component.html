@@ -6,13 +6,13 @@
     <form [formGroup]="clientForm">
       <mat-form-field appearance="standard">
         <mat-label>Nom</mat-label>
-        <input formControlName="lastname" matInput placeholder="Entrer le nom">
+        <input formControlName="firstName" matInput placeholder="Entrer le nom">
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       </mat-form-field>
 
       <mat-form-field appearance="standard">
         <mat-label>Prénom</mat-label>
-        <input formControlName="firstname" matInput placeholder="Entrer le prénom">
+        <input formControlName="lastName" matInput placeholder="Entrer le prénom">
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       </mat-form-field>
 
@@ -47,8 +47,8 @@
       </mat-form-field>
 
       <mat-form-field appearance="standard">
-        <mat-label>Tva  </mat-label>
-        <input matInput placeholder="Placeholder">
+        <mat-label >Phone  </mat-label>
+        <input formControlName="phonenumber" matInput placeholder="Placeholder">
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       </mat-form-field>
     </form>
