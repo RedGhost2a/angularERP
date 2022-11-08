@@ -1,0 +1,18 @@
+.container {
+  margin: auto;
+  width: 500px;
+  height: 200px;
+  background-color: #263238;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: 3rem;
+  border: 1px solid #f3f3f3;
+
+}
+
+.btn {
+  height: 100px;
+  padding: 10px;
+  margin: 10px;
+}

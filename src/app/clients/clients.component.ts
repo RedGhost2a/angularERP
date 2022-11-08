@@ -1,11 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {DialogComponent} from "../dialog/dialog.component";
-import {MatDialog} from "@angular/material/dialog";
-import {map} from "rxjs";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ClientService} from "../_service/client.service";
 import {Client} from "../_models/client";
-import {ClientService} from "src/app/_service/client.service"
-import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-clients',
@@ -13,28 +8,20 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./clients.component.scss']
 })
 export class ClientsComponent implements OnInit {
-  client!: Client[];
-  constructor(private httpClient: HttpClient, private dialog : MatDialog, private clientService: ClientService
-  ) { }
 
-  openDialog() {
-    this.dialog.open(DialogComponent,{
+  @Input() client!: Client;
+  @Output() deleteClient: EventEmitter<any> = new EventEmitter()
 
-      width: '70%',
-      height: '60%',
-
-    })
+  constructor(private clientService: ClientService) {
   }
 
 
-  ngOnInit() {
+  ngOnInit(): void {
 
-    this.clientService.getAll().subscribe(data => {
-      this.client= data
+  }
 
-    })
-
+  delete(): void {
+    this.clientService.deleteByID(this.client.id).subscribe(() => this.deleteClient.emit())
+  }
 
 }
-
-  }

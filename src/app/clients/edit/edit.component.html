@@ -1,1 +1,52 @@
-<p>edit works!</p>
+<div class="form-group">
+  <ng-container>
+    <div class="modal-header">
+      <h1 class="modal-title"> {{textButton}}</h1>
+    </div>
+    <form class="form" [formGroup]="myFormGroup">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label> Nom</mat-label>
+        <input matInput placeholder="Entrer le nom" formControlName="firstName">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label> Prénom</mat-label>
+        <input matInput placeholder="Entrer le prénom" formControlName="lastName">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Adresse</mat-label>
+        <input matInput placeholder="1234 Main St" formControlName="adresses" style="width: 70px">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Code postal</mat-label>
+        <input matInput placeholder=" Ex. 20167" formControlName="zipcode">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Ville</mat-label>
+        <input matInput placeholder=" Ajaccio" formControlName="city">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Pays</mat-label>
+        <input matInput placeholder=" France" formControlName="country">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Numéro de téléphone</mat-label>
+        <input matInput formControlName="phonenumber">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Catégorie</mat-label>
+        <input matInput formControlName="type">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Tva intracommunautaire</mat-label>
+        <input matInput formControlName="tvaintra">
+      </mat-form-field>
+
+    </form>
+
+    <button mat-stroked-button (click)="createAndUpdate()" type="submit">{{textButton}}</button>
+  </ng-container>
+</div>

@@ -1,0 +1,33 @@
+.user-card {
+  width: 250px;
+  text-align: center;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.mat-card {
+  text-align: center;
+  margin: 20px;
+}
+
+.mat-card-image {
+  border-radius: 50%;
+}
+
+.mat-card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn {
+  height: 70px;
+}
+
+/*# sourceMappingURL=user-list.component.css.map */
