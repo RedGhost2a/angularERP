@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../_service/user.service";
+import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
 
 @Component({
   selector: 'app-user-edit',
@@ -15,7 +16,7 @@ export class UserEditComponent implements OnInit {
 
 
   constructor(private userService: UserService, private formBuilder: FormBuilder,
-              private route: ActivatedRoute, private router: Router) {
+              private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr) {
 
     this.myFormGroup = this.formBuilder.group({
       email: "",
@@ -28,6 +29,13 @@ export class UserEditComponent implements OnInit {
 
   }
 
+  success(message: string): void {
+    this.toastr.success(message, "Success");
+  }
+
+  warning(message: string): void {
+    this.toastr.warning(message, "Warning");
+  }
 
   createAndUpdate(): void {
 
@@ -38,7 +46,13 @@ export class UserEditComponent implements OnInit {
         this.userService.register(this.myFormGroup.getRawValue()).subscribe(
           (): void => {
 
-            if (this.myFormGroup.status === 'VALID') this.router.navigate(['/users']);
+            if (this.myFormGroup.status === 'VALID') {
+              this.success("Nouvelle utilisateur en vue !")
+              this.router.navigate(['/users']);
+            } else if (this.myFormGroup.status === 'INVALID') {
+              this.warning("Complète tout les champs !")
+
+            }
 
           }
         )

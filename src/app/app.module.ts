@@ -30,8 +30,11 @@ import {UserComponent} from './parametres/user/user.component';
 import {UserEditComponent} from './parametres/user-edit/user-edit.component';
 import {UserListComponent} from './parametres/user-list/user-list.component';
 import {MatCardModule} from "@angular/material/card";
+import {ToastrModule} from "ngx-toastr";
+import {Toastr, TOASTR_TOKEN} from "./_service/toastr.service";
 
 const appRoutes: Routes = [];
+declare const toastr: Toastr;
 
 @NgModule({
   declarations: [
@@ -68,10 +71,19 @@ const appRoutes: Routes = [];
     MatTableModule,
     MatListModule,
     MatCardModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
 
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [{
+    provide: TOASTR_TOKEN,
+    useValue: toastr
+  }
+  ],
+  bootstrap: [AppComponent],
+
 })
+
 export class AppModule {
+
 }

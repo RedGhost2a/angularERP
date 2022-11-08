@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {ClientService} from "../../_service/client.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
 
 
 @Component({
@@ -15,7 +16,7 @@ export class EditComponent implements OnInit {
   textButton!: string;
 
   constructor(private clientService: ClientService, private formBuilder: FormBuilder,
-              private route: ActivatedRoute, private router: Router) {
+              private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr) {
     this.myFormGroup = this.formBuilder.group({
       firstName: "",
       lastName: "",
@@ -29,6 +30,15 @@ export class EditComponent implements OnInit {
       tvaintra: "",
     })
 
+
+  }
+
+  success(message: string): void {
+    this.toastr.success(message, "Success",);
+  }
+
+  warning(message: string): void {
+    this.toastr.warning(message, "Attention vous devez completer tous les entrées !",);
   }
 
 
@@ -39,14 +49,22 @@ export class EditComponent implements OnInit {
       if (isNaN(clientID)) {
         this.clientService.register(this.myFormGroup.getRawValue()).subscribe(
           (): void => {
-            if (this.myFormGroup.status === 'VALID') this.router.navigate(['/clients']);
 
+            if (this.myFormGroup.status === 'VALID') {
+              this.success("Nouveau client en vue !")
+              this.router.navigate(['/clients']);
+            } else {
+              this.warning("Complète tout les champs !")
+            }
           }
         )
       } else {
         this.clientService.update(this.myFormGroup.getRawValue(), String(clientID))
           .subscribe((): void => {
-            alert('Update!');
+            this.success("Client modifier!");
+            this.router.navigate(['/clients']);
+
+
           });
       }
     })
