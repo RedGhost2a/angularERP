@@ -1,29 +1,26 @@
 .user-card {
-  width: 250px;
+  width: 550px;
   text-align: center;
 
 }
 
 .container {
   display: flex;
-  flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
+  justify-content: space-evenly;
 }
 
 .mat-card {
   text-align: center;
-  margin: 20px;
-  margin-top: 100px;
+  padding: 60px;
+  margin-top: 50px;
 }
 
 .mat-card-image {
-  border-radius: 50%
+
 }
 
-.card {
-  padding: 100px;
-}
 
 .mat-card-header {
   display: flex;
@@ -34,13 +31,15 @@
 
 .btn {
   height: 70px;
-  margin: 30px;
+}
+
+.image {
+  border-radius: 50%;
+
 }
 
 .mat-flat-button {
   position: fixed;
   top: 80px;
   left: 5px;
-}
-.mat-icon {
 }

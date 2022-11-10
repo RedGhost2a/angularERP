@@ -1,10 +1,7 @@
-import { Component } from '@angular/core';
-import { navbarData} from "./sidenav/nav-data"
+import {Component} from '@angular/core';
+import {navbarData} from "./sidenav/nav-data"
 
-interface SideNavToggle {
-  screenWidth:number;
-  collapsed:boolean;
-}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',

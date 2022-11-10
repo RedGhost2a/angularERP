@@ -10,7 +10,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {DialogComponent} from './dialog/dialog.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {HttpClientModule} from "@angular/common/http";
 import {MatToolbarModule} from "@angular/material/toolbar";
@@ -32,6 +32,8 @@ import {UserListComponent} from './parametres/user-list/user-list.component';
 import {MatCardModule} from "@angular/material/card";
 import {ToastrModule} from "ngx-toastr";
 import {Toastr, TOASTR_TOKEN} from "./_service/toastr.service";
+import {EntrepriseListComponent} from './parametres/entreprise-list/entreprise-list.component';
+import {EntrepriseEditComponent} from './parametres/entreprise-edit/entreprise-edit.component';
 
 const appRoutes: Routes = [];
 declare const toastr: Toastr;
@@ -51,7 +53,9 @@ declare const toastr: Toastr;
     ListClientComponent,
     UserComponent,
     UserEditComponent,
-    UserListComponent
+    UserListComponent,
+    EntrepriseListComponent,
+    EntrepriseEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,6 +77,7 @@ declare const toastr: Toastr;
     MatCardModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    FormsModule,
 
   ],
   providers: [{

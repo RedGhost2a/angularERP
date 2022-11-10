@@ -1,0 +1,38 @@
+<button mat-flat-button>
+  <mat-icon [routerLink]="'/parametre/'">arrow_back</mat-icon>
+</button>
+<div class="container">
+  <button class="btn" color="primary" mat-stroked-button [routerLink]="'/entreprises/new'">Ajouter une entreprise
+  </button>
+
+  <div class="card">
+
+
+    <mat-card *ngFor="let entreprise of listEntreprise" class="user-card">
+      <img class="image" mat-card-image src="./assets/images/biopura-fond-blanc.jpeg" alt="Photo of a user">
+      <mat-card-header>
+        <mat-card-title>{{entreprise.commercialName}}</mat-card-title>
+        <mat-card-subtitle>
+          {{entreprise.adresses}} {{entreprise.zipcode}} {{entreprise.city}}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content #sidenav>
+        <p>
+          Email : {{entreprise.email}}
+        </p>
+        <p>
+          Siret : {{entreprise.siret}}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-stroked-button [routerLink]="['/entreprises', entreprise.id]">
+          <mat-icon>delete_forever</mat-icon>
+          <span>MODIFIER</span></button>
+        <button mat-stroked-button color="warn" (click)="delete(entreprise.id)">
+          <mat-icon>delete_forever</mat-icon>
+          <span>EFFACER</span></button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

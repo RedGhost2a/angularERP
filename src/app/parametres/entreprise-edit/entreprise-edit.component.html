@@ -1,0 +1,64 @@
+<div class="form-group">
+  <ng-container>
+    <div class="modal-header">
+      <h1 class="modal-title">{{textButton}}</h1>
+    </div>
+    <form class="form" [formGroup]="myFormGroup">
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label> Nom commerciale</mat-label>
+        <input matInput placeholder="Entrer la dénomination commerciale" formControlName="commercialName">
+      </mat-form-field>
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label> Dénomination</mat-label>
+        <input matInput placeholder="Entrer la dénomination" formControlName="denomination">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label> Forme Juridique / Capital</mat-label>
+        <input matInput placeholder="Entrer la forme juridique / capital" formControlName="formeJuridique">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label> RCS</mat-label>
+        <input matInput placeholder="Entrer le RCS" formControlName="rcs">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Siret</mat-label>
+        <input matInput placeholder="1234 Main St" formControlName="siret">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Code NAF</mat-label>
+        <input matInput formControlName="nafCode">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Numéro TVA</mat-label>
+        <input matInput formControlName="tvaNumber">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Adresse</mat-label>
+        <input matInput formControlName="adresses">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Code postal</mat-label>
+        <input matInput formControlName="zipcode">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Ville</mat-label>
+        <input matInput formControlName="city">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Pays</mat-label>
+        <input matInput formControlName="country">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Numéro de téléphone</mat-label>
+        <input matInput formControlName="phoneNumber">
+      </mat-form-field>
+
+
+    </form>
+    <button mat-stroked-button (click)="createAndUpdate()" type="submit">{{textButton}}</button>
+  </ng-container>
+</div>

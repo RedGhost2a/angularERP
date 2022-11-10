@@ -9,6 +9,8 @@ import {ListClientComponent} from "./clients/list-client/list-client.component";
 import {UserListComponent} from "./parametres/user-list/user-list.component";
 import {UserEditComponent} from "./parametres/user-edit/user-edit.component";
 import {ClientsComponent} from "./clients/clients.component";
+import {EntrepriseListComponent} from "./parametres/entreprise-list/entreprise-list.component";
+import {EntrepriseEditComponent} from "./parametres/entreprise-edit/entreprise-edit.component";
 
 const routes: Routes = [
   {path: 'dashboard', component: DashboardComponent, data: {title: 'Dashboard'}},
@@ -24,6 +26,10 @@ const routes: Routes = [
   {path: 'users', component: UserListComponent, data: {title: 'Liste des utilisateurs'}},
   {path: 'users/new', component: UserEditComponent, data: {title: 'Création utilisateurs'}},
   {path: 'users/:id', component: UserEditComponent, data: {title: 'Detail des utilisateurs'}},
+
+  {path: 'entreprises', component: EntrepriseListComponent, data: {title: 'Liste des entreprise'}},
+  {path: 'entreprises/new', component: EntrepriseEditComponent, data: {title: 'Création des entreprises'}},
+  {path: 'entreprises/:id', component: EntrepriseEditComponent, data: {title: 'Detail des entreprises'}},
 
 
   {path: 'devis', component: DevisComponent, data: {title: 'Devis'}},

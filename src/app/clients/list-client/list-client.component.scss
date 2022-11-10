@@ -10,7 +10,14 @@
 }
 
 .mat-row:hover .mat-cell {
-  border-color: currentColor;
+  border-color: blue;
+  background-color: #f3f3f3;
+  color: black;
+  .button {
+background-color: #263238;
+    color:white;
+  }
+
 }
 
 .demo-row-is-clicked {
@@ -24,6 +31,12 @@
   top: 100px;
 }
 
-.container {
+.button {
+  margin: 5px;
+}
 
+.mat-flat-button {
+  position: fixed;
+  top: 80px;
+  left: 5px;
 }

@@ -5,18 +5,23 @@
 
 .container {
   display: flex;
+  flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  justify-content: center;
 }
 
 .mat-card {
   text-align: center;
   margin: 20px;
+  margin-top: 100px;
 }
 
 .mat-card-image {
   border-radius: 50%;
+}
+
+.card {
+  padding: 100px;
 }
 
 .mat-card-header {
@@ -28,6 +33,13 @@
 
 .btn {
   height: 70px;
+  margin: 30px;
+}
+
+.mat-flat-button {
+  position: fixed;
+  top: 80px;
+  left: 5px;
 }
 
 /*# sourceMappingURL=user-list.component.css.map */
