@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {navbarData} from "./sidenav/nav-data"
 
 
 @Component({
@@ -9,7 +8,7 @@ import {navbarData} from "./sidenav/nav-data"
 })
 export class AppComponent {
   title = 'app';
-  navData = navbarData;
 
-
+  constructor() {
+  }
 }

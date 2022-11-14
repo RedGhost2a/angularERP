@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../_service/user.service";
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
+import {AlertService} from "../../_service/alert.service";
+import {ThemePalette} from "@angular/material/core";
 
 @Component({
   selector: 'app-user-edit',
@@ -13,9 +15,11 @@ export class UserEditComponent implements OnInit {
   @Input() updateUser!: UserEditComponent
   public myFormGroup: FormGroup;
   textButton!: string;
+  color: ThemePalette = 'accent';
+  checked = true;
+  disabled = false;
 
-
-  constructor(private userService: UserService, private formBuilder: FormBuilder,
+  constructor(private userService: UserService, private formBuilder: FormBuilder, private alerteService: AlertService,
               private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr) {
 
     this.myFormGroup = this.formBuilder.group({
@@ -30,11 +34,11 @@ export class UserEditComponent implements OnInit {
   }
 
   success(message: string): void {
-    this.toastr.success(message, "Success");
+    this.toastr.success(message, "Succès");
   }
 
   warning(message: string): void {
-    this.toastr.warning(message, "Warning");
+    this.toastr.warning(message, "Attention");
   }
 
   createAndUpdate(): void {
@@ -46,23 +50,22 @@ export class UserEditComponent implements OnInit {
         this.userService.register(this.myFormGroup.getRawValue()).subscribe(
           (): void => {
 
-            if (this.myFormGroup.status === 'VALID') {
-              this.success("Nouvelle utilisateur en vue !")
-              this.router.navigate(['/users']);
-            } else if (this.myFormGroup.status === 'INVALID') {
-              this.warning("Complète tout les champs !")
+            this.success("Nouvelle utilisateur en vue !")
+            this.router.navigate(['/users']);
 
-            }
 
+          }, error => {
+            this.warning("Une erreur est survenue lors de la création")
           }
         )
       } else {
         this.userService.update(this.myFormGroup.getRawValue(), String(userID))
           .subscribe((): void => {
+            this.success("Modification effectuée !")
+            this.router.navigate(['/users']);
 
-            alert('Update!');
-            if (this.myFormGroup.status === 'VALID') this.router.navigate(['/users']);
-
+          }, (error: any) => {
+            this.warning("Impossible de modifier les champs!")
           });
       }
     })
@@ -72,7 +75,7 @@ export class UserEditComponent implements OnInit {
     this.route.params.subscribe(params => {
       const userID = +params['id']
       if (!isNaN(userID)) {
-        this.textButton = 'Modifier le client'
+        this.textButton = "Modifier l'utilisateur"
         this.userService.getById(userID).subscribe(data => {
           // Assuming res has a structure like:
           data = {
@@ -87,7 +90,7 @@ export class UserEditComponent implements OnInit {
           this.myFormGroup.patchValue(data);
         });
       } else {
-        this.textButton = 'Creer un nouveau utilisateur'
+        this.textButton = 'Créer un nouvelle utilisateur'
         this.formBuilder.group({
           title: [],
           firstName: [],

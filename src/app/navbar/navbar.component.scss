@@ -1,0 +1,81 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+* You can add global styles to this file, and also import other style files *
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.li{
+  list-style: none;
+
+}
+
+.sidebar-nav{
+  list-style: none;
+  padding: 0.938rem;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: calc(100% - 3.65rem);
+  cursor: pointer;
+
+  .sidebar-nav-item{
+    width: 100%;
+    margin-bottom: 0.625rem;
+  }
+  .sidebar-nav-link{
+    display: flex;
+    align-items: center;
+    height: 4rem;
+    color: #f3f3f3;
+    text-decoration: none;
+    transition: color .3s ease;
+    border-radius: 0.625rem;
+  }
+  .sidebar-link-icon{
+    font-size: 25px;
+    width: 2rem;
+    min-width: 2rem;
+    text-align: center;
+    margin: 0 0.5rem;
+  }
+  .sidebar-link-text{
+    margin-left: 1.5rem;
+    padding: 10px;
+  }
+  .sidebar-nav-item:hover {
+    .sidebar-nav-link {
+      background-color: #fff;
+      color: #000;
+    }
+
+  }}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+  display: flex;
+  box-sizing: border-box;
+  padding: 0 16px;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
+  justify-content: space-between;
+}

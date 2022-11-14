@@ -54,13 +54,13 @@ export class EntrepriseEditComponent implements OnInit {
         this.entepriseService.register(this.myFormGroup.getRawValue()).subscribe(
           (): void => {
 
-            if (this.myFormGroup.status === 'VALID') {
-              this.success("Nouvelle entreprise !")
+            if (this.myFormGroup.valid) {
+              this.success("Nouvelle entreprise créer !")
               this.router.navigate(['/entreprises']);
-            } else if (this.myFormGroup.status === 'INVALID') {
-              this.warning("Complète tout les champs !")
-
             }
+
+          }, error => {
+            this.warning("Complètes tout les champs !")
 
           }
         )
@@ -71,6 +71,9 @@ export class EntrepriseEditComponent implements OnInit {
 
             alert('Update!');
             if (this.myFormGroup.status === 'VALID') this.router.navigate(['/entreprises']);
+
+          }, error => {
+            this.warning("Complète tout les champs !")
 
           });
       }

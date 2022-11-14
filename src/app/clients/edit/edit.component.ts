@@ -53,9 +53,10 @@ export class EditComponent implements OnInit {
             if (this.myFormGroup.status === 'VALID') {
               this.success("Nouveau client en vue !")
               this.router.navigate(['/clients']);
-            } else {
-              this.warning("Complète tout les champs !")
             }
+          }, error => {
+            this.warning("Complète tout les champs !")
+
           }
         )
       } else {
@@ -64,6 +65,9 @@ export class EditComponent implements OnInit {
             this.success("Client modifier!");
             this.router.navigate(['/clients']);
 
+
+          }, error => {
+            this.warning("Complète tout les champs !")
 
           });
       }
@@ -94,7 +98,7 @@ export class EditComponent implements OnInit {
           this.myFormGroup.patchValue(data);
         });
       } else {
-        this.textButton = 'Creer un nouveau client'
+        this.textButton = 'Créer un nouveau client'
         this.formBuilder.group({
           firstName: [],
           lastName: [],

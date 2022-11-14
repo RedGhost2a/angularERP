@@ -1,3 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
 
+.card {
+  width: 500px;
+  height: 300px;
+  border: 1px solid #f3f3f3;
+  padding: 30px;
+}
 
 /*# sourceMappingURL=user.component.css.map */

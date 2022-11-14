@@ -4,13 +4,13 @@ export let TOASTR_TOKEN = new InjectionToken<Toastr>('toastr');
 
 export interface Toastr {
   // @ts-ignore
-  success(msg: string, title: string)
+  success(msg: string, title: string),
 
   // @ts-ignore
-  info(msg: string, title: string)
+  info(msg: string, title: string),
 
   // @ts-ignore
-  warning(msg: string, title: string)
+  warning(msg: string, title: string),
 
   // @ts-ignore
   error(msg: string, title: string)

@@ -4,7 +4,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ClientsComponent} from './clients/clients.component';
-import {SidenavComponent} from './sidenav/sidenav.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule} from "@angular/material/button";
 import {DialogComponent} from './dialog/dialog.component';
@@ -34,6 +33,13 @@ import {ToastrModule} from "ngx-toastr";
 import {Toastr, TOASTR_TOKEN} from "./_service/toastr.service";
 import {EntrepriseListComponent} from './parametres/entreprise-list/entreprise-list.component';
 import {EntrepriseEditComponent} from './parametres/entreprise-edit/entreprise-edit.component';
+import {LoginComponent} from './login/login.component';
+import {MatExpansionModule} from "@angular/material/expansion";
+import {LayoutModule} from '@angular/cdk/layout';
+import {MatMenuModule} from "@angular/material/menu";
+import {MatCheckboxModule} from "@angular/material/checkbox";
+import {MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
 
 const appRoutes: Routes = [];
 declare const toastr: Toastr;
@@ -42,7 +48,6 @@ declare const toastr: Toastr;
   declarations: [
     AppComponent,
     ClientsComponent,
-    SidenavComponent,
     DialogComponent,
     EditComponent,
     NavbarComponent,
@@ -56,6 +61,7 @@ declare const toastr: Toastr;
     UserListComponent,
     EntrepriseListComponent,
     EntrepriseEditComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,6 +84,12 @@ declare const toastr: Toastr;
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     FormsModule,
+    MatExpansionModule,
+    LayoutModule,
+    MatMenuModule,
+    MatCheckboxModule,
+    MatOptionModule,
+    MatSelectModule,
 
   ],
   providers: [{

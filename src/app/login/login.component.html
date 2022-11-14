@@ -1,0 +1,25 @@
+<div class="container">
+  <form class="form" [formGroup]="form">
+
+    <p>
+      <mat-form-field appearance="standard">
+        <mat-label>Email</mat-label>
+        <input formControlName="email" matInput>
+        <mat-icon matSuffix>email</mat-icon>
+      </mat-form-field>
+    </p>
+    <p>
+
+      <mat-form-field appearance="standard">
+        <mat-label>Mot de passe</mat-label>
+        <input type="password" formControlName="password" matInput>
+        <mat-icon matSuffix>password</mat-icon>
+      </mat-form-field>
+    </p>
+
+  </form>
+
+  <div>
+    <button mat-flat-button class="button" type="submit" (click)="onSubmit()">VALIDER</button>
+  </div>
+</div>

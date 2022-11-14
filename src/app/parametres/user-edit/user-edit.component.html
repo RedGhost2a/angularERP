@@ -17,8 +17,11 @@
         <input matInput placeholder="Entrer le prénom" formControlName="lastName">
       </mat-form-field>
       <mat-form-field appearance="outline">
-        <mat-label> Roles</mat-label>
-        <input matInput placeholder="Entrer le role" formControlName="role">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option value="Admin">Admin</mat-option>
+          <mat-option value="User">User</mat-option>
+        </mat-select>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
@@ -31,6 +34,6 @@
 
 
     </form>
-    <button mat-stroked-button (click)="createAndUpdate()" type="submit">{{textButton}}</button>
+    <button class="button" mat-stroked-button (click)="createAndUpdate()" type="submit">{{textButton}}</button>
   </ng-container>
 </div>

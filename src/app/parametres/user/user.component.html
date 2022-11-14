@@ -1,14 +1,15 @@
-<!--
-<div class="test">
-  <p>{{user.id}}</p>
-  <p>{{user.email}}</p>
-  <p>{{user.title}}</p>
-  <p>{{user.lastName}}</p>
-  <p>{{user.firstName}}</p>
-  <p>{{user.role}}</p>
+<div class="container">
+  <div class="titre">
+    <h1>Mon profile</h1>
+  </div>
 
-  <button [routerLink]="['/users', user.id]">Modifier</button>
-  <button (click)="delete()">Effacer{{user.id}}</button>
-  &lt;!&ndash;  <button mat-raised-button color="primary">Primary</button>&ndash;&gt;
+  <div class="card">
+    <p>ID: {{user.id}}</p>
+    <p>Email: {{user.email}}</p>
+    <p>Titre: {{user.title}}</p>
+    <p>Nom: {{user.lastName}}</p>
+    <p>Prénom{{user.firstName}}</p>
+    <p>Rôles{{user.role}}</p>
+    <button [routerLink]="['/users', user.id]">Modifier</button>
+  </div>
 </div>
--->

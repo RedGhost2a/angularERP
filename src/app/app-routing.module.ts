@@ -11,11 +11,14 @@ import {UserEditComponent} from "./parametres/user-edit/user-edit.component";
 import {ClientsComponent} from "./clients/clients.component";
 import {EntrepriseListComponent} from "./parametres/entreprise-list/entreprise-list.component";
 import {EntrepriseEditComponent} from "./parametres/entreprise-edit/entreprise-edit.component";
+import {LoginComponent} from "./login/login.component";
+import {AuthGuard} from "./_helpers";
+import {UserComponent} from "./parametres/user/user.component";
 
 const routes: Routes = [
-  {path: 'dashboard', component: DashboardComponent, data: {title: 'Dashboard'}},
+  {path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'}},
 
-  {path: 'clients', component: ListClientComponent, data: {title: 'Liste des clients'}},
+  {path: 'clients', canActivate: [AuthGuard], component: ListClientComponent, data: {title: 'Liste des clients'}},
   {path: 'clients/new', component: EditComponent, data: {title: 'Creation des clients'}},
   {path: 'clients/:id', component: EditComponent, data: {title: 'Details du clients'}},
   {path: 'clients/:id', component: ClientsComponent, data: {title: 'Details du clients'}},
@@ -23,20 +26,32 @@ const routes: Routes = [
     {path: 'clients/detail/:id', component: UserComponent, data: {title: 'Detail des utilisateurs'}},
   */
 
-  {path: 'users', component: UserListComponent, data: {title: 'Liste des utilisateurs'}},
+  {path: 'users', canActivate: [AuthGuard], component: UserListComponent, data: {title: 'Liste des utilisateurs'}},
   {path: 'users/new', component: UserEditComponent, data: {title: 'Création utilisateurs'}},
   {path: 'users/:id', component: UserEditComponent, data: {title: 'Detail des utilisateurs'}},
+  {path: 'mon_profile', canActivate: [AuthGuard], component: UserComponent, data: {title: 'Profil utilisateurs'}},
 
-  {path: 'entreprises', component: EntrepriseListComponent, data: {title: 'Liste des entreprise'}},
+  {
+    path: 'entreprises',
+    canActivate: [AuthGuard],
+    component: EntrepriseListComponent,
+    data: {title: 'Liste des entreprise'}
+  },
   {path: 'entreprises/new', component: EntrepriseEditComponent, data: {title: 'Création des entreprises'}},
   {path: 'entreprises/:id', component: EntrepriseEditComponent, data: {title: 'Detail des entreprises'}},
 
+  {path: 'devis', canActivate: [AuthGuard], component: DevisComponent, data: {title: 'Devis'}},
+  {
+    path: 'bibliotheque',
+    canActivate: [AuthGuard],
+    component: BibliothequesComponent,
+    data: {title: 'Bibiothèque de prix'}
+  },
+  {path: 'parametre', canActivate: [AuthGuard], component: ParametresComponent, data: {title: 'Paramètres'}},
 
-  {path: 'devis', component: DevisComponent, data: {title: 'Devis'}},
-  {path: 'bibliotheque', component: BibliothequesComponent, data: {title: 'Bibiothèque de prix'}},
-  {path: 'parametre', component: ParametresComponent, data: {title: 'Paramètres'}}
+  {path: 'login', component: LoginComponent},
 
-
+  {path: '**', redirectTo: ''}
 ];
 
 @NgModule({

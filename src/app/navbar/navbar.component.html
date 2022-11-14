@@ -1,1 +1,49 @@
-<p>navbar works!</p>
+<!--
+<app-sidenav (onToggleSidebar)="onToggleSidebar($event)"></app-sidenav>
+-->
+
+<mat-toolbar>
+  <mat-toolbar-row>
+
+    <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+    <h1>Outils d'étude de prix</h1>
+    <button *ngIf="accountService.userValue" mat-button [matMenuTriggerFor]="menu">
+      <mat-icon>settings_account_box</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon [routerLink]="['/mon_profile']">account_circle</mat-icon>
+        <span> Mon compte</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon color="warn" (click)="accountService.logout()">logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav>
+    <mat-nav-list>
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-item" *ngFor="let data of navData">
+          <a href="" class="sidebar-nav-link" [routerLink]="[data.routeLink]">
+            <fa-icon class="sidebar-link-icon" [icon]="data.icon"></fa-icon>
+            <span class="sidebar-link-text">{{data.label}}</span>
+          </a>
+        </li>
+      </ul>
+    </mat-nav-list>
+
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div style="height: 100vh">
+      <router-outlet>
+      </router-outlet>
+
+    </div>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
