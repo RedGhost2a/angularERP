@@ -24,6 +24,14 @@
         </mat-select>
       </mat-form-field>
       <mat-form-field appearance="outline">
+        <mat-label>Entreprise</mat-label>
+        <mat-select formControlName="EntrepriseId">
+          <mat-option [value]=+entreprise.id
+                      *ngFor="let entreprise of listEntreprise">{{entreprise.commercialName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
         <input matInput placeholder="1234 Main St" formControlName="email">
       </mat-form-field>

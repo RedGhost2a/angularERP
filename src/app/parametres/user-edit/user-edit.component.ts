@@ -5,6 +5,8 @@ import {UserService} from "../../_service/user.service";
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
 import {AlertService} from "../../_service/alert.service";
 import {ThemePalette} from "@angular/material/core";
+import {EntrepriseService} from "../../_service/entreprise.service";
+
 
 @Component({
   selector: 'app-user-edit',
@@ -18,9 +20,10 @@ export class UserEditComponent implements OnInit {
   color: ThemePalette = 'accent';
   checked = true;
   disabled = false;
+  listEntreprise: any[] = [];
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, private alerteService: AlertService,
-              private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr) {
+              private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr, private entrepriseService: EntrepriseService) {
 
     this.myFormGroup = this.formBuilder.group({
       email: "",
@@ -50,6 +53,8 @@ export class UserEditComponent implements OnInit {
       if (isNaN(userID)) {
         this.userService.register(this.myFormGroup.getRawValue()).subscribe(
           (): void => {
+            console.log(this.myFormGroup.getRawValue())
+
             this.success("Nouvelle utilisateur en vue !")
             this.router.navigate(['/users']);
 
@@ -72,7 +77,18 @@ export class UserEditComponent implements OnInit {
     })
   }
 
+  getEntrepriseForUser() {
+    this.entrepriseService.getAll().subscribe((data: any) => {
+      this.listEntreprise = data
+      console.log(this.listEntreprise)
+
+
+    })
+
+  }
+
   ngOnInit(): void {
+    this.getEntrepriseForUser();
     this.route.params.subscribe(params => {
       const userID = +params['id']
       if (!isNaN(userID)) {
@@ -87,6 +103,7 @@ export class UserEditComponent implements OnInit {
             lastName: data.lastName,
             role: data.role,
 
+
           }
 
           this.myFormGroup.patchValue(data);
@@ -100,8 +117,9 @@ export class UserEditComponent implements OnInit {
           role: [],
           email: [],
           password: [],
-        });
+          EntrepriseId: []
 
+        });
 
       }
     })

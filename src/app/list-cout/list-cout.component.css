@@ -1,0 +1,21 @@
+.header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+table {
+  width: 100%;
+  margin-top: 30px;
+  margin-left: 100px;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
+}
+
+button {
+  margin-left: 10px;
+}
+
+/*# sourceMappingURL=list-cout.component.css.map */

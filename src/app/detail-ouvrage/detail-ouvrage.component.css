@@ -1,0 +1,41 @@
+.btnBack {
+  margin-left: 30px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+  margin-top: 30px;
+}
+.container .example-card {
+  max-width: 90%;
+  margin-bottom: 8px;
+}
+.container .example-card .group {
+  display: flex;
+  flex-direction: column;
+}
+.container .example-card .detailList {
+  display: flex;
+}
+.container .example-card .detailList .subTitle {
+  margin-top: 0;
+  margin-left: 40px;
+}
+.container .detail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+}
+.container .detail p {
+  min-height: 30px;
+  padding-left: 40px;
+}
+.container .bouton {
+  display: flex;
+  justify-content: space-between;
+}
+
+/*# sourceMappingURL=detail-ouvrage.component.css.map */
