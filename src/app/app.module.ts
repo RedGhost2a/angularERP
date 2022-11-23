@@ -11,7 +11,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatDialogModule} from "@angular/material/dialog";
@@ -40,6 +40,8 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
+import {SuperAdminComponent} from './super-admin/super-admin.component';
+import {ErrorInterceptor, JwtInterceptor} from "./_helpers";
 
 const appRoutes: Routes = [];
 declare const toastr: Toastr;
@@ -62,6 +64,7 @@ declare const toastr: Toastr;
     EntrepriseListComponent,
     EntrepriseEditComponent,
     LoginComponent,
+    SuperAdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -94,8 +97,12 @@ declare const toastr: Toastr;
   ],
   providers: [{
     provide: TOASTR_TOKEN,
-    useValue: toastr
-  }
+    useValue: toastr,
+
+  },
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+
   ],
   bootstrap: [AppComponent],
 

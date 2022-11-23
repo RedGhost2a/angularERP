@@ -8,7 +8,7 @@ import {BehaviorSubject, map, Observable} from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class SuperAdminService {
   private userSubject: BehaviorSubject<User>;
   public user: Observable<User>;
   role !: any
@@ -27,7 +27,7 @@ export class UserService {
   }
 
   login(email: string, password: string) {
-    return this.http.post<User>(`http://localhost:4000/users/authenticate`, {email, password})
+    return this.http.post<User>(`http://localhost:4000/admin/authenticate`, {email, password})
       .pipe(map(user => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         localStorage.setItem('user', JSON.stringify(user));
@@ -44,26 +44,26 @@ export class UserService {
     this.router.navigate(['/home']);
   }
 
-  register(user: User): Observable<any> {
-    return this.http.post('http://localhost:4000/users/new', user);
+  register(user: any): Observable<any> {
+    return this.http.post('http://localhost:4000/admin/new', user);
   }
 
 
   getAll(): Observable<any> {
-    return this.http.get(`http://localhost:4000/users`)
+    return this.http.get(`http://localhost:4000/admin`)
 
   }
 
   update(user: User, id: any): Observable<any> {
-    return this.http.put(`http://localhost:4000/users/${id}`, user)
+    return this.http.put(`http://localhost:4000/admin/${id}`, user)
   }
 
   getById(id: any): Observable<any> {
-    return this.http.get(`http://localhost:4000/users/${id}`)
+    return this.http.get(`http://localhost:4000/admin/${id}`)
   }
 
   deleteByID(id: any): Observable<any> {
-    return this.http.delete(`http://localhost:4000/users/${id}`)
+    return this.http.delete(`http://localhost:4000/admin/${id}`)
   }
 
   getRole(): any {

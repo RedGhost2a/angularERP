@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AlertService} from "../_service/alert.service";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
+import {SuperAdminService} from "../_service/superAdmin.service";
 
 @Component({
   selector: 'app-login',
@@ -16,12 +17,15 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl!: string;
+  public checkbox !: boolean;
+  erorr!: "";
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     public accountService: UserService,
+    public superAdminService: SuperAdminService,
     private alertService: AlertService,
     @Inject(TOASTR_TOKEN) private toastr: Toastr
   ) {
@@ -50,6 +54,12 @@ export class LoginComponent implements OnInit {
     return this.form.controls;
   }
 
+  toggleEditable(event: any) {
+    if (event.target.checked) {
+      this.checkbox = true;
+    }
+  }
+
   onSubmit() {
     this.submitted = true;
 
@@ -62,19 +72,44 @@ export class LoginComponent implements OnInit {
 
       return;
     }
+    if (this.checkbox) {
+      this.loading = true;
+      this.superAdminService.login(this.f['email'].value, this.f['password'].value)
+        .pipe(first())
+        .subscribe(
+          data => {
+            console.log(data)
+            this.success("Connecté !")
 
-    this.loading = true;
-    this.accountService.login(this.f['email'].value, this.f['password'].value)
-      .pipe(first())
-      .subscribe(
-        data => {
-          this.success("Connecté !")
-          this.router.navigate(["/"]);
-        },
-        error => {
-          this.warning("Mot de passe et ou email inconnue !")
+            this.accountService.getRole()
+            this.router.navigate(["/admin"]);
+          },
+          error => {
+            this.warning("Mot de passe et ou email inconnue !")
+            this.alertService.error(error);
+            this.erorr = error
+            this.loading = false;
+          });
+    } else {
+      this.loading = true;
+      this.accountService.login(this.f['email'].value, this.f['password'].value)
+        .pipe(first())
+        .subscribe(
+          data => {
+            this.success("Connecté !")
+            this.accountService.getRole()
+            this.router.navigate([this.returnUrl]);
+          },
+          error => {
+            this.warning("Mot de passe et ou email inconnue !")
+            this.erorr = error
+            this.alertService.error(error);
+            this.loading = false;
+          });
 
-          this.loading = false;
-        });
+
+    }
+
+
   }
 }

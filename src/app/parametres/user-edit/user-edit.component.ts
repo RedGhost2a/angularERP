@@ -29,6 +29,7 @@ export class UserEditComponent implements OnInit {
       firstName: "",
       lastName: "",
       role: "",
+      EntrepriseId: ""
     })
 
   }
@@ -49,12 +50,11 @@ export class UserEditComponent implements OnInit {
       if (isNaN(userID)) {
         this.userService.register(this.myFormGroup.getRawValue()).subscribe(
           (): void => {
-
             this.success("Nouvelle utilisateur en vue !")
             this.router.navigate(['/users']);
 
-
           }, error => {
+            console.log(error)
             this.warning("Une erreur est survenue lors de la création")
           }
         )
@@ -65,6 +65,7 @@ export class UserEditComponent implements OnInit {
             this.router.navigate(['/users']);
 
           }, (error: any) => {
+
             this.warning("Impossible de modifier les champs!")
           });
       }
@@ -85,6 +86,7 @@ export class UserEditComponent implements OnInit {
             firstName: data.firstName,
             lastName: data.lastName,
             role: data.role,
+
           }
 
           this.myFormGroup.patchValue(data);

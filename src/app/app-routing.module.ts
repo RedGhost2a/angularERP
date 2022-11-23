@@ -14,6 +14,8 @@ import {EntrepriseEditComponent} from "./parametres/entreprise-edit/entreprise-e
 import {LoginComponent} from "./login/login.component";
 import {AuthGuard} from "./_helpers";
 import {UserComponent} from "./parametres/user/user.component";
+import {SuperAdminComponent} from "./super-admin/super-admin.component";
+import {Role} from "./_models/role";
 
 const routes: Routes = [
   {path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'}},
@@ -27,7 +29,7 @@ const routes: Routes = [
   */
 
   {path: 'users', canActivate: [AuthGuard], component: UserListComponent, data: {title: 'Liste des utilisateurs'}},
-  {path: 'users/new', component: UserEditComponent, data: {title: 'Création utilisateurs'}},
+  {path: 'users/new', canActivate: [AuthGuard], component: UserEditComponent, data: {roles: [Role.SuperAdmin]}},
   {path: 'users/:id', component: UserEditComponent, data: {title: 'Detail des utilisateurs'}},
   {path: 'mon_profile', canActivate: [AuthGuard], component: UserComponent, data: {title: 'Profil utilisateurs'}},
 
@@ -37,7 +39,12 @@ const routes: Routes = [
     component: EntrepriseListComponent,
     data: {title: 'Liste des entreprise'}
   },
-  {path: 'entreprises/new', component: EntrepriseEditComponent, data: {title: 'Création des entreprises'}},
+  {
+    path: 'entreprises/new',
+    canActivate: [AuthGuard],
+    data: {roles: [Role.SuperAdmin], title: 'Création des entreprises'},
+    component: EntrepriseEditComponent,
+  },
   {path: 'entreprises/:id', component: EntrepriseEditComponent, data: {title: 'Detail des entreprises'}},
 
   {path: 'devis', canActivate: [AuthGuard], component: DevisComponent, data: {title: 'Devis'}},
@@ -48,6 +55,9 @@ const routes: Routes = [
     data: {title: 'Bibiothèque de prix'}
   },
   {path: 'parametre', canActivate: [AuthGuard], component: ParametresComponent, data: {title: 'Paramètres'}},
+  {
+    path: 'admin', canActivate: [AuthGuard], component: SuperAdminComponent, data: {roles: [Role.SuperAdmin]}
+  },
 
   {path: 'login', component: LoginComponent},
 
