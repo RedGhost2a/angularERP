@@ -1,0 +1,42 @@
+.btnBack{
+  margin-left: 30px;
+}
+.container{
+  display: flex;
+  flex-direction: column;
+  margin-left:50px ;
+  margin-top:30px ;
+  .example-card {
+    max-width: 90%;
+    margin-bottom: 8px;
+    .group{
+      display: flex;
+      flex-direction: column;
+    }
+    .detailList{
+      display: flex;
+
+      .subTitle{
+        margin-top:0;
+        margin-left: 40px;
+      }
+
+    }
+  }
+  .detail{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    p{
+      min-height: 30px;
+      padding-left:40px ;
+    }
+
+  }
+  .bouton{
+    display: flex;
+    justify-content: space-between;
+  }
+
+}

@@ -1,0 +1,109 @@
+<!--<label for="name">Name: </label>-->
+<!--<input id="name" type="text" [formControl]="form">-->
+<!--<button type="button" (click)="updateName()">Update Name</button>-->
+<!--<a routerLink="/list" > retour</a>-->
+
+
+
+<ng-container [formGroup]="this.myFormGroup">
+  <button routerLink="/listCout" mat-raised-button color="accent">Retour</button>
+  <div class="container">
+    <h1> {{titreForm}}</h1>
+    <div class="group1">
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Type</mat-label>
+          <input id="type" formControlName="type" matInput placeholder="Ex: Fourniture">
+
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Catégorie</mat-label>
+          <input formControlName="categorie" matInput placeholder="Ex: Elévation">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Désignation</mat-label>
+          <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm">
+        </mat-form-field>
+      </p>
+    </div>
+    <div class="group2">
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Unité</mat-label>
+          <input formControlName="unite" matInput placeholder="Ex: M2">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Prix Unitaire</mat-label>
+          <input formControlName="prixUnitaire" matInput placeholder="Ex: 9,2">
+        </mat-form-field>
+      </p>
+    </div>
+
+    <div class="group3">
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Remarque</mat-label>
+          <input formControlName="remarque" matInput placeholder="Ex: ">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Fournisseur</mat-label>
+          <input formControlName="fournisseur" matInput placeholder="Ex: Gedimat">
+        </mat-form-field>
+      </p>
+
+
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>iscout</mat-label>
+          <input formControlName="isCout" matInput placeholder="">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>isfraisdechantier</mat-label>
+          <input formControlName="isFraisDeChantier" matInput placeholder="">
+        </mat-form-field>
+      </p>
+
+    </div>
+    <button routerLink="/listCout" mat-raised-button (click)="createAndUpdate()" >{{textButton}}</button>
+  </div>
+  <!--  <div class="container">-->
+  <!--  <div class="group1">-->
+
+  <!--  <label for="type">Type</label>-->
+  <!--  <input id="type" type="text" formControlName="type">-->
+
+  <!--  <label for="categorie">Catégorie</label>-->
+  <!--  <input id="categorie" type="text" formControlName="categorie">-->
+
+  <!--  <label for="designation">Désignation</label>-->
+  <!--  <input id="designation" type="text" formControlName="designation">-->
+
+  <!--  </div>-->
+  <!--    <div class="group2">-->
+  <!--  <label for="unite">Unité</label>-->
+  <!--  <input id="unite" type="text" formControlName="unite">-->
+
+  <!--  <label for="prixUnitaire">Prix unitaire</label>-->
+  <!--  <input id="prixUnitaire" type="text" formControlName="prixUnitaire">-->
+
+  <!--  <label for="fournisseur">Fournisseur</label>-->
+  <!--  <input id="fournisseur" type="text" formControlName="fournisseur">-->
+
+  <!--  <label for="remarque">Remarque</label>-->
+  <!--  <input id="remarque" type="text" formControlName="remarque">-->
+
+  <!--<button  (click)="createAndUpdate()">{{textButton}}</button>-->
+  <!--    </div>-->
+  <!--  </div>-->
+</ng-container>
+

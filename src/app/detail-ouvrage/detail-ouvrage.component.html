@@ -1,0 +1,155 @@
+<button class="btnBack" routerLink="/listOuvrage" mat-raised-button >Retour</button>
+<div class="container">
+  <!--  <h3>Informations de l'ouvrage</h3>-->
+  <!--  <div class="detail">-->
+  <!--  <p>Désignation</p>-->
+  <!--  <p>Bénéfice</p>-->
+  <!--  <p>Aléas</p>-->
+  <!--  <p>Unité</p>-->
+  <!--  <p>Ratio</p>-->
+  <!--  <p>U/Ratio</p>-->
+  <!--  <p>PUHT</p>-->
+  <!--  </div>-->
+  <!--  <div class="detail">-->
+  <!--  <p>Désignation</p>-->
+  <!--  <p>Bénéfice</p>-->
+  <!--  <p>Aléas</p>-->
+  <!--  <p>Unité</p>-->
+  <!--  <p>Ratio</p>-->
+  <!--  <p>U/Ratio</p>-->
+  <!--  <p>PUHT</p>-->
+  <!--  </div>-->
+  <!--  <h3>Composant de l'ouvrage</h3>-->
+  <mat-card class="example-card">
+    <mat-card-title-group class="group">
+      <mat-card-title >Information de l'ouvrage</mat-card-title>
+      <div class="detailList">
+        <div class="detail">
+          <mat-card-subtitle class="subTitle">Désignation</mat-card-subtitle>
+          <p>{{ouvrage.designation}}</p>
+        </div>
+        <div class="detail">
+          <mat-card-subtitle class="subTitle">Bénéfices</mat-card-subtitle>
+          <p>{{ouvrage.benefice}}</p>
+        </div>
+        <div class="detail">
+          <mat-card-subtitle class="subTitle">Aléas</mat-card-subtitle>
+          <p>{{ouvrage.aleas}}</p>
+        </div>
+        <div class="detail">
+          <mat-card-subtitle class="subTitle">Unité</mat-card-subtitle>
+          <p>{{ouvrage.unite}}</p>
+        </div>
+        <div class="detail">
+          <mat-card-subtitle class="subTitle">Ratio</mat-card-subtitle>
+          <p>{{ouvrage.ratio}}</p>
+        </div>
+        <div class="detail">
+          <mat-card-subtitle class="subTitle">U/Ratio</mat-card-subtitle>
+          <p>{{ouvrage.uRatio}}</p>
+        </div>
+        <div class="detail">
+          <mat-card-subtitle class="subTitle">Prix Unitaire HT</mat-card-subtitle>
+          <p>{{prixOuvrage}}</p>
+        </div>
+        <div class="detail">
+          <mat-card-subtitle class="subTitle">Fournisseur</mat-card-subtitle>
+          <p>{{ouvrage.fournisseur}}</p>
+        </div>
+      </div>
+      <p>dffds</p>
+    </mat-card-title-group>
+    <!--    <div class="detailList">-->
+    <!--      <div class="detail">-->
+    <!--      <p class="subTitle">Designation</p>-->
+    <!--      <p class="subTitle">designation</p>-->
+    <!--      </div>-->
+    <!--      <div class="detail">-->
+    <!--      <p class="subTitle">Designation</p>-->
+    <!--      <p class="subTitle">designation</p>-->
+    <!--      </div>-->
+    <!--      <div class="detail">-->
+    <!--      <p class="subTitle">Designation</p>-->
+    <!--      <p class="subTitle">designation</p>-->
+    <!--      </div>-->
+    <!--      <div class="detail">-->
+    <!--      <p class="subTitle">Designation</p>-->
+    <!--      <p class="subTitle">designation</p>-->
+    <!--      </div>-->
+    <!--      <div class="detail">-->
+    <!--      <p class="subTitle">Designation</p>-->
+    <!--      <p class="subTitle">designation</p>-->
+    <!--      </div>-->
+    <!--      <div class="detail">-->
+    <!--      <p class="subTitle">Designation</p>-->
+    <!--      <p class="subTitle">designation</p>-->
+    <!--      </div>-->
+    <!--    </div>-->
+
+
+  </mat-card>
+
+  <!--  <ng-container *ngIf="ouvrage.cout.length; then someContent else otherContent"></ng-container>-->
+
+  <ng-template #someContent >
+    <div>
+      <mat-card class="example-card">
+        <mat-card-title-group class="group">
+          <div class="bouton">
+            <mat-card-title >Composant de l'ouvrage</mat-card-title>
+            <button routerLink="/ajoutCout/{{ouvrage.id}}"  mat-raised-button >Importer un composant </button>
+          </div>
+          <div class="detailList">
+            <div class="detail">
+              <mat-card-subtitle class="subTitle">Type</mat-card-subtitle>
+              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>
+            </div>
+            <div class="detail">
+              <mat-card-subtitle class="subTitle">Catégorie</mat-card-subtitle>
+              <p *ngFor="let cout of ouvrage.cout">{{cout.categorie}}</p>
+            </div>
+            <div class="detail">
+              <mat-card-subtitle class="subTitle">Désignation</mat-card-subtitle>
+              <p *ngFor="let cout of ouvrage.cout">{{cout.designation}}</p>
+            </div>
+            <div class="detail">
+              <mat-card-subtitle class="subTitle">Unité</mat-card-subtitle>
+              <p *ngFor="let cout of ouvrage.cout">{{cout.unite}}</p>
+            </div>
+            <div class="detail">
+              <mat-card-subtitle class="subTitle">Prix Unitaire HT</mat-card-subtitle>
+              <p *ngFor="let cout of ouvrage.cout" >{{cout.prixUnitaire}}</p>
+            </div>
+            <div class="detail">
+              <mat-card-subtitle class="subTitle">Fournisseur</mat-card-subtitle>
+              <p *ngFor="let cout of ouvrage.cout">{{cout.fournisseur}}</p>
+            </div>
+          </div>
+        </mat-card-title-group>
+      </mat-card>
+
+
+    </div>
+  </ng-template>
+
+
+
+
+
+  <!--  <ng-template #otherContent >-->
+  <div>
+    <mat-card class="example-card">
+      <mat-card-title-group class="group">
+        <div class="bouton">
+          <mat-card-title >Aucun composant dans cet ouvrage</mat-card-title>
+          <p></p>
+          <button routerLink="/ajoutCout/{{ouvrage.id}}"  mat-raised-button >Importer un composant </button>
+        </div>
+      </mat-card-title-group>
+    </mat-card>
+
+  </div>
+  <!--  </ng-template>-->
+
+</div>
+

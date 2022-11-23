@@ -1,0 +1,14 @@
+
+<div class="test">
+  <p>{{cout.type}}</p>
+  <p>{{cout.categorie}}</p>
+  <p>{{cout.designation}}</p>
+  <p>{{cout.unite}}</p>
+  <p>{{cout.prixUnitaire}}</p>
+  <button [routerLink]="['/cout', cout.id]">Modifier</button>
+  <button (click)="delete()">{{cout.id}}</button>
+  <!--  <button mat-raised-button color="primary">Primary</button>-->
+</div>
+
+
+<!--<hr>-->

@@ -1,0 +1,62 @@
+
+<div class="container">
+
+  <!--<app-form-cout (addCout)="getAll()" ></app-form-cout>-->
+  <div class="header" >
+    <div>
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Rechercher un cout</mat-label>
+          <input matInput placeholder="Ex: Ciment">
+        </mat-form-field>
+      </p>
+    </div>
+    <div>
+      <button routerLink="/cout"  mat-raised-button >Creer un composant </button>
+    </div>
+  </div>
+
+  <table mat-table [dataSource]="listCout">
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Type </th>
+      <td mat-cell *matCellDef="let cout"> {{cout.type}} </td>
+    </ng-container>
+    <ng-container matColumnDef="categorie">
+      <th mat-header-cell *matHeaderCellDef> Categorie </th>
+      <td mat-cell *matCellDef="let cout"> {{cout.categorie}} </td>
+    </ng-container>
+    <ng-container matColumnDef="designation">
+      <th mat-header-cell *matHeaderCellDef> Désignation </th>
+      <td mat-cell *matCellDef="let cout"> {{cout.designation}} </td>
+    </ng-container>
+    <ng-container matColumnDef="unite">
+      <th mat-header-cell *matHeaderCellDef> Unité </th>
+      <td mat-cell *matCellDef="let cout"> {{cout.unite}} </td>
+    </ng-container>
+    <ng-container matColumnDef="prixUnitaire">
+      <th mat-header-cell *matHeaderCellDef> PU HT </th>
+      <td mat-cell *matCellDef="let cout"> {{cout.prixUnitaire}} </td>
+    </ng-container>
+    <!--  <ng-container matColumnDef="boutonSuppr">-->
+    <!--    <th mat-header-cell *matHeaderCellDef> </th>-->
+    <!--    <td mat-cell *matCellDef="let cout" >-->
+    <!--      <button (click)="delete(cout.id)"  mat-raised-button color="primary">Supprimer {{cout.id}}</button>-->
+    <!--    </td>-->
+    <!--  </ng-container>-->
+    <ng-container matColumnDef="boutons">
+      <th mat-header-cell *matHeaderCellDef>  </th>
+      <td mat-cell *matCellDef="let cout">
+        <!--      <button (click)="delete(cout.id)"  mat-raised-button color="primary">Supprimer {{cout.id}}</button>-->
+        <button (click)="delete(cout.id)"  mat-raised-button color="primary"><mat-icon>restore_from_trash</mat-icon></button>
+        <!--      <button mat-raised-button color="primary" [routerLink]="['/cout', cout.id]">Modifier</button>-->
+        <button mat-raised-button color="primary" [routerLink]="['/cout', cout.id]"><mat-icon >update</mat-icon></button>
+      </td>
+
+
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+  </table>
+</div>
+
+

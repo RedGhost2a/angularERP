@@ -42,6 +42,13 @@ import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {SuperAdminComponent} from './super-admin/super-admin.component';
 import {ErrorInterceptor, JwtInterceptor} from "./_helpers";
+import { CoutComponent } from './cout/cout.component';
+import { DetailOuvrageComponent } from './detail-ouvrage/detail-ouvrage.component';
+import { FormCoutComponent } from './form-cout/form-cout.component';
+import { FormOuvrageComponent } from './form-ouvrage/form-ouvrage.component';
+import { ListCoutComponent } from './list-cout/list-cout.component';
+import { ListOuvrageComponent } from './list-ouvrage/list-ouvrage.component';
+import { OuvrageAddCoutComponent } from './ouvrage-add-cout/ouvrage-add-cout.component';
 
 const appRoutes: Routes = [];
 declare const toastr: Toastr;
@@ -65,6 +72,13 @@ declare const toastr: Toastr;
     EntrepriseEditComponent,
     LoginComponent,
     SuperAdminComponent,
+    CoutComponent,
+    DetailOuvrageComponent,
+    FormCoutComponent,
+    FormOuvrageComponent,
+    ListCoutComponent,
+    ListOuvrageComponent,
+    OuvrageAddCoutComponent,
   ],
   imports: [
     BrowserModule,
