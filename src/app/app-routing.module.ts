@@ -22,17 +22,21 @@ import {DetailOuvrageComponent} from "./detail-ouvrage/detail-ouvrage.component"
 import {ListOuvrageComponent} from "./list-ouvrage/list-ouvrage.component";
 import {ListCoutComponent} from "./list-cout/list-cout.component";
 import {OuvrageAddCoutComponent} from "./ouvrage-add-cout/ouvrage-add-cout.component";
+import {FormDevisComponent} from "./form-devis/form-devis.component";
+
 
 const routes: Routes = [
 
-  {path: 'cout/:id', component: FormCoutComponent},
-  {path: 'cout', component: FormCoutComponent,},
-  {path: 'ouvrage/:id', component: FormOuvrageComponent,},
-  {path: 'ouvrage', component: FormOuvrageComponent,},
-  {path: 'ouvrageDetail/:id', component: DetailOuvrageComponent,},
-  {path: 'listCout', component: ListCoutComponent},
-  {path: 'listOuvrage', component: ListOuvrageComponent},
-  {path: 'ajoutCout/:id', component: OuvrageAddCoutComponent},
+  { path: 'cout/:id', component: FormCoutComponent},
+  { path: 'cout', component: FormCoutComponent, },
+  { path: 'ouvrage/:id', component: FormOuvrageComponent, },
+  { path: 'ouvrage', component: FormOuvrageComponent, },
+  { path: 'ouvrageDetail/:id', component: DetailOuvrageComponent, },
+  { path: 'listCout', component: ListCoutComponent},
+  { path: 'listOuvrage', component: ListOuvrageComponent},
+  { path: 'ajoutCout/:id', component: OuvrageAddCoutComponent},
+  { path: 'devisTest', component: FormDevisComponent},
+
 
 
   {path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'}},

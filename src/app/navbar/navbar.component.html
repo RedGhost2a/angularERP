@@ -16,13 +16,19 @@
         <span> Mon compte</span>
       </button>
       <button mat-menu-item>
-        <mat-icon color="warn" *ngIf="accountService.userValue; else superAdmin"
-                  (click)="accountService.logout();superAdminService.logout()">
+
           logout
         </mat-icon>
         <span>Logout</span>
       </button>
-
+            <ng-template #superAdmin>
+              <button mat-menu-item>
+                <mat-icon color="warn" (click)="superAdminService.logout()">
+                  logout
+                </mat-icon>
+                <span>Logout</span>
+              </button>
+            </ng-template>
 
     </mat-menu>
     <ng-template #superAdmin>

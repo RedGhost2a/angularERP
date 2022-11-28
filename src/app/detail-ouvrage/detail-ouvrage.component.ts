@@ -1,6 +1,8 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {OuvrageService} from "../_service/ouvrage.service";
+import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {Ouvrage} from "../_models/ouvrage";
+import {Cout} from "../_models/cout";
 import {ActivatedRoute} from "@angular/router";
 import {map, Observable} from "rxjs";
 
@@ -13,8 +15,11 @@ export class DetailOuvrageComponent implements OnInit {
   @Input() ouvrage!:Ouvrage
   prixOuvrage!:number
   ouvrageID!:number
+  cout!:Cout[]
+  @Output() deleteCout: EventEmitter<any> = new EventEmitter()
 
-  constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute) { }
+  constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute,
+              private ouvrageCoutService: OuvrageCoutService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params =>{
@@ -22,7 +27,8 @@ export class DetailOuvrageComponent implements OnInit {
       this.ouvrageService.getById(this.ouvrageID)
     } )
     this.getById()
-    this.getSum()
+    //this.getSum()
+    console.log(this.ouvrage)
   }
 
   getSum():void{
@@ -35,7 +41,15 @@ export class DetailOuvrageComponent implements OnInit {
 
   getById():void{
     this.ouvrageService.getById(this.ouvrageID).subscribe(data =>{ this.ouvrage = data;
+      this.cout = data.Couts
     });
+  }
+  deleteById(Coutid:any):void{
+    console.log(Coutid)
+    this.ouvrageCoutService.deleteByID(Coutid,this.ouvrageID).subscribe(() => {
+      this.deleteCout.emit()
+      alert("Cout supprimer de l'ouvrage")
+    })
   }
 
 }

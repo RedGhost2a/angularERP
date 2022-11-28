@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 
-const baseUrl = 'http://localhost:8080/ouvrages';
+const baseUrl = 'http://localhost:8080/ouvragesCouts';
 
 @Injectable({
   providedIn: 'root'
 })
-export class OuvrageService {
+export class OuvrageCoutService {
 
   constructor(private http: HttpClient) { }
 
@@ -20,18 +20,17 @@ export class OuvrageService {
   create(data: any) :Observable<any> {
     return this.http.post(baseUrl, data);
   }
-  update(data:any, id:any):Observable<any>{
-    return this.http.put(`${baseUrl}/${id}`, data)
-  }
-  deleteByID(id:any):Observable<any>{
-    console.log(`${baseUrl}/${id}`)
-    return this.http.delete(`${baseUrl}/${id}`)
+  deleteByID(CoutId:any, OuvrageId:any):Observable<any>{
+    // console.log(`${baseUrl}/${id}`)
+    console.log(`${baseUrl}/${CoutId}/${OuvrageId}`)
+    return this.http.delete(`${baseUrl}/${CoutId}/${OuvrageId}`)
   }
 
   addCoutOuvrage(coutId:number, ouvrageId:number) :Observable<any> {
     console.log(` console log ADD COUT: http://localhost:8080/ouvragesCouts/new/${coutId}/${ouvrageId}`)
-    return this.http.get(`http://localhost:8080/ouvragesCouts/new/${coutId}/${ouvrageId}`);
+    return this.http.get(`${baseUrl}/new/${coutId}/${ouvrageId}`);
   }
+
   getSum(ouvrageId:number): Observable<any>{
     return this.http.get(`${baseUrl}/test/sum/${ouvrageId}`)
   }

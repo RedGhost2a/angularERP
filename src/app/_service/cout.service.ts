@@ -1,38 +1,38 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {environment} from "../../environments/environment";
+import {Cout} from "../_models/cout";
 
-
-
-const baseUrl = 'http://localhost:8080/couts';
+const baseUrl = `${environment.apiUrl}/couts`;
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class CoutService {
-
   constructor(private http: HttpClient) { }
 
-  getAll(EntrepriseId:any) :Observable<any> {
-    return this.http.get(`${baseUrl}?EntrepriseId=${EntrepriseId}`);
+  getAll() :Observable<Cout[]> {
+    return this.http.get<Cout[]>(`${baseUrl}`);
   }
-  getById(id:any, EntrepriseId:any) :Observable<any> {
-    // return this.http.get(`${baseUrl}/${id}`);
-    return this.http.get(`${baseUrl}/${id}?EntrepriseId=${EntrepriseId}`);
+  getAllCouts() :Observable<Cout[]> {
+    return this.http.get<Cout[]>(`${baseUrl}/isCouts`);
   }
-  create(data: any) :Observable<any> {
-    console.log(data)
-    return this.http.post(baseUrl+'/new', data);
+  getAllFraisDeChantier() :Observable<Cout[]> {
+    return this.http.get<Cout[]>(`${baseUrl}/isFraisDeChantier`);
   }
-  update(data:any, id:any):Observable<any>{
-    return this.http.put(`${baseUrl}/${id}`, data)
+
+  getById(id:number) :Observable<Cout> {
+    return this.http.get<Cout>(`${baseUrl}/${id}`);
   }
-  deleteByID(id:any):Observable<any>{
-    console.log(`${baseUrl}/${id}`)
-    return this.http.delete(`${baseUrl}/${id}`)
+  create(data: Cout) :Observable<Cout> {
+    return this.http.post<Cout>(`${baseUrl}/new`, data);
   }
-  createTypeCout(data:any):Observable<any>{
-    return this.http.post(`http://localhost:8080/typeCouts/new`, data)
+  update(data:Cout, id:number):Observable<Cout>{
+    return this.http.put<Cout>(`${baseUrl}/${id}`, data)
+  }
+  deleteByID(id:number):Observable<Cout>{
+    return this.http.delete<Cout>(`${baseUrl}/${id}`)
   }
 }
