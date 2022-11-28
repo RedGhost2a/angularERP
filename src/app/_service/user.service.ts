@@ -10,8 +10,8 @@ import {StorageService} from "./storage.service";
   providedIn: 'root'
 })
 export class UserService {
-  private userSubject: BehaviorSubject<User>;
-  public user: Observable<User>;
+  private userSubject!: BehaviorSubject<User>;
+  public user !: Observable<User>;
   role !: any
 
 
@@ -19,11 +19,18 @@ export class UserService {
               private http: HttpClient,
               private storageService: StorageService) {
     let string = localStorage.getItem('user')
-    let decryptUser = this.storageService.decrypt(string)
-    let parse = JSON.parse(decryptUser)
-    // @ts-ignore
-    this.userSubject = new BehaviorSubject<User>(parse);
-    this.user = this.userSubject.asObservable();
+    if (string) {
+
+      let decryptUser = this.storageService.decrypt(string)
+      let parse = JSON.parse(decryptUser)
+      // @ts-ignore
+      this.userSubject = new BehaviorSubject<User>(parse);
+      this.user = this.userSubject.asObservable();
+    } else {
+
+      // @ts-ignore
+      this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
+    }
     // console.log(string)
     // console.log(parse)
   }
