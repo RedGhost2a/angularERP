@@ -81,7 +81,7 @@ export class LoginComponent implements OnInit {
             console.log(data)
             this.success("Connecté !")
 
-            this.accountService.getRole()
+            // this.accountService.getRole()
             this.router.navigate(["/admin"]);
           },
           error => {
@@ -97,7 +97,7 @@ export class LoginComponent implements OnInit {
         .subscribe(
           data => {
             this.success("Connecté !")
-            this.accountService.getRole()
+            // this.accountService.getRole()
             this.router.navigate([this.returnUrl]);
           },
           error => {

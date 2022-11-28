@@ -49,6 +49,7 @@ import { FormOuvrageComponent } from './form-ouvrage/form-ouvrage.component';
 import { ListCoutComponent } from './list-cout/list-cout.component';
 import { ListOuvrageComponent } from './list-ouvrage/list-ouvrage.component';
 import { OuvrageAddCoutComponent } from './ouvrage-add-cout/ouvrage-add-cout.component';
+import { SuperAdminListComponent } from './super-admin-list/super-admin-list.component';
 
 const appRoutes: Routes = [];
 declare const toastr: Toastr;
@@ -79,6 +80,7 @@ declare const toastr: Toastr;
     ListCoutComponent,
     ListOuvrageComponent,
     OuvrageAddCoutComponent,
+    SuperAdminListComponent,
   ],
   imports: [
     BrowserModule,
