@@ -31,9 +31,14 @@ export const navbarData = [
     label: 'Devis'
   },
   {
-    routeLink: 'bibliotheque',
+    routeLink: '/listCout',
     icon: faBook,
-    label: 'Bibliothéque'
+    label: 'Bibliothéque de couts'
+  },
+  {
+    routeLink: '/listOuvrage',
+    icon: faBook,
+    label: "Bibliothéque d'ouvrages"
   },
   {
     routeLink: 'parametre',

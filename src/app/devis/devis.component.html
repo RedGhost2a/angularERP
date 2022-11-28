@@ -1,1 +1,21 @@
-<p>devis works!</p>
+<ng-container [formGroup]="this.myFormGroup">
+  <button routerLink="/listCout" mat-raised-button color="accent">Retour</button>
+  <div class="container">
+    <h1> DEVIS </h1>
+    <div class="group1">
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>name</mat-label>
+          <input  formControlName="name" matInput placeholder="Ex: sdq">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Status</mat-label>
+          <input formControlName="status" matInput placeholder="Ex: fdsfdsf">
+        </mat-form-field>
+      </p>
+    </div>
+    <button (click)="testAjoutDevis()" routerLink="/devisTest" mat-raised-button >test</button>
+  </div>
+</ng-container>

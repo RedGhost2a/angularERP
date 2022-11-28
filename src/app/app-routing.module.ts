@@ -22,6 +22,8 @@ import {DetailOuvrageComponent} from "./detail-ouvrage/detail-ouvrage.component"
 import {ListOuvrageComponent} from "./list-ouvrage/list-ouvrage.component";
 import {ListCoutComponent} from "./list-cout/list-cout.component";
 import {OuvrageAddCoutComponent} from "./ouvrage-add-cout/ouvrage-add-cout.component";
+import {FormDevisComponent} from "./form-devis/form-devis.component";
+
 
 const routes: Routes = [
 
@@ -33,6 +35,7 @@ const routes: Routes = [
   { path: 'listCout', component: ListCoutComponent},
   { path: 'listOuvrage', component: ListOuvrageComponent},
   { path: 'ajoutCout/:id', component: OuvrageAddCoutComponent},
+  { path: 'devisTest', component: FormDevisComponent},
 
 
 

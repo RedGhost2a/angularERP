@@ -11,7 +11,8 @@ import {Cout} from "../_models/cout";
 })
 export class ListCoutComponent implements OnInit {
   @Input() listCout!: Cout[]
-  EntrepriseId = 1
+  // @ts-ignore
+  currentUser = JSON.parse(localStorage.getItem('user'))
   columnsToDisplay = ["type","categorie","designation", "unite", "prixUnitaire", "boutons"];
 
 
@@ -19,13 +20,13 @@ export class ListCoutComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getAll(this.EntrepriseId)
+    this.getAllCouts()
 
   }
 
 
-  getAll(EntrepriseId:any):void{
-    this.coutService.getAll(EntrepriseId).subscribe(data => {
+  getAllCouts():void{
+    this.coutService.getAllCouts().subscribe(data => {
       this.listCout = data;
       console.log(data)
     });
