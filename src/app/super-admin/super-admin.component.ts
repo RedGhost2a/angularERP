@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {EntrepriseService} from "../_service/entreprise.service";
+import {Entreprise} from "../_models/entreprise";
+import {SuperAdminService} from "../_service/superAdmin.service";
+import {User} from "../_models/users";
+import {StorageService} from "../_service/storage.service";
 
 @Component({
   selector: 'app-super-admin',
@@ -7,9 +12,30 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SuperAdminComponent implements OnInit {
 
-  constructor() { }
+  @Input() entreprise!: Entreprise;
+  @Output() deleteEntreprise: EventEmitter<any> = new EventEmitter()
 
-  ngOnInit(): void {
+  listEntreprise !: Entreprise[];
+  listUser !: User[];
+  panelOpenState = false;
+  user!: string;
+
+  constructor(private entrepriseService: EntrepriseService, private superAdminService: SuperAdminService, private storageService: StorageService) {
+
   }
 
+  ngOnInit(): void {
+    this.getAll()
+  }
+
+  // @ts-ignore
+
+
+  getAll(): void {
+    this.entrepriseService.getAll().subscribe(data => this.listEntreprise = data)
+  }
+
+  getAllUserByEntreprise(id: any): void {
+    this.superAdminService.getById(id).subscribe(data => this.listUser = data)
+  }
 }

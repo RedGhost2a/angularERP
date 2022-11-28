@@ -16,7 +16,7 @@ import {AuthGuard} from "./_helpers";
 import {UserComponent} from "./parametres/user/user.component";
 import {SuperAdminComponent} from "./super-admin/super-admin.component";
 import {Role} from "./_models/role";
-import { FormCoutComponent } from './form-cout/form-cout.component';
+import {FormCoutComponent} from './form-cout/form-cout.component';
 import {FormOuvrageComponent} from "./form-ouvrage/form-ouvrage.component";
 import {DetailOuvrageComponent} from "./detail-ouvrage/detail-ouvrage.component";
 import {ListOuvrageComponent} from "./list-ouvrage/list-ouvrage.component";
@@ -25,15 +25,14 @@ import {OuvrageAddCoutComponent} from "./ouvrage-add-cout/ouvrage-add-cout.compo
 
 const routes: Routes = [
 
-  { path: 'cout/:id', component: FormCoutComponent},
-  { path: 'cout', component: FormCoutComponent, },
-  { path: 'ouvrage/:id', component: FormOuvrageComponent, },
-  { path: 'ouvrage', component: FormOuvrageComponent, },
-  { path: 'ouvrageDetail/:id', component: DetailOuvrageComponent, },
-  { path: 'listCout', component: ListCoutComponent},
-  { path: 'listOuvrage', component: ListOuvrageComponent},
-  { path: 'ajoutCout/:id', component: OuvrageAddCoutComponent},
-
+  {path: 'cout/:id', component: FormCoutComponent},
+  {path: 'cout', component: FormCoutComponent,},
+  {path: 'ouvrage/:id', component: FormOuvrageComponent,},
+  {path: 'ouvrage', component: FormOuvrageComponent,},
+  {path: 'ouvrageDetail/:id', component: DetailOuvrageComponent,},
+  {path: 'listCout', component: ListCoutComponent},
+  {path: 'listOuvrage', component: ListOuvrageComponent},
+  {path: 'ajoutCout/:id', component: OuvrageAddCoutComponent},
 
 
   {path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'}},
@@ -78,12 +77,14 @@ const routes: Routes = [
   },
 
   {path: 'login', component: LoginComponent},
+  // {
+  //   path: 'admin/:id',
+  //   canActivate: [AuthGuard],
+  //   component: SuperAdminListComponent,
+  //   data: {title: 'Administration', roles: [Role.SuperAdmin]}
+  // },
 
   {path: '**', redirectTo: ''}
-
-
-
-
 
 
 ];
