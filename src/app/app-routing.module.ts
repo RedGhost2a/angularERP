@@ -16,7 +16,7 @@ import {AuthGuard} from "./_helpers";
 import {UserComponent} from "./parametres/user/user.component";
 import {SuperAdminComponent} from "./super-admin/super-admin.component";
 import {Role} from "./_models/role";
-import { FormCoutComponent } from './form-cout/form-cout.component';
+import {FormCoutComponent} from './form-cout/form-cout.component';
 import {FormOuvrageComponent} from "./form-ouvrage/form-ouvrage.component";
 import {DetailOuvrageComponent} from "./detail-ouvrage/detail-ouvrage.component";
 import {ListOuvrageComponent} from "./list-ouvrage/list-ouvrage.component";
@@ -81,12 +81,14 @@ const routes: Routes = [
   },
 
   {path: 'login', component: LoginComponent},
+  // {
+  //   path: 'admin/:id',
+  //   canActivate: [AuthGuard],
+  //   component: SuperAdminListComponent,
+  //   data: {title: 'Administration', roles: [Role.SuperAdmin]}
+  // },
 
   {path: '**', redirectTo: ''}
-
-
-
-
 
 
 ];

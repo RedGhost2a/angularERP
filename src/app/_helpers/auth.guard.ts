@@ -17,8 +17,18 @@ export class AuthGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const user = this.accountService.userValue;
     const superAdmin = this.superAdminService.userValue;
-    if (user || superAdmin) {
-      console.log(route.data)
+    if (user) {
+      // console.log(route.data['roles'] && route.data['roles'].indexOf(user.role) === -1)
+      if (route.data['roles'] && route.data['roles'].indexOf(user.role) === -1) {
+        // role not authorised so redirect to home page
+        this.router.navigate(['/']);
+        return false;
+      }
+      // authorised so return true
+      return true;
+    }
+    if (superAdmin) {
+      // console.log(route.data['roles'] && route.data['roles'].indexOf(user.role) === -1)
       if (route.data['roles'] && route.data['roles'].indexOf(superAdmin.role) === -1) {
         // role not authorised so redirect to home page
         this.router.navigate(['/']);

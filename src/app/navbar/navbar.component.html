@@ -16,7 +16,7 @@
         <span> Mon compte</span>
       </button>
       <button mat-menu-item>
-        <mat-icon color="warn" (click)="accountService.logout()">
+
           logout
         </mat-icon>
         <span>Logout</span>
@@ -29,7 +29,16 @@
                 <span>Logout</span>
               </button>
             </ng-template>
+
     </mat-menu>
+    <ng-template #superAdmin>
+      <button mat-menu-item>
+        <mat-icon color="warn" (click)="superAdminService.logout()">
+          logout
+        </mat-icon>
+        <span>Logout</span>
+      </button>
+    </ng-template>
 
   </mat-toolbar-row>
 </mat-toolbar>

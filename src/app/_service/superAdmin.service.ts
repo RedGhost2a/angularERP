@@ -3,22 +3,36 @@ import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {User} from "../_models/users";
 import {BehaviorSubject, map, Observable} from "rxjs";
+import {StorageService} from "./storage.service";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class SuperAdminService {
-  private userSubject: BehaviorSubject<User>;
-  public user: Observable<User>;
+  private userSubject !: BehaviorSubject<User>;
+  public user !: Observable<User>;
   role !: any
 
 
   constructor(private router: Router,
-              private http: HttpClient,) {
-    // @ts-ignore
-    this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
-    this.user = this.userSubject.asObservable();
+              private http: HttpClient,
+              private storageService: StorageService) {
+    let string = localStorage.getItem('user')
+    if (string) {
+
+      let decryptUser = this.storageService.decrypt(string)
+      let parse = JSON.parse(decryptUser)
+      // @ts-ignore
+      this.userSubject = new BehaviorSubject<User>(parse);
+      this.user = this.userSubject.asObservable();
+    } else {
+      // @ts-ignore
+      this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
+
+    }
+    // console.log(string)
+    // console.log(parse)
   }
 
 
@@ -30,7 +44,9 @@ export class SuperAdminService {
     return this.http.post<User>(`http://localhost:4000/admin/authenticate`, {email, password})
       .pipe(map(user => {
         // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('user', JSON.stringify(user));
+        let string = JSON.stringify(user)
+        let encryptUser = this.storageService.encrypt(string)
+        localStorage.setItem('user', encryptUser);
         this.userSubject.next(user);
         return user;
       }));
@@ -69,6 +85,7 @@ export class SuperAdminService {
   getRole(): any {
     this.role = localStorage.getItem('user');
     this.role = JSON.parse(this.role)
+    this.storageService.decrypt(this.role)
 
     console.log(this.role.role)
     return this.role.role;
