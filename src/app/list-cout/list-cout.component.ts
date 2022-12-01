@@ -1,7 +1,6 @@
-import {Component, EventEmitter, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CoutService} from "../_service/cout.service";
 import {Cout} from "../_models/cout";
-
 
 
 @Component({
@@ -12,11 +11,12 @@ import {Cout} from "../_models/cout";
 export class ListCoutComponent implements OnInit {
   @Input() listCout!: Cout[]
   // @ts-ignore
-  currentUser = JSON.parse(localStorage.getItem('user'))
-  columnsToDisplay = ["type","categorie","designation", "unite", "prixUnitaire", "boutons"];
+  // currentUser = JSON.parse(localStorage.getItem('user'))
+  columnsToDisplay = ["type", "categorie", "designation", "unite", "prixUnitaire", "boutons"];
 
 
-  constructor(private coutService:CoutService) { }
+  constructor(private coutService: CoutService) {
+  }
 
 
   ngOnInit(): void {
@@ -25,14 +25,14 @@ export class ListCoutComponent implements OnInit {
   }
 
 
-  getAllCouts():void{
+  getAllCouts(): void {
     this.coutService.getAllCouts().subscribe(data => {
       this.listCout = data;
       console.log(data)
     });
   }
 
-  delete(id:number):void{
+  delete(id: number): void {
     // this.coutService.deleteByID(this.listCout.map(value => value.id)).subscribe(() => this.deleteCout.emit())
 
     this.coutService.deleteByID(id).subscribe(() => this.ngOnInit())

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {DevisService} from "../_service/devis.service";
 
@@ -8,11 +8,11 @@ import {DevisService} from "../_service/devis.service";
   styleUrls: ['./devis.component.scss']
 })
 export class DevisComponent implements OnInit {
-  public  myFormGroup: FormGroup ;
+  public myFormGroup: FormGroup;
   // @ts-ignore
-  currentUser = JSON.parse(localStorage.getItem('user'))
+  // currentUser = JSON.parse(localStorage.getItem('user'))
 
-  constructor(private  formBuilder: FormBuilder, private devisService : DevisService) {
+  constructor(private formBuilder: FormBuilder, private devisService: DevisService) {
     this.myFormGroup = this.formBuilder.group({
       name: [],
       status: []
@@ -20,7 +20,7 @@ export class DevisComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.devisService.getAll().subscribe(data =>{
+    this.devisService.getAll().subscribe(data => {
       console.log(data)
     })
     this.myFormGroup = this.formBuilder.group({
@@ -29,11 +29,12 @@ export class DevisComponent implements OnInit {
     });
 
   }
-  testAjoutDevis():void{
-  this.devisService.create(this.myFormGroup.getRawValue()).subscribe(
-      () : void =>{
-  console.log(this.myFormGroup.getRawValue())
-  alert('Nouveau cout enregistrer')
-});
+
+  testAjoutDevis(): void {
+    this.devisService.create(this.myFormGroup.getRawValue()).subscribe(
+      (): void => {
+        console.log(this.myFormGroup.getRawValue())
+        alert('Nouveau cout enregistrer')
+      });
   }
 }

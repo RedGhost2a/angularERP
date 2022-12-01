@@ -27,16 +27,15 @@ import {FormDevisComponent} from "./form-devis/form-devis.component";
 
 const routes: Routes = [
 
-  { path: 'cout/:id', component: FormCoutComponent},
-  { path: 'cout', component: FormCoutComponent, },
-  { path: 'ouvrage/:id', component: FormOuvrageComponent, },
-  { path: 'ouvrage', component: FormOuvrageComponent, },
-  { path: 'ouvrageDetail/:id', component: DetailOuvrageComponent, },
-  { path: 'listCout', component: ListCoutComponent},
-  { path: 'listOuvrage', component: ListOuvrageComponent},
-  { path: 'ajoutCout/:id', component: OuvrageAddCoutComponent},
-  { path: 'devisTest', component: FormDevisComponent},
-
+  {path: 'cout/:id', component: FormCoutComponent},
+  {path: 'cout', component: FormCoutComponent,},
+  {path: 'ouvrage/:id', component: FormOuvrageComponent,},
+  {path: 'ouvrage', component: FormOuvrageComponent,},
+  {path: 'ouvrageDetail/:id', component: DetailOuvrageComponent,},
+  {path: 'listCout', component: ListCoutComponent},
+  {path: 'listOuvrage', component: ListOuvrageComponent},
+  {path: 'ajoutCout/:id', component: OuvrageAddCoutComponent},
+  {path: 'devisTest', component: FormDevisComponent},
 
 
   {path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'}},
@@ -50,7 +49,12 @@ const routes: Routes = [
   */
 
   {path: 'users', canActivate: [AuthGuard], component: UserListComponent, data: {title: 'Liste des utilisateurs'}},
-  {path: 'users/new', canActivate: [AuthGuard], component: UserEditComponent, data: {roles: [Role.SuperAdmin]}},
+  {
+    path: 'users/new',
+    canActivate: [AuthGuard],
+    component: UserEditComponent,
+    data: {roles: [Role.SuperAdmin, Role.Admin]}
+  },
   {path: 'users/:id', component: UserEditComponent, data: {title: 'Detail des utilisateurs'}},
   {path: 'mon_profile', canActivate: [AuthGuard], component: UserComponent, data: {title: 'Profil utilisateurs'}},
 

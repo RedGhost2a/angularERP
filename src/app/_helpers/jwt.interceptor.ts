@@ -24,6 +24,7 @@ export class JwtInterceptor implements HttpInterceptor {
           Authorization: `Bearer ${user.token}`
         }
       });
+      console.log(request)
     }
     if (isAdminLoggedIn && isApiUrl) {
       request = request.clone({
@@ -33,7 +34,6 @@ export class JwtInterceptor implements HttpInterceptor {
       });
 
     }
-
     return next.handle(request);
   }
 }
