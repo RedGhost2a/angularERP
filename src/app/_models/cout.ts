@@ -7,5 +7,6 @@ export interface Cout {
   prixUnitaire: number;
   fournisseur: string;
   remarque: string;
-  EntrepriseId:number;
+  isCout:boolean;
+  isFraisDeChantier:boolean;
 }

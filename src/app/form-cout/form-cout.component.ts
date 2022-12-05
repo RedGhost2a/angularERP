@@ -85,7 +85,8 @@ export class FormCoutComponent implements OnInit {
             prixUnitaire: data.prixUnitaire,
             fournisseur: data.fournisseur,
             remarque: data.remarque,
-            EntrepriseId: this.currentUser.EntrepriseId
+            isCout: data.isCout,
+            isFraisDeChantier: data.isFraisDeChantier,
           }
           // Values in res that don't line up to the form structure
           // are discarded. You can also pass in your own object you
@@ -103,7 +104,6 @@ export class FormCoutComponent implements OnInit {
           prixUnitaire: [],
           fournisseur: [],
           remarque: [],
-          EntrepriseId: this.currentUser.EntrepriseId
         });
 
       }

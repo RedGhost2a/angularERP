@@ -8,4 +8,6 @@ export interface Ouvrage {
   ratio: number;
   uRatio: string;
   fournisseur:string;
+  isCout:boolean;
+  isFraisDeChantier:boolean;
 }

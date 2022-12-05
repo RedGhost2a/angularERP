@@ -20,9 +20,8 @@ export class CoutService {
     return this.http.get<Cout[]>(`${baseUrl}/isCouts`);
   }
   getAllFraisDeChantier() :Observable<Cout[]> {
-    return this.http.get<Cout[]>(`${baseUrl}/isFraisDeChantier`);
+    return this.http.get<Cout[]>(`${baseUrl}/isFraisDeChantiers`);
   }
-
   getById(id:number) :Observable<Cout> {
     return this.http.get<Cout>(`${baseUrl}/${id}`);
   }

@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {OuvrageService} from "../_service/ouvrage.service";
 import {Ouvrage} from "../_models/ouvrage";
-import {Observable} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
@@ -11,21 +11,18 @@ import {Observable} from "rxjs";
 })
 export class ListOuvrageComponent implements OnInit {
   @Input() listOuvrage!: Ouvrage[];
+
   columnsToDisplay = ["designation","benefice","aleas", "unite","ratio", "uRatio","prixUnitaire", "boutons"];
 
-
-  constructor(private ouvrageService: OuvrageService) { }
+  constructor(private ouvrageService: OuvrageService, private route : ActivatedRoute) { }
 
   ngOnInit(): void {
     this.getAll()
-
   }
   getAll():void{
-    // this.ouvrageService.getAll().subscribe(data => console.log(data) )
-    this.ouvrageService.getAll().subscribe(data =>{
-      this.listOuvrage = data;
-      console.log(data[0].cout[0].type);
-      console.log(data) })
+    if(this.route.routeConfig?.path==='listOuvrageCout'){
+    this.ouvrageService.getAllCouts().subscribe(data =>this.listOuvrage = data)
+    }else this.ouvrageService.getAllFraisDeChantier().subscribe(data =>this.listOuvrage = data)
   }
   delete(id: number): void{
     this.ouvrageService.deleteByID(id).subscribe(() => this.ngOnInit())

@@ -12,24 +12,30 @@ import {map, Observable} from "rxjs";
   styleUrls: ['./detail-ouvrage.component.scss']
 })
 export class DetailOuvrageComponent implements OnInit {
-  @Input() ouvrage!:Ouvrage
+  ouvrage!:Ouvrage
   prixOuvrage!:number
   ouvrageID!:number
   cout!:Cout[]
-  @Output() deleteCout: EventEmitter<any> = new EventEmitter()
 
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute,
               private ouvrageCoutService: OuvrageCoutService) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params =>{
-      this.ouvrageID = +params['id'];
-      this.ouvrageService.getById(this.ouvrageID)
-    } )
-    this.getById()
-    //this.getSum()
-    console.log(this.ouvrage)
+    this.getOuvrageById()
   }
+
+
+  getOuvrageById():void{
+    console.log(this.route)
+    this.route.params.subscribe(params => {
+      this.ouvrageID = +params['id'];
+      this.ouvrageService.getById(+params['id']).subscribe(data => {
+        this.ouvrage = data;
+        this.cout = data.Couts;
+      })
+    })
+  }
+
 
   getSum():void{
     this.ouvrageService.getSum(this.ouvrageID).subscribe(data =>{
@@ -39,16 +45,18 @@ export class DetailOuvrageComponent implements OnInit {
     })
   }
 
-  getById():void{
-    this.ouvrageService.getById(this.ouvrageID).subscribe(data =>{ this.ouvrage = data;
-      this.cout = data.Couts
-    });
-  }
+  // getById():void{
+  //   this.ouvrageService.getById(this.ouvrageID).subscribe(data =>{ this.ouvrage = data;
+  //     this.cout = data.Couts
+  //     console.log(data);
+  //     console.log(data.id);
+  //   });
+  // }
+
   deleteById(Coutid:any):void{
     console.log(Coutid)
     this.ouvrageCoutService.deleteByID(Coutid,this.ouvrageID).subscribe(() => {
-      this.deleteCout.emit()
-      alert("Cout supprimer de l'ouvrage")
+      this.ngOnInit()
     })
   }
 

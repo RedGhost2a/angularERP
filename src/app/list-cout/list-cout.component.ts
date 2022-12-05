@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {CoutService} from "../_service/cout.service";
 import {Cout} from "../_models/cout";
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -11,30 +12,23 @@ import {Cout} from "../_models/cout";
 })
 export class ListCoutComponent implements OnInit {
   @Input() listCout!: Cout[]
-  // @ts-ignore
-  currentUser = JSON.parse(localStorage.getItem('user'))
   columnsToDisplay = ["type","categorie","designation", "unite", "prixUnitaire", "boutons"];
 
-
-  constructor(private coutService:CoutService) { }
-
+  constructor(private coutService:CoutService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.getAllCouts()
 
   }
 
-
   getAllCouts():void{
-    this.coutService.getAllCouts().subscribe(data => {
-      this.listCout = data;
-      console.log(data)
-    });
+    if(this.route.routeConfig?.path === 'listCout'){
+        this.coutService.getAllCouts().subscribe(data => this.listCout = data);
+    }else this.coutService.getAllFraisDeChantier().subscribe( data => this.listCout = data)
   }
 
-  delete(id:number):void{
-    // this.coutService.deleteByID(this.listCout.map(value => value.id)).subscribe(() => this.deleteCout.emit())
 
+  delete(id:number):void{
     this.coutService.deleteByID(id).subscribe(() => this.ngOnInit())
   }
 

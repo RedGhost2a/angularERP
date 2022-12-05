@@ -33,7 +33,9 @@ const routes: Routes = [
   { path: 'ouvrage', component: FormOuvrageComponent, },
   { path: 'ouvrageDetail/:id', component: DetailOuvrageComponent, },
   { path: 'listCout', component: ListCoutComponent},
-  { path: 'listOuvrage', component: ListOuvrageComponent},
+  { path: 'listFrais', component: ListCoutComponent},
+  { path: 'listOuvrageCout', component: ListOuvrageComponent},
+  { path: 'listOuvrageFrais', component: ListOuvrageComponent},
   { path: 'ajoutCout/:id', component: OuvrageAddCoutComponent},
   { path: 'devisTest', component: FormDevisComponent},
 

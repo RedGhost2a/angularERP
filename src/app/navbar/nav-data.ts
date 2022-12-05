@@ -33,12 +33,22 @@ export const navbarData = [
   {
     routeLink: '/listCout',
     icon: faBook,
-    label: 'Bibliothéque de couts'
+    label: 'Couts'
   },
   {
-    routeLink: '/listOuvrage',
+    routeLink: '/listFrais',
     icon: faBook,
-    label: "Bibliothéque d'ouvrages"
+    label: 'Frais de chantier'
+  },
+  {
+    routeLink: '/listOuvrageCout',
+    icon: faBook,
+    label: "Ouvrages de couts"
+  },
+  {
+    routeLink: '/listOuvrageFrais',
+    icon: faBook,
+    label: "Ouvrages de frais de chantier"
   },
   {
     routeLink: 'parametre',

@@ -127,7 +127,7 @@
             <div class="detail">
               <mat-card-subtitle class="subTitle">Supprimer</mat-card-subtitle>
               <p *ngFor="let couts of cout">
-                <button (click)="deleteById(couts.id);deleteCout.emit(getById())"  mat-raised-button color="primary"><mat-icon>restore_from_trash</mat-icon>
+                <button (click)="deleteById(couts.id)"  mat-raised-button color="primary"><mat-icon>restore_from_trash</mat-icon>
                 </button></p>
             </div>
           </div>
