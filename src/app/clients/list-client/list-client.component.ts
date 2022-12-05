@@ -13,7 +13,7 @@ export class ListClientComponent implements OnInit {
   @Output() deleteClient: EventEmitter<any> = new EventEmitter()
 
   listClient !: Client[];
-  displayedColumns: string[] = ['id', 'lastname', 'firstname', 'adresse', "city", "country", "zipcode", 'phonenumber', "email", "Action"];
+  displayedColumns: string[] = ['lastname', 'firstname', 'adresse', "city", "Action"];
   clickedRows = new Set<Client>();
 
   constructor(private clientService: ClientService) {

@@ -22,8 +22,6 @@ import {DetailOuvrageComponent} from "./detail-ouvrage/detail-ouvrage.component"
 import {ListOuvrageComponent} from "./list-ouvrage/list-ouvrage.component";
 import {ListCoutComponent} from "./list-cout/list-cout.component";
 import {OuvrageAddCoutComponent} from "./ouvrage-add-cout/ouvrage-add-cout.component";
-import {FormDevisComponent} from "./form-devis/form-devis.component";
-
 
 const routes: Routes = [
 
@@ -35,7 +33,6 @@ const routes: Routes = [
   {path: 'listCout', component: ListCoutComponent},
   {path: 'listOuvrage', component: ListOuvrageComponent},
   {path: 'ajoutCout/:id', component: OuvrageAddCoutComponent},
-  {path: 'devisTest', component: FormDevisComponent},
 
 
   {path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'}},
@@ -49,12 +46,7 @@ const routes: Routes = [
   */
 
   {path: 'users', canActivate: [AuthGuard], component: UserListComponent, data: {title: 'Liste des utilisateurs'}},
-  {
-    path: 'users/new',
-    canActivate: [AuthGuard],
-    component: UserEditComponent,
-    data: {roles: [Role.SuperAdmin, Role.Admin]}
-  },
+  {path: 'users/new', canActivate: [AuthGuard], component: UserEditComponent, data: {roles: [Role.Admin]}},
   {path: 'users/:id', component: UserEditComponent, data: {title: 'Detail des utilisateurs'}},
   {path: 'mon_profile', canActivate: [AuthGuard], component: UserComponent, data: {title: 'Profil utilisateurs'}},
 

@@ -1,21 +1,31 @@
-<ng-container [formGroup]="this.myFormGroup">
-  <button routerLink="/listCout" mat-raised-button color="accent">Retour</button>
-  <div class="container">
-    <h1> DEVIS </h1>
-    <div class="group1">
-      <p>
-        <mat-form-field appearance="legacy">
-          <mat-label>name</mat-label>
-          <input  formControlName="name" matInput placeholder="Ex: sdq">
-        </mat-form-field>
-      </p>
-      <p>
-        <mat-form-field appearance="legacy">
-          <mat-label>Status</mat-label>
-          <input formControlName="status" matInput placeholder="Ex: fdsfdsf">
-        </mat-form-field>
-      </p>
-    </div>
-    <button (click)="testAjoutDevis()" routerLink="/devisTest" mat-raised-button >test</button>
+<div class="header">
+  <button mat-flat-button class="btn">
+    <mat-icon [routerLink]="'/'">arrow_back</mat-icon>
+  </button>
+  <div>
+    <mat-form-field appearance="legacy">
+      <mat-label>Rechercher un devis</mat-label>
+      <input matInput placeholder="Ex: Dupond">
+    </mat-form-field>
   </div>
-</ng-container>
+  <div>
+    <button class="btn" routerLink="/clients/new'" mat-raised-button>Créer un devis</button>
+  </div>
+</div>
+
+<div class="container">
+  <ng-container [formGroup]="this.myFormGroup">
+    <h1> DEVIS </h1>
+    <mat-form-field appearance="legacy">
+      <mat-label>name</mat-label>
+      <input formControlName="name" matInput placeholder="Ex: Devis toiture">
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>Status</mat-label>
+      <input formControlName="status" matInput placeholder="Ex: En cours">
+    </mat-form-field>
+    <button (click)="testAjoutDevis()" routerLink="/devisTest" mat-raised-button>Créer un devis</button>
+  </ng-container>
+</div>
+

@@ -1,43 +1,46 @@
-.demo-table {
-  width: 70%;
-  margin: auto;
+.header {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.mat-row .mat-cell {
-  border-bottom: 1px solid transparent;
-  border-top: 1px solid transparent;
-  cursor: pointer;
-}
-
-.mat-row:hover .mat-cell {
-  border-color: blue;
-  background-color: #f3f3f3;
+th.mat-sort-header-sorted {
   color: black;
 }
-.mat-row:hover .mat-cell .button {
-  background-color: #263238;
-  color: white;
+
+tr.mat-header-row {
+  height: 35px;
+  padding: 10px;
+  background-color: snow;
 }
 
-.demo-row-is-clicked {
-  font-weight: bold;
+.mat-header-cell {
+  padding: 10px;
+  text-align: center;
+  color: black;
+  font-size: 14px;
 }
 
-.btn {
-  position: relative;
-  height: 70px;
-  left: 20px;
-  top: 100px;
+.mat-cell, .mat-footer-cell {
+  font-size: 17px;
+  text-align: center;
 }
 
-.button {
-  margin: 5px;
+button {
+  margin: 10px;
 }
 
-.mat-flat-button {
-  position: fixed;
-  top: 80px;
-  left: 5px;
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  align-items: center;
+}
+
+table {
+  width: 90%;
+  margin-top: 30px;
 }
 
 /*# sourceMappingURL=list-client.component.css.map */

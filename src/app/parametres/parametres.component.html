@@ -1,10 +1,15 @@
-<button mat-flat-button>
-  <mat-icon [routerLink]="'/'">arrow_back</mat-icon>
-</button>
 <div class="container">
-
-  <div class="row">
-    <button class="btn" mat-stroked-button [routerLink]="'/users/'">Gestion des Utilisateurs</button>
-    <button class="btn" mat-stroked-button [routerLink]="'/entreprises/'">Gestion des Entreprises</button>
+  <div class="header">
+    <button mat-flat-button>
+      <mat-icon [routerLink]="'/'">arrow_back</mat-icon>
+    </button>
+  </div>
+  <div class="wrapper">
+    <div class="row">
+      <button class="btn" mat-stroked-button [routerLink]="'/users/'">Gestion des Utilisateurs</button>
+    </div>
+    <div class="row">
+      <button class="btn" mat-stroked-button [routerLink]="'/entreprises/'">Votre Entreprise</button>
+    </div>
   </div>
 </div>
