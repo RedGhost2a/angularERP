@@ -26,12 +26,12 @@ import {OuvrageAddCoutComponent} from "./ouvrage-add-cout/ouvrage-add-cout.compo
 const routes: Routes = [
 
   {path: 'cout/:id', component: FormCoutComponent},
-  {path: 'cout', component: FormCoutComponent,},
+  {path: 'cout', canActivate: [AuthGuard], component: FormCoutComponent,},
   {path: 'ouvrage/:id', component: FormOuvrageComponent,},
-  {path: 'ouvrage', component: FormOuvrageComponent,},
+  {path: 'ouvrage', canActivate: [AuthGuard], component: FormOuvrageComponent,},
   {path: 'ouvrageDetail/:id', component: DetailOuvrageComponent,},
-  {path: 'listCout', component: ListCoutComponent},
-  {path: 'listOuvrage', component: ListOuvrageComponent},
+  {path: 'listCout', canActivate: [AuthGuard], component: ListCoutComponent},
+  {path: 'listOuvrage', canActivate: [AuthGuard], component: ListOuvrageComponent},
   {path: 'ajoutCout/:id', component: OuvrageAddCoutComponent},
 
 
