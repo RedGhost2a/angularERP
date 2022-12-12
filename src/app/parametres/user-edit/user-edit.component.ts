@@ -70,7 +70,7 @@ export class UserEditComponent implements OnInit {
             this.router.navigate(['/users']);
 
           }, (error: any) => {
-
+            console.log(error)
             this.warning("Impossible de modifier les champs!")
           });
       }
@@ -102,7 +102,6 @@ export class UserEditComponent implements OnInit {
             firstName: data.firstName,
             lastName: data.lastName,
             role: data.role,
-
 
           }
 

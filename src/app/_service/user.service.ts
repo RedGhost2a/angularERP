@@ -88,14 +88,14 @@ export class UserService {
     return this.http.delete(`http://localhost:4000/users/${id}`)
   }
 
-  getRole(): any {
-
-    this.role = localStorage.getItem('user');
-    // let decrypt = JSON.parse(this.role)
-    // this.role = JSON.parse(this.role)
-    this.storageService.decrypt(this.role)
-
-    return this.role.role;
-  }
+  // getRole(): any {
+  //
+  //   this.role = localStorage.getItem('user');
+  //   // let decrypt = JSON.parse(this.role)
+  //   // this.role = JSON.parse(this.role)
+  //   this.storageService.decrypt(this.role)
+  //
+  //   return this.role.role;
+  // }
 
 }

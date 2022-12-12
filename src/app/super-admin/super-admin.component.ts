@@ -25,17 +25,18 @@ export class SuperAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAll()
+    // this.getAll()
   }
 
   // @ts-ignore
 
 
-  getAll(): void {
-    this.entrepriseService.getAll().subscribe(data => this.listEntreprise = data)
-  }
+  // getAll(): void {
+  //   this.entrepriseService.getAll().subscribe(data => this.listEntreprise = data)
+  // }
 
   getAllUserByEntreprise(id: any): void {
     this.superAdminService.getById(id).subscribe(data => this.listUser = data)
+
   }
 }

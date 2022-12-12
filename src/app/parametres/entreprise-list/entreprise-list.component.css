@@ -1,42 +1,123 @@
+.header {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .container {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  margin: auto;
-  margin-top: 100px;
-}
-
-.form-group {
-  padding: 60px;
-  display: flex;
-  align-items: stretch;
-  flex-wrap: nowrap;
-  width: 80vw;
-  height: 70vh;
-  border: 1px solid #f3f3f3;
-  margin: auto;
   flex-direction: column;
-  align-content: space-between;
+  margin: 20px;
+}
+
+.element {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 10px;
+}
+
+.button-droite {
+  display: flex;
+  flex-direction: column;
+  padding: 40px;
+  border: solid 2px rgba(47, 65, 144, 0.85);
+  justify-content: space-around;
+  align-items: stretch;
+  border-radius: 76px;
+  border-bottom-right-radius: 11px;
+  border-top-left-radius: 10px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(1.3px);
+}
+
+.button {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  justify-content: space-around;
+  align-items: stretch;
+  border-radius: 76px;
+  border-bottom-right-radius: 11px;
+  border-top-left-radius: 10px;
+  width: 30%;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(1.3px);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  padding: 10px;
+  /* width: 70%; */
+  align-items: center;
   justify-content: space-evenly;
-}
-
-.texte {
-  font-size: 18px;
-}
-
-.btn {
-  height: 70px;
 }
 
 .image {
-  border-radius: 50%;
+  width: 115px;
+  height: 115px;
+  border-radius: 68px;
 }
 
-.mat-flat-button {
-  position: fixed;
-  top: 80px;
-  left: 5px;
+.header-card {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+.mat-form-field {
+  margin: 10px;
+}
+
+.titre {
+  border-radius: 76px;
+  border-bottom-left-radius: 11px;
+  border-top-right-radius: 10px;
+  width: 40%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  height: 140px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(1.3px);
+}
+
+.mat-card-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.user-card {
+  border-radius: 76px;
+  height: 590px;
+  background: rgba(71, 96, 203, 0.09);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  margin-right: 20px;
+}
+
+.elementGauche {
+  border-radius: 76px;
+  border-bottom-left-radius: 11px;
+  border-top-right-radius: 10px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(1.3px);
+  margin-right: 20px;
+}
+
+.elementDroit {
+  border-radius: 76px;
+  border-bottom-right-radius: 11px;
+  border-top-left-radius: 10px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(1.3px);
 }
 
 /*# sourceMappingURL=entreprise-list.component.css.map */

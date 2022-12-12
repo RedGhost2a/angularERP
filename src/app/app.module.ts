@@ -56,6 +56,9 @@ import { ListTypeCoutComponent } from './list-type-cout/list-type-cout.component
 import { FormFournisseurComponent } from './form-fournisseur/form-fournisseur.component';
 import { FormTypeCoutComponent } from './form-type-cout/form-type-cout.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
+import {ListDevisComponent} from './devis/list-devis/list-devis.component';
+import {EditDevisComponent} from './devis/edit-devis/edit-devis.component';
+
 
 const appRoutes: Routes = [];
 declare const toastr: Toastr;
@@ -92,6 +95,9 @@ declare const toastr: Toastr;
     ListTypeCoutComponent,
     FormFournisseurComponent,
     FormTypeCoutComponent,
+      ListDevisComponent,
+    EditDevisComponent,
+  
   ],
     imports: [
         BrowserModule,
