@@ -51,6 +51,11 @@ import { ListOuvrageComponent } from './list-ouvrage/list-ouvrage.component';
 import { OuvrageAddCoutComponent } from './ouvrage-add-cout/ouvrage-add-cout.component';
 import { FormDevisComponent } from './form-devis/form-devis.component';
 import { SuperAdminListComponent } from './super-admin-list/super-admin-list.component';
+import { ListFournisseurComponent } from './list-fournisseur/list-fournisseur.component';
+import { ListTypeCoutComponent } from './list-type-cout/list-type-cout.component';
+import { FormFournisseurComponent } from './form-fournisseur/form-fournisseur.component';
+import { FormTypeCoutComponent } from './form-type-cout/form-type-cout.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 const appRoutes: Routes = [];
 declare const toastr: Toastr;
@@ -83,36 +88,41 @@ declare const toastr: Toastr;
     OuvrageAddCoutComponent,
     FormDevisComponent,
     SuperAdminListComponent,
+    ListFournisseurComponent,
+    ListTypeCoutComponent,
+    FormFournisseurComponent,
+    FormTypeCoutComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatButtonModule,
-    RouterModule.forRoot(appRoutes),
-    HttpClientModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatSidenavModule,
-    MatDialogModule,
-    FontAwesomeModule,
-    MatTableModule,
-    MatListModule,
-    MatCardModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot(),
-    FormsModule,
-    MatExpansionModule,
-    LayoutModule,
-    MatMenuModule,
-    MatCheckboxModule,
-    MatOptionModule,
-    MatSelectModule,
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatButtonModule,
+        RouterModule.forRoot(appRoutes),
+        HttpClientModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatSidenavModule,
+        MatDialogModule,
+        FontAwesomeModule,
+        MatTableModule,
+        MatListModule,
+        MatCardModule,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot(),
+        FormsModule,
+        MatExpansionModule,
+        LayoutModule,
+        MatMenuModule,
+        MatCheckboxModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatAutocompleteModule,
 
-  ],
+    ],
   providers: [{
     provide: TOASTR_TOKEN,
     useValue: toastr,

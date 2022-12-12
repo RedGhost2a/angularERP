@@ -1,0 +1,25 @@
+
+<ng-container [formGroup]="this.myFormGroup">
+  <button routerLink="/listFournisseur" mat-raised-button color="accent">Retour</button>
+  <div class="container">
+    <h1> {{titreForm}}</h1>
+    <div class="group1">
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Nom commercial</mat-label>
+          <input formControlName="commercialName" matInput placeholder="Ex: GEDIMAT">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Remarque</mat-label>
+          <input formControlName="remarque" matInput placeholder="Ex: Augmentation en Janvier">
+        </mat-form-field>
+      </p>
+    </div>
+
+
+    <button   mat-raised-button (click)="createAndUpdate()" >{{textButton}}</button>
+  </div>
+</ng-container>
+

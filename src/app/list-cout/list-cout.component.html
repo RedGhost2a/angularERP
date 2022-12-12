@@ -3,26 +3,24 @@
   <button mat-flat-button class="btn">
     <mat-icon [routerLink]="'/'">arrow_back</mat-icon>
   </button>
-  <div>
-    <mat-form-field appearance="legacy">
-      <mat-label>Rechercher un cout</mat-label>
-      <input matInput placeholder="Ex: Ciment">
-    </mat-form-field>
-  </div>
+  <mat-form-field>
+    <mat-label>Recherche d'un fournisseur</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ge..." #input>
+  </mat-form-field>
   <div>
     <button routerLink="/cout" mat-raised-button>Creer un composant</button>
   </div>
 </div>
 <div class="container">
 
-  <table mat-table [dataSource]="listCout">
+  <table mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="type">
       <th mat-header-cell *matHeaderCellDef> Type</th>
-      <td mat-cell *matCellDef="let cout"> {{cout.type}} </td>
+      <td mat-cell *matCellDef="let cout"> {{cout.TypeCout.type}} </td>
     </ng-container>
     <ng-container matColumnDef="categorie">
       <th mat-header-cell *matHeaderCellDef> Categorie</th>
-      <td mat-cell *matCellDef="let cout"> {{cout.categorie}} </td>
+      <td mat-cell *matCellDef="let cout"> {{cout.TypeCout.categorie}} </td>
     </ng-container>
     <ng-container matColumnDef="designation">
       <th mat-header-cell *matHeaderCellDef> Désignation</th>
@@ -31,6 +29,10 @@
     <ng-container matColumnDef="unite">
       <th mat-header-cell *matHeaderCellDef> Unité</th>
       <td mat-cell *matCellDef="let cout"> {{cout.unite}} </td>
+    </ng-container>
+    <ng-container matColumnDef="fournisseur">
+      <th mat-header-cell *matHeaderCellDef> Fournisseur</th>
+      <td mat-cell *matCellDef="let cout"> {{cout.Fournisseurs[0].commercialName}} </td>
     </ng-container>
     <ng-container matColumnDef="prixUnitaire">
       <th mat-header-cell *matHeaderCellDef> PU HT</th>

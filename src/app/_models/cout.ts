@@ -1,11 +1,13 @@
+import {Fournisseur} from "./fournisseur";
+import {TypeCout} from "./type-cout";
+
 export interface Cout {
   id: number;
-  type: string;
-  categorie: string;
-  designation: number;
-  unite: number;
+  designation: string;
+  unite: string;
   prixUnitaire: number;
-  fournisseur: string;
-  remarque: string;
   EntrepriseId:number;
+  TypeCoutId:number;
+  //FournisseurId:number;
+  Fournisseurs: Fournisseur;
 }

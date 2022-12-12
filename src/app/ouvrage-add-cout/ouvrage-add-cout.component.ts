@@ -28,14 +28,14 @@ export class OuvrageAddCoutComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.getAll()
+    // this.getAll()
     this.route.params.subscribe(params=>this.ouvrageId = +params['id'])
   }
-  getAll(): void{
-    this.coutService.getAll().subscribe(data =>{
-      this.listCout = data
-    })
-  }
+  // getAll(): void{
+  //   this.coutService.getAll().subscribe(data =>{
+  //     this.listCout = data
+  //   })
+  //}
 
 
 

@@ -99,15 +99,15 @@
             <button routerLink="/ajoutCout/{{ouvrage.id}}"  mat-raised-button >Importer un composant </button>
           </div>
           <div class="detailList">
-            <div class="detail">
-              <mat-card-subtitle class="subTitle">Type</mat-card-subtitle>
-<!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
-              <p *ngFor="let couts of cout">{{couts.type}}</p>
-            </div>
-            <div class="detail">
-              <mat-card-subtitle class="subTitle">Catégorie</mat-card-subtitle>
-              <p *ngFor="let couts of cout">{{couts.categorie}}</p>
-            </div>
+<!--            <div class="detail">-->
+<!--              <mat-card-subtitle class="subTitle">Type</mat-card-subtitle>-->
+<!--&lt;!&ndash;              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>&ndash;&gt;-->
+<!--              <p *ngFor="let couts of cout">{{couts.type}}</p>-->
+<!--            </div>-->
+<!--            <div class="detail">-->
+<!--              <mat-card-subtitle class="subTitle">Catégorie</mat-card-subtitle>-->
+<!--              <p *ngFor="let couts of cout">{{couts.categorie}}</p>-->
+<!--            </div>-->
             <div class="detail">
               <mat-card-subtitle class="subTitle">Désignation</mat-card-subtitle>
               <p *ngFor="let couts of cout">{{couts.designation}}</p>
@@ -120,10 +120,10 @@
               <mat-card-subtitle class="subTitle">Prix Unitaire HT</mat-card-subtitle>
               <p *ngFor="let couts of cout" >{{couts.prixUnitaire}}</p>
             </div>
-            <div class="detail">
-              <mat-card-subtitle class="subTitle">Fournisseur</mat-card-subtitle>
-              <p *ngFor="let couts of cout">{{couts.fournisseur}}</p>
-            </div>
+<!--            <div class="detail">-->
+<!--              <mat-card-subtitle class="subTitle">Fournisseur</mat-card-subtitle>-->
+<!--              <p *ngFor="let couts of cout">{{couts.fournisseur}}</p>-->
+<!--            </div>-->
             <div class="detail">
               <mat-card-subtitle class="subTitle">Supprimer</mat-card-subtitle>
               <p *ngFor="let couts of cout">
