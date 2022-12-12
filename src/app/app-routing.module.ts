@@ -21,19 +21,32 @@ import {DetailOuvrageComponent} from "./detail-ouvrage/detail-ouvrage.component"
 import {ListOuvrageComponent} from "./list-ouvrage/list-ouvrage.component";
 import {ListCoutComponent} from "./list-cout/list-cout.component";
 import {OuvrageAddCoutComponent} from "./ouvrage-add-cout/ouvrage-add-cout.component";
+import {ListFournisseurComponent} from "./list-fournisseur/list-fournisseur.component";
+import {FormFournisseurComponent} from "./form-fournisseur/form-fournisseur.component";
+import {ListTypeCoutComponent} from "./list-type-cout/list-type-cout.component";
+import {FormTypeCoutComponent} from "./form-type-cout/form-type-cout.component";
 import {EditDevisComponent} from "./devis/edit-devis/edit-devis.component";
 import {ListDevisComponent} from "./devis/list-devis/list-devis.component";
 
 const routes: Routes = [
 
-  {path: 'cout/:id', canActivate: [AuthGuard], component: FormCoutComponent},
-  {path: 'cout', canActivate: [AuthGuard], component: FormCoutComponent,},
-  {path: 'ouvrage/:id', canActivate: [AuthGuard], component: FormOuvrageComponent,},
-  {path: 'ouvrage', canActivate: [AuthGuard], component: FormOuvrageComponent,},
-  {path: 'ouvrageDetail/:id', canActivate: [AuthGuard], component: DetailOuvrageComponent,},
-  {path: 'listCout', canActivate: [AuthGuard], component: ListCoutComponent},
-  {path: 'listOuvrage', canActivate: [AuthGuard], component: ListOuvrageComponent},
-  {path: 'ajoutCout/:id', canActivate: [AuthGuard], component: OuvrageAddCoutComponent},
+  {path: 'cout/:id', component: FormCoutComponent},
+  {path: 'cout',  component: FormCoutComponent,},
+  {path: 'ouvrage/:id', component: FormOuvrageComponent,},
+  {path: 'ouvrage',  component: FormOuvrageComponent,},
+  {path: 'ouvrageDetail/:id', component: DetailOuvrageComponent,},
+  {path: 'listCout', component: ListCoutComponent},
+  {path: 'listOuvrage',  component: ListOuvrageComponent},
+  {path: 'ajoutCout/:id', component: OuvrageAddCoutComponent},
+  {path:'listFournisseur',component:ListFournisseurComponent},
+  {path:'fournisseur',component:FormFournisseurComponent},
+  {path:'fournisseur/:id',component:FormFournisseurComponent},
+  {path:'listTypeCout',component:ListTypeCoutComponent},
+  {path:'typeCout',component:FormTypeCoutComponent},
+  {path:'typeCout/:id',component:FormTypeCoutComponent},
+
+
+
 
 
   {path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'}},

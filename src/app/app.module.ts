@@ -42,17 +42,23 @@ import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {SuperAdminComponent} from './super-admin/super-admin.component';
 import {ErrorInterceptor, JwtInterceptor} from "./_helpers";
-import {CoutComponent} from './cout/cout.component';
-import {DetailOuvrageComponent} from './detail-ouvrage/detail-ouvrage.component';
-import {FormCoutComponent} from './form-cout/form-cout.component';
-import {FormOuvrageComponent} from './form-ouvrage/form-ouvrage.component';
-import {ListCoutComponent} from './list-cout/list-cout.component';
-import {ListOuvrageComponent} from './list-ouvrage/list-ouvrage.component';
-import {OuvrageAddCoutComponent} from './ouvrage-add-cout/ouvrage-add-cout.component';
-import {FormDevisComponent} from './form-devis/form-devis.component';
-import {SuperAdminListComponent} from './super-admin-list/super-admin-list.component';
+import { CoutComponent } from './cout/cout.component';
+import { DetailOuvrageComponent } from './detail-ouvrage/detail-ouvrage.component';
+import { FormCoutComponent } from './form-cout/form-cout.component';
+import { FormOuvrageComponent } from './form-ouvrage/form-ouvrage.component';
+import { ListCoutComponent } from './list-cout/list-cout.component';
+import { ListOuvrageComponent } from './list-ouvrage/list-ouvrage.component';
+import { OuvrageAddCoutComponent } from './ouvrage-add-cout/ouvrage-add-cout.component';
+import { FormDevisComponent } from './form-devis/form-devis.component';
+import { SuperAdminListComponent } from './super-admin-list/super-admin-list.component';
+import { ListFournisseurComponent } from './list-fournisseur/list-fournisseur.component';
+import { ListTypeCoutComponent } from './list-type-cout/list-type-cout.component';
+import { FormFournisseurComponent } from './form-fournisseur/form-fournisseur.component';
+import { FormTypeCoutComponent } from './form-type-cout/form-type-cout.component';
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {ListDevisComponent} from './devis/list-devis/list-devis.component';
 import {EditDevisComponent} from './devis/edit-devis/edit-devis.component';
+
 
 const appRoutes: Routes = [];
 declare const toastr: Toastr;
@@ -85,38 +91,44 @@ declare const toastr: Toastr;
     OuvrageAddCoutComponent,
     FormDevisComponent,
     SuperAdminListComponent,
-    ListDevisComponent,
+    ListFournisseurComponent,
+    ListTypeCoutComponent,
+    FormFournisseurComponent,
+    FormTypeCoutComponent,
+      ListDevisComponent,
     EditDevisComponent,
+  
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatButtonModule,
-    RouterModule.forRoot(appRoutes),
-    HttpClientModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatSidenavModule,
-    MatDialogModule,
-    FontAwesomeModule,
-    MatTableModule,
-    MatListModule,
-    MatCardModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot(),
-    FormsModule,
-    MatExpansionModule,
-    LayoutModule,
-    MatMenuModule,
-    MatCheckboxModule,
-    MatOptionModule,
-    MatSelectModule,
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatButtonModule,
+        RouterModule.forRoot(appRoutes),
+        HttpClientModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatSidenavModule,
+        MatDialogModule,
+        FontAwesomeModule,
+        MatTableModule,
+        MatListModule,
+        MatCardModule,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot(),
+        FormsModule,
+        MatExpansionModule,
+        LayoutModule,
+        MatMenuModule,
+        MatCheckboxModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatAutocompleteModule,
 
-  ],
+    ],
   providers: [{
     provide: TOASTR_TOKEN,
     useValue: toastr,

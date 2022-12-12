@@ -41,6 +41,16 @@ export const navbarData = [
     label: "Bibliothéque d'ouvrages"
   },
   {
+    routeLink: '/listFournisseur',
+    icon: faBook,
+    label: "Fournisseur"
+  },
+  {
+    routeLink: '/listTypeCout',
+    icon: faBook,
+    label: "Type de Cout"
+  },
+  {
     routeLink: 'parametre',
     icon: faGear,
     label: 'Paramètres'
