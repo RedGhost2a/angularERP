@@ -1,7 +1,7 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {ClientService} from "../../_service/client.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
 
 
@@ -12,24 +12,28 @@ import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
 })
 export class EditComponent implements OnInit {
   @Input() updateClient!: EditComponent
-  public myFormGroup: FormGroup;
+
+  profileForm = new FormGroup({
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    email: new FormControl(''),
+    phonenumber: new FormControl(''),
+    type: new FormControl(''),
+    tvaintra: new FormControl(''),
+    Adresse: new FormGroup({
+      adresses: new FormControl(''),
+      zipcode: new FormControl(''),
+      city: new FormControl(''),
+      country: new FormControl('')
+    })
+
+  });
+
+
   textButton!: string;
 
   constructor(private clientService: ClientService, private formBuilder: FormBuilder,
               private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr) {
-    this.myFormGroup = this.formBuilder.group({
-      firstName: "",
-      lastName: "",
-      adresses: "",
-      zipcode: "",
-      city: "",
-      country: "",
-      email: "",
-      phonenumber: "",
-      type: "",
-      tvaintra: "",
-    })
-
 
   }
 
@@ -45,28 +49,36 @@ export class EditComponent implements OnInit {
   createAndUpdate(): void {
     this.route.params.subscribe(params => {
       const clientID = +params['id']
-      console.log(clientID)
+      console.log(this.profileForm.value)
+      // console.log(this.myAdressFormGroup)
       if (isNaN(clientID)) {
-        this.clientService.register(this.myFormGroup.getRawValue()).subscribe(
+        this.clientService.register(this.profileForm.value).subscribe(
           (): void => {
+            console.log(this.profileForm.value)
 
-            if (this.myFormGroup.status === 'VALID') {
+            if (this.profileForm.status === 'VALID') {
               this.success("Nouveau client en vue !")
               this.router.navigate(['/clients']);
             }
           }, error => {
+            console.log(error)
+            console.log(this.profileForm.value)
+            // console.log(this.myAdressFormGroup)
+
+
             this.warning("Complète tout les champs !")
 
           }
         )
       } else {
-        this.clientService.update(this.myFormGroup.getRawValue(), String(clientID))
+        this.clientService.update(this.profileForm.value, String(clientID))
           .subscribe((): void => {
             this.success("Client modifier!");
             this.router.navigate(['/clients']);
 
 
           }, error => {
+            console.error(error)
             this.warning("Complète tout les champs !")
 
           });
@@ -78,39 +90,35 @@ export class EditComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       const clientID = +params['id']
+      console.log(this.profileForm.value)
+
       if (!isNaN(clientID)) {
         this.textButton = 'Modifier le client'
         this.clientService.getById(clientID).subscribe(data => {
           // Assuming res has a structure like:
+          console.log(data)
           data = {
+            Adresse: {
+              adresses: data.adresses,
+              zipcode: data.zipcode,
+              city: data.city,
+              country: data.country,
+
+            },
             firstName: data.firstName,
             lastName: data.lastName,
-            adresses: data.adresses,
-            zipcode: data.zipcode,
-            city: data.city,
-            country: data.country,
             email: data.email,
-            phone: data.phone,
+            phonenumber: data.phonenumber,
             type: data.type,
             tvaintra: data.tvaintra,
+
           }
 
-          this.myFormGroup.patchValue(data);
+          this.profileForm.patchValue(data);
+          console.log(data)
         });
       } else {
-        this.textButton = 'Créer un nouveau client'
-        this.formBuilder.group({
-          firstName: [],
-          lastName: [],
-          adresses: [],
-          zipcode: [],
-          city: [],
-          country: [],
-          phone: [],
-          email: [],
-          type: [],
-          tvaintra: [],
-        });
+        this.textButton = 'Créer un nouveau client';
 
 
       }

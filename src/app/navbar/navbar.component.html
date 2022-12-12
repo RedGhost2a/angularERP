@@ -7,7 +7,7 @@
 
     <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
     <h1>Outils d'étude de prix</h1>
-    <button *ngIf="accountService.userValue||superAdminService.userValue" mat-button [matMenuTriggerFor]="menu">
+    <button *ngIf="accountService.userValue" mat-button [matMenuTriggerFor]="menu">
       <mat-icon>settings_account_box</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
@@ -21,14 +21,14 @@
       </button>
 
     </mat-menu>
-    <ng-template #superAdmin>
-      <button mat-menu-item>
-        <mat-icon color="warn" (click)="superAdminService.logout()">
-          logout
-        </mat-icon>
-        <span>Logout</span>
-      </button>
-    </ng-template>
+    <!--    <ng-template #superAdmin>-->
+    <!--      <button mat-menu-item>-->
+    <!--        <mat-icon color="warn" (click)="superAdminService.logout()">-->
+    <!--          logout-->
+    <!--        </mat-icon>-->
+    <!--        <span>Logout</span>-->
+    <!--      </button>-->
+    <!--    </ng-template>-->
 
   </mat-toolbar-row>
 </mat-toolbar>

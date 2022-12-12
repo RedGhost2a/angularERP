@@ -1,7 +1,8 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
 import {Entreprise} from "../../_models/entreprise";
 import {EntrepriseService} from 'src/app/_service/entreprise.service';
+import {UserService} from "../../_service/user.service";
 
 @Component({
   selector: 'app-entreprise-list',
@@ -11,20 +12,41 @@ import {EntrepriseService} from 'src/app/_service/entreprise.service';
 export class EntrepriseListComponent implements OnInit {
 
   @Input() entreprise!: Entreprise;
-  @Output() deleteEntreprise: EventEmitter<any> = new EventEmitter()
+  // @Output() deleteEntreprise: EventEmitter<any> = new EventEmitter()
 
   listEntreprise !: Entreprise[];
+  userEntreprise!: Entreprise;
+  curentUser !: string;
 
 
-  constructor(private entrepriseService: EntrepriseService) {
+  constructor(private entrepriseService: EntrepriseService, private userService: UserService) {
+    this.userEntreprise = new Entreprise;
   }
 
   ngOnInit(): void {
-    this.getAll()
+    // this.getAll()
+    this.getCurrentUser()
+    this.getBYId(this.curentUser)
   }
 
   delete(id: any): void {
     this.entrepriseService.deleteByID(id).subscribe(() => this.ngOnInit())
+  }
+
+  getCurrentUser(): string {
+    this.curentUser = this.userService.userValue.EntrepriseId;
+    return this.curentUser
+  }
+
+  getBYId(id: any): void {
+    this.entrepriseService.getById(id)
+      .subscribe(data => {
+        this.userEntreprise = data;
+
+        console.log(this.userEntreprise.Adresse)
+        return this.userEntreprise
+      })
+
   }
 
   getAll(): void {

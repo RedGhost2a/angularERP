@@ -1,0 +1,32 @@
+<div class="container">
+  <ng-container [formGroup]="this.myFormGroup">
+    <h1> DEVIS </h1>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>Nom</mat-label>
+      <input formControlName="name" matInput placeholder="Ex: Devis toiture">
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>Client</mat-label>
+      <mat-select formControlName="ClientId">
+        <mat-option [value]=+client.id
+                    *ngFor="let client of listClient">{{client.firstName}} {{client.lastName}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>Entreprise</mat-label>
+      <mat-select formControlName="EntrepriseId">
+        <mat-option [value]=+entreprise.id
+                    *ngFor="let entreprise of listEntreprise">{{entreprise.commercialName}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="legacy">
+      <mat-label>Status</mat-label>
+      <input formControlName="status" matInput placeholder="Ex: En cours">
+    </mat-form-field>
+    <button (click)="createAndUpdate()" routerLink="/devisTest" mat-raised-button>Créer un devis</button>
+  </ng-container>
+</div>

@@ -1,42 +1,127 @@
-<button mat-flat-button>
-  <mat-icon [routerLink]="'/parametre/'">arrow_back</mat-icon>
-</button>
 <div class="container">
-  <button class="btn" color="primary" mat-stroked-button [routerLink]="'/entreprises/new'">Ajouter une entreprise
-  </button>
+  <div class="header">
+
+    <button mat-flat-button>
+      <mat-icon [routerLink]="'/parametre/'">arrow_back</mat-icon>
+    </button>
+
+    <!--    <button class="btn" color="primary" mat-stroked-button [routerLink]="'/entreprises/new'">Ajouter une entreprise-->
+    <!--    </button>-->
+  </div>
+  <div class="wrapper">
+    <mat-card class="user-card">
+      <div class="header-card">
+        <div class="titre">
+          <img class="image" src="./assets/images/biopura-fond-blanc2.jpeg" alt="Photo of a company">
+          <!--          <mat-card-subtitle>{{userEntreprise.formeJuridique|uppercase}} </mat-card-subtitle>-->
+        </div>
+        <div class="button">
+          <mat-card-title>{{userEntreprise.commercialName|uppercase}}</mat-card-title>
+          <!--          <button mat-stroked-button [routerLink]="'/devis/'">Liste des devis-->
+          <!--            <mat-icon>list</mat-icon>-->
+          <!--          </button>-->
+          <!--          <button mat-stroked-button [routerLink]="['/entreprises', userEntreprise.id]">Modifier l'entreprise-->
+          <!--            <mat-icon>create</mat-icon>-->
+          <!--          </button>-->
+        </div>
 
 
-  <div class="container">
-    <div class="form-group" *ngFor="let entreprise of listEntreprise">
-      <div class="row">
-        <span class="texte">{{entreprise.formeJuridique}}</span>
-        <span class="texte ">{{entreprise.commercialName}}</span>
-        <span class="texte">{{entreprise.denomination}}</span>
       </div>
-      <div class="row">
-        <p class="texte">{{entreprise.siret}}</p>
-        <p class="texte">{{entreprise.nafCode}}</p>
-        <p class="texte">{{entreprise.rcs}}</p>
-        <p class="texte">{{entreprise.tvaNumber}}</p>
-      </div>
-      <div class="row">
-        <p class="texte">{{entreprise.adresses}}</p>
-        <p class="texte">{{entreprise.city}}</p>
+      <mat-card-content>
+        <div class="element">
+          <div class="elementGauche">
+            <mat-card-subtitle>Données de l'entreprise</mat-card-subtitle>
+            <mat-form-field appearance="outline">
+              <mat-label>Siret</mat-label>
+              <input matInput value="{{userEntreprise.siret}}" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Numéro TVA</mat-label>
+              <input matInput value="{{userEntreprise.tvaNumber}}" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Naf code</mat-label>
+              <input matInput value="{{userEntreprise.nafCode}}" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Rcs</mat-label>
+              <input matInput value="{{userEntreprise.rcs}}" readonly>
+            </mat-form-field>
+          </div>
+          <div class="elementDroit">
+            <mat-card-subtitle>Coordonnées</mat-card-subtitle>
+            <mat-form-field appearance="outline">
+              <mat-label>Adresse</mat-label>
+              <input matInput value="{{userEntreprise['Adresse'].adresses}}" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Ville</mat-label>
+              <input matInput value="{{userEntreprise.Adresse.city}}" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Code postal</mat-label>
+              <input matInput value="{{userEntreprise.Adresse.zipcode}}" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Pays</mat-label>
+              <input matInput value="{{userEntreprise.Adresse.country}}" readonly>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Numéro de téléphone</mat-label>
+              <input matInput value="{{userEntreprise.phoneNumber}}" readonly>
+            </mat-form-field>
+          </div>
 
-      </div>
-      <div class="row">
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
 
-        <p class="texte">{{entreprise.zipcode}}</p>
-        <p class="texte">{{entreprise.country}}</p>
-      </div>
-      <div class="row"></div>
-      <div class="row"></div>
-      <button mat-stroked-button [routerLink]="['/entreprises', entreprise.id]">
-        <mat-icon>delete_forever</mat-icon>
-        <span>MODIFIER</span></button>
-      <button mat-stroked-button color="warn" (click)="delete(entreprise.id)">
-        <mat-icon>delete_forever</mat-icon>
-        <span>EFFACER</span></button>
+
+      </mat-card-actions>
+    </mat-card>
+    <div class="button-droite">
+      <button mat-stroked-button [routerLink]="'/devis/'">Liste des devis
+        <mat-icon>list</mat-icon>
+      </button>
+      <button mat-stroked-button [routerLink]="">Changer Avatar
+        <mat-icon>list</mat-icon>
+      </button>
+      <button mat-stroked-button [routerLink]="['/entreprises', userEntreprise.id]">Modifier l'entreprise
+        <mat-icon>create</mat-icon>
+      </button>
     </div>
   </div>
+
 </div>
+
+<!--    <div class="form-group">-->
+<!--      <div class="row">-->
+<!--        <span class="texte">{{userEntreprise.formeJuridique|titlecase}}</span>-->
+<!--        <span class="texte ">{{userEntreprise.commercialName}}</span>-->
+<!--        <span class="texte">{{userEntreprise.denomination}}</span>-->
+<!--      </div>-->
+<!--      <div class="row">-->
+<!--        <p class="texte">{{userEntreprise.siret}}</p>-->
+<!--        <p class="texte">{{userEntreprise.nafCode}}</p>-->
+<!--        <p class="texte">{{userEntreprise.rcs}}</p>-->
+<!--        <p class="texte">{{userEntreprise.tvaNumber}}</p>-->
+<!--      </div>-->
+<!--      <div class="row">-->
+<!--        <p class="texte">{{userEntreprise.adresses}}</p>-->
+<!--        <p class="texte">{{userEntreprise.city}}</p>-->
+
+<!--      </div>-->
+<!--      <div class="row">-->
+
+<!--        <p class="texte">{{userEntreprise.zipcode}}</p>-->
+<!--        <p class="texte">{{userEntreprise.country}}</p>-->
+<!--      </div>-->
+<!--      <div class="row"></div>-->
+<!--      <div class="row"></div>-->
+<!--      <button mat-stroked-button [routerLink]="['/entreprises', userEntreprise.id]">-->
+<!--        <mat-icon>delete_forever</mat-icon>-->
+<!--        <span>MODIFIER</span></button>-->
+<!--      <button mat-stroked-button color="warn" (click)="delete(userEntreprise.id)">-->
+<!--        <mat-icon>delete_forever</mat-icon>-->
+<!--        <span>EFFACER</span></button>-->
+<!--    </div>-->

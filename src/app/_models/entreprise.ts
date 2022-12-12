@@ -1,4 +1,10 @@
 export class Entreprise {
+  Adresse!: {
+    adresses: string;
+    zipcode: number;
+    city: string;
+    country: string;
+  };
   id!: string;
   commercialName!: string;
   denomination!: string;
@@ -7,10 +13,7 @@ export class Entreprise {
   siret!: number;
   nafCode!: number;
   tvaNumber!: number;
-  adresses!: string;
-  zipcode!: number;
-  city!: string;
-  country!: string;
+
   email!: string;
   phoneNumber!: number;
 

@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {EditComponent} from "./clients/edit/edit.component";
 import {DashboardComponent} from "./dashboard/dashboard.component";
-import {DevisComponent} from "./devis/devis.component";
 import {ParametresComponent} from "./parametres/parametres.component";
 import {BibliothequesComponent} from "./bibliotheques/bibliotheques.component";
 import {ListClientComponent} from "./clients/list-client/list-client.component";
@@ -22,32 +21,49 @@ import {DetailOuvrageComponent} from "./detail-ouvrage/detail-ouvrage.component"
 import {ListOuvrageComponent} from "./list-ouvrage/list-ouvrage.component";
 import {ListCoutComponent} from "./list-cout/list-cout.component";
 import {OuvrageAddCoutComponent} from "./ouvrage-add-cout/ouvrage-add-cout.component";
+import {EditDevisComponent} from "./devis/edit-devis/edit-devis.component";
+import {ListDevisComponent} from "./devis/list-devis/list-devis.component";
 
 const routes: Routes = [
 
-  {path: 'cout/:id', component: FormCoutComponent},
+  {path: 'cout/:id', canActivate: [AuthGuard], component: FormCoutComponent},
   {path: 'cout', canActivate: [AuthGuard], component: FormCoutComponent,},
-  {path: 'ouvrage/:id', component: FormOuvrageComponent,},
+  {path: 'ouvrage/:id', canActivate: [AuthGuard], component: FormOuvrageComponent,},
   {path: 'ouvrage', canActivate: [AuthGuard], component: FormOuvrageComponent,},
-  {path: 'ouvrageDetail/:id', component: DetailOuvrageComponent,},
+  {path: 'ouvrageDetail/:id', canActivate: [AuthGuard], component: DetailOuvrageComponent,},
   {path: 'listCout', canActivate: [AuthGuard], component: ListCoutComponent},
   {path: 'listOuvrage', canActivate: [AuthGuard], component: ListOuvrageComponent},
-  {path: 'ajoutCout/:id', component: OuvrageAddCoutComponent},
+  {path: 'ajoutCout/:id', canActivate: [AuthGuard], component: OuvrageAddCoutComponent},
 
 
   {path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'}},
 
   {path: 'clients', canActivate: [AuthGuard], component: ListClientComponent, data: {title: 'Liste des clients'}},
-  {path: 'clients/new', component: EditComponent, data: {title: 'Creation des clients'}},
-  {path: 'clients/:id', component: EditComponent, data: {title: 'Details du clients'}},
-  {path: 'clients/:id', component: ClientsComponent, data: {title: 'Details du clients'}},
+  {path: 'clients/new', canActivate: [AuthGuard], component: EditComponent, data: {title: 'Creation des clients'}},
+  {path: 'clients/:id', canActivate: [AuthGuard], component: EditComponent, data: {title: 'Details du clients'}},
+  {path: 'clients/:id', canActivate: [AuthGuard], component: ClientsComponent, data: {title: 'Details du clients'}},
   /*
     {path: 'clients/detail/:id', component: UserComponent, data: {title: 'Detail des utilisateurs'}},
   */
 
-  {path: 'users', canActivate: [AuthGuard], component: UserListComponent, data: {title: 'Liste des utilisateurs'}},
-  {path: 'users/new', canActivate: [AuthGuard], component: UserEditComponent, data: {roles: [Role.Admin]}},
-  {path: 'users/:id', component: UserEditComponent, data: {title: 'Detail des utilisateurs'}},
+  {
+    path: 'users',
+    canActivate: [AuthGuard],
+    component: UserListComponent,
+    data: {title: 'Liste des utilisateurs', roles: [Role.SuperAdmin, Role.Admin]}
+  },
+  {
+    path: 'users/new',
+    canActivate: [AuthGuard],
+    component: UserEditComponent,
+    data: {title: 'Création des utilisateurs', roles: [Role.SuperAdmin, Role.Admin]}
+  },
+  {
+    path: 'users/:id',
+    canActivate: [AuthGuard],
+    component: UserEditComponent,
+    data: {title: 'Detail des utilisateurs', roles: [Role.SuperAdmin, Role.Admin]}
+  },
   {path: 'mon_profile', canActivate: [AuthGuard], component: UserComponent, data: {title: 'Profil utilisateurs'}},
 
   {
@@ -62,9 +78,17 @@ const routes: Routes = [
     data: {roles: [Role.SuperAdmin], title: 'Création des entreprises'},
     component: EntrepriseEditComponent,
   },
-  {path: 'entreprises/:id', component: EntrepriseEditComponent, data: {title: 'Detail des entreprises'}},
+  {
+    path: 'entreprises/:id',
+    canActivate: [AuthGuard],
+    component: EntrepriseEditComponent,
+    data: {roles: [Role.SuperAdmin], title: 'Détails des entreprises'}
+  },
 
-  {path: 'devis', canActivate: [AuthGuard], component: DevisComponent, data: {title: 'Devis'}},
+  {path: 'devis', canActivate: [AuthGuard], component: ListDevisComponent, data: {title: 'Liste des devis'}},
+  {path: 'devis/new', canActivate: [AuthGuard], component: EditDevisComponent, data: {title: 'Devis'}},
+  {path: 'devis/:id', canActivate: [AuthGuard], component: EditDevisComponent, data: {title: 'Devis'}},
+
   {
     path: 'bibliotheque',
     canActivate: [AuthGuard],
@@ -77,12 +101,12 @@ const routes: Routes = [
   },
 
   {path: 'login', component: LoginComponent},
-  // {
-  //   path: 'admin/:id',
-  //   canActivate: [AuthGuard],
-  //   component: SuperAdminListComponent,
-  //   data: {title: 'Administration', roles: [Role.SuperAdmin]}
-  // },
+  {
+    path: 'admin',
+    canActivate: [AuthGuard],
+    component: SuperAdminComponent,
+    data: {title: 'Administration',}
+  },
 
   {path: '**', redirectTo: ''}
 

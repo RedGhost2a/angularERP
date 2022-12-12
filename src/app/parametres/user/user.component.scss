@@ -1,14 +1,91 @@
+.header {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 50px;
+  margin: 20px;
+
 }
 
-.card {
-  width: 500px;
-  height: 300px;
-  border: 1px solid #f3f3f3;
-  padding: 30px;
+.user-card {
+  margin: 30px;
+  width: 200px;
+  background: rgb(71 96 203 / 9%);
+  box-shadow: 0 8px 32px 0 rgb(31 38 135 / 37%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgb(154 167 46 / 25%);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  padding: 10px;
+  justify-content: space-around;
+  align-content: center;
+  align-items: center;
+
+}
+
+
+mat-card-image {
+  width: 100%;
+  margin: 30px 0px 20px 0px;
+  display: block;
+  overflow: hidden;
+}
+
+.mat-card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.mat-card-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+}
+
+
+.devis-form {
+  width: 165px;
+  height: 100px;
+  margin: 5px;
+  padding: 10px;
+  background: rgb(71 96 203 / 9%);
+  box-shadow: 0 8px 32px 0 rgb(31 38 135 / 37%);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgb(154 167 46 / 25%);
+
+}
+
+.devis {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 520px;
+}
+.icon{
+  margin-top: 10px;
+}
+.devis-status {
+  transform: rotate(315deg);
+  font-size: 10px;
+  /* border: 1px solid; */
+  border-radius: 50%;
 }

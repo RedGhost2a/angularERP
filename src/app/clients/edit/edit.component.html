@@ -3,7 +3,7 @@
     <div class="modal-header">
       <h1 class="modal-title"> {{textButton}}</h1>
     </div>
-    <form class="form" [formGroup]="myFormGroup">
+    <form class="form" [formGroup]="profileForm">
       <mat-form-field appearance="outline" color="primary">
         <mat-label> Nom</mat-label>
         <input matInput placeholder="Entrer le nom" formControlName="firstName">
@@ -12,22 +12,25 @@
         <mat-label> Prénom</mat-label>
         <input matInput placeholder="Entrer le prénom" formControlName="lastName">
       </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Adresse</mat-label>
-        <input matInput placeholder="Avenue de la Grande Armée" formControlName="adresses" style="width: 70px">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Code postal</mat-label>
-        <input matInput placeholder=" Ex. 20167" formControlName="zipcode">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Ville</mat-label>
-        <input matInput placeholder="Ajaccio" formControlName="city">
-      </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Pays</mat-label>
-        <input matInput placeholder=" France" formControlName="country">
-      </mat-form-field>
+      <div formGroupName="Adresse">
+        <mat-form-field appearance="outline">
+          <mat-label>Adresse</mat-label>
+          <input matInput placeholder="Avenue de la Grande Armée" formControlName="adresses"
+                 style="width: 70px">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Code postal</mat-label>
+          <input matInput placeholder=" Ex. 20167" formControlName="zipcode">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Ville</mat-label>
+          <input matInput placeholder="Ajaccio" formControlName="city">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Pays</mat-label>
+          <input matInput placeholder=" France" formControlName="country">
+        </mat-form-field>
+      </div>
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
         <input matInput formControlName="email">
