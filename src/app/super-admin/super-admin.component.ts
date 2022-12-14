@@ -17,7 +17,6 @@ export class SuperAdminComponent implements OnInit {
 
   listEntreprise !: Entreprise[];
   listUser !: User[];
-  panelOpenState = false;
   user!: string;
 
   constructor(private entrepriseService: EntrepriseService, private superAdminService: SuperAdminService, private storageService: StorageService) {
@@ -25,15 +24,19 @@ export class SuperAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.getAll()
+    this.getAll()
   }
 
   // @ts-ignore
 
 
-  // getAll(): void {
-  //   this.entrepriseService.getAll().subscribe(data => this.listEntreprise = data)
-  // }
+  getAll(): void {
+    this.entrepriseService.getAll().subscribe((data: any) => {
+        this.listEntreprise = data
+        console.log(this.listEntreprise)
+      }
+    )
+  }
 
   getAllUserByEntreprise(id: any): void {
     this.superAdminService.getById(id).subscribe(data => this.listUser = data)

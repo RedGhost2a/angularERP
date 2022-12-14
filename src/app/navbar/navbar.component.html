@@ -37,6 +37,7 @@
     <mat-nav-list>
       <ul class="sidebar-nav">
         <li class="sidebar-nav-item" *ngFor="let data of navData">
+          
           <a href="" class="sidebar-nav-link" [routerLink]="[data.routeLink]">
             <fa-icon class="sidebar-link-icon" [icon]="data.icon"></fa-icon>
             <span class="sidebar-link-text">{{data.label}}</span>
@@ -55,4 +56,5 @@
 
   </mat-sidenav-content>
 </mat-sidenav-container>
+
 

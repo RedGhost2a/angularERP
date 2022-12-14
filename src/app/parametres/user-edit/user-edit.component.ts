@@ -102,6 +102,8 @@ export class UserEditComponent implements OnInit {
             firstName: data.firstName,
             lastName: data.lastName,
             role: data.role,
+            EntrepriseId: data.EntrepriseId,
+            
 
           }
 
@@ -116,7 +118,8 @@ export class UserEditComponent implements OnInit {
           role: [],
           email: [],
           password: [],
-          EntrepriseId: []
+          EntrepriseId: [],
+          Entreprise: {}
 
         });
 
