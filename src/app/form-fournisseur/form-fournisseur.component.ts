@@ -21,6 +21,7 @@ export class FormFournisseurComponent implements OnInit {
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+
     this.createFormFournisseur()
     this.generateFormUpdate()
   }
@@ -32,7 +33,7 @@ export class FormFournisseurComponent implements OnInit {
       remarque: new FormControl(),
     });
    }
-  createAndUpdate(): void {
+  createAndUpdateFournisseur(): void {
     this.route.params.subscribe(params => {
       const fournisseurID = +params['id']
       if (isNaN(fournisseurID)) {

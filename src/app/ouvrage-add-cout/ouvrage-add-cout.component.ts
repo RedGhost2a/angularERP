@@ -15,11 +15,11 @@ export class OuvrageAddCoutComponent implements OnInit {
 
 
   @Input() listCout!:Cout[]
+  coutOuvrage!:Cout;
   coutChecked :number[] = [];
   ouvrageId!:number
-  columnsToDisplay = ["checkBox","type","categorie","designation", "unite", "prixUnitaire", "fournisseur"];
-  // @ts-ignore
-  currentUser = JSON.parse(localStorage.getItem('user'))
+  columnsToDisplay = ["checkBox","type","categorie","designation", "unite", "prixUnitaire", "fournisseur","remarque"];
+
 
   constructor(private route: ActivatedRoute, private coutService: CoutService,
               private ouvrageService: OuvrageService, private ouvrageCoutService : OuvrageCoutService) { }
@@ -28,14 +28,15 @@ export class OuvrageAddCoutComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // this.getAll()
+    this.getAll()
     this.route.params.subscribe(params=>this.ouvrageId = +params['id'])
   }
-  // getAll(): void{
-  //   this.coutService.getAll().subscribe(data =>{
-  //     this.listCout = data
-  //   })
-  //}
+  getAll(): void{
+    this.coutService.getAll(1).subscribe(data =>{
+      this.listCout = data
+      console.log("dATA",data)
+    })
+  }
 
 
 
@@ -43,8 +44,14 @@ export class OuvrageAddCoutComponent implements OnInit {
     for (let val of this.coutChecked) {
       console.log(val);
       console.log('valeur')
-      this.ouvrageCoutService.addCoutOuvrage(val, this.ouvrageId).subscribe()
+      //this.ouvrageCoutService.addCoutOuvrage(val, this.ouvrageId).subscribe()
       console.log('OUVRAGE AJOUT COUT')
+      this.coutService.getById(val).subscribe(data=>{
+        this.coutOuvrage = data;
+        console.log(data)
+        console.log(typeof(data.Fournisseurs));
+      this.coutService.createCoutDuDevis(data).subscribe()
+      })
     }
   }
 

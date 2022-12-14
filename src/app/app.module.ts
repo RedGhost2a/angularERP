@@ -58,6 +58,7 @@ import { FormTypeCoutComponent } from './form-type-cout/form-type-cout.component
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {ListDevisComponent} from './devis/list-devis/list-devis.component';
 import {EditDevisComponent} from './devis/edit-devis/edit-devis.component';
+import { FormComponent } from './form/form.component';
 
 
 const appRoutes: Routes = [];
@@ -97,6 +98,7 @@ declare const toastr: Toastr;
     FormTypeCoutComponent,
       ListDevisComponent,
     EditDevisComponent,
+    FormComponent,
   
   ],
     imports: [

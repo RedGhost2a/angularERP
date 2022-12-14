@@ -11,8 +11,12 @@ export class OuvrageService {
 
   constructor(private http: HttpClient) { }
 
-  getAll() :Observable<any> {
-    return this.http.get(baseUrl);
+  getAll(entrepriseId:number) :Observable<any> {
+    return this.http.get(baseUrl,{
+      params : {
+        EntrepriseId: entrepriseId
+      }
+      });
   }
   getById(id:any) :Observable<any> {
     return this.http.get(`${baseUrl}/${id}`);

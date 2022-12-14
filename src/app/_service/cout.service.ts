@@ -21,21 +21,9 @@ export class CoutService {
       }
     });
   }
-  getAllCouts() :Observable<Cout[]> {
-    return this.http.get<Cout[]>(`${baseUrl}/isCouts`);
-  }
-  // getAllFraisDeChantier() :Observable<Cout[]> {
-  //   return this.http.get<Cout[]>(`${baseUrl}/isFraisDeChantier`);
-  // }
-
-  getAllTypeCout():Observable<any>{
-    return this.http.get(`${test}/typeCouts`)
-  }
-
   getById(id:number) :Observable<Cout> {
     return this.http.get<Cout>(`${baseUrl}/${id}`);
   }
-
   create(data: Cout) :Observable<Cout> {
     return this.http.post<Cout>(`${baseUrl}/new`, data);
   }
@@ -47,5 +35,9 @@ export class CoutService {
   }
   getLast():Observable<any>{
     return this.http.get(`${baseUrl}/lastCout`)
+  }
+  createCoutDuDevis(data:any):Observable<any>{
+    console.log("createcoutdudevis",data)
+    return this.http.post(`http://localhost:4000/coutsDuDevis/new`,data)
   }
 }

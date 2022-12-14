@@ -42,6 +42,7 @@ export class EntrepriseListComponent implements OnInit {
     this.entrepriseService.getById(id)
       .subscribe(data => {
         this.userEntreprise = data;
+        console.log("ENTREPRISE LIST TS GETBYID: ",data)
 
         console.log(this.userEntreprise.Adresse)
         return this.userEntreprise

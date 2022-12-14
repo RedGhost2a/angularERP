@@ -30,13 +30,16 @@ export class FormCoutComponent implements OnInit {
   fournisseurId!:number;
   fournisseurCout!:FournisseurCout;
 
-
   constructor(private formBuilder: FormBuilder, private coutService: CoutService,
               private route: ActivatedRoute, private userService: UserService,
               private fournisseurService : FournisseurService, private typeCoutService: TypeCoutService) {}
 
 
   ngOnInit(): void {
+    console.log("FORM FOURNISSEUR",this.route.url)
+    const test = this.route.url;
+    console.log('TEST', )
+    console.log(window.location.href)
     this.createFormCout();
     this.getUserById();
     //this.getAllTypeCouts();

@@ -1,25 +1,5 @@
 <button class="btnBack" routerLink="/listOuvrage" mat-raised-button >Retour</button>
 <div class="container">
-  <!--  <h3>Informations de l'ouvrage</h3>-->
-  <!--  <div class="detail">-->
-  <!--  <p>Désignation</p>-->
-  <!--  <p>Bénéfice</p>-->
-  <!--  <p>Aléas</p>-->
-  <!--  <p>Unité</p>-->
-  <!--  <p>Ratio</p>-->
-  <!--  <p>U/Ratio</p>-->
-  <!--  <p>PUHT</p>-->
-  <!--  </div>-->
-  <!--  <div class="detail">-->
-  <!--  <p>Désignation</p>-->
-  <!--  <p>Bénéfice</p>-->
-  <!--  <p>Aléas</p>-->
-  <!--  <p>Unité</p>-->
-  <!--  <p>Ratio</p>-->
-  <!--  <p>U/Ratio</p>-->
-  <!--  <p>PUHT</p>-->
-  <!--  </div>-->
-  <!--  <h3>Composant de l'ouvrage</h3>-->
   <mat-card class="example-card">
     <mat-card-title-group class="group">
       <mat-card-title >Information de l'ouvrage</mat-card-title>
@@ -52,43 +32,10 @@
           <mat-card-subtitle class="subTitle">Prix Unitaire HT</mat-card-subtitle>
           <p>{{prixOuvrage}}</p>
         </div>
-        <div class="detail">
-          <mat-card-subtitle class="subTitle">Fournisseur</mat-card-subtitle>
-          <p>{{ouvrage.fournisseur}}</p>
-        </div>
       </div>
-      <p>dffds</p>
     </mat-card-title-group>
-    <!--    <div class="detailList">-->
-    <!--      <div class="detail">-->
-    <!--      <p class="subTitle">Designation</p>-->
-    <!--      <p class="subTitle">designation</p>-->
-    <!--      </div>-->
-    <!--      <div class="detail">-->
-    <!--      <p class="subTitle">Designation</p>-->
-    <!--      <p class="subTitle">designation</p>-->
-    <!--      </div>-->
-    <!--      <div class="detail">-->
-    <!--      <p class="subTitle">Designation</p>-->
-    <!--      <p class="subTitle">designation</p>-->
-    <!--      </div>-->
-    <!--      <div class="detail">-->
-    <!--      <p class="subTitle">Designation</p>-->
-    <!--      <p class="subTitle">designation</p>-->
-    <!--      </div>-->
-    <!--      <div class="detail">-->
-    <!--      <p class="subTitle">Designation</p>-->
-    <!--      <p class="subTitle">designation</p>-->
-    <!--      </div>-->
-    <!--      <div class="detail">-->
-    <!--      <p class="subTitle">Designation</p>-->
-    <!--      <p class="subTitle">designation</p>-->
-    <!--      </div>-->
-    <!--    </div>-->
-
-
   </mat-card>
-    <ng-container *ngIf="cout.length; then someContent else otherContent"></ng-container>
+    <ng-container *ngIf="cout.length ; then someContent else otherContent"></ng-container>
 
   <ng-template #someContent >
     <div>
@@ -96,7 +43,7 @@
         <mat-card-title-group class="group">
           <div class="bouton">
             <mat-card-title >Composant de l'ouvrage</mat-card-title>
-            <button routerLink="/ajoutCout/{{ouvrage.id}}"  mat-raised-button >Importer un composant </button>
+            <button routerLink="/ajoutCout/{{ouvrage.id}}"  mat-raised-button>Importer un composant </button>
           </div>
           <div class="detailList">
 <!--            <div class="detail">-->

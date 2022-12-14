@@ -22,10 +22,11 @@ export class ListOuvrageComponent implements OnInit {
   }
   getAll():void{
     // this.ouvrageService.getAll().subscribe(data => console.log(data) )
-    this.ouvrageService.getAll().subscribe(data =>{
+    this.ouvrageService.getAll(1).subscribe(data =>{
       this.listOuvrage = data;
-      console.log(data[0].cout[0].type);
-      console.log(data) })
+      // console.log(data[0].cout[0].type);
+      // console.log(data)
+      })
   }
   delete(id: number): void{
     this.ouvrageService.deleteByID(id).subscribe(() => this.ngOnInit())

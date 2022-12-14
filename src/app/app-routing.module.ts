@@ -27,11 +27,12 @@ import {ListTypeCoutComponent} from "./list-type-cout/list-type-cout.component";
 import {FormTypeCoutComponent} from "./form-type-cout/form-type-cout.component";
 import {EditDevisComponent} from "./devis/edit-devis/edit-devis.component";
 import {ListDevisComponent} from "./devis/list-devis/list-devis.component";
+import {FormComponent} from "./form/form.component";
 
 const routes: Routes = [
 
-  {path: 'cout/:id', component: FormCoutComponent},
-  {path: 'cout',  component: FormCoutComponent,},
+  // {path: 'cout/:id', component: FormCoutComponent},
+  // {path: 'cout',  component: FormCoutComponent,},
   {path: 'ouvrage/:id', component: FormOuvrageComponent,},
   {path: 'ouvrage',  component: FormOuvrageComponent,},
   {path: 'ouvrageDetail/:id', component: DetailOuvrageComponent,},
@@ -39,11 +40,20 @@ const routes: Routes = [
   {path: 'listOuvrage',  component: ListOuvrageComponent},
   {path: 'ajoutCout/:id', component: OuvrageAddCoutComponent},
   {path:'listFournisseur',component:ListFournisseurComponent},
-  {path:'fournisseur',component:FormFournisseurComponent},
-  {path:'fournisseur/:id',component:FormFournisseurComponent},
+  // {path:'fournisseur',component:FormFournisseurComponent},
+  // {path:'fournisseur/:id',component:FormFournisseurComponent},
   {path:'listTypeCout',component:ListTypeCoutComponent},
-  {path:'typeCout',component:FormTypeCoutComponent},
-  {path:'typeCout/:id',component:FormTypeCoutComponent},
+  // {path:'typeCout',component:FormTypeCoutComponent},
+  // {path:'typeCout/:id',component:FormTypeCoutComponent},
+
+
+  {path:'cout',component:FormComponent},
+  {path:'cout/:id',component:FormComponent},
+  {path:'fournisseur',component:FormComponent},
+  {path:'fournisseur/:id',component:FormComponent},
+  {path:'typeCout',component:FormComponent},
+  {path:'typeCout/:id',component:FormComponent},
+
 
 
 
