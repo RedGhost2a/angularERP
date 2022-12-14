@@ -7,6 +7,7 @@ export class User {
   email!: string;
   password!: string;
   EntrepriseId!: string;
+  AdresseId!: string;
   token!: string;
 
 

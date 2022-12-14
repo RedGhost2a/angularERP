@@ -1,29 +1,9 @@
 <div>
   <button class="btn" color="primary" mat-stroked-button [routerLink]="'/entreprises/new'">Ajouter une entreprise
   </button>
+  <button mat-stroked-button [routerLink]="['/users/new']">
+    <mat-icon>create</mat-icon>
+    <span>Nouvel utilisateur</span>
+  </button>
 </div>
-<div class="container">
-  <div class="group">
-    <mat-accordion *ngFor="let entreprise of listEntreprise">
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{entreprise.commercialName}}
-          </mat-panel-title>
-          <mat-panel-description>
-            <!--            {{entreprise.city}}-->
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <button mat-stroked-button [routerLink]="['/users/new']">
-          <mat-icon>create</mat-icon>
-          <span>Nouvel utilisateur</span>
-        </button>
-      </mat-expansion-panel>
-      <mat-expansion-panel (opened)="panelOpenState = true"
-                           (closed)="panelOpenState = false">
-      </mat-expansion-panel>
-      <button (click)="getAllUserByEntreprise(entreprise.id)">giughgjgh</button>
-    </mat-accordion>
 
-  </div>
-</div>
