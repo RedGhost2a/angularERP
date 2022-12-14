@@ -103,7 +103,7 @@ export class UserEditComponent implements OnInit {
             lastName: data.lastName,
             role: data.role,
             EntrepriseId: data.EntrepriseId,
-            
+
 
           }
 
@@ -119,7 +119,7 @@ export class UserEditComponent implements OnInit {
           email: [],
           password: [],
           EntrepriseId: [],
-          Entreprise: {}
+          // Entreprise: {}
 
         });
 

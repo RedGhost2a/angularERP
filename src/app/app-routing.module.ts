@@ -77,7 +77,7 @@ const routes: Routes = [
   },
   {
     path: 'users/new',
-    canActivate: [AuthGuard],
+    // canActivate: [AuthGuard],
     component: UserEditComponent,
     data: {title: 'Création des utilisateurs', roles: [Role.SuperAdmin, Role.Admin]}
   },
