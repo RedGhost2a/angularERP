@@ -1,4 +1,4 @@
-import {Adresse} from "/Users/Redwan/Documents/Application/OutilsEtudePrix/angularOEP/src/app/_models/adresse"
+import {Adresse} from "../_models/adresse"
 
 export interface Entreprise {
   Adresse: Adresse;
