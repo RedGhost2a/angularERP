@@ -23,12 +23,17 @@ export class EntrepriseService {
 
   }
 
+
   update(entreprise: Entreprise, id: string): Observable<any> {
     return this.http.put(`http://localhost:4000/entreprises/${id}`, entreprise)
   }
 
   getById(id: any): Observable<any> {
     return this.http.get(`http://localhost:4000/entreprises/${id}`)
+  }
+
+  getClientByEntreprise(id: any): Observable<any> {
+    return this.http.get(`http://localhost:4000/entreprises//admin/entreprise/client/${id}`)
   }
 
   deleteByID(id: any): Observable<any> {

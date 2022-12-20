@@ -21,8 +21,12 @@
 
   .btn {
     height: 250px;
-    width: 600px;
+    width: 250px;
     font-size: 30px;
+    border-radius: 71px;
+    background: linear-gradient(315deg, #173453, #1c3e62);
+    box-shadow:  -13px -13px 26px #0a1725,
+    13px 13px 26px #2a5d93;
   }
 
 }

@@ -1,21 +1,17 @@
-export class Entreprise {
-  Adresse!: {
-    adresses: string;
-    zipcode: number;
-    city: string;
-    country: string;
-  };
-  id!: string;
-  commercialName!: string;
-  denomination!: string;
-  formeJuridique!: string;
-  rcs!: number;
-  siret!: number;
-  nafCode!: number;
-  tvaNumber!: number;
+import {Adresse} from "/Users/Redwan/Documents/Application/OutilsEtudePrix/angularOEP/src/app/_models/adresse"
 
-  email!: string;
-  phoneNumber!: number;
+export interface Entreprise {
+  Adresse: Adresse;
+  id: string;
+  commercialName: string;
+  denomination: string;
+  formeJuridique: string;
+  rcs: number;
+  siret: number;
+  nafCode: number;
+  tvaNumber: number;
+  email: string;
+  phoneNumber: number;
 
 
 }

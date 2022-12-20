@@ -6,26 +6,26 @@
   align-items: center;
 }
 
-.form {
-  /* From https://css.glass */
-  background: rgba(47, 65, 144, 0.18);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(1.3px);
-  -webkit-backdrop-filter: blur(1.3px);
-  border: 1px solid rgba(47, 65, 144, 0.85);
-  margin-top: 200px;
+.mat-label {
+  color: #ffc107;
+}
 
+.form {
+  background: linear-gradient(145deg, #1c3e62, #173453);
+  box-shadow:  5px 5px 8px #0b1826,
+  -5px -5px 8px #295c92;
+  margin-top: 200px;
   padding: 50px;
+  color: #ffffff;
 }
 
 .button {
-  background: rgba(47, 65, 144, 0.18);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(1.3px);
-  -webkit-backdrop-filter: blur(1.3px);
-  border: 1px solid rgba(47, 65, 144, 0.85);
+  border-radius: 0px;
+  background: linear-gradient(145deg, #1c3e62, #173453);
+  box-shadow:  5px 5px 8px #0b1826,
+  -5px -5px 8px #295c92;
   margin-top: 10px;
+  color: #ffffff;
+
 
 }

@@ -6,6 +6,7 @@ export class User {
   role!: string;
   email!: string;
   password!: string;
+  avatarUrl: any;
   EntrepriseId!: string;
   AdresseId!: string;
   token!: string;

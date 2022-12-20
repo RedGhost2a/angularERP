@@ -3,7 +3,6 @@ import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {User} from "../_models/users";
 import {BehaviorSubject, map, Observable} from "rxjs";
-import {StorageService} from "./storage.service";
 
 
 @Injectable({
@@ -17,7 +16,7 @@ export class UserService {
 
   constructor(private router: Router,
               private http: HttpClient,
-              private storageService: StorageService) {
+  ) {
 
     // @ts-ignore
     this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')))
@@ -70,6 +69,9 @@ export class UserService {
     return this.http.post('http://localhost:4000/users/new', user);
   }
 
+  getCurrentUser(): Observable<any> {
+    return this.http.get('http://localhost:4000/users/current')
+  }
 
   getAll(): Observable<any> {
     return this.http.get(`http://localhost:4000/users`)
@@ -88,14 +90,12 @@ export class UserService {
     return this.http.delete(`http://localhost:4000/users/${id}`)
   }
 
-  // getRole(): any {
-  //
-  //   this.role = localStorage.getItem('user');
-  //   // let decrypt = JSON.parse(this.role)
-  //   // this.role = JSON.parse(this.role)
-  //   this.storageService.decrypt(this.role)
-  //
-  //   return this.role.role;
-  // }
+  getRoles(id: any): Observable<any> {
+    return this.http.get(`http://localhost:4000/users/${id}`).pipe(
+      map((response: any) => {
+        return response.roles;
+      })
+    );
+  }
 
 }

@@ -1,0 +1,38 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  color: white;
+  padding: 20px;
+
+}
+
+.card-devis {
+  //background: linear-gradient(315deg, #173453, #1c3e62);
+  //box-shadow: -13px -13px 26px #0a1725,
+  //13px 13px 26px #2a5d93;
+  //width: 300px;
+  //height: 300px;
+}
+
+.mat-list-item {
+  color: white;
+}
+
+mat-icon {
+  color: #ffc107;
+}
+
+.header {
+  text-align: center;
+  font-size: 90px;
+  color: #ffc107;
+  margin: 30px 0;
+}
+
+.titre {
+  color: #ffc107;
+  font-size: 30px;
+
+}

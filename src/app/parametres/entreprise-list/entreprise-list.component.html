@@ -8,7 +8,7 @@
     <!--    <button class="btn" color="primary" mat-stroked-button [routerLink]="'/entreprises/new'">Ajouter une entreprise-->
     <!--    </button>-->
   </div>
-  <div class="wrapper">
+  <div class="wrapper" *ngIf="userEntreprise">
     <mat-card class="user-card">
       <div class="header-card">
         <div class="titre">
@@ -16,7 +16,7 @@
           <!--          <mat-card-subtitle>{{userEntreprise.formeJuridique|uppercase}} </mat-card-subtitle>-->
         </div>
         <div class="button">
-          <mat-card-title>{{userEntreprise.commercialName|uppercase}}</mat-card-title>
+          <mat-card-title>{{userEntreprise.commercialName|uppercase }}</mat-card-title>
           <!--          <button mat-stroked-button [routerLink]="'/devis/'">Liste des devis-->
           <!--            <mat-icon>list</mat-icon>-->
           <!--          </button>-->
@@ -56,17 +56,17 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Ville</mat-label>
-              <input matInput value="{{userEntreprise.Adresse.city}}" readonly>
+              <input matInput value="{{userEntreprise['Adresse'].city}}" readonly>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Code postal</mat-label>
-              <input matInput value="{{userEntreprise.Adresse.zipcode}}" readonly>
+              <input matInput value="{{userEntreprise['Adresse'].zipcode}}" readonly>
             </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Pays</mat-label>
-              <input matInput value="{{userEntreprise.Adresse.country}}" readonly>
+              <input matInput value="{{userEntreprise['Adresse'].country}}" readonly>
             </mat-form-field>
-            <mat-form-field appearance="outline">
+            <mat-form-field color="primary" appearance="outline">
               <mat-label>Numéro de téléphone</mat-label>
               <input matInput value="{{userEntreprise.phoneNumber}}" readonly>
             </mat-form-field>
@@ -80,13 +80,14 @@
       </mat-card-actions>
     </mat-card>
     <div class="button-droite">
-      <button mat-stroked-button [routerLink]="'/devis/'">Liste des devis
+      <button mat-stroked-button color="primary" [routerLink]="'/devis/'">Liste des devis
         <mat-icon>list</mat-icon>
       </button>
-      <button mat-stroked-button [routerLink]="">Changer Avatar
+      <button mat-stroked-button color="primary" [routerLink]="">Changer Avatar
         <mat-icon>list</mat-icon>
       </button>
-      <button mat-stroked-button [routerLink]="['/entreprises', userEntreprise.id]">Modifier l'entreprise
+      <button mat-stroked-button color="primary" [routerLink]="['/entreprises', userEntreprise.id]">Modifier
+        l'entreprise
         <mat-icon>create</mat-icon>
       </button>
     </div>

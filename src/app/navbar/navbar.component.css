@@ -1,19 +1,14 @@
-.sidenav-container {
+.mat-sidenav-container {
   height: 100%;
+  background: #1a3a5c;
+}
+
+.mat-sidenav {
+  background: #ffc107;
 }
 
 .sidenav {
   width: 200px;
-}
-
-.sidenav .mat-toolbar {
-  background: inherit;
-}
-
-.mat-toolbar.mat-primary {
-  position: sticky;
-  top: 0;
-  z-index: 1;
 }
 
 .li {
@@ -33,12 +28,13 @@
 .sidebar-nav .sidebar-nav-item {
   width: 100%;
   margin-bottom: 0.625rem;
+  background: #ffc107;
 }
 .sidebar-nav .sidebar-nav-link {
   display: flex;
   align-items: center;
   height: 4rem;
-  color: #f3f3f3;
+  color: #000000;
   text-decoration: none;
   transition: color 0.3s ease;
   border-radius: 0.625rem;
@@ -55,8 +51,10 @@
   padding: 10px;
 }
 .sidebar-nav .sidebar-nav-item:hover .sidebar-nav-link {
-  background-color: #fff;
+  background-color: #ffc107;
   color: #000;
+  box-shadow: inset 5px 5px 3px #806104, inset -5px -5px 3px #ffff0b;
+  border-radius: 0.625rem;
 }
 
 .mat-toolbar-row, .mat-toolbar-single-row {

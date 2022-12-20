@@ -1,3 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+  color: white;
+  padding: 20px;
+}
 
+.mat-list-item {
+  color: white;
+}
+
+mat-icon {
+  color: #ffc107;
+}
+
+.header {
+  text-align: center;
+  font-size: 90px;
+  color: #ffc107;
+  margin: 30px 0;
+}
+
+.titre {
+  color: #ffc107;
+  font-size: 30px;
+}
 
 /*# sourceMappingURL=super-admin-list.component.css.map */

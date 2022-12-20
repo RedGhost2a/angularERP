@@ -24,7 +24,6 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {ParametresComponent} from './parametres/parametres.component';
 import {ListClientComponent} from './clients/list-client/list-client.component';
 import {MatTableModule} from "@angular/material/table";
-import {MatListModule} from "@angular/material/list";
 import {UserComponent} from './parametres/user/user.component';
 import {UserEditComponent} from './parametres/user-edit/user-edit.component';
 import {UserListComponent} from './parametres/user-list/user-list.component';
@@ -42,23 +41,26 @@ import {MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {SuperAdminComponent} from './super-admin/super-admin.component';
 import {ErrorInterceptor, JwtInterceptor} from "./_helpers";
-import { CoutComponent } from './cout/cout.component';
-import { DetailOuvrageComponent } from './detail-ouvrage/detail-ouvrage.component';
-import { FormCoutComponent } from './form-cout/form-cout.component';
-import { FormOuvrageComponent } from './form-ouvrage/form-ouvrage.component';
-import { ListCoutComponent } from './list-cout/list-cout.component';
-import { ListOuvrageComponent } from './list-ouvrage/list-ouvrage.component';
-import { OuvrageAddCoutComponent } from './ouvrage-add-cout/ouvrage-add-cout.component';
-import { FormDevisComponent } from './form-devis/form-devis.component';
-import { SuperAdminListComponent } from './super-admin-list/super-admin-list.component';
-import { ListFournisseurComponent } from './list-fournisseur/list-fournisseur.component';
-import { ListTypeCoutComponent } from './list-type-cout/list-type-cout.component';
-import { FormFournisseurComponent } from './form-fournisseur/form-fournisseur.component';
-import { FormTypeCoutComponent } from './form-type-cout/form-type-cout.component';
+import {CoutComponent} from './cout/cout.component';
+import {DetailOuvrageComponent} from './detail-ouvrage/detail-ouvrage.component';
+import {FormCoutComponent} from './form-cout/form-cout.component';
+import {FormOuvrageComponent} from './form-ouvrage/form-ouvrage.component';
+import {ListCoutComponent} from './list-cout/list-cout.component';
+import {ListOuvrageComponent} from './list-ouvrage/list-ouvrage.component';
+import {OuvrageAddCoutComponent} from './ouvrage-add-cout/ouvrage-add-cout.component';
+import {FormDevisComponent} from './form-devis/form-devis.component';
+import {SuperAdminListComponent} from './super-admin-list/super-admin-list.component';
+import {ListFournisseurComponent} from './list-fournisseur/list-fournisseur.component';
+import {ListTypeCoutComponent} from './list-type-cout/list-type-cout.component';
+import {FormFournisseurComponent} from './form-fournisseur/form-fournisseur.component';
+import {FormTypeCoutComponent} from './form-type-cout/form-type-cout.component';
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {ListDevisComponent} from './devis/list-devis/list-devis.component';
 import {EditDevisComponent} from './devis/edit-devis/edit-devis.component';
-import { FormComponent } from './form/form.component';
+import {FormComponent} from './form/form.component';
+import {HomeComponent} from './home/home.component';
+import {MatListModule} from "@angular/material/list";
+import {UniquePipe} from "./_helpers/FiltreUnique";
 
 
 const appRoutes: Routes = [];
@@ -96,41 +98,44 @@ declare const toastr: Toastr;
     ListTypeCoutComponent,
     FormFournisseurComponent,
     FormTypeCoutComponent,
-      ListDevisComponent,
+    ListDevisComponent,
     EditDevisComponent,
     FormComponent,
-  
-  ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatToolbarModule,
-        MatButtonModule,
-        RouterModule.forRoot(appRoutes),
-        HttpClientModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatSidenavModule,
-        MatDialogModule,
-        FontAwesomeModule,
-        MatTableModule,
-        MatListModule,
-        MatCardModule,
-        BrowserAnimationsModule,
-        ToastrModule.forRoot(),
-        FormsModule,
-        MatExpansionModule,
-        LayoutModule,
-        MatMenuModule,
-        MatCheckboxModule,
-        MatOptionModule,
-        MatSelectModule,
-        MatAutocompleteModule,
+    HomeComponent,
+    UniquePipe,
 
-    ],
+
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatButtonModule,
+    RouterModule.forRoot(appRoutes),
+    HttpClientModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatSidenavModule,
+    MatDialogModule,
+    FontAwesomeModule,
+    MatTableModule,
+    MatCardModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    FormsModule,
+    MatExpansionModule,
+    LayoutModule,
+    MatMenuModule,
+    MatCheckboxModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatListModule,
+
+  ],
   providers: [{
     provide: TOASTR_TOKEN,
     useValue: toastr,

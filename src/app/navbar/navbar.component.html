@@ -2,12 +2,11 @@
 <app-sidenav (onToggleSidebar)="onToggleSidebar($event)"></app-sidenav>
 -->
 
-<mat-toolbar>
+<mat-toolbar color="primary" style="position: sticky ; top: 0; z-index: 2">
   <mat-toolbar-row>
-
     <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
     <h1>Outils d'étude de prix</h1>
-    <button *ngIf="accountService.userValue" mat-button [matMenuTriggerFor]="menu">
+    <button *ngIf="userService.userValue" mat-button [matMenuTriggerFor]="menu">
       <mat-icon>settings_account_box</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
@@ -16,44 +15,55 @@
         <span> Mon compte</span>
       </button>
       <button mat-menu-item>
-        <mat-icon color="warn" (click)="accountService.logout()">logout</mat-icon>
+        <mat-icon color="warn" (click)="userService.logout()">logout</mat-icon>
         <span>Logout</span>
       </button>
 
     </mat-menu>
-    <!--    <ng-template #superAdmin>-->
-    <!--      <button mat-menu-item>-->
-    <!--        <mat-icon color="warn" (click)="superAdminService.logout()">-->
-    <!--          logout-->
-    <!--        </mat-icon>-->
-    <!--        <span>Logout</span>-->
-    <!--      </button>-->
-    <!--    </ng-template>-->
-
   </mat-toolbar-row>
+
 </mat-toolbar>
+
+
 <mat-sidenav-container>
   <mat-sidenav #sidenav>
     <mat-nav-list>
-      <ul class="sidebar-nav">
-        <li class="sidebar-nav-item" *ngFor="let data of navData">
-          
-          <a href="" class="sidebar-nav-link" [routerLink]="[data.routeLink]">
-            <fa-icon class="sidebar-link-icon" [icon]="data.icon"></fa-icon>
-            <span class="sidebar-link-text">{{data.label}}</span>
+      <ul class="sidebar-nav" *ngIf="!userService.userValue">
+        <li class="sidebar-nav-item">
+          <a href="" class="sidebar-nav-link" [routerLink]="['/login']">
+            <mat-icon class="sidebar-link-icon">how_to_reg</mat-icon>
+            <span class="sidebar-link-text">Connexion</span>
           </a>
         </li>
       </ul>
-    </mat-nav-list>
+      <div *ngIf="userService.userValue ">
+        <ul class="sidebar-nav" *ngIf="userService.userValue.role==='Admin'">
+          <li class="sidebar-nav-item" *ngFor="let data of navData">
+            <a href="" class="sidebar-nav-link" [routerLink]="[data.routeLink]">
+              <fa-icon class="sidebar-link-icon" [icon]="data.icon"></fa-icon>
+              <span class="sidebar-link-text">{{data.label}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="userService.userValue ">
+        <ul class="sidebar-nav" *ngIf="userService.userValue.role==='Super Admin'">
+          <li class="sidebar-nav-item" *ngFor="let data of navDataSuperAdmin">
+            <a href="" class="sidebar-nav-link" [routerLink]="[data.routeLink]">
+              <fa-icon class="sidebar-link-icon" [icon]="data.icon"></fa-icon>
+              <span class="sidebar-link-text">{{data.label}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
 
+    </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <div style="height: 100vh">
+    <div style="height: 100vh; ">
       <router-outlet>
       </router-outlet>
-
     </div>
-
   </mat-sidenav-content>
 </mat-sidenav-container>
 

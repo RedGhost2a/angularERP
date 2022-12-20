@@ -1,1 +1,49 @@
-<p>super-admin-list works!</p>
+<div *ngIf="entreprise">
+  <h1 class="header">{{entreprise.commercialName}}</h1>
+</div>
+<div class="container" *ngIf="entreprise ">
+
+  <div class="card-devis">
+    <mat-list>
+      <div class="titre" mat-subheader>Liste des devis</div>
+      <mat-list-item *ngFor="let devis of devisAll">
+        <mat-icon matListItemIcon>folder</mat-icon>
+        <div matListItemTitle>{{devis.name}} </div>
+        <div></div>
+        <span matListItemLine>{{devis.createdAt | date}}</span>
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+  <div class="card-client">
+    <mat-list>
+      <div class="titre" mat-subheader>Liste des clients</div>
+      <mat-list-item *ngFor="let cl of client| unique:'Client.id'">
+
+        <div>{{cl.Client.id}}</div>
+        <div matLine>
+          <mat-icon>person</mat-icon>
+          {{cl.Client.firstName}}</div>
+        <div matLine>{{cl.Client.createdAt | date}}</div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+
+  <div class="card-user">
+    <mat-list>
+      <div class="titre" mat-subheader>Liste des utilisateurs</div>
+      <mat-list-item *ngFor="let user of userAll ">
+        <mat-icon matListItemIcon>folder</mat-icon>
+        <div matListItemTitle>{{user.title}} </div>
+        <div matListItemTitle>{{user.firstName}} </div>
+        <div matListItemTitle>{{user.lastName}} </div>
+        <span matListItemLine>{{user.roles | date}}</span>
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+</div>
+
+
+

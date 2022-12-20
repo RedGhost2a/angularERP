@@ -1,20 +1,78 @@
 .container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
   padding: 10px;
+  text-align: center;
+  flex-wrap: wrap;
 }
 
-.group {
+.mat-card-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: center;
+  color: #ffc107;
+}
+
+.header {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.image {
+  background-color: transparent;
+  backface-visibility: visible;
+  filter: opacity(0.9);
+  width: 120px;
+  margin: 5px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 10px;
+  justify-content: space-around;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.user-card {
+  width: 200px;
+  height: 120px;
+  border-radius: 0px;
+  background: linear-gradient(145deg, #1c3e62, #173453);
+  box-shadow: 5px 5px 8px #0b1826, -5px -5px 8px #295c92;
+  margin: 10px;
+}
+
+.mat-card-title {
+  text-align: left;
+}
+
+.button-droite {
   display: flex;
   flex-direction: column;
-  padding: 10px;
-  width: 100%;
-}
-
-mat-accordion {
-  margin-top: 10px;
+  padding: 40px;
+  border: solid 2px rgba(47, 65, 144, 0.85);
+  justify-content: space-around;
+  align-items: stretch;
+  border-radius: 76px;
+  border-bottom-right-radius: 11px;
+  border-top-left-radius: 10px;
+  color: white;
+  background: linear-gradient(315deg, #173453, #1c3e62);
+  box-shadow: -13px -13px 26px #0a1725, 13px 13px 26px #2a5d93;
+  backdrop-filter: blur(1.3px);
 }
 
 /*# sourceMappingURL=super-admin.component.css.map */

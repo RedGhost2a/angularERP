@@ -1,0 +1,44 @@
+.dates {
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  color: white;
+  font-size: 40px;
+  margin: 10px 30px;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 100px;
+  left: 0;
+}
+
+.titre {
+  color: white;
+  font-size: 90px;
+}
+
+.row {
+  margin-top: 20px;
+}
+
+.row-date {
+  font-size: 90px;
+  margin-top: 20px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-content: space-between;
+  color: white;
+  font-size: 90px;
+  padding: 20px;
+  margin: 30px auto;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.container {
+  height: 800px;
+}
+
+/*# sourceMappingURL=home.component.css.map */

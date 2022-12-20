@@ -1,42 +1,45 @@
 <div class="form-group">
   <ng-container>
     <div class="modal-header">
-      <h1 class="modal-title">{{textButton}}</h1>
+      <h1 class="modal-title">Création d'un nouvel utilisateur</h1>
     </div>
     <form class="form" [formGroup]="myFormGroup">
-      <mat-form-field appearance="outline" color="primary">
-        <mat-label> Titre</mat-label>
+      <!-- autres champs de formulaire -->
+      <input type="file" name="avatar" formControlName="avatarUrl" (change)="previewAvatar($event)"/>
+      <img [src]="avatarUrl" alt="Avatar preview"/>
+      <mat-form-field class="input-group">
+        <mat-label class="mat-label"> Titre</mat-label>
         <input matInput placeholder="Entrer le nom" formControlName="title">
       </mat-form-field>
-      <mat-form-field appearance="outline" color="primary">
-        <mat-label> Nom</mat-label>
-        <input matInput placeholder="Entrer le nom" formControlName="firstName">
+      <mat-form-field class="input-group">
+        <mat-label class="mat-label"> Nom</mat-label>
+        <input matInput formControlName="firstName">
       </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label> Prénom</mat-label>
+      <mat-form-field class="input-group">
+        <mat-label class="mat-label"> Prénom</mat-label>
         <input matInput placeholder="Entrer le prénom" formControlName="lastName">
       </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Role</mat-label>
+      <mat-form-field class="input-group">
+        <mat-label class="mat-label">Role</mat-label>
         <mat-select formControlName="role">
           <mat-option value="Admin">Admin</mat-option>
           <mat-option value="User">User</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Entreprise</mat-label>
+      <mat-form-field class="input-group">
+        <mat-label class="mat-label">Entreprise</mat-label>
         <mat-select formControlName="EntrepriseId">
           <mat-option [value]=+entreprise.id
                       *ngFor="let entreprise of listEntreprise">{{entreprise.commercialName}}</mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Email</mat-label>
+      <mat-form-field class="input-group">
+        <mat-label class="mat-label">Email</mat-label>
         <input matInput placeholder="1234 Main St" formControlName="email">
       </mat-form-field>
-      <mat-form-field appearance="outline">
-        <mat-label>Password</mat-label>
+      <mat-form-field class="input-group">
+        <mat-label class="mat-label">Password</mat-label>
         <input matInput formControlName="password">
       </mat-form-field>
 

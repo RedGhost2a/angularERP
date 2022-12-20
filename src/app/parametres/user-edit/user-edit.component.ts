@@ -21,6 +21,7 @@ export class UserEditComponent implements OnInit {
   checked = true;
   disabled = false;
   listEntreprise: any[] = [];
+  avatarUrl: any;
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, private alerteService: AlertService,
               private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr, private entrepriseService: EntrepriseService) {
@@ -32,7 +33,9 @@ export class UserEditComponent implements OnInit {
       firstName: "",
       lastName: "",
       role: "",
+      avatarUrl: "",
       EntrepriseId: ""
+
     })
 
   }
@@ -46,7 +49,6 @@ export class UserEditComponent implements OnInit {
   }
 
   createAndUpdate(): void {
-
     this.route.params.subscribe(params => {
       const userID = +params['id']
       console.log(userID)
@@ -54,7 +56,6 @@ export class UserEditComponent implements OnInit {
         this.userService.register(this.myFormGroup.getRawValue()).subscribe(
           (): void => {
             console.log(this.myFormGroup.getRawValue())
-
             this.success("Nouvelle utilisateur en vue !")
             this.router.navigate(['/users']);
 
@@ -75,6 +76,15 @@ export class UserEditComponent implements OnInit {
           });
       }
     })
+  }
+
+  previewAvatar(event: any) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.avatarUrl = e.target.result;
+    }
+    reader.readAsDataURL(file);
   }
 
   getEntrepriseForUser() {
@@ -102,6 +112,7 @@ export class UserEditComponent implements OnInit {
             firstName: data.firstName,
             lastName: data.lastName,
             role: data.role,
+            avatarUrl: data.avatarUrl,
             EntrepriseId: data.EntrepriseId,
 
 
@@ -110,7 +121,7 @@ export class UserEditComponent implements OnInit {
           this.myFormGroup.patchValue(data);
         });
       } else {
-        this.textButton = 'Créer un nouvelle utilisateur'
+        this.textButton = "VALIDER"
         this.formBuilder.group({
           title: [],
           firstName: [],
@@ -118,6 +129,7 @@ export class UserEditComponent implements OnInit {
           role: [],
           email: [],
           password: [],
+          avatarUrl: [],
           EntrepriseId: [],
           // Entreprise: {}
 

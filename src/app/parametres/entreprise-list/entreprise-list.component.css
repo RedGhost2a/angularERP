@@ -5,6 +5,13 @@
   align-items: center;
 }
 
+.mat-flat-button {
+  background: linear-gradient(315deg, #173453, #1c3e62);
+  box-shadow: -13px -13px 26px #0a1725, 13px 13px 26px #2a5d93;
+  color: #ffc107;
+  border: 1px solid #ffc107;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -18,6 +25,10 @@
   padding: 10px;
 }
 
+.mat-label {
+  color: white;
+}
+
 .button-droite {
   display: flex;
   flex-direction: column;
@@ -28,7 +39,9 @@
   border-radius: 76px;
   border-bottom-right-radius: 11px;
   border-top-left-radius: 10px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  color: white;
+  background: linear-gradient(315deg, #173453, #1c3e62);
+  box-shadow: -13px -13px 26px #0a1725, 13px 13px 26px #2a5d93;
   backdrop-filter: blur(1.3px);
 }
 
@@ -42,7 +55,8 @@
   border-bottom-right-radius: 11px;
   border-top-left-radius: 10px;
   width: 30%;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(315deg, #173453, #1c3e62);
+  box-shadow: -13px -13px 26px #0a1725, 13px 13px 26px #2a5d93;
   backdrop-filter: blur(1.3px);
 }
 
@@ -50,10 +64,13 @@
   display: flex;
   flex-direction: row;
   text-align: center;
+  margin-top: 10px;
   padding: 10px;
   /* width: 70%; */
   align-items: center;
   justify-content: space-evenly;
+  background: linear-gradient(315deg, #173453, #1c3e62);
+  box-shadow: -13px -13px 26px #0a1725, 13px 13px 26px #2a5d93;
 }
 
 .image {
@@ -84,8 +101,16 @@
   align-items: center;
   justify-content: space-around;
   height: 140px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(1.3px);
+  background: linear-gradient(315deg, #173453, #1c3e62);
+  box-shadow: -13px -13px 26px #0a1725, 13px 13px 26px #2a5d93;
+}
+
+.mat-form-field {
+  text-align: center;
+}
+
+.mat-label {
+  color: red;
 }
 
 .mat-card-actions {
@@ -96,9 +121,10 @@
 
 .user-card {
   border-radius: 76px;
-  height: 590px;
-  background: rgba(71, 96, 203, 0.09);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  color: white;
+  height: 500px;
+  background: linear-gradient(315deg, #173453, #1c3e62);
+  box-shadow: -13px -13px 26px #0a1725, 13px 13px 26px #2a5d93;
   backdrop-filter: blur(4px);
   margin-right: 20px;
 }
@@ -107,8 +133,8 @@
   border-radius: 76px;
   border-bottom-left-radius: 11px;
   border-top-right-radius: 10px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(1.3px);
+  background: linear-gradient(315deg, #173453, #1c3e62);
+  box-shadow: -13px -13px 26px #0a1725, 13px 13px 26px #2a5d93;
   margin-right: 20px;
 }
 
@@ -116,8 +142,8 @@
   border-radius: 76px;
   border-bottom-right-radius: 11px;
   border-top-left-radius: 10px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(1.3px);
+  background: linear-gradient(315deg, #173453, #1c3e62);
+  box-shadow: -13px -13px 26px #0a1725, 13px 13px 26px #2a5d93;
 }
 
 /*# sourceMappingURL=entreprise-list.component.css.map */

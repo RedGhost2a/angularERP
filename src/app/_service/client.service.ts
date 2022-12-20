@@ -17,6 +17,11 @@ export class ClientService {
     return this.http.post('http://localhost:4000/clients/new', client);
   }
 
+  getByCompany(id: any) {
+    return this.http.get(`http://localhost:4000/clients/${id}/`);
+
+  }
+
 
   getAll(): Observable<any> {
     return this.http.get(`http://localhost:4000/clients`)
