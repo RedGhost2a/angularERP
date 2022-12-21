@@ -26,12 +26,9 @@ export class OuvrageCoutService {
     return this.http.delete(`${baseUrl}/${CoutId}/${OuvrageId}`)
   }
 
-  // addCoutOuvrage(coutId:number, ouvrageId:number) :Observable<any> {
-  //   return this.http.get(`${baseUrl}/new/${coutId}/${ouvrageId}`);
-  // }
 
   getSumAllOuvrage(): Observable<any>{
-    return this.http.get(`${baseUrl}/price}`)
+    return this.http.get(`${baseUrl}/price`)
   }
   getSumOuvrageById(ouvrageId:number): Observable<any>{
     return this.http.get(`${baseUrl}/price/${ouvrageId}`)
