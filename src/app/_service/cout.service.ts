@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {environment} from "../../environments/environment";
 import {Cout} from "../_models/cout";
+import {CoutDuDevis} from "../_models/cout-du-devis";
+
 
 const baseUrl = `${environment.apiUrl}/couts`;
 const test = environment.apiUrl
@@ -36,8 +38,8 @@ export class CoutService {
   getLast():Observable<any>{
     return this.http.get(`${baseUrl}/lastCout`)
   }
-  createCoutDuDevis(data:any):Observable<any>{
+  createCoutDuDevis(data:CoutDuDevis):Observable<CoutDuDevis>{
     console.log("createcoutdudevis",data)
-    return this.http.post(`http://localhost:4000/coutsDuDevis/new`,data)
+    return this.http.post<CoutDuDevis>(`http://localhost:4000/coutsDuDevis/new`,data)
   }
 }

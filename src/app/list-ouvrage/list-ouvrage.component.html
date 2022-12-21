@@ -46,7 +46,7 @@
     <!--  </ng-container>-->
     <ng-container matColumnDef="prixUnitaire">
       <th mat-header-cell *matHeaderCellDef> PU HT</th>
-      <td mat-cell routerLink="/ouvrageDetail/{{ouvrage.id}}" *matCellDef="let ouvrage"></td>
+      <td mat-cell routerLink="/ouvrageDetail/{{ouvrage.id}}" *matCellDef="let ouvrage;let i = index;">{{prixOuvrage[i]}}</td>
     </ng-container>
 
     <ng-container matColumnDef="boutons">

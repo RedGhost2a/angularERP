@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {OuvrageService} from "../_service/ouvrage.service";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {Ouvrage} from "../_models/ouvrage";
-import {Cout} from "../_models/cout";
+import {CoutDuDevis} from "../_models/cout-du-devis";
 import {ActivatedRoute} from "@angular/router";
 import {map, Observable} from "rxjs";
 
@@ -15,7 +15,7 @@ export class DetailOuvrageComponent implements OnInit {
   ouvrage!:Ouvrage
   prixOuvrage!:number
   ouvrageID!:number
-  cout!:Cout[]
+  cout!:CoutDuDevis[];
   @Output() deleteCout: EventEmitter<any> = new EventEmitter()
   columnsToDisplay = ["designation","benefice","aleas", "unite","ratio", "uRatio","prixUnitaire", "boutons"];
 
@@ -25,18 +25,9 @@ export class DetailOuvrageComponent implements OnInit {
 
   ngOnInit(): void {
     this.getById();
-    //this.getById()
-    //this.getSum()
-    //console.log(this.ouvrage)
+    this.getOuvragePriceById(this.ouvrageID)
   }
 
-  getSum():void{
-    this.ouvrageService.getSum(this.ouvrageID).subscribe(data =>{
-      console.log(data['totalPrix']);
-      this.prixOuvrage = data.totalPrix;
-      console.log('prix unitaire ouvrage: ' + this.prixOuvrage)
-    })
-  }
 
   getById():void{
     this.route.params.subscribe(params =>{
@@ -49,17 +40,18 @@ export class DetailOuvrageComponent implements OnInit {
     } )
   }
 
-  // getById():void{
-  //   this.ouvrageService.getById(this.ouvrageID).subscribe(data =>{
-  //     this.ouvrage = data;
-  //     this.cout = data.CoutDuDevis
-  //     console.log("detail ouvrage ts getbyid this.cout",data)
-  //   });
-  // }
+  getOuvragePriceById(id:number):void{
+    this.ouvrageCoutService.getSumOuvrageById(id).subscribe(data =>{
+      this.prixOuvrage = data.sommeCouts
+    })
+  }
+
+
   deleteById(Coutid:any):void{
     console.log(Coutid)
     this.ouvrageCoutService.deleteByID(Coutid,this.ouvrageID).subscribe(() => {
-      this.deleteCout.emit()
+      //this.deleteCout.emit()
+      this.getById()
       alert("Cout supprimer de l'ouvrage")
     })
   }

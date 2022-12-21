@@ -4,6 +4,7 @@ import {Cout} from "../_models/cout";
 import {CoutService} from "../_service/cout.service";
 import {OuvrageService} from "../_service/ouvrage.service";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
+import {CoutDuDevis} from "../_models/cout-du-devis";
 
 
 @Component({
@@ -19,7 +20,7 @@ export class OuvrageAddCoutComponent implements OnInit {
   coutChecked :number[] = [];
   ouvrageId!:number
   columnsToDisplay = ["checkBox","type","categorie","designation", "unite", "prixUnitaire", "fournisseur","remarque"];
-
+  coutDuDevis!:CoutDuDevis;
 
   constructor(private route: ActivatedRoute, private coutService: CoutService,
               private ouvrageService: OuvrageService, private ouvrageCoutService : OuvrageCoutService) { }
@@ -48,9 +49,25 @@ export class OuvrageAddCoutComponent implements OnInit {
       console.log('OUVRAGE AJOUT COUT')
       this.coutService.getById(val).subscribe(data=>{
         this.coutOuvrage = data;
-        console.log(data)
-        console.log(typeof(data.Fournisseurs));
-      this.coutService.createCoutDuDevis(data).subscribe()
+        console.log("data",data)
+        //console.log(typeof(data.Fournisseurs));
+
+        const {Fournisseurs}:any = data;
+        const {TypeCout}:any = data;
+        if(Fournisseurs[0].remarque === null){
+          Fournisseurs[0].remarque = "";
+        }
+        this.coutDuDevis = {
+          OuvrageId: this.ouvrageId,
+          type:TypeCout.type,
+          categorie:TypeCout.categorie,
+          designation:data.designation,
+          unite:data.unite,
+          prixUnitaire:data.prixUnitaire,
+          fournisseur:Fournisseurs[0].commercialName,
+          remarque:  Fournisseurs[0].remarque
+        }
+      this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe()
       })
     }
   }

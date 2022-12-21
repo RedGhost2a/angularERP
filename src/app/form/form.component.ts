@@ -8,6 +8,7 @@ import {Fournisseur} from "../_models/fournisseur";
 import {TypeCout} from "../_models/type-cout";
 import {TypeCoutService} from "../_service/typeCout.service";
 import {FournisseurCout} from "../_models/fournisseur-cout";
+import {OuvrageService} from "../_service/ouvrage.service";
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
@@ -26,18 +27,22 @@ export class FormComponent implements OnInit {
   urlCout: string = "http://localhost:4200/cout";
   urlFournisseur: string =  "http://localhost:4200/fournisseur";
   urlTypeCout :string = "http://localhost:4200/typeCout";
+  urlOuvrage :string = "http://localhost:4200/ouvrage";
   isCout:boolean = false;
   isFournisseur:boolean = false;
   isTypeCout:boolean = false;
+  isOuvrage:boolean = false;
 
   constructor(private formBuilder: FormBuilder, private coutService: CoutService,
               private route: ActivatedRoute, private userService: UserService,
-              private fournisseurService : FournisseurService, private typeCoutService: TypeCoutService) { }
+              private fournisseurService : FournisseurService, private typeCoutService: TypeCoutService,
+              private ouvrageService: OuvrageService) { }
 
   ngOnInit(): void {
     const regexCout = new RegExp(`^${this.urlCout}`)
     const regexFournisseur = new RegExp(`^${this.urlFournisseur}`)
     const regexTypeCout = new RegExp(`^${this.urlTypeCout}`)
+    const regexOuvrage = new RegExp(`^${this.urlOuvrage}`)
     if(regexCout.test(window.location.href)){
       this.createFormCout();
       this.getUserById();
@@ -56,6 +61,12 @@ export class FormComponent implements OnInit {
       this.generateFormUpdateTypeCout();
       this.isTypeCout = true;
     }
+    if(regexOuvrage.test(window.location.href)){
+      this.createFormOuvrage();
+      this.getUserById();
+      this.generateFormUpdateOuvrage();
+      this.isOuvrage = true;
+    }
   }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,8 +82,8 @@ export class FormComponent implements OnInit {
           (): void => {
             this.fournisseurId = this.myFormGroup.getRawValue().Fournisseurs
             alert('Nouveau cout enregistrer')
-            this.getLastCout()
-            this.createCoutFournisseur(this.lastCoutId,this.fournisseurId)
+            // this.getLastCout()
+            // this.createCoutFournisseur(this.lastCoutId,this.fournisseurId)
           });
       } else {
         this.coutService.update(this.myFormGroup.getRawValue(), coutID)
@@ -103,7 +114,7 @@ export class FormComponent implements OnInit {
       prixUnitaire: new FormControl(),
       EntrepriseId: new FormControl(),
       TypeCoutId: new FormControl(),
-      Fournisseurs: new FormControl()
+      FournisseurId: new FormControl()
     });
   }
 
@@ -143,7 +154,8 @@ export class FormComponent implements OnInit {
             prixUnitaire: data.prixUnitaire,
             EntrepriseId: data.EntrepriseId,
             TypeCoutId: data.TypeCoutId,
-            Fournisseurs: Fournisseurs[0].id
+            // Fournisseurs: Fournisseurs[0].id
+            FournisseurId: Fournisseurs[0].id
           }
           this.myFormGroup.patchValue(data);
         });
@@ -179,7 +191,7 @@ export class FormComponent implements OnInit {
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
       commercialName: new FormControl(),
-      remarque: new FormControl(),
+      remarque: new FormControl(''),
     });
   }
   createAndUpdateFournisseur(): void {
@@ -273,7 +285,64 @@ export class FormComponent implements OnInit {
     })
 
   }
+  ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////OUVRAGE//////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+  createAndUpdateOuvrage():void{
+    this.route.params.subscribe(params =>{
+      const ouvrageID = +params['id']
+      if(isNaN(ouvrageID)) {
+        this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe(
+          () : void =>{
+            alert('Nouveau ouvrage enregistrer')
+          }
+        )
+      }else{
+        this.ouvrageService.update(this.myFormGroup.getRawValue(), ouvrageID)
+          .subscribe((): void => {
+            alert('ouvrage update!');
+          });
+      }
+    })
+  }
 
+  generateFormUpdateOuvrage(): void {
+    this.route.params.subscribe(params => {
+      const ouvrageID = +params['id']
+      if (!isNaN(ouvrageID)) {
+        this.textButton = 'Modifier l ouvrage';
+        this.titreForm = 'Modification de l ouvrage';
+        this.ouvrageService.getById(ouvrageID).subscribe(data => {
+          data = {
+            designation: data.designation,
+            benefice: data.benefice,
+            aleas: data.aleas,
+            unite: data.unite,
+            ratio: data.ratio,
+            uRatio: data.uRatio,
+          }
+          this.myFormGroup.patchValue(data);
+        });
+      }
+    })
+
+  }
+
+  createFormOuvrage():void{
+    this.textButton = "Creer un ouvrage";
+    this.titreForm = "Création d'un ouvrage"
+    this.myFormGroup = new FormGroup({
+      designation: new FormControl(),
+      benefice: new FormControl(),
+      aleas: new FormControl(),
+      unite: new FormControl(),
+      ratio: new FormControl(),
+      uRatio: new FormControl(),
+      EntrepriseId: new FormControl(),
+    });
+  }
 
 
 }
