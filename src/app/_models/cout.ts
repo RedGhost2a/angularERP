@@ -8,6 +8,6 @@ export interface Cout {
   prixUnitaire: number;
   EntrepriseId:number;
   TypeCoutId:number;
-  //FournisseurId:number;
-  Fournisseurs: Fournisseur;
+  FournisseurId:number;
+  //Fournisseurs: Fournisseur;
 }

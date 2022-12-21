@@ -133,7 +133,7 @@ export class FormCoutComponent implements OnInit {
             prixUnitaire: data.prixUnitaire,
             EntrepriseId: data.EntrepriseId,
             TypeCoutId: data.TypeCoutId,
-            Fournisseurs: Fournisseurs[0].id
+            FournisseurId: Fournisseurs[0].id
           }
           this.myFormGroup.patchValue(data);
         });

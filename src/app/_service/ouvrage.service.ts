@@ -22,7 +22,7 @@ export class OuvrageService {
     return this.http.get(`${baseUrl}/${id}`);
   }
   create(data: any) :Observable<any> {
-    return this.http.post(baseUrl, data);
+    return this.http.post(`${baseUrl}/new`, data);
   }
   update(data:any, id:any):Observable<any>{
     return this.http.put(`${baseUrl}/${id}`, data)
@@ -32,13 +32,13 @@ export class OuvrageService {
     return this.http.delete(`${baseUrl}/${id}`)
   }
 
-  addCoutOuvrage(coutId:number, ouvrageId:number) :Observable<any> {
-    console.log(` console log ADD COUT: http://localhost:8080/ouvragesCouts/new/${coutId}/${ouvrageId}`)
-    return this.http.get(`http://localhost:8080/ouvragesCouts/new/${coutId}/${ouvrageId}`);
-  }
-  getSum(ouvrageId:number): Observable<any>{
-    return this.http.get(`${baseUrl}/test/sum/${ouvrageId}`)
-  }
+  // addCoutOuvrage(coutId:number, ouvrageId:number) :Observable<any> {
+  //   console.log(` console log ADD COUT: http://localhost:8080/ouvragesCouts/new/${coutId}/${ouvrageId}`)
+  //   return this.http.get(`http://localhost:8080/ouvragesCouts/new/${coutId}/${ouvrageId}`);
+  // }
+  // getSum(ouvrageId:number): Observable<any>{
+  //   return this.http.get(`${baseUrl}/test/sum/${ouvrageId}`)
+  // }
 
 
 

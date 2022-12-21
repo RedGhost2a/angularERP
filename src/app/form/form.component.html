@@ -38,7 +38,8 @@
 
       <mat-form-field appearance="fill" >
         <mat-label>Fournisseur</mat-label>
-        <mat-select formControlName="Fournisseurs">
+        <mat-select formControlName="FournisseurId">
+<!--        <mat-select formControlName="Fournisseurs">-->
           <mat-option *ngFor="let item of fournisseur" [value]="item.id">
             {{item.commercialName}} {{item.id}}
           </mat-option>
@@ -99,5 +100,61 @@
 
 
     <button   mat-raised-button (click)="createAndUpdateTypeCout()" >{{textButton}}</button>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="isOuvrage" [formGroup]="this.myFormGroup">
+  <button routerLink="/listOuvrage" mat-raised-button color="accent">Retour</button>
+  <div class="container test">
+    <h1> {{titreForm}}</h1>
+    <div class="group1">
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Désignation</mat-label>
+          <input formControlName="designation" matInput placeholder="Ex: Béton de propreté">
+
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Bénéfice</mat-label>
+          <input formControlName="benefice" matInput placeholder="Ex: 10">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Aléas</mat-label>
+          <input formControlName="aleas" matInput placeholder="Ex: 10">
+        </mat-form-field>
+      </p>
+    </div>
+    <div class="group2">
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Unité</mat-label>
+          <input formControlName="unite" matInput placeholder="Ex: 10">
+        </mat-form-field>
+      </p><p>
+      <mat-form-field appearance="legacy">
+        <mat-label>Ratio</mat-label>
+        <input formControlName="ratio" matInput placeholder="Ex: 0.9">
+      </mat-form-field>
+    </p>
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>U/Ratio</mat-label>
+          <input formControlName="uRatio" matInput placeholder="Ex: ">
+        </mat-form-field>
+      </p>
+      <!--      <p>-->
+      <!--        <mat-form-field appearance="legacy">-->
+      <!--          <mat-label>Ratio</mat-label>-->
+      <!--          <input formControlName="prixUnitaire" matInput placeholder="Ex: 0.80">-->
+      <!--        </mat-form-field>-->
+      <!--      </p>-->
+    </div>
+
+
+    <button routerLink="/listOuvrage"  mat-raised-button (click)="createAndUpdateOuvrage()">{{textButton}}</button>
   </div>
 </ng-container>
