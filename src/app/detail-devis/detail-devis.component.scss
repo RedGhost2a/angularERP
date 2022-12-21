@@ -1,0 +1,65 @@
+.title{
+  margin-left: 20px;
+}
+
+.container{
+  display: flex;
+  justify-content: space-around;
+  //border: solid #feff43;
+}
+.example-card{
+  //border: solid red ;
+  margin-top:5% ;
+  width: 40%;
+  height: 230px;
+}
+.subContainer{
+  //border: solid #64E6EF;
+  display: flex;
+  justify-content: space-around;
+}
+.bouton {
+  //border:solid;
+}
+.group{
+  //border:solid #4dc71f;
+  display: flex;
+  flex-direction: column;
+}
+.group1{
+  //border:solid #806104;
+}
+.group2{
+  //border:solid lightsalmon;
+}
+.detail{
+  //border:solid #173453 1px;
+  padding: 20px;
+  //margin-left: 20px;
+
+}
+.group3{
+  //border:solid;
+  display: flex;
+  margin-left: 20px;
+
+}
+.subContainer2{
+  //border:solid red;
+  display: flex;
+  flex-direction: column;
+
+}
+.detailList2{
+  display: flex;
+}
+.detail2{
+  display: flex;
+  justify-content: space-around;
+}
+
+.btnUpdate{
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px;
+}

@@ -1,0 +1,55 @@
+.title {
+  margin-left: 20px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.example-card {
+  margin-top: 5%;
+  width: 40%;
+  height: 230px;
+}
+
+.subContainer {
+  display: flex;
+  justify-content: space-around;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+}
+
+.detail {
+  padding: 20px;
+}
+
+.group3 {
+  display: flex;
+  margin-left: 20px;
+}
+
+.subContainer2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.detailList2 {
+  display: flex;
+}
+
+.detail2 {
+  display: flex;
+  justify-content: space-around;
+}
+
+.btnUpdate {
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px;
+}
+
+/*# sourceMappingURL=detail-devis.component.css.map */

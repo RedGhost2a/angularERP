@@ -30,6 +30,8 @@ import {ListDevisComponent} from "./devis/list-devis/list-devis.component";
 import {FormComponent} from "./form/form.component";
 import {SuperAdminListComponent} from "./super-admin-list/super-admin-list.component";
 import {HomeComponent} from "./home/home.component";
+import {DetailDevisComponent} from "./detail-devis/detail-devis.component";
+import {CreateDevisComponent} from "./create-devis/create-devis.component";
 
 const routes: Routes = [
   {
@@ -62,6 +64,8 @@ const routes: Routes = [
   {path:'typeCout/:id',component:FormComponent},
   {path:'ouvrage',component:FormComponent},
   {path:'ouvrage/:id',component:FormComponent},
+  {path: 'devisDetail/:id', component: DetailDevisComponent},
+  {path: 'devisCreate/:id', component: CreateDevisComponent},
 
 
 

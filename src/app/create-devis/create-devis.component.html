@@ -1,0 +1,25 @@
+<mat-tab-group animationDuration="0ms" class="onglet">
+
+  <mat-tab label="Frais de chantier">
+    <h3>Frais de chantier</h3>
+    <form [formGroup]="myFormGroup">
+      <button (click)="ajouterChamp()">Ajouter un champ</button>
+      <mat-form-field *ngFor="let control of myFormGroup.controls | keyvalue">
+        <input matInput [formControlName]="control.key">
+      </mat-form-field>
+    </form>
+  </mat-tab>
+
+  <mat-tab label="Devis">
+    Content 1
+    <p>test</p>
+    <button>etest</button>
+  </mat-tab>
+
+  <mat-tab label="Paramètre de chantier">
+    Content 2
+  </mat-tab>
+
+
+
+</mat-tab-group>

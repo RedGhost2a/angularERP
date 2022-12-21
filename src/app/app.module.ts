@@ -61,6 +61,9 @@ import {FormComponent} from './form/form.component';
 import {HomeComponent} from './home/home.component';
 import {MatListModule} from "@angular/material/list";
 import {UniquePipe} from "./_helpers/FiltreUnique";
+import { DetailDevisComponent } from './detail-devis/detail-devis.component';
+import { CreateDevisComponent } from './create-devis/create-devis.component';
+import {MatTabsModule} from "@angular/material/tabs";
 
 
 const appRoutes: Routes = [];
@@ -103,39 +106,42 @@ declare const toastr: Toastr;
     FormComponent,
     HomeComponent,
     UniquePipe,
+    DetailDevisComponent,
+    CreateDevisComponent,
 
 
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatButtonModule,
-    RouterModule.forRoot(appRoutes),
-    HttpClientModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatSidenavModule,
-    MatDialogModule,
-    FontAwesomeModule,
-    MatTableModule,
-    MatCardModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot(),
-    FormsModule,
-    MatExpansionModule,
-    LayoutModule,
-    MatMenuModule,
-    MatCheckboxModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatAutocompleteModule,
-    MatListModule,
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatButtonModule,
+        RouterModule.forRoot(appRoutes),
+        HttpClientModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatSidenavModule,
+        MatDialogModule,
+        FontAwesomeModule,
+        MatTableModule,
+        MatCardModule,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot(),
+        FormsModule,
+        MatExpansionModule,
+        LayoutModule,
+        MatMenuModule,
+        MatCheckboxModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatAutocompleteModule,
+        MatListModule,
+        MatTabsModule,
 
-  ],
+    ],
   providers: [{
     provide: TOASTR_TOKEN,
     useValue: toastr,
