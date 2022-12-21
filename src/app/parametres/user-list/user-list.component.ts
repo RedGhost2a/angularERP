@@ -38,6 +38,7 @@ export class UserListComponent implements OnInit {
           const avatarUrlString = Buffer.from(user.avatarUrl.data).toString('base64');
           user.avatarUrl = 'data:image/jpeg;base64,' + avatarUrlString;
         }
+        console.log(user)
         return user;
       });
     });

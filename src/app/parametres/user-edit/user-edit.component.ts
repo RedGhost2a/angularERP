@@ -1,11 +1,12 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../_service/user.service";
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
 import {AlertService} from "../../_service/alert.service";
 import {ThemePalette} from "@angular/material/core";
 import {EntrepriseService} from "../../_service/entreprise.service";
+import {MatDialog} from '@angular/material/dialog';
 
 
 @Component({
@@ -15,28 +16,30 @@ import {EntrepriseService} from "../../_service/entreprise.service";
 })
 export class UserEditComponent implements OnInit {
   @Input() updateUser!: UserEditComponent
-  public myFormGroup: FormGroup;
+  userForm: FormGroup;
   textButton!: string;
   color: ThemePalette = 'accent';
   checked = true;
   disabled = false;
   listEntreprise: any[] = [];
   avatarUrl: any;
+  avatarBlob!: any;
+  fileName!: string;
+  fileType!: string;
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, private alerteService: AlertService,
-              private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr, private entrepriseService: EntrepriseService) {
+              private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr, private entrepriseService: EntrepriseService, public dialog: MatDialog) {
 
-    this.myFormGroup = this.formBuilder.group({
-      email: "",
-      password: "",
-      title: "",
-      firstName: "",
-      lastName: "",
-      role: "",
-      avatarUrl: "",
-      EntrepriseId: ""
-
-    })
+    this.userForm = new FormGroup({
+      'email': new FormControl(''),
+      'password': new FormControl(''),
+      'title': new FormControl(''),
+      'firstName': new FormControl(''),
+      'lastName': new FormControl(''),
+      'role': new FormControl(''),
+      'avatarUrl': new FormControl(''),
+      'EntrepriseId': new FormControl('')
+    });
 
   }
 
@@ -48,14 +51,36 @@ export class UserEditComponent implements OnInit {
     this.toastr.warning(message, "Attention");
   }
 
+  avatars: string[] = [
+    "avatar.png",
+    "avatar1.png",
+    "avatar2.png",
+    "avatar3.png",
+    "deadpool.png",
+    "iron-man.png",
+    "thanos.png",
+    "thor-avengers.png",
+
+  ]
+
+  selectedAvatar = this.avatars[0]
+
+  // Fonction qui retourne le tableau d'avatars
+  getAvatars(): string[] {
+    // console.log(this.avatars)
+    return this.avatars;
+  }
+
   createAndUpdate(): void {
     this.route.params.subscribe(params => {
       const userID = +params['id']
       console.log(userID)
       if (isNaN(userID)) {
-        this.userService.register(this.myFormGroup.getRawValue()).subscribe(
+        const userData = this.userForm.getRawValue();
+        // userData.avatarUrl = this.fileName;
+        this.userService.register(userData).subscribe(
           (): void => {
-            console.log(this.myFormGroup.getRawValue())
+            console.log(this.userForm.getRawValue())
             this.success("Nouvelle utilisateur en vue !")
             this.router.navigate(['/users']);
 
@@ -65,7 +90,7 @@ export class UserEditComponent implements OnInit {
           }
         )
       } else {
-        this.userService.update(this.myFormGroup.getRawValue(), String(userID))
+        this.userService.update(this.userForm.getRawValue(), String(userID))
           .subscribe((): void => {
             this.success("Modification effectuée !")
             this.router.navigate(['/users']);
@@ -77,6 +102,7 @@ export class UserEditComponent implements OnInit {
       }
     })
   }
+
 
   previewAvatar(event: any) {
     const file = event.target.files[0];
@@ -107,7 +133,7 @@ export class UserEditComponent implements OnInit {
           // Assuming res has a structure like:
           data = {
             email: data.email,
-            password: data.password,
+            // password: data.password,
             title: data.title,
             firstName: data.firstName,
             lastName: data.lastName,
@@ -118,7 +144,7 @@ export class UserEditComponent implements OnInit {
 
           }
 
-          this.myFormGroup.patchValue(data);
+          this.userForm.patchValue(data);
         });
       } else {
         this.textButton = "VALIDER"

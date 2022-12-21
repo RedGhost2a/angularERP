@@ -2,19 +2,8 @@
   padding: 10px;
 }
 
-.button {
-  background: #1a3a5c;
-  box-shadow: inset 10px -10px 20px #0c1c2c, inset -10px 10px 20px #28588c;
-  padding: 20px;
-  color: #4dc71f;
-  width: 200px;
-  border-radius: 16px;
-  font-size: 20px;
-  border: none;
-}
-
 .form-group {
-  height: 500px;
+  height: 400px;
   width: 700px;
   margin: auto;
   padding: 3rem;
@@ -29,8 +18,6 @@
 .input-group {
   padding: 1px;
   border-radius: 16px;
-  background: #1a3a5c;
-  box-shadow: inset 10px -10px 20px #0c1c2c, inset -10px 10px 20px #28588c;
   text-align: center;
   margin: 10px;
 }
@@ -45,6 +32,32 @@
 
 .button {
   margin-top: 20px;
+}
+
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
+  background: rgba(208, 18, 72, 0.12);
+}
+
+.mat-option {
+  white-space: nowrap;
+  text-overflow: clip;
+  line-height: 48px;
+  margin: 10px;
+  padding: 27px 11px;
+  /* padding: 0 12px; */
+  /* text-decoration: auto; */
+  /* max-width: 100%; */
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  /* flex-direction: row; */
+  /* max-width: 100%; */
+  box-sizing: content-box;
+  /* -webkit-tap-highlight-color: rgba(0,0,0,0); */
+  /* align-content: center; */
+  justify-content: space-between;
+  align-items: center;
 }
 
 /*# sourceMappingURL=user-edit.component.css.map */

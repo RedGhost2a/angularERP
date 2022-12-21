@@ -1,4 +1,4 @@
-import {Adresse} from "../_models/adresse"
+import {Adresse} from "./adresse"
 
 export interface Entreprise {
   Adresse: Adresse;
