@@ -37,7 +37,7 @@ export class UserEditComponent implements OnInit {
       'firstName': new FormControl(''),
       'lastName': new FormControl(''),
       'role': new FormControl(''),
-      'avatarUrl': new FormControl(''),
+      'avatarUrl': new FormControl(this.selectedAvatar),
       'EntrepriseId': new FormControl('')
     });
 

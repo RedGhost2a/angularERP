@@ -9,10 +9,10 @@
     </div>
   </div>
 
-  <div class="wrapper">
+  <div class="wrapper" >
     <mat-card *ngFor="let user of listUser" class="user-card">
       <!--      <img mat-card-image src="./assets/images/avatar.png" alt="Photo of a user">-->
-      <img src="./assets/avatar96px/{{user.avatarUrl}}" alt="Avatar">      <!-- Ajout de l'avatar ici -->
+      <img *ngIf="user.avatarUrl" src="./assets/avatar96px/{{user.avatarUrl}}" alt="Avatar">      <!-- Ajout de l'avatar ici -->
       <mat-card-header>
         <mat-card-title>{{user.title}}</mat-card-title>
         <mat-card-subtitle>{{user.firstName}} {{user.lastName}}</mat-card-subtitle>

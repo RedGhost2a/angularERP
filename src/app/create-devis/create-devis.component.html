@@ -3,8 +3,8 @@
   <mat-tab label="Frais de chantier">
     <h3>Frais de chantier</h3>
     <form [formGroup]="myFormGroup">
-      <button (click)="ajouterChamp()">Ajouter un champ</button>
-      <mat-form-field *ngFor="let control of myFormGroup.controls | keyvalue">
+      <button (click)="ajouterChamp()">Ajouter un lot</button>
+      <mat-form-field class='test' *ngFor="let control of myFormGroup.controls | keyvalue">
         <input matInput [formControlName]="control.key">
       </mat-form-field>
     </form>

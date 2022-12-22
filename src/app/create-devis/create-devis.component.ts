@@ -19,6 +19,6 @@ export class CreateDevisComponent implements OnInit {
 
   ajouterChamp() {
     this.nbChamp++;
-    this.myFormGroup.addControl('nouveauChamp'+this.nbChamp, new FormControl(''));
+    this.myFormGroup.addControl('designation'+this.nbChamp, new FormControl(''));
   }
 }

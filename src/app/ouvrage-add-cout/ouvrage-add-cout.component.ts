@@ -43,8 +43,8 @@ export class OuvrageAddCoutComponent implements OnInit {
 
   addCoutOuvrage() {
     for (let val of this.coutChecked) {
-      console.log(val);
-      console.log('valeur')
+      // console.log(val);
+      // console.log('valeur')
       //this.ouvrageCoutService.addCoutOuvrage(val, this.ouvrageId).subscribe()
       console.log('OUVRAGE AJOUT COUT')
       this.coutService.getById(val).subscribe(data=>{

@@ -1,3 +1,7 @@
-
+.test {
+  display: flex;
+  flex-direction: column;
+  border: solid;
+}
 
 /*# sourceMappingURL=create-devis.component.css.map */
