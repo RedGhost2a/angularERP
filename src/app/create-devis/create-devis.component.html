@@ -2,24 +2,43 @@
 
   <mat-tab label="Frais de chantier">
     <h3>Frais de chantier</h3>
-    <form [formGroup]="myFormGroup">
-      <button (click)="ajouterChamp()">Ajouter un champ</button>
-      <mat-form-field *ngFor="let control of myFormGroup.controls | keyvalue">
-        <input matInput [formControlName]="control.key">
-      </mat-form-field>
-    </form>
+    <!--    <form [formGroup]="myFormGroup">-->
+    <!--      <button (click)="ajouterChamp()">Ajouter un champ</button>-->
+    <!--      <mat-form-field *ngFor="let control of myFormGroup.controls | keyvalue">-->
+    <!--        <input matInput [formControlName]="control.key">-->
+    <!--      </mat-form-field>-->
+    <!--    </form>-->
   </mat-tab>
 
   <mat-tab label="Devis">
-    Content 1
-    <p>test</p>
-    <button>etest</button>
+    <button (click)="showForm = true; currentLot = null">Créer un lot</button>
+    <!-- Formulaire avec champ de saisie et bouton de validation -->
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value.designation)" [hidden]="!showForm">
+      <!-- Formulaire avec champ de saisie et bouton de validation -->
+      <mat-form-field appearance="outline" color="primary">
+        <mat-label>Designation</mat-label>
+        <input matInput formControlName="designation" placeholder="Entrer le lot"/>
+      </mat-form-field>
+      <button mat-flat-button type="submit">Valider</button>
+    </form>
+    <ul>
+      <li *ngFor="let lot of displayLots(lots)">
+        {{ lot.designation | uppercase }}
+        <button *ngIf="!lot.hasChild" (click)="toggleForm(); currentLot = lot">Créer un sous-lot</button>
+        <ul *ngIf="currentLot">
+          <li *ngFor="let sublot of currentLot.children">{{ sublot.designation | uppercase }}</li>
+        </ul>
+
+
+      </li>
+    </ul>
+
   </mat-tab>
+
 
   <mat-tab label="Paramètre de chantier">
     Content 2
   </mat-tab>
-
 
 
 </mat-tab-group>

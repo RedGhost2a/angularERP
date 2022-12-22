@@ -41,11 +41,24 @@
           <li class="sidebar-nav-item" *ngFor="let data of navData">
             <a href="" class="sidebar-nav-link" [routerLink]="[data.routeLink]">
               <fa-icon class="sidebar-link-icon" [icon]="data.icon"></fa-icon>
-              <span class="sidebar-link-text">{{data.label}}</span>
+              <div (click)="toggleSubnav(data)">
+                <span class="sidebar-link-text">{{data.label}}</span>
+                <fa-icon *ngIf="data.children" class="sidebar-nav-toggle" [icon]="caretDown"></fa-icon>
+              </div>
             </a>
+            <ul class="sidebar-subnav" *ngIf="data.children && data.children[0].visible">
+              <li class="sidebar-subnav-item" *ngFor="let child of data.children">
+                <a href="" class="sidebar-subnav-link" [routerLink]="[child.routeLink]">
+                  <fa-icon class="sidebar-link-icon" [icon]="child.icon"></fa-icon>
+                  <span class="sidebar-link-text">{{child.label}}</span>
+                </a>
+              </li>
+            </ul>
           </li>
         </ul>
       </div>
+
+
       <div *ngIf="userService.userValue ">
         <ul class="sidebar-nav" *ngIf="userService.userValue.role==='Super Admin'">
           <li class="sidebar-nav-item" *ngFor="let data of navDataSuperAdmin">
