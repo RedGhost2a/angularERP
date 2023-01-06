@@ -1,7 +1,155 @@
-.test {
+.onglet {
+  width: 100vw;
+  padding: 10px;
   display: flex;
   flex-direction: column;
-  border: solid;
+  color: white;
+}
+
+.lot {
+  display: flex;
+  align-content: center;
+  font-size: 15px;
+  background: rgba(179, 151, 160, 0.13);
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 20px 0 0;
+  height: 25px;
+  padding: 8px;
+  text-transform: uppercase;
+}
+
+.sousLot {
+  display: flex;
+  align-content: center;
+  font-size: 12px;
+  background: rgba(179, 151, 160, 0.13);
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 5px 20px 0 10px;
+}
+
+.ouvrage {
+  margin: 5px 20px 0 10px;
+}
+
+.cout {
+  margin: 5px 20px 0 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+.btn {
+  color: #4dc71f;
+  background-color: transparent;
+  border: none;
+}
+
+.mat-icon {
+  height: 18px;
+  width: 39px;
+}
+
+.ouvrage-header-description span {
+  width: 160px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.cout-header-description span {
+  width: 160px;
+  text-align: center;
+  margin: 5px 20px 0 10px;
+  background: rgba(179, 151, 160, 0.13);
+  text-transform: uppercase;
+}
+
+.cout-header {
+  border: solid 1px;
+  margin: 11px 20px 0 26px;
+  text-align: center;
+  padding: 5px;
+}
+
+.cout-header-description {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: #ffc107;
+}
+
+.ouvrage-header-detail span,
+.cout-header-detail span {
+  height: 40px;
+  line-height: 40px;
+  background-color: rgba(149, 195, 236, 0.13);
+  align-items: center;
+  width: 160px;
+}
+
+.ouvrage-header-description span {
+  font-size: 10px;
+}
+
+.designation {
+  font-size: 20px;
+  color: rgba(237, 231, 231, 0.98);
+  font-family: "Karla", sans-serif;
+  text-shadow: 2px 2px 2px rgba(27, 31, 57, 0.96);
+  letter-spacing: 5px;
+  FONT-WEIGHT: bold;
+}
+
+.cout-header-detail {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(149, 195, 236, 0.13);
+  align-items: center;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+.ouvrage-header-detail,
+.ouvrage-header-description {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(116, 239, 137, 0.13);
+  align-items: center;
+  width: 100%;
+  text-align: center;
+}
+
+.sous-lot-headers {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttonSup {
+  color: red;
+}
+
+.buttonImport {
+  color: green;
+}
+
+.button {
+  margin: 10px;
+}
+
+.menuBoutonSl {
+  margin: 5px;
+  padding: 5px;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
 }
 
 /*# sourceMappingURL=create-devis.component.css.map */

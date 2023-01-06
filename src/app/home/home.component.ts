@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {UserService} from "../_service/user.service";
 
 
 @Component({
@@ -18,7 +19,7 @@ export class HomeComponent implements OnInit {
 
   });
 
-  constructor() {
+  constructor(public userService: UserService) {
   }
 
 

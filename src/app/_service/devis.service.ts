@@ -19,7 +19,12 @@ export class DevisService {
     return this.http.get(baseUrl);
   }
 
-  update(devis: Devis, id: any): Observable<any> {
+  getLotSubLot(id: any): Observable<any> {
+    return this.http.get(`http://localhost:4000/devis/${id}`)
+
+  }
+
+  update(devis: any, id: any): Observable<any> {
     return this.http.put(`http://localhost:4000/devis/${id}`, devis)
   }
 
@@ -39,3 +44,4 @@ export class DevisService {
     return this.http.post(`${baseUrl}/new`, data)
   }
 }
+

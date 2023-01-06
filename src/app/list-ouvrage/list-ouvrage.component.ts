@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {OuvrageService} from "../_service/ouvrage.service";
 import {Ouvrage} from "../_models/ouvrage";
-import {Observable} from "rxjs";
 import {CoutDuDevis} from "../_models/cout-du-devis";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 
@@ -13,33 +12,37 @@ import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 })
 export class ListOuvrageComponent implements OnInit {
   @Input() listOuvrage!: Ouvrage[];
-  coutsDuDevis!:CoutDuDevis[];
+  coutsDuDevis!: CoutDuDevis[];
   prixOuvrage: number[] = [];
-  columnsToDisplay = ["designation","benefice","aleas", "unite","ratio", "uRatio","prixUnitaire", "boutons"];
+  columnsToDisplay = ["designation", "benefice", "aleas", "unite", "ratio", "uRatio", "prixUnitaire", "boutons"];
 
-  constructor(private ouvrageService: OuvrageService, private ouvrageCoutService: OuvrageCoutService) { }
+  constructor(private ouvrageService: OuvrageService, private ouvrageCoutService: OuvrageCoutService) {
+  }
 
   ngOnInit(): void {
     this.getAll()
     this.getAllPrice()
 
   }
-  getAll():void{
+
+  getAll(): void {
     // this.ouvrageService.getAll().subscribe(data => console.log(data) )
-    this.ouvrageService.getAll(1).subscribe(data =>{
+    this.ouvrageService.getAll(2).subscribe(data => {
       this.listOuvrage = data;
       // console.log(data[0].cout[0].type);
-      // console.log(data)
-      })
+      console.log("get all ouvrage list ouvrage data : ", data)
+    })
   }
-  delete(id: number): void{
+
+  delete(id: number): void {
     this.ouvrageService.deleteByID(id).subscribe(() => this.ngOnInit())
   }
-  getAllPrice():void{
-    this.ouvrageCoutService.getSumAllOuvrage().subscribe(data =>{
-      console.log("list ouvrage get all price data : ",data)
+
+  getAllPrice(): void {
+    this.ouvrageCoutService.getSumAllOuvrage().subscribe(data => {
+      console.log("list ouvrage get all price data : ", data)
       for (const somme of data) {
-        console.log("list ouvrage getAllPrice somme : ",somme.sommeCouts)
+        console.log("list ouvrage getAllPrice somme : ", somme.sommeCouts)
         this.prixOuvrage.push(somme.sommeCouts);
       }
       console.log('tableau de prix', this.prixOuvrage)

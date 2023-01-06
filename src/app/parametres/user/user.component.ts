@@ -15,11 +15,13 @@ export class UserComponent implements OnInit {
 
   constructor(private accountService: UserService, private devisService: DevisService) {
     this.user = this.accountService.userValue;
+    console.log(this.user)
 
   }
 
   ngOnInit(): void {
     this.getDevisByUser(this.user.id)
+
 
   }
 

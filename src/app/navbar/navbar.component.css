@@ -8,6 +8,14 @@
   width: 340px;
 }
 
+.avatar {
+  width: 25px;
+  border: solid 1px;
+  border-radius: 50%;
+  background-color: white;
+  padding: 5px;
+}
+
 .li {
   list-style: none;
 }

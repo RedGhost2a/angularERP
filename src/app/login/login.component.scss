@@ -4,6 +4,7 @@
   justify-content: center;
   align-content: center;
   align-items: center;
+
 }
 
 .mat-label {
@@ -11,21 +12,32 @@
 }
 
 .form {
-  background: linear-gradient(145deg, #1c3e62, #173453);
-  box-shadow:  5px 5px 8px #0b1826,
-  -5px -5px 8px #295c92;
+  border-radius: 41px;
+  border: 1px solid cornsilk;
+  box-shadow: -5px -5px 10px rgb(239 241 208 / 55%), 5px 5px 10px rgb(205 169 81 / 19%);
   margin-top: 200px;
-  padding: 50px;
-  color: #ffffff;
+  padding: 58px;
+  background: rgba(26, 58, 92, 0.59);
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+//.form :hover {
+//  box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.8);
+//
+//}
+
+.mat-label {
+  color: #ffc107;
 }
 
 .button {
-  border-radius: 0px;
-  background: linear-gradient(145deg, #1c3e62, #173453);
-  box-shadow:  5px 5px 8px #0b1826,
-  -5px -5px 8px #295c92;
-  margin-top: 10px;
-  color: #ffffff;
-
+  //background: linear-gradient(145deg, #1c3e62, #173453);
+  //box-shadow: 5px 5px 8px #0b1826,
+  //-5px -5px 8px #295c92;
+  margin-top: 20px;
+  //color: #ffffff;
+  border: #ffc107 solid 1px;
 
 }

@@ -5,7 +5,7 @@
     </div>
     <form class="form" [formGroup]="myFormGroup">
       <div class="form-row">
-        <mat-form-field appearance="outline" color="primary">
+        <mat-form-field appearance="outline">
           <mat-label> Nom commerciale</mat-label>
           <input matInput placeholder="Entrer la dénomination commerciale" formControlName="commercialName">
         </mat-form-field>
@@ -15,7 +15,11 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label> Forme Juridique / Capital</mat-label>
-          <input matInput placeholder="Entrer la forme juridique / capital" formControlName="formeJuridique">
+          <input matInput placeholder="Entrer la forme juridique" formControlName="formeJuridique">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label> Capital</mat-label>
+          <input matInput placeholder="Entrer le capital" formControlName="capital">
         </mat-form-field>
       </div>
       <div class="form-row">

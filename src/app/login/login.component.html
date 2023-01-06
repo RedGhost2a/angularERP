@@ -1,28 +1,25 @@
 <div class="container">
   <form class="form" [formGroup]="form">
 
-    <p>
-      <mat-form-field appearance="standard">
-        <mat-label>Email</mat-label>
-        <input formControlName="email" matInput>
-        <mat-icon matSuffix>email</mat-icon>
-      </mat-form-field>
-    </p>
-    <p>
+    <mat-form-field appearance="standard">
+      <mat-label class="mat-label">Email</mat-label>
+      <input formControlName="email" matInput>
+      <!--        <mat-icon matSuffix>email</mat-icon>-->
+    </mat-form-field>
+
     <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
       <div *ngIf="f['email'].errors['required']">Email est requis !</div>
     </div>
+
     <mat-form-field appearance="standard">
-
-      <mat-label>Mot de passe</mat-label>
+      <mat-label class="mat-label">Mot de passe</mat-label>
       <input type="password" formControlName="password" matInput>
-
-      <mat-icon matSuffix>password</mat-icon>
+      <!--      <mat-icon matSuffix>password</mat-icon>-->
     </mat-form-field>
     <!--    <input type="checkbox" (change)="toggleEditable($event)">-->
 
   </form>
   <div>
-    <button mat-flat-button class="button" type="submit" (click)="onSubmit()">VALIDER</button>
+    <button mat-stroked-button color="primary" class="button" type="submit" (click)="onSubmit()">VALIDER</button>
   </div>
 </div>

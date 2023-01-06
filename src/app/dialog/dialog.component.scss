@@ -1,0 +1,71 @@
+.btnBack {
+  margin-left: 30px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 50px;
+  margin-top: 30px;
+
+  .accordion {
+    margin-top: 10px;
+  }
+
+  .example-card {
+    margin-bottom: 8px;
+
+    .group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detailList {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+
+
+    }
+  }
+
+  .list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+
+  }
+}
+
+.detail {
+  align-items: center;
+}
+
+.mat-card-subtitle {
+  padding: 8px;
+  text-align: center;
+  background-color: rgb(168 160 160 / 11%);
+  width: 100px;
+
+
+}
+
+.mat-form-field {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  align-content: space-around;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.sub-header {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+}

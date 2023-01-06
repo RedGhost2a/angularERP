@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {OuvrageService} from "../_service/ouvrage.service";
 import {ActivatedRoute} from "@angular/router";
@@ -9,9 +9,9 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./form-ouvrage.component.scss']
 })
 export class FormOuvrageComponent implements OnInit {
-  public  myFormGroup: FormGroup;
-  textButton!:string;
-  titreForm!:string;
+  public myFormGroup: FormGroup;
+  textButton!: string;
+  titreForm!: string;
 
   constructor(private formBuilder: FormBuilder, private ouvrageService: OuvrageService,
               private route: ActivatedRoute) {
@@ -23,18 +23,19 @@ export class FormOuvrageComponent implements OnInit {
       ratio: [],
       uRatio: [],
       fournisseur: [],
-    }); }
+    });
+  }
 
-  createAndUpdate():void{
-    this.route.params.subscribe(params =>{
+  createAndUpdate(): void {
+    this.route.params.subscribe(params => {
       const ouvrageID = +params['id']
-      if(isNaN(ouvrageID)) {
+      if (isNaN(ouvrageID)) {
         this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe(
-          () : void =>{
+          (): void => {
             alert('Nouveau ouvrage enregistrer')
           }
         )
-      }else{
+      } else {
         this.ouvrageService.update(this.myFormGroup.getRawValue(), ouvrageID)
           .subscribe((): void => {
             alert('ouvrage update!');
@@ -44,11 +45,10 @@ export class FormOuvrageComponent implements OnInit {
   }
 
 
-
   ngOnInit(): void {
-    this.route.params.subscribe(params =>{
+    this.route.params.subscribe(params => {
       const ouvrageID = +params['id']
-      if(!isNaN(ouvrageID)) {
+      if (!isNaN(ouvrageID)) {
         this.textButton = "Modifier l'ouvrage"
         this.titreForm = "Modification de l'ouvrage"
         this.ouvrageService.getById(ouvrageID).subscribe(data => {
@@ -67,9 +67,9 @@ export class FormOuvrageComponent implements OnInit {
           // construct ad-hoc.
           this.myFormGroup.patchValue(data);
         });
-      }else{
-        this.textButton = 'Creer un nouveau ouvrage'
-        this.titreForm = "Création d'un d'un ouvrage"
+      } else {
+        this.textButton = 'Créer un nouvelle ouvrage'
+        this.titreForm = "Création d'un  ouvrage"
         this.formBuilder.group({
           designation: [],
           benefice: [],

@@ -22,7 +22,8 @@ export class SuperAdminComponent implements OnInit {
   devis: any;
   nbDevisByCompany: any;
 
-
+  ring = ['ring one', 'ring two', 'ring three', 'ring four'];
+ 
   constructor(private entrepriseService: EntrepriseService, private superAdminService: SuperAdminService, private storageService: StorageService) {
 
   }
@@ -39,7 +40,7 @@ export class SuperAdminComponent implements OnInit {
         const nbDevisByCompany = this.listEntreprise.map((value: any, index) => {
           return value.Devis.length
         })
-      
+
         this.devis = nbDevisByCompany
         console.log(this.listEntreprise)
         console.log(nbDevisByCompany)

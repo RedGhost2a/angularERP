@@ -1,58 +1,124 @@
+<div class="container">
 
-<h1 mat-dialog-title align="center">Création d'un nouveau client</h1>
-<div class="form-container">
-  <div mat-dialog-content >
+  <div class="header">
+    <div class="sub-header">
+      <mat-form-field appearance="legacy">
+        <mat-label>Rechercher un ouvrage</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex: Béton de propreté">
 
-    <form [formGroup]="clientForm">
-      <mat-form-field appearance="standard">
-        <mat-label>Nom</mat-label>
-        <input formControlName="firstName" matInput placeholder="Entrer le nom">
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
       </mat-form-field>
+      <button color="primary" mat-flat-button (click)="closeDialog()">
+        Valider
+      </button>
 
-      <mat-form-field appearance="standard">
-        <mat-label>Prénom</mat-label>
-        <input formControlName="lastName" matInput placeholder="Entrer le prénom">
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-      </mat-form-field>
 
-      <mat-form-field appearance="standard">
-        <mat-label>Adresse</mat-label>
-        <input formControlName="adresses" matInput placeholder="Entrer l'adresse">
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-      </mat-form-field>
-
-      <mat-form-field appearance="standard">
-        <mat-label>Code postal</mat-label>
-        <input formControlName="zipcode" matInput placeholder="Entrer le code postal">
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-      </mat-form-field>
-
-      <mat-form-field appearance="standard">
-        <mat-label>Ville</mat-label>
-        <input formControlName="city" matInput placeholder="Entrer la ville">
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-      </mat-form-field>
-
-      <mat-form-field appearance="standard">
-        <mat-label>Pays</mat-label>
-        <input formControlName="country" matInput placeholder="Placeholder">
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-      </mat-form-field>
-
-      <mat-form-field appearance="standard">
-        <mat-label>Email</mat-label>
-        <input formControlName="email" matInput placeholder="Placeholder">
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-      </mat-form-field>
-
-      <mat-form-field appearance="standard">
-        <mat-label >Phone  </mat-label>
-        <input formControlName="phonenumber" matInput placeholder="Placeholder">
-        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-      </mat-form-field>
-    </form>
-
+    </div>
+    <h1>Liste des ouvrages</h1>
   </div>
-  <a   (click)="createUser()" class="form-element" mat-raised-button >Valider</a>
+  <mat-accordion class="accordion" *ngFor="let ouvrage of data">
+    <mat-checkbox [name]="ouvrage.id"
+                  (change)="onSelectionChange(ouvrage.id, $event.checked)">
+      Importer
+    </mat-checkbox>
+
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+
+        <mat-panel-title>
+
+          #{{ouvrage.id|number}}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ouvrage.designation|titlecase}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-card class="example-card">
+        <mat-card-title-group class="group">
+          <mat-card-title>Information de l'ouvrage</mat-card-title>
+          <div *ngIf="ouvrage" class="detailList">
+            <div class="detail">
+              <mat-card-subtitle class="subTitle">Désignation</mat-card-subtitle>
+              <p>{{ouvrage.designation}}</p>
+            </div>
+            <div class="detail">
+              <mat-card-subtitle class="subTitle">Bénéfices</mat-card-subtitle>
+              <p>{{ouvrage.benefice}}</p>
+            </div>
+            <div class="detail">
+              <mat-card-subtitle class="subTitle">Aléas</mat-card-subtitle>
+              <p>{{ouvrage.aleas}}</p>
+            </div>
+            <div class="detail">
+              <mat-card-subtitle class="subTitle">Unité</mat-card-subtitle>
+              <p>{{ouvrage.unite}}</p>
+            </div>
+            <div class="detail">
+              <mat-card-subtitle class="subTitle">Ratio</mat-card-subtitle>
+              <p>{{ouvrage.ratio}}</p>
+            </div>
+            <div class="detail">
+              <mat-card-subtitle class="subTitle">U/Ratio</mat-card-subtitle>
+              <p>{{ouvrage.uRatio}}</p>
+            </div>
+            <!--            <div class="detail">-->
+            <!--              <mat-card-subtitle class="subTitle">Prix Unitaire HT</mat-card-subtitle>-->
+            <!--              <p>{{prixOuvrage}}</p>-->
+            <!--            </div>-->
+          </div>
+        </mat-card-title-group>
+      </mat-card>
+    </mat-expansion-panel>
+    <mat-expansion-panel (opened)="panelOpenState = true"
+                         (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+
+        <mat-panel-description *ngFor="let data of ouvrage.CoutDuDevis">
+
+          <!--          Currently I am {{panelOpenState ? 'open' : 'closed'}}-->
+        </mat-panel-description>
+        <mat-panel-title>
+          Composants
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <ng-container class="detailList" *ngFor="let data of ouvrage.CoutDuDevis;first as isFirst">
+        <div class="list">
+          <div class="detail">
+            <mat-card-subtitle class="subTitle">Type</mat-card-subtitle>
+            <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
+            <p>{{data.type|uppercase}}</p>
+          </div>
+          <div class="detail">
+            <mat-card-subtitle class="subTitle">Catégorie</mat-card-subtitle>
+            <p>{{data.categorie|uppercase}}</p>
+          </div>
+          <div class="detail">
+            <mat-card-subtitle class="subTitle">Désignation</mat-card-subtitle>
+            <p>{{data.designation|uppercase}}</p>
+          </div>
+          <div class="detail">
+            <mat-card-subtitle class="subTitle">Unité</mat-card-subtitle>
+            <p>{{data.unite}}</p>
+          </div>
+          <div class="detail">
+            <mat-card-subtitle class="subTitle">Prix Unitaire HT</mat-card-subtitle>
+            <p>{{data.prixUnitaire}}</p>
+          </div>
+          <div class="detail">
+            <mat-card-subtitle class="subTitle">Fournisseur</mat-card-subtitle>
+            <p>{{data.fournisseur|uppercase}}</p>
+          </div>
+          <div class="detail">
+            <mat-card-subtitle class="subTitle">Remarque</mat-card-subtitle>
+            <p>{{data.remarque}}</p>
+          </div>
+
+        </div>
+      </ng-container>
+    </mat-expansion-panel>
+
+  </mat-accordion>
+
 </div>
+
+

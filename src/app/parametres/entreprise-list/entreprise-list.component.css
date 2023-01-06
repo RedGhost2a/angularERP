@@ -55,9 +55,6 @@
   border-bottom-right-radius: 11px;
   border-top-left-radius: 10px;
   width: 30%;
-  background: linear-gradient(315deg, #173453, #1c3e62);
-  box-shadow: -13px -13px 26px #0a1725, 13px 13px 26px #2a5d93;
-  backdrop-filter: blur(1.3px);
 }
 
 .wrapper {
@@ -69,8 +66,6 @@
   /* width: 70%; */
   align-items: center;
   justify-content: space-evenly;
-  background: linear-gradient(315deg, #173453, #1c3e62);
-  box-shadow: -13px -13px 26px #0a1725, 13px 13px 26px #2a5d93;
 }
 
 .image {
@@ -101,8 +96,6 @@
   align-items: center;
   justify-content: space-around;
   height: 140px;
-  background: linear-gradient(315deg, #173453, #1c3e62);
-  box-shadow: -13px -13px 26px #0a1725, 13px 13px 26px #2a5d93;
 }
 
 .mat-form-field {
@@ -133,8 +126,6 @@
   border-radius: 76px;
   border-bottom-left-radius: 11px;
   border-top-right-radius: 10px;
-  background: linear-gradient(315deg, #173453, #1c3e62);
-  box-shadow: -13px -13px 26px #0a1725, 13px 13px 26px #2a5d93;
   margin-right: 20px;
 }
 
@@ -142,8 +133,6 @@
   border-radius: 76px;
   border-bottom-right-radius: 11px;
   border-top-left-radius: 10px;
-  background: linear-gradient(315deg, #173453, #1c3e62);
-  box-shadow: -13px -13px 26px #0a1725, 13px 13px 26px #2a5d93;
 }
 
 /*# sourceMappingURL=entreprise-list.component.css.map */

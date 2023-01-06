@@ -15,30 +15,29 @@ import {CoutDuDevis} from "../_models/cout-du-devis";
 export class OuvrageAddCoutComponent implements OnInit {
 
 
-  @Input() listCout!:Cout[]
-  coutOuvrage!:Cout;
-  coutChecked :number[] = [];
-  ouvrageId!:number
-  columnsToDisplay = ["checkBox","type","categorie","designation", "unite", "prixUnitaire", "fournisseur","remarque"];
-  coutDuDevis!:CoutDuDevis;
+  @Input() listCout!: Cout[]
+  coutOuvrage!: Cout;
+  coutChecked: number[] = [];
+  ouvrageId!: number
+  columnsToDisplay = ["checkBox", "type", "categorie", "designation", "unite", "prixUnitaire", "fournisseur", "remarque"];
+  coutDuDevis!: CoutDuDevis;
 
   constructor(private route: ActivatedRoute, private coutService: CoutService,
-              private ouvrageService: OuvrageService, private ouvrageCoutService : OuvrageCoutService) { }
-
-
+              private ouvrageService: OuvrageService, private ouvrageCoutService: OuvrageCoutService) {
+  }
 
 
   ngOnInit(): void {
     this.getAll()
-    this.route.params.subscribe(params=>this.ouvrageId = +params['id'])
-  }
-  getAll(): void{
-    this.coutService.getAll(1).subscribe(data =>{
-      this.listCout = data
-      console.log("dATA",data)
-    })
+    this.route.params.subscribe(params => this.ouvrageId = +params['id'])
   }
 
+  getAll(): void {
+    this.coutService.getAll(2).subscribe(data => {
+      this.listCout = data
+      console.log("dATA", data)
+    })
+  }
 
 
   addCoutOuvrage() {
@@ -47,45 +46,42 @@ export class OuvrageAddCoutComponent implements OnInit {
       // console.log('valeur')
       //this.ouvrageCoutService.addCoutOuvrage(val, this.ouvrageId).subscribe()
       console.log('OUVRAGE AJOUT COUT')
-      this.coutService.getById(val).subscribe(data=>{
+      this.coutService.getById(val).subscribe(data => {
         this.coutOuvrage = data;
-        console.log("data",data)
+        console.log("data", data)
         //console.log(typeof(data.Fournisseurs));
 
-        const {Fournisseurs}:any = data;
-        const {TypeCout}:any = data;
-        if(Fournisseurs[0].remarque === null){
+        const {Fournisseurs}: any = data;
+        const {TypeCout}: any = data;
+        if (Fournisseurs[0].remarque === null) {
           Fournisseurs[0].remarque = "";
         }
         this.coutDuDevis = {
           OuvrageId: this.ouvrageId,
-          type:TypeCout.type,
-          categorie:TypeCout.categorie,
-          designation:data.designation,
-          unite:data.unite,
-          prixUnitaire:data.prixUnitaire,
-          fournisseur:Fournisseurs[0].commercialName,
-          remarque:  Fournisseurs[0].remarque
+          type: TypeCout.type,
+          categorie: TypeCout.categorie,
+          designation: data.designation,
+          unite: data.unite,
+          prixUnitaire: data.prixUnitaire,
+          fournisseur: Fournisseurs[0].commercialName,
+          remarque: Fournisseurs[0].remarque
         }
-      this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe()
+        this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe()
       })
     }
   }
 
 
-
-
-  onCheck(idCout: number):void {
-    if(this.coutChecked.indexOf(idCout) !== -1){
-      this.coutChecked.forEach((element,index)=>{
-        if(element== idCout) this.coutChecked.splice(index,1);
+  onCheck(idCout: number): void {
+    if (this.coutChecked.indexOf(idCout) !== -1) {
+      this.coutChecked.forEach((element, index) => {
+        if (element == idCout) this.coutChecked.splice(index, 1);
       });
-    }else{
+    } else {
       this.coutChecked.push(idCout)
     }
     console.log(this.coutChecked);
   }
-
 
 
 }

@@ -6,9 +6,18 @@
   <mat-toolbar-row>
     <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
     <h1>Outils d'étude de prix</h1>
-    <button *ngIf="userService.userValue" mat-button [matMenuTriggerFor]="menu">
-      <mat-icon>settings_account_box</mat-icon>
-    </button>
+    <a mat-icon-button
+       routerLink="/profil" [matMenuTriggerFor]="menu">
+      <!--      <mat-icon *ngIf="!userService.userValue">account_circle</mat-icon>-->
+      <!--       finir Avatar dans la nav bar -->
+      <img *ngIf="userService.userValue" class="avatar"
+           src='./assets/avatar/{{userService.userValue.avatarUrl}}'/>
+    </a>
+    <!--    <button *ngIf="userService.userValue" mat-button >-->
+    <!--      <mat-icon>settings_account_box</mat-icon>-->
+    <!--    </button>-->
+
+
     <mat-menu #menu="matMenu">
       <button mat-menu-item>
         <mat-icon [routerLink]="['/mon_profile']">account_circle</mat-icon>

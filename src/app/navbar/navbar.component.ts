@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {SuperAdminService} from '../_service/superAdmin.service';
 
 import {UserService} from "../_service/user.service";
 import {navbarData} from "./nav-data"
@@ -20,9 +19,8 @@ export class NavbarComponent {
   caretDown: IconDefinition = faCaretDown;
 
 
-  constructor(public userService: UserService, public superAdminService: SuperAdminService) {
-    this.userService.userValue
-    this.superAdminService.userValue
+  constructor(public userService: UserService) {
+
   }
 
   toggleSubnav(data: any) {
@@ -35,12 +33,10 @@ export class NavbarComponent {
   }
 
   ngOnInit() {
+    // console.log(this.userService.userValue.avatarUrl)
 
   }
 
-  ngAfterViewInit() {
-
-  }
 
 }
 
