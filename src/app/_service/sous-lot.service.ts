@@ -28,4 +28,9 @@ export class SousLotService {
   update(lot: Lot, id: any): Observable<any> {
     return this.http.put(`${baseUrl}/update/${id}`, lot)
   }
+
+  deleteByID(id: any): Observable<any> {
+    return this.http.delete(`${baseUrl}/${id}`)
+  }
+
 }

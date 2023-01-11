@@ -35,6 +35,9 @@ export class DevisService {
   getById(id: any): Observable<any> {
     return this.http.get(`http://localhost:4000/devis/${id}`)
   }
+  getByIdExceptFrais(id: any): Observable<any> {
+    return this.http.get(`http://localhost:4000/devis/exceptFrais/${id}`)
+  }
 
   getDevisByUser(id: any): Observable<any> {
     return this.http.get(`http://localhost:4000/devis/byUser/${id}`)

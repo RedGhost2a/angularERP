@@ -9,5 +9,6 @@ export interface Cout {
   EntrepriseId:number;
   TypeCoutId:number;
   FournisseurId:number;
+  fournisseur?:string;
   //Fournisseurs: Fournisseur;
 }

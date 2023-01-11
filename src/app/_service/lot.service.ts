@@ -27,4 +27,12 @@ export class LotService {
   deleteByID(id: any): Observable<any> {
     return this.http.delete(`${baseUrl}/${id}`)
   }
+
+  getLotFraisDeChantier(deviID:number): Observable<any>{
+    return this.http.get(`${baseUrl}/fraisDeChantier`,{
+        params : {
+          DeviId: deviID
+        }
+        })
+  }
 }

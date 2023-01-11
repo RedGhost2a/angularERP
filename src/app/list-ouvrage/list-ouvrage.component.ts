@@ -3,6 +3,8 @@ import {OuvrageService} from "../_service/ouvrage.service";
 import {Ouvrage} from "../_models/ouvrage";
 import {CoutDuDevis} from "../_models/cout-du-devis";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
+import {UserService} from "../_service/user.service";
+import {User} from "../_models/users";
 
 
 @Component({
@@ -12,22 +14,31 @@ import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 })
 export class ListOuvrageComponent implements OnInit {
   @Input() listOuvrage!: Ouvrage[];
+  currentUser!:User;
+  entrepriseId!:number;
   coutsDuDevis!: CoutDuDevis[];
   prixOuvrage: number[] = [];
   columnsToDisplay = ["designation", "benefice", "aleas", "unite", "ratio", "uRatio", "prixUnitaire", "boutons"];
 
-  constructor(private ouvrageService: OuvrageService, private ouvrageCoutService: OuvrageCoutService) {
+  constructor(private ouvrageService: OuvrageService, private ouvrageCoutService: OuvrageCoutService,
+              private userService : UserService) {
   }
 
   ngOnInit(): void {
+    this.currentUser = this.userService.userValue;
+    this.userService.getById(this.currentUser.id).subscribe(data =>{
+      console.log("user by id ", data)
+      this.entrepriseId = data.Entreprises[0].id
     this.getAll()
     this.getAllPrice()
+    })
+      //.log("Entreprise ID",this.entrepriseId)
 
   }
 
   getAll(): void {
     // this.ouvrageService.getAll().subscribe(data => console.log(data) )
-    this.ouvrageService.getAll(2).subscribe(data => {
+    this.ouvrageService.getAll(this.entrepriseId).subscribe(data => {
       this.listOuvrage = data;
       // console.log(data[0].cout[0].type);
       console.log("get all ouvrage list ouvrage data : ", data)

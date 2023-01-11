@@ -7,5 +7,6 @@ export class Lot {
   hasChild!: boolean;
   SousLots!: SousLot[];
   enCreation!: boolean;
+  devisId?:number;
 }
 

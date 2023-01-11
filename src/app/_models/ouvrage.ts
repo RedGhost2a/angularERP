@@ -1,3 +1,5 @@
+import {Cout} from "./cout";
+
 export interface Ouvrage {
   cout: any;
   id:number;
@@ -8,4 +10,5 @@ export interface Ouvrage {
   ratio: number;
   uRatio: string;
   fournisseur:string;
+  CoutDuDevis?: Cout[]
 }
