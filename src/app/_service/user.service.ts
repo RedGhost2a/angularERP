@@ -21,22 +21,7 @@ export class UserService {
     // @ts-ignore
     this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')))
     this.user = this.userSubject.asObservable();
-    // let string = localStorage.getItem('user')
-    // if (string) {
-    //
-    //   let decryptUser = this.storageService.decrypt(string)
-    //   let parse = JSON.parse(decryptUser)
-    //
-    //   // @ts-ignore
-    //   this.userSubject = new BehaviorSubject<User>(parse);
-    //   this.user = this.userSubject.asObservable();
-    // } else {
-    //
-    //   // @ts-ignore
-    //   this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
-    // }
-    // console.log(string)
-    // console.log(parse)
+
   }
 
 
@@ -49,9 +34,7 @@ export class UserService {
       .pipe(map(user => {
 
         // store user details and jwt token in local storage to keep user logged in between page refreshes
-        //let string = JSON.stringify(user)
-        // let encryptUser = this.storageService.encrypt(string)
-        localStorage.setItem('userID', JSON.stringify(user.id));
+        localStorage.setItem('user', JSON.stringify(user));
         this.userSubject.next(user);
         return user;
       }));
@@ -60,7 +43,7 @@ export class UserService {
   logout() {
     console.log("logout")
     // remove user from local storage and set current user to null
-    localStorage.removeItem('userID');
+    localStorage.removeItem('user');
     this.userSubject.next(null!);
     this.router.navigate(['/home']);
   }

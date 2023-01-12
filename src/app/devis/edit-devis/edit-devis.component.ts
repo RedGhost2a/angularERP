@@ -16,7 +16,10 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class EditDevisComponent implements OnInit {
   public myFormGroup: FormGroup;
   // @ts-ignore
-  currentUser = JSON.parse(localStorage.getItem('userID'))
+  userId = JSON.parse(localStorage.getItem('user'))
+  currentUser = this.userId.id;
+
+
   listClient !: Client[];
   listEntreprise !: Entreprise[];
 
@@ -38,6 +41,8 @@ export class EditDevisComponent implements OnInit {
       EntrepriseId: [],
       UserId: this.currentUser,
     });
+    console.log(this.currentUser)
+
   }
 
 
@@ -64,7 +69,6 @@ export class EditDevisComponent implements OnInit {
       if (isNaN(devisID)) {
         this.devisService.create(this.myFormGroup.getRawValue()).subscribe(
           (): void => {
-
             if (this.myFormGroup.status === 'VALID') {
               this.success("Nouveau devis en vue !")
               this.router.navigate(['/devis']);
@@ -80,12 +84,9 @@ export class EditDevisComponent implements OnInit {
           .subscribe((): void => {
             this.success("Devis modifier!");
             this.router.navigate(['/devis']);
-
-
           }, error => {
             console.log(error)
             this.warning("Complète tout les champs !")
-
           });
       }
     })
