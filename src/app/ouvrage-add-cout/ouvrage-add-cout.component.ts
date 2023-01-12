@@ -5,6 +5,8 @@ import {CoutService} from "../_service/cout.service";
 import {OuvrageService} from "../_service/ouvrage.service";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {CoutDuDevis} from "../_models/cout-du-devis";
+import {UserService} from "../_service/user.service";
+import {User} from "../_models/users";
 
 
 @Component({
@@ -21,19 +23,25 @@ export class OuvrageAddCoutComponent implements OnInit {
   ouvrageId!: number
   columnsToDisplay = ["checkBox", "type", "categorie", "designation", "unite", "prixUnitaire", "fournisseur", "remarque"];
   coutDuDevis!: CoutDuDevis;
+  currentUser!:User;
 
   constructor(private route: ActivatedRoute, private coutService: CoutService,
-              private ouvrageService: OuvrageService, private ouvrageCoutService: OuvrageCoutService) {
+              private ouvrageService: OuvrageService, private ouvrageCoutService: OuvrageCoutService,
+              private userService : UserService) {
   }
 
 
   ngOnInit(): void {
-    this.getAll()
     this.route.params.subscribe(params => this.ouvrageId = +params['id'])
+    this.currentUser = this.userService.userValue;
+    this.userService.getById(this.currentUser.id).subscribe(data =>{
+      console.log("user by id ", data)
+      this.getAll(data.Entreprises[0].id)
+    })
   }
 
-  getAll(): void {
-    this.coutService.getAll(2).subscribe(data => {
+  getAll(entrepriseId:number): void {
+    this.coutService.getAll(entrepriseId).subscribe(data => {
       this.listCout = data
       console.log("dATA", data)
     })

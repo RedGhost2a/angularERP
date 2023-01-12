@@ -284,7 +284,7 @@
         </div>
 
 
-        <div *ngFor="let ouvrage of sublot.Ouvrages" [hidden]="hiddenChildren.get(sublot.id)">
+        <div *ngFor="let ouvrage of sublot.Ouvrages;" [hidden]="hiddenChildren.get(sublot.id)">
 <!--          <div *ngIf="ouvrage && ouvrage.SousLotOuvrage && ouvrage.SousLotOuvrage.SousLotId === sublot.id">-->
             <div class="ouvrage" *ngIf="ouvrage && ouvrage.id && ouvrage.designation">
               <div class="ouvrage-headers">
@@ -292,9 +292,10 @@
                   <span>Id</span> <span>Désignation</span> <span>Bénéfice</span>
                   <span>Aléas</span> <span>Unité</span>
                   <span>Ratio</span> <span>U Ratio</span>
+                  <span>Quantité</span>
                   <span>Prix</span>
                 </div>
-                <div class="ouvrage-header-detail">
+                <div class="ouvrage-header-detail" >
                   <span>{{ ouvrage.id | number }} </span>
                   <span>{{ ouvrage.designation  }}</span>
                   <span>{{ ouvrage.benefice | number }}</span>
@@ -302,6 +303,21 @@
                   <span>{{ ouvrage.unite | titlecase }}</span>
                   <span>{{ ouvrage.ratio | number }}</span>
                   <span>{{ ouvrage.uRatio }}</span>
+
+<!--                  <ng-container [formGroup]="this.myFormGroup">-->
+<!--                    <p>-->
+<!--                      <mat-form-field appearance="legacy">-->
+<!--                        <mat-label>Quantité</mat-label>-->
+<!--                        <input formControlName="quantityOuvrage" >-->
+<!--                      </mat-form-field>-->
+<!--                    </p>-->
+<!--                  </ng-container>-->
+                    <mat-form-field appearance="legacy" [formGroup]="myFormGroup">
+                      <mat-label>Quantité</mat-label>
+                      <input formControlName="quantityOuvrage" matInput required  (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage)">
+                    </mat-form-field>
+                  <span>{{ ouvrage.SousLotOuvrage?.quantityOuvrage }}</span>
+                  <span>{{test(ouvrage.id, ouvrage.SousLotOuvrage?.quantityOuvrage)}}</span>
                 </div>
               </div>
 <!--            </div>-->
@@ -323,7 +339,7 @@
                       <span>{{ ct.designation }}</span>
                       <span>{{ ct.unite }}</span>
                       <span>{{ ct.prixUnitaire }} </span>
-                      <span>{{ ct.fournisseur }}</span>
+                      <span >{{ ct.fournisseur }}</span>
 <!--                      <span>{{ ct.remarque }}</span>-->
                     </div>
 <!--                  </div>-->
@@ -333,6 +349,7 @@
             </div>
 
           </div>
+
 
         </div>
       <mat-menu class="menuBoutonSl" #boutonSL>

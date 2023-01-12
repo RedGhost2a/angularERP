@@ -1,4 +1,13 @@
-import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Input,
+  OnInit,
+  SimpleChange,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {LotService} from "../_service/lot.service"
 import {ActivatedRoute, Router} from "@angular/router";
@@ -14,6 +23,8 @@ import {DialogComponent} from "../dialog/dialog.component";
 import {Lot} from "../_models/lot";
 import {SousLot} from "../_models/sous-lot";
 import {Ouvrage} from "../_models/ouvrage";
+import {SousLotOuvrage} from "../_models/sousLotOuvrage";
+import {SousLotOuvrageService} from "../_service/sous-lot-ouvrage.service";
 
 
 @Component({
@@ -22,6 +33,7 @@ import {Ouvrage} from "../_models/ouvrage";
   styleUrls: ['./create-devis.component.scss']
 })
 export class CreateDevisComponent implements OnInit {
+
   lotFraisDeChantier!: Lot;
   form!: FormGroup;
   testLots!:Lot[];
@@ -34,7 +46,9 @@ export class CreateDevisComponent implements OnInit {
   selectedOuvrageIds: number [] = [] ;
   hiddenChildren = new Map<number, boolean>();
   expandedLotId!: number | undefined;
-  prixOuvrage!:number;
+  prixOuvrage:{ prix: any; id: any }[] = [];
+  myFormGroup!: FormGroup;
+  prixSousLot:{ prix: any; id: any }[] = [];
 
 
 //TODO ON NE PEUT METTRE QUE UN SEUL ET MEME OUVRAGE PAR SOUS_LOT; //
@@ -48,7 +62,9 @@ export class CreateDevisComponent implements OnInit {
               private dataSharingService: DataSharingService,
               private changeDetectorRef: ChangeDetectorRef,
               private ouvrageService: OuvrageService,
+              private sousLotOuvrageService : SousLotOuvrageService,
               public dialog: MatDialog,
+
   ) {
     this.expandedLotId = undefined;
   }
@@ -63,8 +79,57 @@ export class CreateDevisComponent implements OnInit {
     });
     this.getLotFraisDeChantier();
     this.getAllLots();
+    this.formQuantityOuvrage()
+  }
+  formQuantityOuvrage():void{
+    this.myFormGroup = new FormGroup({
+      quantityOuvrage: new FormControl(),
+    });
   }
 
+  quantityChange(event: any, sousLotOuvrage:SousLotOuvrage | undefined) {
+    console.log('quantity:', event);
+    if(sousLotOuvrage!==undefined){
+      console.log("console log de l'objet sousLotOuvrage",sousLotOuvrage)
+      if(event > 0){
+    sousLotOuvrage.quantityOuvrage = event;
+    console.log("sousLotOuvrage", sousLotOuvrage)
+        this.sousLotOuvrageService.update(sousLotOuvrage.id, sousLotOuvrage).subscribe()
+      }else{
+        sousLotOuvrage.quantityOuvrage = 1
+        this.sousLotOuvrageService.update(sousLotOuvrage.id, sousLotOuvrage).subscribe()
+      }
+
+    }
+
+  }
+
+
+
+  getSommeOuvrage():void {
+    this.prixOuvrage = this.testLots
+      .flatMap(lot => lot.SousLots)
+      .filter(sousLot => sousLot)
+      .flatMap(sousLot => sousLot.Ouvrages)
+      .filter(ouvrage => ouvrage)
+      .map(ouvrage => ({
+        id: ouvrage?.id,
+        prix: ouvrage?.CoutDuDevis && ouvrage.CoutDuDevis.reduce((acc, ct) => acc + ct.prixUnitaire, 0)
+      }));
+
+    console.log("tableau de prix des ouvrage",this.prixOuvrage)
+  }
+
+  test(ouvrageId: number, quantity: number | undefined): number {
+    if(quantity !== undefined){
+    for (let element of this.prixOuvrage){
+      if(element.id === ouvrageId){
+        return element.prix * quantity
+        }
+      }
+    }
+    return 0
+  }
 
 
 
@@ -74,9 +139,10 @@ export class CreateDevisComponent implements OnInit {
     this.devisService.getByIdExceptFrais(this.devisId).subscribe(data =>{
       console.log("console log de getalllots  SOUS LOT DATA:",data.Lots.SousLots)
       this.testLots = data.Lots;
-      console.log("console log de DATA : ", data)
+      console.log("console log de DATA LOT : ",this.testLots)
       //recuperation de tous les ouvrages de l'entreprise
       this.getAllOuvrage(data.EntrepriseId);
+      this.getSommeOuvrage()
     })
   }
 
