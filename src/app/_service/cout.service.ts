@@ -9,6 +9,7 @@ import {CoutDuDevis} from "../_models/cout-du-devis";
 const baseUrl = `${environment.apiUrl}/couts`;
 const test = environment.apiUrl
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -41,5 +42,10 @@ export class CoutService {
   createCoutDuDevis(data:CoutDuDevis):Observable<CoutDuDevis>{
     console.log("createcoutdudevis",data)
     return this.http.post<CoutDuDevis>(`http://localhost:4000/coutsDuDevis/new`,data)
+  }
+
+  createOuvrageCoutDuDevis(ouvrageId:any, coutDuDevis:CoutDuDevis): Observable<any>{
+    console.log('data cout service ', coutDuDevis)
+    return this.http.post(`http://localhost:4000/coutsDuDevis/test/${ouvrageId}`, coutDuDevis)
   }
 }

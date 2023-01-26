@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Devis} from "../_models/devis";
 
-const baseUrl = 'http://localhost:8080/devis';
+const baseUrl = 'http://localhost:4000/devis';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +35,9 @@ export class DevisService {
   getById(id: any): Observable<any> {
     return this.http.get(`http://localhost:4000/devis/${id}`)
   }
+
   getByIdExceptFrais(id: any): Observable<any> {
+    console.log("devis service id : ",id)
     return this.http.get(`http://localhost:4000/devis/exceptFrais/${id}`)
   }
 
@@ -45,6 +47,10 @@ export class DevisService {
 
   create(data: any): Observable<any> {
     return this.http.post(`${baseUrl}/new`, data)
+  }
+
+  getLotFraisDeChantier(id:number): Observable<any>{
+    return this.http.get(`${baseUrl}/fraisDeChantier/${id}`)
   }
 }
 

@@ -8,5 +8,6 @@ export class Lot {
   SousLots!: SousLot[];
   enCreation!: boolean;
   devisId?:number;
+  prix?:number;
 }
 

@@ -19,8 +19,8 @@ export class DetailDevisComponent implements OnInit {
   client!: Client;
   devisID!: number;
   user!: User;
-  //lot !: Lot;
-  lot = { designation: "Frais de chantier", devisId: 0 };
+  lot = new Lot ;
+  // lot = { designation: "Frais de chantier", devisId: 0 };
 
   constructor(private devisService: DevisService, private route: ActivatedRoute,
               private lotService : LotService,@Inject(TOASTR_TOKEN) private toastr: Toastr) {
@@ -28,6 +28,7 @@ export class DetailDevisComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log("bonne page ?")
     this.getById();
   }
 
@@ -44,18 +45,11 @@ export class DetailDevisComponent implements OnInit {
       })
     })
   }
-  createLOT(): void {
-    this.route.params.subscribe(params => {
-      const devisId = +params['id']; // Récupérer devisId de la route
-      console.log(devisId)
-      // this.lot = {
-      //   id: ,
-      //   SousLots: [], children: [], enCreation: false, hasChild: false,
-      //   designation: "Frais de chantier"
-      //
-      // };
-       // Ajouter devisId aux données du formulaire
+  createLOT(devisId:number): void {
+    console.log("ENFJKDSLQ",devisId)
       this.lot.devisId = devisId;
+      this.lot.designation = `Frais de chantier ${this.lot.devisId}`
+      // this.lot.designation = "fdsfqds"
       console.log("console lot detail devis",this.lot)
       this.lotService.create(this.lot)
         .subscribe((response: any) => {
@@ -76,7 +70,6 @@ export class DetailDevisComponent implements OnInit {
           console.log(error)
           this.warning("Une erreur est survenue lors de la création")
         });
-    });
   }
 
   success(message: string): void {

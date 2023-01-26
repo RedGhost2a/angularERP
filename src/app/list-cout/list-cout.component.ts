@@ -13,7 +13,7 @@ import {MatTableDataSource} from "@angular/material/table";
 export class ListCoutComponent implements OnInit {
   @Input() listCout!: Cout[]
   columnsToDisplay = ["type", "categorie", "designation", "unite", "prixUnitaire","fournisseur", "boutons"];
-  userId = localStorage.getItem("userID");
+  userId = this.userService.userValue.id
   dataSource!:any;
 
   constructor(private coutService: CoutService, private userService : UserService) {

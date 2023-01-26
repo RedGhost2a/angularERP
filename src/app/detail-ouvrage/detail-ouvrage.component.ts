@@ -5,6 +5,7 @@ import {Ouvrage} from "../_models/ouvrage";
 import {CoutDuDevis} from "../_models/cout-du-devis";
 import {ActivatedRoute} from "@angular/router";
 import {map, Observable} from "rxjs";
+import {Cout} from "../_models/cout";
 
 @Component({
   selector: 'app-detail-ouvrage',
@@ -15,7 +16,7 @@ export class DetailOuvrageComponent implements OnInit {
   ouvrage!:Ouvrage
   prixOuvrage!:number
   ouvrageID!:number
-  cout!:CoutDuDevis[];
+  // cout!:Cout[];
   @Output() deleteCout: EventEmitter<any> = new EventEmitter()
   columnsToDisplay = ["designation","benefice","aleas", "unite","ratio", "uRatio","prixUnitaire", "boutons"];
 
@@ -33,9 +34,10 @@ export class DetailOuvrageComponent implements OnInit {
     this.route.params.subscribe(params =>{
       this.ouvrageID = +params['id'];
       this.ouvrageService.getById(this.ouvrageID).subscribe(data =>{
-        console.log(data)
         this.ouvrage = data;
-        this.cout = data.CoutDuDevis
+        console.log(data)
+        // this.ouvrage.fournisseur = data.Couts[0].Fournisseurs[0].commercialName
+        // console.log("FOURNISSEUR",this.ouvrage.fournisseur)
       })
     } )
   }

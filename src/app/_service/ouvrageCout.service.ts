@@ -21,7 +21,8 @@ export class OuvrageCoutService {
   }
 
   create(data: any): Observable<any> {
-    return this.http.post(baseUrl, data);
+    console.log(data)
+    return this.http.post(`${baseUrl}/new`, data);
   }
 
   deleteByID(CoutId: any, OuvrageId: any): Observable<any> {

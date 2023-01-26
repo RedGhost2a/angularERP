@@ -15,7 +15,7 @@ import {OuvrageService} from "../_service/ouvrage.service";
   styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnInit {
-  userId = localStorage.getItem("userID");
+  userId = this.userService.userValue.id;
   myFormGroup!: FormGroup;
   fournisseur!: Fournisseur[];
   typeCout !: TypeCout[];

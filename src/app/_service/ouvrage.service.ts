@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {Ouvrage} from "../_models/ouvrage";
+import {SousLotOuvrage} from "../_models/sousLotOuvrage";
 
 const baseUrl = 'http://localhost:4000/ouvrages';
 
@@ -20,7 +22,9 @@ export class OuvrageService {
     });
   }
 
-  getById(id: any): Observable<any> {
+  getById(id: number): Observable<any> {
+    // console.log("ID",id)
+    // console.log(`get by id ouvrage service ${baseUrl}/${id}`)
     return this.http.get(`${baseUrl}/${id}`);
   }
 
@@ -28,8 +32,13 @@ export class OuvrageService {
     return this.http.post(`${baseUrl}/new`, data);
   }
 
-  createSousLotOuvrageForDevis(data: { ouvrageId: number | number[], sousLotId: number }): Observable<any> {
-    return this.http.post(`${baseUrl}/sousLot`, data);
+  // createSousLotOuvrageForDevis(data: { ouvrageId: number | number[], sousLotId: number }): Observable<any> {
+
+  // createSousLotOuvrageForDevis(data: SousLotOuvrage): Observable<any> {
+  //   return this.http.post(`${baseUrl}/sousLot`, data);
+  // }
+  createSousLotOuvrageForDevis(data: SousLotOuvrage): Observable<any> {
+    return this.http.post(`http://localhost:4000/ouvragesDuDevis/sousLot/`, data);
   }
 
 
@@ -42,13 +51,15 @@ export class OuvrageService {
     return this.http.delete(`${baseUrl}/${id}`)
   }
 
-  // addCoutOuvrage(coutId:number, ouvrageId:number) :Observable<any> {
-  //   console.log(` console log ADD COUT: http://localhost:8080/ouvragesCouts/new/${coutId}/${ouvrageId}`)
-  //   return this.http.get(`http://localhost:8080/ouvragesCouts/new/${coutId}/${ouvrageId}`);
-  // }
-  // getSum(ouvrageId:number): Observable<any>{
-  //   return this.http.get(`${baseUrl}/test/sum/${ouvrageId}`)
-  // }
+  createOuvrageDuDevis(data:Ouvrage):Observable<Ouvrage>{
+    return this.http.post<Ouvrage>(`${baseUrl}DuDevis/new`, data)
+  }
+
+  getOuvrageDuDevisByDesignation(data:Ouvrage):Observable<Ouvrage>{
+    return this.http.get<Ouvrage>(`${baseUrl}DuDevis/`)
+  }
+
+
 
 
 }

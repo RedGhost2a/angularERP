@@ -14,7 +14,7 @@ export class ListTypeCoutComponent implements OnInit {
   listTypeCout!:TypeCout[];
   dataSource!:any;
   columnsToDisplay = ["type", "categorie", "boutons"];
-  userId = localStorage.getItem("userID");
+  userId = this.userService.userValue.id;
 
 
   constructor(private typeCoutService: TypeCoutService, private userService: UserService) { }

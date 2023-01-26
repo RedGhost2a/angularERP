@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Lot} from "../_models/lot";
 
-const baseUrl = 'http://localhost:8080/lots';
+const baseUrl = 'http://localhost:4000/lots';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,7 @@ export class LotService {
 
 
   create(data: any): Observable<any> {
+    console.log('console log create lot service : ', data)
     return this.http.post(`${baseUrl}/new`, data);
   }
 
@@ -26,6 +27,7 @@ export class LotService {
 
   deleteByID(id: any): Observable<any> {
     return this.http.delete(`${baseUrl}/${id}`)
+
   }
 
   getLotFraisDeChantier(deviID:number): Observable<any>{

@@ -4,7 +4,7 @@ import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Lot} from "../_models/lot";
 
-const baseUrl = 'http://localhost:8080/sousLots';
+const baseUrl = 'http://localhost:4000/sousLots';
 
 @Injectable({
   providedIn: 'root'

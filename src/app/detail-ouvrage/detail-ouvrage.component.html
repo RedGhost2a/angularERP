@@ -35,11 +35,12 @@
       </div>
     </mat-card-title-group>
   </mat-card>
-    <ng-container *ngIf="cout && cout.length ; then someContent else otherContent"></ng-container>
+    <ng-container *ngIf="ouvrage.Couts && ouvrage.Couts.length ; then someContent else otherContent"></ng-container>
+<!--    <ng-container *ngIf="cout && cout.length ; then someContent else otherContent"></ng-container>-->
 
   <ng-template #someContent >
-    <div>
-      <mat-card class="example-card">
+    <div >
+      <mat-card class="example-card" >
         <mat-card-title-group class="group">
           <div class="bouton">
             <mat-card-title >Composant de l'ouvrage</mat-card-title>
@@ -47,39 +48,40 @@
           </div>
           <div class="detailList">
             <div class="detail">
-              <mat-card-subtitle class="subTitle">Type</mat-card-subtitle>
+              <mat-card-subtitle class="subTitle">Désignation</mat-card-subtitle>
 <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
-              <p *ngFor="let couts of cout">{{couts.type}}</p>
+              <p *ngFor="let cout of ouvrage.Couts">{{cout.designation}}</p>
             </div>
             <div class="detail">
               <mat-card-subtitle class="subTitle">Catégorie</mat-card-subtitle>
-              <p *ngFor="let couts of cout">{{couts.categorie}}</p>
+<!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
+              <p *ngFor="let cout of ouvrage.Couts">{{cout?.TypeCout?.categorie}}</p>
             </div>
             <div class="detail">
-              <mat-card-subtitle class="subTitle">Désignation</mat-card-subtitle>
-              <p *ngFor="let couts of cout">{{couts.designation}}</p>
+              <mat-card-subtitle class="subTitle">Type</mat-card-subtitle>
+<!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
+              <p *ngFor="let cout of ouvrage.Couts">{{cout?.TypeCout?.type}}</p>
             </div>
             <div class="detail">
               <mat-card-subtitle class="subTitle">Unité</mat-card-subtitle>
-              <p *ngFor="let couts of cout">{{couts.unite}}</p>
+              <p *ngFor="let cout of ouvrage.Couts">{{cout.unite}}</p>
             </div>
             <div class="detail">
-              <mat-card-subtitle class="subTitle">Prix Unitaire HT</mat-card-subtitle>
-              <p *ngFor="let couts of cout" >{{couts.prixUnitaire}}</p>
+              <mat-card-subtitle class="subTitle">Prix Unitaire</mat-card-subtitle>
+              <p *ngFor="let cout of ouvrage.Couts">{{cout.prixUnitaire}}</p>
             </div>
-            <div class="detail">
-              <mat-card-subtitle class="subTitle">Fournisseur</mat-card-subtitle>
-              <p *ngFor="let couts of cout">{{couts.fournisseur}}</p>
-            </div>
-            <div class="detail">
-              <mat-card-subtitle class="subTitle">Remaque</mat-card-subtitle>
-              <p *ngFor="let couts of cout">{{couts.remarque}}</p>
-            </div>
+<!--            <div class="detail" >-->
+<!--              <mat-card-subtitle class="subTitle">Fournisseur</mat-card-subtitle>-->
+<!--              <p>{{cout?.Fournisseurs[0] ? cout.Fournisseurs[0].commercialName : "Aucun fournisseur"}}</p>-->
+<!--              <p>{{cout.fournisseur}}</p>-->
+<!--            </div>-->
             <div class="detail">
               <mat-card-subtitle class="subTitle">Supprimer</mat-card-subtitle>
-              <p *ngFor="let couts of cout">
-                <button (click)="deleteById(couts.id);deleteCout.emit(getById())"  mat-raised-button color="primary"><mat-icon>restore_from_trash</mat-icon>
-                </button></p>
+              <p *ngFor="let cout of ouvrage.Couts">
+                <button (click)="deleteById(cout.id);deleteCout.emit(getById())"  mat-raised-button color="primary"><mat-icon>restore_from_trash</mat-icon>
+                </button>
+
+              </p>
             </div>
           </div>
         </mat-card-title-group>

@@ -20,4 +20,9 @@ export class SousLotOuvrageService {
   update(id:number, sousLotOuvrage: SousLotOuvrage): Observable<SousLotOuvrage>{
     return this.http.put<SousLotOuvrage>(`${baseUrl}/${id}`,sousLotOuvrage)
   }
+
+  getSommeSousLot(id:number):Observable<number>{
+    return this.http.get<number>(`${baseUrl}/sum/${id}`)
+  }
+
 }

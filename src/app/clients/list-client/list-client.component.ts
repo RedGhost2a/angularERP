@@ -41,6 +41,7 @@ export class ListClientComponent implements OnInit {
 
   getAll(): void {
     this.clientService.getAll().subscribe(data => {
+      console.log(data)
         this.listClient = data
         // this.dataSource = this.listClient
         this.dataSource = new MatTableDataSource(this.listClient);

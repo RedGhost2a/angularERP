@@ -13,10 +13,9 @@ import {User} from "../_models/users";
   styleUrls: ['./list-ouvrage.component.scss']
 })
 export class ListOuvrageComponent implements OnInit {
-  @Input() listOuvrage!: Ouvrage[];
+  listOuvrage!: Ouvrage[];
   currentUser!:User;
   entrepriseId!:number;
-  coutsDuDevis!: CoutDuDevis[];
   prixOuvrage: number[] = [];
   columnsToDisplay = ["designation", "benefice", "aleas", "unite", "ratio", "uRatio", "prixUnitaire", "boutons"];
 
