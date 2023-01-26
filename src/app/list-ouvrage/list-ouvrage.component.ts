@@ -5,6 +5,8 @@ import {CoutDuDevis} from "../_models/cout-du-devis";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {UserService} from "../_service/user.service";
 import {User} from "../_models/users";
+import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
+import {MatDialog} from "@angular/material/dialog";
 
 
 @Component({
@@ -14,24 +16,25 @@ import {User} from "../_models/users";
 })
 export class ListOuvrageComponent implements OnInit {
   listOuvrage!: Ouvrage[];
-  currentUser!:User;
-  entrepriseId!:number;
+  currentUser!: User;
+  entrepriseId!: number;
   prixOuvrage: number[] = [];
   columnsToDisplay = ["designation", "benefice", "aleas", "unite", "ratio", "uRatio", "prixUnitaire", "boutons"];
 
   constructor(private ouvrageService: OuvrageService, private ouvrageCoutService: OuvrageCoutService,
-              private userService : UserService) {
+              private dialog: MatDialog,
+              private userService: UserService) {
   }
 
   ngOnInit(): void {
     this.currentUser = this.userService.userValue;
-    this.userService.getById(this.currentUser.id).subscribe(data =>{
+    this.userService.getById(this.currentUser.id).subscribe(data => {
       console.log("user by id ", data)
       this.entrepriseId = data.Entreprises[0].id
-    this.getAll()
-    this.getAllPrice()
+      this.getAll()
+      this.getAllPrice()
     })
-      //.log("Entreprise ID",this.entrepriseId)
+    //.log("Entreprise ID",this.entrepriseId)
 
   }
 
@@ -46,6 +49,17 @@ export class ListOuvrageComponent implements OnInit {
 
   delete(id: number): void {
     this.ouvrageService.deleteByID(id).subscribe(() => this.ngOnInit())
+  }
+
+  deleteItem(id: number) {
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Appeler la fonction de suppression ici
+        this.ouvrageService.deleteByID(id).subscribe(() => this.ngOnInit())
+      }
+    });
   }
 
   getAllPrice(): void {

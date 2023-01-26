@@ -2,6 +2,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Client} from "../../_models/client";
 import {ClientService} from "../../_service/client.service";
 import {MatTableDataSource} from "@angular/material/table";
+import {MatDialog} from "@angular/material/dialog";
+import {DialogConfirmSuppComponent} from "../../dialog-confirm-supp/dialog-confirm-supp.component";
 
 @Component({
   selector: 'app-list-client',
@@ -19,7 +21,7 @@ export class ListClientComponent implements OnInit {
   clickedRows = new Set<Client>();
   public values!: string;
 
-  constructor(private clientService: ClientService) {
+  constructor(private clientService: ClientService, private dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -35,13 +37,24 @@ export class ListClientComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  deleteItem(id: number) {
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Appeler la fonction de suppression ici
+        this.clientService.deleteByID(id).subscribe((() => this.ngOnInit()))
+      }
+    });
+  }
+
   delete(id: any): void {
     this.clientService.deleteByID(id).subscribe((() => this.ngOnInit()))
   }
 
   getAll(): void {
     this.clientService.getAll().subscribe(data => {
-      console.log(data)
+        console.log(data)
         this.listClient = data
         // this.dataSource = this.listClient
         this.dataSource = new MatTableDataSource(this.listClient);

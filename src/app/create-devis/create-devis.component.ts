@@ -1,22 +1,11 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  Input,
-  OnInit,
-  SimpleChange,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LotService} from "../_service/lot.service"
 import {ActivatedRoute, Router} from "@angular/router";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {SousLotService} from "../_service/sous-lot.service";
 import {DevisService} from "../_service/devis.service";
-import {Devis} from "../_models/devis";
 import {DataSharingService} from "../_service/data-sharing-service.service";
-import {Observable, Subject, Subscription} from "rxjs";
 import {OuvrageService} from "../_service/ouvrage.service";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogComponent} from "../dialog/dialog.component";
@@ -27,7 +16,6 @@ import {SousLotOuvrage} from "../_models/sousLotOuvrage";
 import {SousLotOuvrageService} from "../_service/sous-lot-ouvrage.service";
 import {CoutService} from "../_service/cout.service";
 import {CoutDuDevis} from "../_models/cout-du-devis";
-import {isArray} from "@angular/compiler-cli/src/ngtsc/annotations/common";
 
 
 @Component({
@@ -36,6 +24,7 @@ import {isArray} from "@angular/compiler-cli/src/ngtsc/annotations/common";
   styleUrls: ['./create-devis.component.scss']
 })
 export class CreateDevisComponent implements OnInit {
+
   lotFraisDeChantier!: Lot;
   form!: FormGroup;
   testLots!: Lot[];
@@ -55,7 +44,7 @@ export class CreateDevisComponent implements OnInit {
   prixDevis: number = 0;
   coutDuDevis!: CoutDuDevis;
   sousLotOuvrageDuDevis!: SousLotOuvrage
-  beneficeAleasByOuvrage: { idOuvrage:any; benefice: any; aleas: any }[] = [];
+  beneficeAleasByOuvrage: { idOuvrage: any; benefice: any; aleas: any }[] = [];
   resultBenefice: number = 0;
   resultAleas: number = 0;
 
@@ -81,16 +70,13 @@ export class CreateDevisComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.devisId = +params['id']
       this.form = new FormGroup({
-        designation: new FormControl(),
+        designation: new FormControl("", [Validators.required, Validators.minLength(3)]),
         devisId: new FormControl(this.devisId)
       });
     });
     this.getLotFraisDeChantier();
     this.getAllLots();
     this.formQuantityOuvrage()
-
-
-
   }
 
   fraisGeneraux(): number {
@@ -109,11 +95,11 @@ export class CreateDevisComponent implements OnInit {
       .map(ouvrage => ({
         idOuvrage: ouvrage?.id,
         benefice: ouvrage.benefice,
-        aleas:ouvrage.aleas
+        aleas: ouvrage.aleas
         // benefice: ouvrage?.CoutDuDevis && ouvrage.CoutDuDevis.reduce((acc, ct) => acc + ct.prixUnitaire, 0),
       }));
-      this.resultAleas = this.beneficeAleasByOuvrage.reduce((acc, obj)=>acc + obj.aleas,0)
-      this.resultBenefice = this.beneficeAleasByOuvrage.reduce((acc, obj)=>acc + obj.benefice,0)
+    this.resultAleas = this.beneficeAleasByOuvrage.reduce((acc, obj) => acc + obj.aleas, 0)
+    this.resultBenefice = this.beneficeAleasByOuvrage.reduce((acc, obj) => acc + obj.benefice, 0)
     console.log("tableau de benefice et aleas", this.beneficeAleasByOuvrage)
     console.log("resultat des benefice", this.resultBenefice)
     console.log("resultat des aleas", this.resultAleas)
@@ -273,6 +259,8 @@ export class CreateDevisComponent implements OnInit {
     this.lotService.create(this.form.getRawValue()).subscribe(() => {
       this.getAllLots()
       this.getLotFraisDeChantier()
+      this.success("Nouveau lot crée!")
+
     })
   }
 
@@ -291,12 +279,16 @@ export class CreateDevisComponent implements OnInit {
   deleteLot(id: number): void {
     this.lotService.deleteByID(id).subscribe(() => {
       this.getAllLots()
+      this.success("Lot effacer!")
+
     })
   }
 
   deleteSousLot(id: number): void {
     this.sousLotService.deleteByID(id).subscribe(() => {
       this.getAllLots()
+      this.success("sous-lot effacer!")
+
     });
   }
 

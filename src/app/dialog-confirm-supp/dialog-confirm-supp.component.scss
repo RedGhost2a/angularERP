@@ -1,0 +1,8 @@
+.dialog {
+  display: flex;
+  flex-direction: column;
+
+  &-text {
+    margin-bottom: 15px;
+  }
+}

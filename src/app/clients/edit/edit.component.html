@@ -4,49 +4,113 @@
       <h1 class="modal-title"> {{textButton}}</h1>
     </div>
     <form class="form" [formGroup]="profileForm">
+
       <mat-form-field appearance="outline" color="primary">
-        <mat-label> Nom</mat-label>
-        <input matInput placeholder="Entrer le nom" formControlName="firstName">
+        <mat-label>Nom</mat-label>
+        <input type="text" matInput placeholder="Entrer le nom" formControlName="firstName">
+        <div *ngIf=" f['firstName'].invalid && f['firstName'].touched  " class="invalid-feedback">
+          <div *ngIf="f['firstName'].errors?.['required']">Le nom est requis !</div>
+          <div *ngIf="f['firstName'].errors?.['minlength']">Le nom doit faire 3 caractéres au min !</div>
+        </div>
       </mat-form-field>
+
+
       <mat-form-field appearance="outline">
-        <mat-label> Prénom</mat-label>
-        <input matInput placeholder="Entrer le prénom" formControlName="lastName">
+        <mat-label>Prénom</mat-label>
+        <input type="text" matInput placeholder="Entrer le prénom" formControlName="lastName">
+        <div *ngIf=" f['lastName'].invalid && f['lastName'].touched  " class="invalid-feedback">
+          <div *ngIf="f['lastName'].errors?.['required']">Le prénom est requis !</div>
+          <div *ngIf="f['lastName'].errors?.['minlength']">Le prénom doit faire 3 caractéres au min !</div>
+        </div>
       </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Dénomination</mat-label>
+        <input type="text" matInput placeholder="Entrer la dénomination commerciale" formControlName="denomination">
+        <div *ngIf=" f['denomination'].invalid && f['denomination'].touched  " class="invalid-feedback">
+          <div *ngIf="f['denomination'].errors?.['required']">La dénomination est requise !</div>
+          <div *ngIf="f['denomination'].errors?.['minlength']">La dénomination doit faire 3 caractéres au min !</div>
+        </div>
+      </mat-form-field>
+
+
       <div formGroupName="Adresse">
         <mat-form-field appearance="outline">
           <mat-label>Adresse</mat-label>
-          <input matInput placeholder="Avenue de la Grande Armée" formControlName="adresses"
+          <input type="text" matInput placeholder="Avenue de la Grande Armée" formControlName="adresses"
                  style="width: 70px">
         </mat-form-field>
+
+
         <mat-form-field appearance="outline">
           <mat-label>Code postal</mat-label>
-          <input matInput placeholder=" Ex. 20167" formControlName="zipcode">
+          <input type="number" matInput placeholder=" Ex. 20167" formControlName="zipcode">
+          <!--          <div *ngIf=" f['zipcode'].invalid && f['zipcode'].touched  " class="invalid-feedback">-->
+          <!--            <div *ngIf="f['zipcode'].errors?.['required']">Le prénom est requis !</div>-->
+          <!--            <div *ngIf="f['zipcode'].errors?.['pattern']">Le code postal doit faire 5 caractéres!</div>-->
+          <!--          </div>-->
+
         </mat-form-field>
+
+
         <mat-form-field appearance="outline">
           <mat-label>Ville</mat-label>
-          <input matInput placeholder="Ajaccio" formControlName="city">
+          <input type="text" matInput placeholder="Ajaccio" formControlName="city">
         </mat-form-field>
+
+
         <mat-form-field appearance="outline">
           <mat-label>Pays</mat-label>
-          <input matInput placeholder=" France" formControlName="country">
+          <input type="text" matInput placeholder=" France" formControlName="country">
         </mat-form-field>
+
+
       </div>
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
-        <input matInput formControlName="email">
+        <input type="email" matInput formControlName="email">
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">Le mail est requis !</div>
+        </div>
       </mat-form-field>
+
+
       <mat-form-field appearance="outline">
         <mat-label>Numéro de téléphone</mat-label>
-        <input matInput formControlName="phonenumber">
+        <input type="number" matInput formControlName="phonenumber">
+        <div *ngIf=" f['phonenumber'].invalid && f['phonenumber'].touched  " class="invalid-feedback">
+          <div *ngIf="f['phonenumber'].errors?.['required']">Le téléphone est requis !</div>
+          <div *ngIf="f['phonenumber'].errors?.['pattern']">Le téléphone doit etre comme suit : 01 23 45 67 89!</div>
+        </div>
+
       </mat-form-field>
+
+
       <mat-form-field appearance="outline">
         <mat-label>Catégorie</mat-label>
-        <input matInput formControlName="type">
+        <select formControlName="type" matNativeControl required>
+          <option value="Particulier">Particulier</option>
+          <option value="Professionel">Professionel</option>
+          <option value="Commune">Commune</option>
+          <option value="Collectivité">Collectivité</option>
+        </select>
       </mat-form-field>
-      <mat-form-field appearance="outline">
+
+
+      <mat-form-field
+        *ngIf="profileForm.controls.type.getRawValue() === 'Professionel' || profileForm.controls.type.getRawValue() === 'Collectivité' || profileForm.controls.type.getRawValue() === 'Commune'"
+        appearance="outline">
         <mat-label>Tva intracommunautaire</mat-label>
-        <input matInput formControlName="tvaintra">
+        <input type="number" matInput formControlName="tvaintra">
       </mat-form-field>
+
+      <mat-form-field
+        *ngIf="profileForm.controls.type.getRawValue() === 'Professionel' || profileForm.controls.type.getRawValue() === 'Collectivité' || profileForm.controls.type.getRawValue() === 'Commune'"
+        appearance="outline">
+        <mat-label>Siret</mat-label>
+        <input type="number" matInput formControlName="siret">
+      </mat-form-field>
+
 
     </form>
 

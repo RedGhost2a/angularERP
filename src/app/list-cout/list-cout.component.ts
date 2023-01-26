@@ -3,6 +3,8 @@ import {CoutService} from "../_service/cout.service";
 import {Cout} from "../_models/cout";
 import {UserService} from "../_service/user.service";
 import {MatTableDataSource} from "@angular/material/table";
+import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
+import {MatDialog} from "@angular/material/dialog";
 
 
 @Component({
@@ -12,11 +14,12 @@ import {MatTableDataSource} from "@angular/material/table";
 })
 export class ListCoutComponent implements OnInit {
   @Input() listCout!: Cout[]
-  columnsToDisplay = ["type", "categorie", "designation", "unite", "prixUnitaire","fournisseur", "boutons"];
+  columnsToDisplay = ["type", "categorie", "designation", "unite", "prixUnitaire", "fournisseur", "boutons"];
   userId = this.userService.userValue.id
-  dataSource!:any;
+  dataSource!: any;
 
-  constructor(private coutService: CoutService, private userService : UserService) {
+  constructor(private coutService: CoutService, private userService: UserService, private dialog: MatDialog) {
+
   }
 
 
@@ -30,10 +33,10 @@ export class ListCoutComponent implements OnInit {
   }
 
 
-  getAllCouts(entrepriseId:number): void {
+  getAllCouts(entrepriseId: number): void {
     this.coutService.getAll(entrepriseId).subscribe(data => {
       this.listCout = data;
-      console.log("list cout TS getAllCouts DATA:",data)
+      console.log("list cout TS getAllCouts DATA:", data)
       this.dataSource = new MatTableDataSource(this.listCout)
 
     });
@@ -44,9 +47,22 @@ export class ListCoutComponent implements OnInit {
     this.coutService.deleteByID(id).subscribe(() => this.ngOnInit())
   }
 
-  getUserEntreprise():void{
+  deleteItem(id: number) {
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Appeler la fonction de suppression ici
+        this.coutService.deleteByID(id).subscribe(() => this.ngOnInit())
+      }
+    });
+  }
+
+  getUserEntreprise(): void {
     this.userService.getById(this.userId).subscribe(data => {
-     this.getAllCouts(data.Entreprises[0].id)
+      console.log(data)
+      console.log(this.userId)
+      this.getAllCouts(data.Entreprises[0].id)
     })
   }
 

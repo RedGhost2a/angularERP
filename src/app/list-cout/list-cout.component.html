@@ -38,23 +38,19 @@
       <th mat-header-cell *matHeaderCellDef> PU HT</th>
       <td mat-cell *matCellDef="let cout"> {{cout.prixUnitaire}} </td>
     </ng-container>
-    <!--  <ng-container matColumnDef="boutonSuppr">-->
-    <!--    <th mat-header-cell *matHeaderCellDef> </th>-->
-    <!--    <td mat-cell *matCellDef="let cout" >-->
-    <!--      <button (click)="delete(cout.id)"  mat-raised-button color="primary">Supprimer {{cout.id}}</button>-->
-    <!--    </td>-->
-    <!--  </ng-container>-->
+
     <ng-container matColumnDef="boutons">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let cout">
-        <!--      <button (click)="delete(cout.id)"  mat-raised-button color="primary">Supprimer {{cout.id}}</button>-->
-        <button (click)="delete(cout.id)" mat-raised-button color="primary">
-          <mat-icon>restore_from_trash</mat-icon>
+        <button mat-stroked-button [routerLink]="['/cout', cout.id]">
+          <mat-icon>create</mat-icon>
+          Modifier
         </button>
-        <!--      <button mat-raised-button color="primary" [routerLink]="['/cout', cout.id]">Modifier</button>-->
-        <button mat-raised-button color="primary" [routerLink]="['/cout', cout.id]">
-          <mat-icon>update</mat-icon>
+        <button (click)="deleteItem(cout.id)" mat-stroked-button color="warn">
+          <mat-icon>delete_forever</mat-icon>
+          Supprimer
         </button>
+
       </td>
 
 

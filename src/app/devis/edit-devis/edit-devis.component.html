@@ -5,6 +5,10 @@
     <mat-form-field appearance="legacy">
       <mat-label>Nom</mat-label>
       <input formControlName="name" matInput placeholder="Ex: Devis toiture">
+      <div *ngIf=" f['name'].invalid && f['name'].touched  " class="invalid-feedback">
+        <div *ngIf="f['name'].errors?.['required']">L'intitulé du devis est requis !</div>
+        <div *ngIf="f['name'].errors?.['minlength']">L'intitulé du devis doit faire 3 caractéres au min !</div>
+      </div>
     </mat-form-field>
 
     <mat-form-field appearance="legacy">
@@ -23,10 +27,15 @@
       </mat-select>
     </mat-form-field>
 
+
     <mat-form-field appearance="legacy">
       <mat-label>Status</mat-label>
-      <input formControlName="status" matInput placeholder="Ex: En cours">
+      <select formControlName="status" matNativeControl required>
+        <option value="Initialisation">Initialisation</option>
+        <option value="Extraction">Bon pour extraction</option>
+        <option value="Cloturer">Cloturer</option>
+      </select>
     </mat-form-field>
-    <button (click)="createAndUpdate()" routerLink="/devisTest" mat-raised-button>Créer un devis</button>
   </ng-container>
+  <button (click)="createAndUpdate()" routerLink="/devisTest" mat-raised-button>Créer un devis</button>
 </div>

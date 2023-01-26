@@ -65,6 +65,7 @@ import {DetailDevisComponent} from './detail-devis/detail-devis.component';
 import {CreateDevisComponent} from './create-devis/create-devis.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatRadioModule} from "@angular/material/radio";
+import { DialogConfirmSuppComponent } from './dialog-confirm-supp/dialog-confirm-supp.component';
 
 
 
@@ -110,6 +111,7 @@ declare const toastr: Toastr;
     UniquePipe,
     DetailDevisComponent,
     CreateDevisComponent,
+    DialogConfirmSuppComponent,
 
 
   ],

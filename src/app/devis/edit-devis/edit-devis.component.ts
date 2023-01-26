@@ -1,5 +1,5 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {DevisService} from "../../_service/devis.service";
 import {ClientService} from "../../_service/client.service";
 import {Client} from "../../_models/client";
@@ -18,6 +18,7 @@ export class EditDevisComponent implements OnInit {
   // @ts-ignore
   userId = JSON.parse(localStorage.getItem('user'))
   currentUser = this.userId.id;
+  submitted = false;
 
 
   listClient !: Client[];
@@ -35,7 +36,7 @@ export class EditDevisComponent implements OnInit {
               private router: Router,
               private route: ActivatedRoute,) {
     this.myFormGroup = this.formBuilder.group({
-      name: [],
+      name: new FormControl('', [Validators.required, Validators.minLength(3)]),
       status: [],
       ClientId: [],
       EntrepriseId: [],
@@ -45,6 +46,9 @@ export class EditDevisComponent implements OnInit {
 
   }
 
+  get f() {
+    return this.myFormGroup.controls;
+  }
 
   getAllClient(): void {
     this.clientService.getAll().subscribe(data => this.listClient = data)
@@ -74,9 +78,8 @@ export class EditDevisComponent implements OnInit {
               this.router.navigate(['/devis']);
             }
           }, error => {
-            console.log(error)
             this.warning("Complète tout les champs !")
-
+            console.log(error)
           }
         )
       } else {

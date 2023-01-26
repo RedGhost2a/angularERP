@@ -1,4 +1,3 @@
-
 <ng-container *ngIf="this.isCout" [formGroup]="this.myFormGroup">
   <button routerLink="/listCout" mat-raised-button color="accent">Retour</button>
   <div class="container">
@@ -27,7 +26,7 @@
     </div>
 
     <div class="group3">
-      <mat-form-field appearance="fill" >
+      <mat-form-field appearance="fill">
         <mat-label>Type et catégorie du cout</mat-label>
         <mat-select formControlName="TypeCoutId">
           <mat-option *ngFor="let item of typeCout" [value]="item.id">
@@ -36,10 +35,10 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" >
+      <mat-form-field appearance="fill">
         <mat-label>Fournisseur</mat-label>
         <mat-select formControlName="FournisseurId">
-<!--        <mat-select formControlName="Fournisseurs">-->
+          <!--        <mat-select formControlName="Fournisseurs">-->
           <mat-option *ngFor="let item of fournisseur" [value]="item.id">
             {{item.commercialName}} {{item.id}}
           </mat-option>
@@ -47,9 +46,8 @@
       </mat-form-field>
 
 
-
     </div>
-    <button   mat-raised-button (click)="createAndUpdateCout()" >{{textButton}}</button>
+    <button mat-raised-button (click)="createAndUpdateCout()">{{textButton}}</button>
   </div>
 
 </ng-container>
@@ -74,7 +72,7 @@
     </div>
 
 
-    <button   mat-raised-button (click)="createAndUpdateFournisseur()" >{{textButton}}</button>
+    <button mat-raised-button (click)="createAndUpdateFournisseur()">{{textButton}}</button>
   </div>
 </ng-container>
 
@@ -99,53 +97,61 @@
     </div>
 
 
-    <button   mat-raised-button (click)="createAndUpdateTypeCout()" >{{textButton}}</button>
+    <button mat-raised-button (click)="createAndUpdateTypeCout()">{{textButton}}</button>
   </div>
 </ng-container>
 
-<ng-container *ngIf="isOuvrage" [formGroup]="this.myFormGroup">
+<ng-container class="container" *ngIf="isOuvrage" [formGroup]="this.myFormGroup">
   <button routerLink="/listOuvrage" mat-raised-button color="accent">Retour</button>
-  <div class="container test">
+  <div class="ouvrage">
     <h1> {{titreForm}}</h1>
     <div class="group1">
-      <p>
-        <mat-form-field appearance="legacy">
+      <div>
+        <mat-form-field appearance="outline">
           <mat-label>Désignation</mat-label>
           <input formControlName="designation" matInput placeholder="Ex: Béton de propreté">
 
         </mat-form-field>
-      </p>
-      <p>
-        <mat-form-field appearance="legacy">
-          <mat-label>Bénéfice</mat-label>
-          <input formControlName="benefice" matInput placeholder="Ex: 10">
+        <mat-form-field appearance="outline">
+          <mat-label>Ratio</mat-label>
+          <input formControlName="ratio" matInput placeholder="Ex: 0.9">
         </mat-form-field>
-      </p>
-      <p>
-        <mat-form-field appearance="legacy">
+
+
+        <mat-form-field appearance="outline">
           <mat-label>Aléas</mat-label>
           <input formControlName="aleas" matInput placeholder="Ex: 10">
+          <span matSuffix>%</span>
         </mat-form-field>
-      </p>
-    </div>
-    <div class="group2">
-      <p>
-        <mat-form-field appearance="legacy">
+      </div>
+
+      <div>
+        <mat-form-field appearance="outline">
           <mat-label>Unité</mat-label>
-          <input formControlName="unite" matInput placeholder="Ex: 10">
+          <select formControlName="unite" matNativeControl required>
+            <option value="m">Mètres</option>
+            <option value="m²">Mètres carrés</option>
+            <option value="m³">Mètres cubes</option>
+            <option value="Kg">Kilogrammes</option>
+          </select>
         </mat-form-field>
-      </p><p>
-      <mat-form-field appearance="legacy">
-        <mat-label>Ratio</mat-label>
-        <input formControlName="ratio" matInput placeholder="Ex: 0.9">
-      </mat-form-field>
-    </p>
-      <p>
-        <mat-form-field appearance="legacy">
+
+
+        <mat-form-field appearance="outline">
           <mat-label>U/Ratio</mat-label>
-          <input formControlName="uRatio" matInput placeholder="Ex: ">
+          <input formControlName="uRatio" matInput placeholder="Ex: "
+                 value="{{myFormGroup.controls['unite'].getRawValue()}} / h">
+          <!--          <span matSuffix>/h</span>-->
         </mat-form-field>
-      </p>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Bénéfice</mat-label>
+          <input formControlName="benefice" matInput placeholder="Ex: 10">
+          <span matSuffix>%</span>
+        </mat-form-field>
+      </div>
+
+
       <!--      <p>-->
       <!--        <mat-form-field appearance="legacy">-->
       <!--          <mat-label>Ratio</mat-label>-->
@@ -153,8 +159,8 @@
       <!--        </mat-form-field>-->
       <!--      </p>-->
     </div>
-
-
-    <button routerLink="/listOuvrage"  mat-raised-button (click)="createAndUpdateOuvrage()">{{textButton}}</button>
+    <button mat-raised-button (click)="createAndUpdateOuvrage()">{{textButton}}</button>
+    <!--    <button routerLink="/listOuvrage" mat-raised-button (click)="createAndUpdateOuvrage()">{{textButton}}</button>-->
   </div>
+
 </ng-container>

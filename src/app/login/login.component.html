@@ -17,7 +17,9 @@
       <!--      <mat-icon matSuffix>password</mat-icon>-->
     </mat-form-field>
     <!--    <input type="checkbox" (change)="toggleEditable($event)">-->
-
+    <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+      <div *ngIf="f['password'].errors['required']">Le mot de passe est requis !</div>
+    </div>
   </form>
   <div>
     <button mat-stroked-button color="primary" class="button" type="submit" (click)="onSubmit()">VALIDER</button>

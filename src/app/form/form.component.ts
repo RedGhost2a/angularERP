@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {CoutService} from "../_service/cout.service";
 import {ActivatedRoute} from '@angular/router';
@@ -9,6 +9,8 @@ import {TypeCout} from "../_models/type-cout";
 import {TypeCoutService} from "../_service/typeCout.service";
 import {FournisseurCout} from "../_models/fournisseur-cout";
 import {OuvrageService} from "../_service/ouvrage.service";
+import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
+
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
@@ -19,31 +21,42 @@ export class FormComponent implements OnInit {
   myFormGroup!: FormGroup;
   fournisseur!: Fournisseur[];
   typeCout !: TypeCout[];
-  fournisseurCout!:FournisseurCout;
+  fournisseurCout!: FournisseurCout;
   textButton!: string;
   titreForm!: string;
   lastCoutId!: number;
-  fournisseurId!:number;
+  fournisseurId!: number;
   urlCout: string = "http://localhost:4200/cout";
-  urlFournisseur: string =  "http://localhost:4200/fournisseur";
-  urlTypeCout :string = "http://localhost:4200/typeCout";
-  urlOuvrage :string = "http://localhost:4200/ouvrage";
-  isCout:boolean = false;
-  isFournisseur:boolean = false;
-  isTypeCout:boolean = false;
-  isOuvrage:boolean = false;
+  urlFournisseur: string = "http://localhost:4200/fournisseur";
+  urlTypeCout: string = "http://localhost:4200/typeCout";
+  urlOuvrage: string = "http://localhost:4200/ouvrage";
+  isCout: boolean = false;
+  isFournisseur: boolean = false;
+  isTypeCout: boolean = false;
+  isOuvrage: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private coutService: CoutService,
               private route: ActivatedRoute, private userService: UserService,
-              private fournisseurService : FournisseurService, private typeCoutService: TypeCoutService,
-              private ouvrageService: OuvrageService) { }
+              private fournisseurService: FournisseurService, private typeCoutService: TypeCoutService,
+              private ouvrageService: OuvrageService,
+              @Inject(TOASTR_TOKEN) private toastr: Toastr,
+  ) {
+  }
+
+  success(message: string): void {
+    this.toastr.success(message, "Succès");
+  }
+
+  warning(message: string): void {
+    this.toastr.warning(message, "Attention");
+  }
 
   ngOnInit(): void {
     const regexCout = new RegExp(`^${this.urlCout}`)
     const regexFournisseur = new RegExp(`^${this.urlFournisseur}`)
     const regexTypeCout = new RegExp(`^${this.urlTypeCout}`)
     const regexOuvrage = new RegExp(`^${this.urlOuvrage}`)
-    if(regexCout.test(window.location.href)){
+    if (regexCout.test(window.location.href)) {
       this.createFormCout();
       this.getUserById();
       //this.getAllTypeCouts();
@@ -51,17 +64,19 @@ export class FormComponent implements OnInit {
       this.getAllFournisseur()
       this.isCout = true;
       console.log(this.isCout)
-    }if(regexFournisseur.test(window.location.href)){
+    }
+    if (regexFournisseur.test(window.location.href)) {
       this.createFormFournisseur()
       this.generateFormUpdateFournisseur()
       this.isFournisseur = true;
-    }if(regexTypeCout.test(window.location.href)){
+    }
+    if (regexTypeCout.test(window.location.href)) {
       this.createFormTypeCout();
       this.getUserById();
       this.generateFormUpdateTypeCout();
       this.isTypeCout = true;
     }
-    if(regexOuvrage.test(window.location.href)){
+    if (regexOuvrage.test(window.location.href)) {
       this.createFormOuvrage();
       this.getUserById();
       this.generateFormUpdateOuvrage();
@@ -81,7 +96,7 @@ export class FormComponent implements OnInit {
         this.coutService.create(this.myFormGroup.getRawValue()).subscribe(
           (): void => {
             this.fournisseurId = this.myFormGroup.getRawValue().Fournisseurs
-            alert('Nouveau cout enregistrer')
+            this.success("Nouveau composant en vue !")
             // this.getLastCout()
             // this.createCoutFournisseur(this.lastCoutId,this.fournisseurId)
           });
@@ -89,7 +104,7 @@ export class FormComponent implements OnInit {
         this.coutService.update(this.myFormGroup.getRawValue(), coutID)
           .subscribe((data): void => {
             this.fournisseurCout = this.myFormGroup.getRawValue().Fournisseurs;
-            console.log("this.fournisseur[0]",this.fournisseur[0])
+            console.log("this.fournisseur[0]", this.fournisseur[0])
             alert('Update!')
           });
       }
@@ -104,28 +119,29 @@ export class FormComponent implements OnInit {
     })
   }
 
-  createFormCout():void{
+  createFormCout(): void {
     this.textButton = "Creer un cout";
     this.titreForm = "Création d'un cout"
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
       designation: new FormControl(),
-      unite: new FormControl(),
-      prixUnitaire: new FormControl(),
-      EntrepriseId: new FormControl(),
-      TypeCoutId: new FormControl(),
-      FournisseurId: new FormControl()
+      unite: new FormControl(""),
+      prixUnitaire: new FormControl(""),
+      EntrepriseId: new FormControl(""),
+      TypeCoutId: new FormControl(""),
+      FournisseurId: new FormControl("")
     });
   }
 
 
 //Recupere tous les type de couts pour implementer le select picker du template
-  getAllTypeCouts(entrepriseID:number): void {
-    this.typeCoutService.getAllTypeCouts(entrepriseID).subscribe(data =>{
+  getAllTypeCouts(entrepriseID: number): void {
+    this.typeCoutService.getAllTypeCouts(entrepriseID).subscribe(data => {
         this.typeCout = data;
       }
     )
   }
+
   //Recupere tous les fournisseurs pour implementer le select picker du template
   getAllFournisseur(): void {
     this.fournisseurService.getAllFournisseurs().subscribe(data => {
@@ -146,7 +162,7 @@ export class FormComponent implements OnInit {
         this.textButton = 'Modifier le cout'
         this.titreForm = 'Modification du cout'
         this.coutService.getById(coutID).subscribe(data => {
-          const {Fournisseurs}:any = data;
+          const {Fournisseurs}: any = data;
           data = {
             id: data.id,
             designation: data.designation,
@@ -164,20 +180,21 @@ export class FormComponent implements OnInit {
 
   }
 
-  getLastCout():void{
-    this.coutService.getLast().subscribe(data=>{
-      console.log("LAST COUT",data)
+  getLastCout(): void {
+    this.coutService.getLast().subscribe(data => {
+      console.log("LAST COUT", data)
       this.lastCoutId = data[0].id
       console.log("TEST", this.lastCoutId)
       this.createCoutFournisseur(this.lastCoutId, this.fournisseurId)
     })
   }
 
-  createCoutFournisseur(LastCoutId:number,FournisseurId:number){
-    this.fournisseurService.createFournisseurCout(LastCoutId,FournisseurId ).subscribe()
+  createCoutFournisseur(LastCoutId: number, FournisseurId: number) {
+    this.fournisseurService.createFournisseurCout(LastCoutId, FournisseurId).subscribe()
   }
-  updateCoutFournisseur(CoutId:number, FournisseurId:number, data:FournisseurCout):void{
-    this.fournisseurService.updateFournisseurCout(CoutId,FournisseurId,data).subscribe()
+
+  updateCoutFournisseur(CoutId: number, FournisseurId: number, data: FournisseurCout): void {
+    this.fournisseurService.updateFournisseurCout(CoutId, FournisseurId, data).subscribe()
   }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -185,7 +202,7 @@ export class FormComponent implements OnInit {
 //////////////////////////////FOURNISSEUR//////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-  createFormFournisseur():void{
+  createFormFournisseur(): void {
     this.textButton = "Creer un fournisseur";
     this.titreForm = "Création d'un fournisseur"
     this.myFormGroup = new FormGroup({
@@ -194,6 +211,7 @@ export class FormComponent implements OnInit {
       remarque: new FormControl(''),
     });
   }
+
   createAndUpdateFournisseur(): void {
     this.route.params.subscribe(params => {
       const fournisseurID = +params['id']
@@ -237,7 +255,7 @@ export class FormComponent implements OnInit {
 /////////////////////////////////TYPECOUT//////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-  createFormTypeCout():void{
+  createFormTypeCout(): void {
     this.textButton = "Creer un type de cout";
     this.titreForm = "Création d'un type de cout"
     this.myFormGroup = new FormGroup({
@@ -247,6 +265,7 @@ export class FormComponent implements OnInit {
       EntrepriseId: new FormControl(),
     });
   }
+
   createAndUpdateTypeCout(): void {
     this.route.params.subscribe(params => {
       const typeCoutID = +params['id']
@@ -285,24 +304,27 @@ export class FormComponent implements OnInit {
     })
 
   }
+
   ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////OUVRAGE//////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
-  createAndUpdateOuvrage():void{
-    this.route.params.subscribe(params =>{
+  createAndUpdateOuvrage(): void {
+    this.route.params.subscribe(params => {
       const ouvrageID = +params['id']
-      if(isNaN(ouvrageID)) {
+      console.log(this.myFormGroup.getRawValue())
+      if (isNaN(ouvrageID)) {
         this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe(
-          () : void =>{
-            alert('Nouveau ouvrage enregistrer')
+          (): void => {
+            this.success("Nouvelle ouvrage en vue !")
+
           }
         )
-      }else{
+      } else {
         this.ouvrageService.update(this.myFormGroup.getRawValue(), ouvrageID)
           .subscribe((): void => {
-            alert('ouvrage update!');
+            this.success("Ouvrage modifié !")
           });
       }
     })
@@ -312,7 +334,7 @@ export class FormComponent implements OnInit {
     this.route.params.subscribe(params => {
       const ouvrageID = +params['id']
       if (!isNaN(ouvrageID)) {
-        this.textButton = 'Modifier l ouvrage';
+        this.textButton = "Modifier l'ouvrage";
         this.titreForm = 'Modification de l ouvrage';
         this.ouvrageService.getById(ouvrageID).subscribe(data => {
           data = {
@@ -330,13 +352,13 @@ export class FormComponent implements OnInit {
 
   }
 
-  createFormOuvrage():void{
+  createFormOuvrage(): void {
     this.textButton = "Creer un ouvrage";
     this.titreForm = "Création d'un ouvrage"
     this.myFormGroup = new FormGroup({
       designation: new FormControl(),
-      benefice: new FormControl(),
-      aleas: new FormControl(),
+      benefice: new FormControl({value: 10, disabled: false}),
+      aleas: new FormControl({value: 5, disabled: false}),
       unite: new FormControl(),
       ratio: new FormControl(),
       uRatio: new FormControl(),
