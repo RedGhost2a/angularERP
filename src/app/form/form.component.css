@@ -1,3 +1,25 @@
+.ouvrage {
+  display: flex;
+  align-content: space-between;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  width: 100%;
+}
 
+.mat-form-field {
+  text-align: center;
+}
+
+.group1 {
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+}
+
+.mat-form-field {
+  padding: 10px;
+  text-align: center;
+}
 
 /*# sourceMappingURL=form.component.css.map */

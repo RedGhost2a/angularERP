@@ -152,4 +152,29 @@
   height: 100%;
 }
 
+.bigContainerParams {
+  display: flex;
+  flex-direction: column;
+}
+
+.ContainerParamsFraisDevis {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5%;
+}
+
+.containerParams {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardParams {
+  width: 33%;
+}
+
+.paramsSub {
+  display: flex;
+  justify-content: space-between;
+}
+
 /*# sourceMappingURL=create-devis.component.css.map */

@@ -66,6 +66,7 @@ import {CreateDevisComponent} from './create-devis/create-devis.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatRadioModule} from "@angular/material/radio";
 import { DialogConfirmSuppComponent } from './dialog-confirm-supp/dialog-confirm-supp.component';
+import { SousDetailPrixComponent } from './sous-detail-prix/sous-detail-prix.component';
 
 
 
@@ -112,6 +113,7 @@ declare const toastr: Toastr;
     DetailDevisComponent,
     CreateDevisComponent,
     DialogConfirmSuppComponent,
+    SousDetailPrixComponent,
 
 
   ],

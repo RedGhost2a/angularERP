@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Ouvrage} from "../_models/ouvrage";
 import {SousLotOuvrage} from "../_models/sousLotOuvrage";
+import {OuvrageDuDevis} from "../_models/ouvrage-du-devis";
 
 const baseUrl = 'http://localhost:4000/ouvrages';
 
@@ -12,6 +13,10 @@ const baseUrl = 'http://localhost:4000/ouvrages';
 export class OuvrageService {
 
   constructor(private http: HttpClient) {
+  }
+
+  getOuvrageDuDevisById(id: number):Observable<OuvrageDuDevis>{
+    return this.http.get<OuvrageDuDevis>(`${baseUrl}DuDevis/${id}`)
   }
 
   getAll(entrepriseId: number): Observable<any> {

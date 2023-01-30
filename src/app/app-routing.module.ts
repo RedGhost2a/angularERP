@@ -28,6 +28,7 @@ import {SuperAdminListComponent} from "./super-admin-list/super-admin-list.compo
 import {HomeComponent} from "./home/home.component";
 import {DetailDevisComponent} from "./detail-devis/detail-devis.component";
 import {CreateDevisComponent} from "./create-devis/create-devis.component";
+import {SousDetailPrixComponent} from "./sous-detail-prix/sous-detail-prix.component";
 
 const routes: Routes = [
   {
@@ -116,6 +117,7 @@ const routes: Routes = [
   {path: 'devis', component: ListDevisComponent, data: {title: 'Liste des devis'}},
   {path: 'devis/new', component: EditDevisComponent, data: {title: 'Devis'}},
   {path: 'devis/:id', component: EditDevisComponent, data: {title: 'Devis'}},
+  {path: 'sousDetailPrix/:id', component: SousDetailPrixComponent, data: {title: 'Sous détail de prix'}},
 
   {
     path: 'bibliotheque',

@@ -1,3 +1,5 @@
+import {CoutDuDevis} from "./cout-du-devis";
+
 export class OuvrageDuDevis {
   id?:number;
   designation!:string;
@@ -8,4 +10,6 @@ export class OuvrageDuDevis {
   uRatio!: string;
   EntrepriseId?:number;
   CoutDuDeviId?:number;
+  CoutDuDevis!: CoutDuDevis[]
+
 }
