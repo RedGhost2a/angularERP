@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {OuvrageCout} from "../_models/ouvrageCout";
+import {CoutDuDevis} from "../_models/cout-du-devis";
 
 const baseUrl = 'http://localhost:4000/ouvragesCouts';
 
@@ -40,5 +42,16 @@ export class OuvrageCoutService {
     return this.http.get(`${baseUrl}/price/${ouvrageId}`)
   }
 
+  updateOuvrageCout(coutId:number,ouvrageId:number, ouvrageCout : OuvrageCout):Observable<OuvrageCout>{
+    return this.http.put<OuvrageCout>(`${baseUrl}/${coutId}/${ouvrageId}`,ouvrageCout)
+  }
+  updateOuvrageCoutDuDevis(coutId:number,ouvrageId:number, ouvrageCout : OuvrageCout):Observable<OuvrageCout>{
+    return this.http.put<OuvrageCout>(`${baseUrl}DuDevis/${coutId}/${ouvrageId}`,ouvrageCout)
+  }
+
+  //A voir pour remplacer la fonction updateOuvrageCoutDuDevis dans le component createdevis.ts
+  createOuvrageCoutDuDevis(data:any): Observable<any>{
+    return this.http.post(`${baseUrl}DuDevis/new`, data)
+  }
 
 }

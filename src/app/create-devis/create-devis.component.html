@@ -319,7 +319,7 @@
                   <!--                  <mat-label></mat-label>-->
                   <input type="number" formControlName="quantityOuvrage" matInput required
 
-                         (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lotFraisDeChantier, prixOuvrageFraisDeChantier)">
+                         (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lot, prixOuvrage)">
 
                 </mat-form-field>
                 <span routerLink="/sousDetailPrix/{{ouvrage.id}}">{{ ouvrage.id | number }} </span>
@@ -342,7 +342,7 @@
                 <mat-form-field appearance="legacy" [formGroup]="myFormGroup">
                   <mat-label>Quantité</mat-label>
                   <input formControlName="quantityOuvrage" matInput required
-                         (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lot, prixOuvrage)">
+                         (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lot, prixOuvrage )">
                 </mat-form-field>
                 <span>{{ ouvrage.SousLotOuvrage?.quantityOuvrage }}</span>
                 <span>{{ ouvrage.SousLotOuvrage?.prixOuvrage }}</span>
@@ -351,30 +351,34 @@
             </div>
             <!--            </div>-->
             <div>
-              <div class="cout-header">
-                <div class="cout-header-description">
-                  <span>Id</span>
-                  <span>Désignation</span>
-                  <span>Unité</span>
-                  <span>P U</span>
-                  <span>Fournisseur</span>
-                  <!--                  <span>Remarque</span>-->
-                </div>
+<!--              <div class="cout-header">-->
+<!--                <div class="cout-header-description">-->
+<!--                  <span>Id</span>-->
+<!--                  <span>Désignation</span>-->
+<!--                  <span>Unité</span>-->
+<!--                  <span>Ratio</span>-->
+<!--                  <span>Quantité</span>-->
+<!--                  <span>P U</span>-->
+<!--                  <span>Fournisseur</span>-->
+<!--                  &lt;!&ndash;                  <span>Remarque</span>&ndash;&gt;-->
+<!--                </div>-->
 
-                <div *ngFor="let ct of ouvrage.CoutDuDevis; first as isFirst">
-                  <!--                  <div *ngIf="ct && ct.OuvrageCout && ct.OuvrageCout.OuvrageId === ouvrage.id" class="cout">-->
-                  <div class="cout-header-detail">
-                    <span>{{ ct.id }}</span>
-                    <span>{{ ct.designation }}</span>
-                    <span>{{ ct.unite }}</span>
-                    <span>{{ ct.prixUnitaire }} </span>
-                    <span>{{ ct.fournisseur }}</span>
-                    <!--                      <span>{{ ct.remarque }}</span>-->
-                  </div>
-                  <!--                  </div>-->
+<!--                <div *ngFor="let ct of ouvrage.CoutDuDevis; first as isFirst">-->
+<!--                  &lt;!&ndash;                  <div *ngIf="ct && ct.OuvrageCout && ct.OuvrageCout.OuvrageId === ouvrage.id" class="cout">&ndash;&gt;-->
+<!--                  <div class="cout-header-detail" >-->
+<!--                    <span>{{ ct.id }}</span>-->
+<!--                    <span>{{ ct.designation }}</span>-->
+<!--                    <span>{{ ct.unite }}</span>-->
+<!--                    <span>{{ ct.OuvrageCoutDuDevis?.ratio }}</span>-->
+<!--                    <span>{{ ct.quantite }}</span>-->
+<!--                    <span>{{ ct.prixUnitaire }} </span>-->
+<!--                    <span>{{ ct.fournisseur }}</span>-->
+<!--                    &lt;!&ndash;                      <span>{{ ct.remarque }}</span>&ndash;&gt;-->
+<!--                  </div>-->
+<!--                  &lt;!&ndash;                  </div>&ndash;&gt;-->
 
-                </div>
-              </div>
+<!--                </div>-->
+<!--              </div>-->
             </div>
 
           </div>

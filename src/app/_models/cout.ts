@@ -1,5 +1,6 @@
 import {Fournisseur} from "./fournisseur";
 import {TypeCout} from "./type-cout";
+import {OuvrageCout} from "./ouvrageCout";
 
 export interface Cout {
   id: number;
@@ -12,5 +13,7 @@ export interface Cout {
   Fournisseurs?:Fournisseur[]
   fournisseur?:string;
   TypeCout?:TypeCout
+  quantite?:number;
+  OuvrageCoutDuDevis?:OuvrageCout
   //Fournisseurs: Fournisseur;
 }

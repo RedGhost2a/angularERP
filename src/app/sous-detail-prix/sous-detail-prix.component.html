@@ -1,4 +1,4 @@
-
+  <h1>{{currentOuvrage.designation}}</h1>
   <table *ngIf="currentOuvrage" mat-table [dataSource]="currentOuvrage.CoutDuDevis">
     <ng-container matColumnDef="type">
       <th mat-header-cell *matHeaderCellDef> Type</th>

@@ -46,41 +46,55 @@
             <mat-card-title >Composant de l'ouvrage</mat-card-title>
             <button routerLink="/ajoutCout/{{ouvrage.id}}"  mat-raised-button>Importer un composant </button>
           </div>
-          <div class="detailList">
+          <div class="detailList" *ngFor="let cout of ouvrage.Couts">
             <div class="detail">
               <mat-card-subtitle class="subTitle">Désignation</mat-card-subtitle>
 <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
-              <p *ngFor="let cout of ouvrage.Couts">{{cout.designation}}</p>
+              <p>{{cout.designation}}</p>
             </div>
             <div class="detail">
               <mat-card-subtitle class="subTitle">Catégorie</mat-card-subtitle>
 <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
-              <p *ngFor="let cout of ouvrage.Couts">{{cout?.TypeCout?.categorie}}</p>
+              <p>{{cout?.TypeCout?.categorie}}</p>
             </div>
             <div class="detail">
               <mat-card-subtitle class="subTitle">Type</mat-card-subtitle>
 <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
-              <p *ngFor="let cout of ouvrage.Couts">{{cout?.TypeCout?.type}}</p>
+              <p >{{cout?.TypeCout?.type}}</p>
             </div>
             <div class="detail">
               <mat-card-subtitle class="subTitle">Unité</mat-card-subtitle>
-              <p *ngFor="let cout of ouvrage.Couts">{{cout.unite}}</p>
+              <p >{{cout.unite}}</p>
             </div>
             <div class="detail">
               <mat-card-subtitle class="subTitle">Prix Unitaire</mat-card-subtitle>
-              <p *ngFor="let cout of ouvrage.Couts">{{cout.prixUnitaire}}</p>
+              <p >{{cout.prixUnitaire}}</p>
             </div>
+            <div class="detail">
+              <mat-card-subtitle class="subTitle">Ratio</mat-card-subtitle>
+              <mat-form-field appearance="legacy" [formGroup]="myFormGroup">
+              <input formControlName="ratioCout" matInput required
+                (ngModelChange)="ratioChange($event, cout, ouvrage)">
+              </mat-form-field>
+            </div>
+            <div class="detail">
+              <mat-card-subtitle class="subTitle">U/Ratio</mat-card-subtitle>
+              <p >{{uRatio(ouvrage,cout)}}</p>
+            </div>
+
+
+
 <!--            <div class="detail" >-->
 <!--              <mat-card-subtitle class="subTitle">Fournisseur</mat-card-subtitle>-->
 <!--              <p>{{cout?.Fournisseurs[0] ? cout.Fournisseurs[0].commercialName : "Aucun fournisseur"}}</p>-->
 <!--              <p>{{cout.fournisseur}}</p>-->
 <!--            </div>-->
-            <div class="detail">
+
+            <div class="detail" [formGroup]="myFormGroup">
               <mat-card-subtitle class="subTitle">Supprimer</mat-card-subtitle>
-              <p *ngFor="let cout of ouvrage.Couts">
+              <p>
                 <button (click)="deleteById(cout.id);deleteCout.emit(getById())"  mat-raised-button color="primary"><mat-icon>restore_from_trash</mat-icon>
                 </button>
-
               </p>
             </div>
           </div>

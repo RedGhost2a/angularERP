@@ -48,4 +48,6 @@ export class CoutService {
     console.log('data cout service ', coutDuDevis)
     return this.http.post(`http://localhost:4000/coutsDuDevis/test/${ouvrageId}`, coutDuDevis)
   }
+
+
 }

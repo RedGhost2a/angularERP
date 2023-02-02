@@ -7,6 +7,7 @@ export class SousLot {
   //children!: Ouvrage[];
   hasChild!: boolean;
   OuvrageDuDevis!:Ouvrage[]
+  // OuvrageDuDevis!:Ouvrage[]
   prix!:number;
   LotSousLot!:LotSousLot
 }

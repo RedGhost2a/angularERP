@@ -1,5 +1,6 @@
 import {Cout} from "./cout";
 import {SousLotOuvrage} from "./sousLotOuvrage";
+import {OuvrageCout} from "./ouvrageCout";
 
 export interface Ouvrage {
   // cout: any;

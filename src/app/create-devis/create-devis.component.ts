@@ -17,6 +17,11 @@ import {SousLotOuvrageService} from "../_service/sous-lot-ouvrage.service";
 import {CoutService} from "../_service/cout.service";
 import {CoutDuDevis} from "../_models/cout-du-devis";
 import {SousDetailPrixService} from "../_service/sous-detail-prix.service";
+import {OuvrageCout} from "../_models/ouvrageCout";
+import {OuvrageCoutService} from "../_service/ouvrageCout.service";
+import {Cout} from "../_models/cout";
+import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
+import {OuvrageDuDevis} from "../_models/ouvrage-du-devis";
 
 
 @Component({
@@ -49,6 +54,7 @@ export class CreateDevisComponent implements OnInit {
   resultAleasLots!: number;
   resultBeneficeFraisDeChantier!: number ;
   resultAleasFraisDeChantier!: number;
+  dataLoad: boolean= false;
 
 //TODO ON NE PEUT METTRE QUE UN SEUL ET MEME OUVRAGE PAR SOUS_LOT; //
 
@@ -64,7 +70,8 @@ export class CreateDevisComponent implements OnInit {
               private sousLotOuvrageService: SousLotOuvrageService,
               public dialog: MatDialog,
               private coutService: CoutService,
-              private sousDetailPrixService : SousDetailPrixService
+              private sousDetailPrixService : SousDetailPrixService,
+              private ouvrageCoutService : OuvrageCoutService
   ) {
     this.expandedLotId = undefined;
   }
@@ -81,6 +88,32 @@ export class CreateDevisComponent implements OnInit {
     this.getLotFraisDeChantier();
     this.getAllLots();
     this.formQuantityOuvrage()
+
+
+  }
+
+  // quantityCout(quantityOuvrage:number | undefined, cout:Cout):void{
+  //   if(quantityOuvrage && cout.OuvrageCoutDuDevis?.ratio){
+  //     cout.quantite = cout.OuvrageCoutDuDevis.ratio * quantityOuvrage
+  //   }
+  // }
+  //
+  quantityCout(quantityOuvrage:number, sousLot:SousLot):void{
+    console.log("quantityCout")
+    if(quantityOuvrage){
+    console.log("quantityCout dans le premier IF")
+      sousLot.OuvrageDuDevis.forEach(sousLot=>{
+        sousLot.CoutDuDevis?.forEach(coutDuDevis=>{
+          if(coutDuDevis.OuvrageCoutDuDevis && coutDuDevis.OuvrageCoutDuDevis.ratio !== undefined){
+            console.log("cout du devis", coutDuDevis)
+            console.log("RATIO OUVRAGECOUTDUDEVIS",coutDuDevis.OuvrageCoutDuDevis.ratio )
+            coutDuDevis.quantite = coutDuDevis.OuvrageCoutDuDevis.ratio * quantityOuvrage
+            // this.getAllLots()
+          }
+        })
+      })
+
+    }
   }
 
   fraisGeneraux(): number {
@@ -160,11 +193,13 @@ export class CreateDevisComponent implements OnInit {
   }
 
 //quand la valeur de l'input quantity change
+
   quantityChange(event: any, sousLotOuvrage: SousLotOuvrage | undefined, sousLot: SousLot, lot: Lot, prixOuvrages: { id: 0, prix: 0 }[]) {
     // this.prixOuvrage = []
     console.log('quantity:', event);
     console.log('this prixOuvrage', this.prixOuvrage);
     //verifie que le sous lot contient au moins un ouvrage
+    this.quantityCout(event,sousLot)
     if (sousLotOuvrage !== undefined && sousLotOuvrage.id) {
       console.log("console log de l'objet sousLotOuvrage", sousLotOuvrage)
       //si la valeur de l'input est superieur a 0
@@ -221,7 +256,7 @@ export class CreateDevisComponent implements OnInit {
       .filter(ouvrage => ouvrage)
       .map(ouvrage => ({
         id: ouvrage?.id,
-        prix: ouvrage?.CoutDuDevis && ouvrage.CoutDuDevis.reduce((acc, ct) => acc + ct.prixUnitaire, 0)
+        prix: ouvrage?.CoutDuDevis && ouvrage.CoutDuDevis.reduce((acc, ct) => acc + ct.prixUnitaire * (ct.OuvrageCoutDuDevis?.ratio || 1), 0)
       }));
 
     console.log("tableau de prix des ouvrage", this.prixOuvrage)
@@ -233,7 +268,7 @@ export class CreateDevisComponent implements OnInit {
     // this.prixDevis = 0;
     this.devisService.getByIdExceptFrais(this.devisId).subscribe(data => {
 
-      console.log("console log de getalllots  SOUS LOT DATA:", data.Lots.SousLots)
+      console.log("console log de getalllots  LOT DATA:", data.Lots)
       let nombreOuvrage = 0
       this.resultBeneficeLots = 0;
       this.resultAleasLots = 0;
@@ -241,25 +276,31 @@ export class CreateDevisComponent implements OnInit {
       this.testLots.forEach(lot => {
         lot.SousLots.forEach(sousLot => {
           sousLot.prix = 0;
+          console.log("sousLot", sousLot)
 
           this.getSommeSousLot(sousLot, lot)
           sousLot.OuvrageDuDevis.forEach(ouvrage => {
+          console.log("OUVRAGE", ouvrage.SousLotOuvrage?.quantityOuvrage)
+            // console.log()
+            // this.quantityCout(ouvrage.SousLotOuvrage?.quantityOuvrage,ouvrage)
             nombreOuvrage++;
             this.resultBeneficeLots += ouvrage.benefice
             this.resultAleasLots += ouvrage.aleas
+
           })
           // this.moyenneBenefice(nombreOuvrage,this.resultBeneficeLots)
         })
-        console.log("get all lots : ", lot.prix)
+        // console.log("get all lots : ", lot.prix)
       });
-      console.log("console log resultBenefice :", this.resultBeneficeLots)
-      console.log("console log nombre d ouvrage :", nombreOuvrage)
+      // console.log("console log resultBenefice :", this.resultBeneficeLots)
+      // console.log("console log nombre d ouvrage :", nombreOuvrage)
       this.resultBeneficeLots = this.resultBeneficeLots / nombreOuvrage
       this.resultAleasLots = this.resultAleasLots / nombreOuvrage
-      console.log("console log de DATA LOT : ", data)
+      // console.log("console log de DATA LOT : ", data)
       //recuperation de tous les ouvrages de l'entreprise
       this.getAllOuvrage(data.EntrepriseId);
       this.getSommeOuvrage()
+      // this.dataLoad = true
     })
   }
 
@@ -273,7 +314,7 @@ export class CreateDevisComponent implements OnInit {
       this.resultAleasFraisDeChantier = 0;
       this.resultBeneficeFraisDeChantier = 0;
       this.lotFraisDeChantier = data.Lots[0];
-      console.log("console log frais de chantier:", data)
+      // console.log("console log frais de chantier:", data)
       this.lotFraisDeChantier.SousLots.forEach(sousLot => {
         sousLot.prix = 0;
         this.getSommeSousLot(sousLot, this.lotFraisDeChantier)
@@ -291,16 +332,16 @@ export class CreateDevisComponent implements OnInit {
   }
 
   getAllOuvrage(id: number) {
-    console.log("console log id get all ouvrage", id)
+    // console.log("console log id get all ouvrage", id)
     this.ouvrageService.getAll(id).subscribe(data => {
-      console.log("Ouvrage de l'entreprise : ", data)
+      // console.log("Ouvrage de l'entreprise : ", data)
       this.listOuvrage = data;
     })
   }
 
   createLOT(): void {
     //const currentLot = this.form.getRawValue();
-    console.log("console log du formulaire ", this.form.getRawValue())
+    // console.log("console log du formulaire ", this.form.getRawValue())
     this.lotService.create(this.form.getRawValue()).subscribe(() => {
       this.getAllLots()
       this.getLotFraisDeChantier()
@@ -311,9 +352,9 @@ export class CreateDevisComponent implements OnInit {
 
 
   createSousLot(): void {
-    console.log("console expendedLotid", this.expandedLotId)
-    console.log("console.log de currentLotId", this.curentLotId)
-    console.log("console.log formulaire create sous lot", this.form.getRawValue())
+    // console.log("console expendedLotid", this.expandedLotId)
+    // console.log("console.log de currentLotId", this.curentLotId)
+    // console.log("console.log formulaire create sous lot", this.form.getRawValue())
     this.sousLotService.create(this.form.getRawValue(), this.curentLotId).subscribe(() => {
       this.getAllLots()
       this.getLotFraisDeChantier()
@@ -346,9 +387,9 @@ export class CreateDevisComponent implements OnInit {
       if (result) {
         this.selectedOuvrageIds = result.selectedOuvrageIds;
         //this.createOuvrageSousLot(sousLotId)
-        console.log('debut de la fonction create ouvrage du devis')
+        // console.log('debut de la fonction create ouvrage du devis')
         this.createOuvrageDuDevis(sousLotId)
-        console.log('fin de la fonction create ouvrage du devis')
+        // console.log('fin de la fonction create ouvrage du devis')
       } else {
         // Afficher un message d'erreur si aucun sous-lot n'est sélectionné
         this.warning("error",);
@@ -358,33 +399,49 @@ export class CreateDevisComponent implements OnInit {
   }
 
   createOuvrageDuDevis(sousLotId: number) {
-    console.log('dans de la fonction', this.currentSousLotId)
+    //boucle sur tous les ouvrages selectionner dans la modal
     this.selectedOuvrageIds.forEach((ouvrageId: any) => {
+      //recupere les ouvrages grace a leurs id
       this.ouvrageService.getById(ouvrageId).subscribe(data => {
-        // console.log("data ," ,data)
+        //creer un ouvrageDuDevis avec les données de l'ouvrage
         this.ouvrageService.createOuvrageDuDevis(data).subscribe(response => {
-          data.OuvrageDuDeviId = response.OuvrageDuDevis?.id
-
+          //recupere l'id de l'ouvrageDuDevis qui viens d'etre creer, et
+          // data.OuvrageDuDeviId = response.OuvrageDuDevis?.id
+          //boucle sur tous les couts qui appartiennent au ouvrage
           data.Couts.forEach((cout: any) => {
-            console.log("COUT ", cout)
+            //creer un coutDuDevis avec les données du cout
             this.coutDuDevis = cout;
             this.coutDuDevis.fournisseur = cout.Fournisseurs[0].commercialName
             this.coutDuDevis.remarque = cout.Fournisseurs[0].remarque !== null ? cout.Fournisseurs[0].remarque : ""
-            // isMember ? '$2.00' : '$10.00'
+            //donne comme valeur undefined a l'id sinon le coutDuDevis sera creer avec l'id du Cout
             this.coutDuDevis.id = undefined
             this.coutDuDevis.type = cout.TypeCout.type
             this.coutDuDevis.categorie = cout.TypeCout.categorie
-            console.log("this cout du devis : ", this.coutDuDevis)
-            this.coutService.createOuvrageCoutDuDevis(data.OuvrageDuDeviId, this.coutDuDevis).subscribe()
+            //creer le coutDuDevis
+            this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe(responseCout => {
+              //creer l'OuvrageCoutDuDevis grace au reponse des requetes de creation des couts et de l'ouvrage
+              const ouvrageCout: OuvrageCoutDuDevis = {
+                OuvrageDuDeviId: response.OuvrageDuDevis?.id,
+                CoutDuDeviId: responseCout?.id,
+                ratio: cout.OuvrageCout.ratio,
+                uRatio: cout.OuvrageCout.uRatio,
+              }
+              //creer l'ouvrageCoutDuDevis
+              this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCout).subscribe()
+
+            })
 
           })
+          //creer le model de sousLotOuvrageDuDevis
           this.sousLotOuvrageDuDevis = {
             SousLotId: sousLotId,
-            OuvrageDuDeviId: data.OuvrageDuDeviId,
+            OuvrageDuDeviId: response.OuvrageDuDevis?.id,
             prixOuvrage: 0,
             quantityOuvrage: 0
           }
+          //creer le sousLotOuvrageDuDevis
           this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe(() => {
+            //rafraichi la data
             this.getAllLots()
             this.getLotFraisDeChantier()
           })

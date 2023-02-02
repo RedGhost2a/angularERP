@@ -1,3 +1,5 @@
+import {OuvrageCout} from "./ouvrageCout";
+
 export class CoutDuDevis {
   id?:number;
   OuvrageId!:number;
@@ -9,4 +11,5 @@ export class CoutDuDevis {
   fournisseur!:string;
   remarque!:string;
   EntrepriseId?:number;
+  OuvrageCoutDuDevis?:OuvrageCout
 }

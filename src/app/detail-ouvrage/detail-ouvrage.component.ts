@@ -6,6 +6,8 @@ import {CoutDuDevis} from "../_models/cout-du-devis";
 import {ActivatedRoute} from "@angular/router";
 import {map, Observable} from "rxjs";
 import {Cout} from "../_models/cout";
+import {OuvrageCout} from "../_models/ouvrageCout";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-detail-ouvrage',
@@ -14,11 +16,13 @@ import {Cout} from "../_models/cout";
 })
 export class DetailOuvrageComponent implements OnInit {
   ouvrage!:Ouvrage
+  ouvrageCout!:OuvrageCout
   prixOuvrage!:number
   ouvrageID!:number
   // cout!:Cout[];
   @Output() deleteCout: EventEmitter<any> = new EventEmitter()
   columnsToDisplay = ["designation","benefice","aleas", "unite","ratio", "uRatio","prixUnitaire", "boutons"];
+  myFormGroup!: FormGroup;
 
 
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute,
@@ -26,7 +30,10 @@ export class DetailOuvrageComponent implements OnInit {
 
   ngOnInit(): void {
     this.getById();
-    this.getOuvragePriceById(this.ouvrageID)
+    this.myFormGroup = new FormGroup({
+      ratioCout: new FormControl()
+    })
+    // this.getOuvragePriceById(this.ouvrageID)
   }
 
 
@@ -43,9 +50,9 @@ export class DetailOuvrageComponent implements OnInit {
   }
 
   getOuvragePriceById(id:number):void{
-    this.ouvrageCoutService.getSumOuvrageById(id).subscribe(data =>{
-      this.prixOuvrage = data.sommeCouts
-    })
+    // this.ouvrageCoutService.getSumOuvrageById(id).subscribe(data =>{
+    //   this.prixOuvrage = data.sommeCouts
+    // })
   }
 
 
@@ -56,6 +63,22 @@ export class DetailOuvrageComponent implements OnInit {
       this.getById()
       alert("Cout supprimer de l'ouvrage")
     })
+  }
+
+  uRatio(ouvrage:Ouvrage, cout:Cout): string{
+    return `${cout.unite}/${ouvrage.unite}`
+  }
+
+  ratioChange(event:any, cout:Cout, ouvrage:Ouvrage){
+    console.log("console from detail ouvrage event = ",event)
+    // const uRatio = `${cout.unite}/${ouvrage.unite}`
+    this.ouvrageCout = {
+      OuvrageId: this.ouvrageID,
+      CoutId: cout.id,
+      ratio: event,
+      uRatio: this.uRatio(ouvrage, cout)
+    }
+    this.ouvrageCoutService.updateOuvrageCout(cout.id,this.ouvrageID,this.ouvrageCout).subscribe()
   }
 
 }
