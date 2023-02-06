@@ -1,0 +1,9 @@
+.dialog {
+  display: flex;
+  flex-direction: column;
+}
+.dialog-text {
+  margin-bottom: 15px;
+}
+
+/*# sourceMappingURL=dialog-confirm-supp.component.css.map */

@@ -1,11 +1,10 @@
 
-
 .onglet {
   width: 100vw;
   padding: 10px;
   display: flex;
   flex-direction: column;
-  color: white;
+  color: #000000;
 
 
 }
@@ -21,11 +20,13 @@
   height: 25px;
   padding: 8px;
   text-transform: uppercase;
-
+  border: solid 1px black;
 
 }
 
 .sousLot {
+  height: 25px;
+  padding: 8px;
   display: flex;
   align-content: center;
   font-size: 12px;
@@ -33,30 +34,37 @@
   justify-content: space-evenly;
   align-items: center;
   margin: 5px 20px 0 10px;
-  //height: 18px;
-  //padding: 8px;
+  border: solid 1px black;
+
+}
+
+.ouvrage-headers {
+  margin: 5px 20px 0 222px;
+
 
 }
 
 .ouvrage {
   margin: 5px 20px 0 10px;
+  background: rgba(179, 151, 160, 0.13);
+
   //height: 18px;
   //padding: 8px;
   //
 }
 
-.cout {
-  margin: 5px 20px 0 10px;
-  //height: 18px;
-  //padding: 8px;
-}
+//.cout {
+//  margin: 5px 20px 0 10px;
+//  //height: 18px;
+//  //padding: 8px;
+//}
 
 .hidden {
   display: none;
 }
 
 .btn {
-  color: #4dc71f;
+  color: #000000;
   background-color: transparent;
   border: none;
 
@@ -67,86 +75,154 @@
   width: 39px;
 }
 
-.ouvrage-header-description span {
-  width: 160px;
-  text-align: center;
-  text-transform: uppercase;
-}
+//.ouvrage-header-description span {
+//  width: 160px;
+//  text-align: center;
+//  text-transform: uppercase;
+//  border: black solid 1px;
+//}
 
-.cout-header-description span {
-  width: 160px;
-  text-align: center;
-  margin: 5px 20px 0 10px;
-  background: rgba(179, 151, 160, 0.13);
-  text-transform: uppercase;
-
-
-}
-
-.cout-header {
-  border: solid 1px;
-  margin: 11px 20px 0 26px;
-  text-align: center;
-  padding: 5px;
-
-
-}
-
-.cout-header-description {
+.totaux-header {
   display: flex;
+  flex-direction: row;
+  align-content: center;
   justify-content: space-between;
-  //background-color: rgba(149, 195, 236, 0.13);
-  align-items: center;
-  width: 100%;
-  color: #ffc107;
+  align-items: flex-end;
+  margin: 5px 20px 0 340px;
+
 
 }
 
-//.cout-header-description span,
-.ouvrage-header-detail span,
-.cout-header-detail span {
+
+.totaux-header-designation {
+  border: 1px solid black;
   height: 40px;
   line-height: 40px;
-  background-color: rgba(149, 195, 236, 0.13);
-  align-items: center;
-  width: 160px;
-}
+  text-align: center;
+  width: 140px;
+  margin-right: 10px;
 
-.ouvrage-header-description span {
-  font-size: 10px;
 
 }
+
+.totaux-header-result {
+  font-weight: bold;
+  border: 1px solid black;
+  background-color: #817e7e;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  width: 140px;
+  margin-right: 10px;
+
+
+}
+
+.subtotaux-header {
+  text-align: center;
+  font-weight: bold;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.border {
+  border: 1px solid black;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+//.cout-header-description span {
+//  width: 160px;
+//  text-align: center;
+//  margin: 5px 20px 0 10px;
+//  background: rgba(179, 151, 160, 0.13);
+//  text-transform: uppercase;
+//
+//}
+//
+//.cout-header {
+//  border: solid 1px;
+//  margin: 11px 20px 0 26px;
+//  text-align: center;
+//  padding: 5px;
+//
+//}
+
+//.cout-header-description {
+//  display: flex;
+//  justify-content: space-between;
+//  //background-color: rgba(149, 195, 236, 0.13);
+//  align-items: center;
+//  width: 100%;
+//  color: #ffc107;
+//
+//}
+
+////.cout-header-description span,
+//.ouvrage-header-detail span,
+//.cout-header-detail span {
+//  height: 40px;
+//  line-height: 40px;
+//  //background-color: rgba(149, 195, 236, 0.13);
+//  align-items: center;
+//  width: 160px;
+//}
+
+//.ouvrage-header-description span {
+//  font-size: 10px;
+//  height: 40px;
+//  line-height: 40px;
+//  //background-color: rgba(149, 195, 236, 0.13);
+//  align-items: center;
+//  width: 160px;
+//
+//}
 
 .designation {
   font-size: 20px;
-  color: rgb(237 231 231 / 98%);
+  //color: rgb(237 231 231 / 98%);
   font-family: "Karla", sans-serif;
-  text-shadow: 2px 2px 2px rgb(27 31 57 / 96%);
-  letter-spacing: 5px;
+  //text-shadow: 2px 2px 2px rgb(27 31 57 / 96%);
+  //letter-spacing: 5px;
   FONT-WEIGHT: bold;
 
 
 }
 
-.cout-header-detail {
-  display: flex;
-  justify-content: space-between;
-  background-color: rgba(149, 195, 236, 0.13);
-  align-items: center;
-  width: 100%;
-  text-transform: uppercase;
-
-
-}
+//.cout-header-detail {
+//  display: flex;
+//  justify-content: space-between;
+//  background-color: rgba(149, 195, 236, 0.13);
+//  align-items: center;
+//  width: 100%;
+//  text-transform: uppercase;
+//
+//
+//}
 
 .ouvrage-header-detail,
 .ouvrage-header-description {
   display: flex;
-  justify-content: space-between;
-  background-color: rgb(116 239 137 / 13%);
+  justify-content: space-around;
+  //background: rgba(179, 151, 160, 0.13);
+  margin-top: 5px;
   align-items: center;
   width: 100%;
   text-align: center;
+
+
+  //margin: 5px 20px 0 10px;
+
 }
 
 
@@ -180,23 +256,28 @@
   width: 100%;
   height: 100%;
 }
-.bigContainerParams{
+
+.bigContainerParams {
   display: flex;
   flex-direction: column;
 }
-.ContainerParamsFraisDevis{
+
+.ContainerParamsFraisDevis {
   display: flex;
   justify-content: space-around;
   margin-top: 5%;
 }
-.containerParams{
+
+.containerParams {
   display: flex;
   flex-direction: column;
 }
-.cardParams{
+
+.cardParams {
   width: 33%;
 }
-.paramsSub{
+
+.paramsSub {
   display: flex;
   justify-content: space-between;
 }
