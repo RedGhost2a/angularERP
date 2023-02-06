@@ -1,1 +1,1 @@
-{"version":3,"sourceRoot":"","sources":[],"names":[],"mappings":"","file":"sous-detail-prix.component.css"}
+{"version":3,"sourceRoot":"","sources":["sous-detail-prix.component.scss"],"names":[],"mappings":"AAAA;EACE;EAEA;;;AAGF;EACE;EACA;;;AAEF;EACE;EACA;;;AAEF;EACE;;;AAEF;EACE;EACA;;;AAEF;EACE;EACA","file":"sous-detail-prix.component.css"}

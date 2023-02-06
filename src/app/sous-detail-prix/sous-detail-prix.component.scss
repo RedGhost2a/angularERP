@@ -1,0 +1,25 @@
+.cardParams{
+  width: 16.67%;
+  //height: 7%;
+  padding: 6px;
+}
+
+.containerParams{
+  display: flex;
+  flex-direction: column;
+}
+.paramsSub{
+  display: flex;
+  flex-direction: column;
+}
+.mat-card-subtitle{
+  margin: 0px;
+}
+.itemsParams{
+  display: flex;
+  justify-content: space-around;
+}
+.containerCards{
+  display:flex;
+  justify-content: space-around;
+}

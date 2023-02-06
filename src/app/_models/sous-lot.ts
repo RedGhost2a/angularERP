@@ -1,5 +1,6 @@
 import {Ouvrage} from "./ouvrage";
 import {LotSousLot} from "./lotSousLot";
+import {SousLotOuvrage} from "./sousLotOuvrage";
 
 export class SousLot {
   id!:number;
@@ -10,4 +11,6 @@ export class SousLot {
   // OuvrageDuDevis!:Ouvrage[]
   prix!:number;
   LotSousLot!:LotSousLot
+  SousLotOuvrage?:SousLotOuvrage
+
 }

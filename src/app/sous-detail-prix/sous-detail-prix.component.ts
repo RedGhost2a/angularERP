@@ -21,17 +21,44 @@ export class SousDetailPrixComponent implements OnInit {
               private sousDetailPrixService : SousDetailPrixService) { }
 
   ngOnInit(): void {
-
     this.route.params.subscribe(params =>{
       this.ouvrageID = +params['id'];
       this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe( data =>{
        this.currentOuvrage = data;
-        console.log(data)
-        console.log(this.sousDetailPrixService.coefEqui);
+       if(data.SousLots !== undefined){
+        console.log("data sous lot ouvrage",data.SousLots[0].SousLotOuvrage);
+       }
+
+       this.coefEqui = this.sousDetailPrixService.coefEqui;
       })
     })
-    // console.log("coefficient d'equilibre",this.coefEqui)
   }
+
+  prixUnitaireHT(prixOuvrage:any, quantiteOuvrage:any):number{
+    if(prixOuvrage !== undefined && quantiteOuvrage !== undefined){
+    return prixOuvrage/ quantiteOuvrage
+    }
+    return 0
+  }
+  prixEquilibreHT(prixOuvrage:any):number{
+    return prixOuvrage * this.coefEqui;
+  }
+  prixUnitaireEquilibre(prixEquilibreHT:number, quantityOuvrage:any):number{
+    return prixEquilibreHT / quantityOuvrage
+  }
+  beneficePercentToEuro(prixEquilibreHT:number, benefice:number):number{
+    return prixEquilibreHT * (benefice / 100)
+  }
+  aleasPercentToEuro(prixEquilibreHT:number, aleas:number):number{
+    return prixEquilibreHT * (aleas / 100)
+  }
+  prixCalculeHT(benefice:number, aleas:number, prixEquilibreHT: number):number{
+    return prixEquilibreHT *(1 + (benefice/100) + (aleas /100))
+  }
+  prixUnitaireCalculeHT(prixCalculeHT:number, quantityOuvrage:any):number{
+    return prixCalculeHT / quantityOuvrage
+  }
+
 
 
 }

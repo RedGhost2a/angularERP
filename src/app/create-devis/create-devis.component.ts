@@ -439,6 +439,7 @@ export class CreateDevisComponent implements OnInit {
             prixOuvrage: 0,
             quantityOuvrage: 0
           }
+
           //creer le sousLotOuvrageDuDevis
           this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe(() => {
             //rafraichi la data

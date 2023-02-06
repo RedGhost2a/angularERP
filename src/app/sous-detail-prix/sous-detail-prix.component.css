@@ -1,3 +1,30 @@
+.cardParams {
+  width: 16.67%;
+  padding: 6px;
+}
 
+.containerParams {
+  display: flex;
+  flex-direction: column;
+}
+
+.paramsSub {
+  display: flex;
+  flex-direction: column;
+}
+
+.mat-card-subtitle {
+  margin: 0px;
+}
+
+.itemsParams {
+  display: flex;
+  justify-content: space-around;
+}
+
+.containerCards {
+  display: flex;
+  justify-content: space-around;
+}
 
 /*# sourceMappingURL=sous-detail-prix.component.css.map */

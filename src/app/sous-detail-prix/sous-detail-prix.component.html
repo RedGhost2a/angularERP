@@ -1,8 +1,144 @@
   <h1>{{currentOuvrage.designation}}</h1>
-  <table *ngIf="currentOuvrage" mat-table [dataSource]="currentOuvrage.CoutDuDevis">
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef> Type</th>
-      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.type}} </td>
+<div class="containerCards">
+
+
+  <mat-card class="cardParams">
+    <mat-card-header>
+      <mat-card-title>Ratio & quantité</mat-card-title>
+
+      <!--        <mat-card-subtitle>Start</mat-card-subtitle>-->
+    </mat-card-header>
+    <hr>
+    <mat-card-content>
+      <div class="containerParams">
+        <div class="paramsSub">
+            <mat-card-subtitle>Ratio</mat-card-subtitle>
+          <div class="itemsParams">
+            <p>{{this.currentOuvrage.ratio}}</p>
+            <p>{{this.currentOuvrage.uRatio}}</p>
+          </div>
+            <mat-card-subtitle>Quantité marché</mat-card-subtitle>
+          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
+            <p>{{this.currentOuvrage.SousLots[0].SousLotOuvrage?.quantityOuvrage}}</p>
+            <p>{{this.currentOuvrage.unite}}</p>
+          </div>
+
+        </div>
+<!--        <div class="paramsSub">-->
+<!--            <mat-card-subtitle>Quantité métré</mat-card-subtitle>-->
+<!--          <div class="itemsParams">-->
+<!--            <p>A voir</p>-->
+<!--            <p>A voir</p>-->
+<!--          </div>-->
+<!--      </div>-->
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+        <mat-card class="cardParams">
+          <mat-card-header>
+            <mat-card-title>Bénéfice & Aléas</mat-card-title>
+
+            <!--        <mat-card-subtitle>Start</mat-card-subtitle>-->
+          </mat-card-header>
+          <hr>
+          <mat-card-content>
+            <div class="containerParams">
+              <div class="paramsSub" *ngIf="this.currentOuvrage.SousLots !== undefined">
+                <mat-card-subtitle>Bénéfice</mat-card-subtitle>
+                <div class="itemsParams" >
+                  <p>{{this.currentOuvrage.benefice}} %</p>
+                  <p> {{this.beneficePercentToEuro(this.prixEquilibreHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage),this.currentOuvrage.benefice) | number : '1.2-2'}} €</p>
+                </div>
+                <mat-card-subtitle>Aléas</mat-card-subtitle>
+                <div class="itemsParams">
+                  <p>{{this.currentOuvrage.aleas}} %</p>
+                  <p>{{this.aleasPercentToEuro(this.prixEquilibreHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage),this.currentOuvrage.aleas) | number : '1.2-2'}} €</p>
+                </div>
+
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+
+
+  <mat-card class="cardParams">
+    <mat-card-header>
+      <mat-card-title>Déboursé sec</mat-card-title>
+    </mat-card-header>
+    <hr>
+    <mat-card-content>
+      <div class="containerParams">
+        <div class="paramsSub">
+          <mat-card-subtitle>PU DS HT</mat-card-subtitle>
+          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
+            <p>{{this.prixUnitaireHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage,this.currentOuvrage.SousLots[0].SousLotOuvrage?.quantityOuvrage)  | number : '1.2-2'}} €</p>
+          </div>
+          <mat-card-subtitle>Débousé sec HT</mat-card-subtitle>
+          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
+            <p>{{this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage  | number : '1.2-2'}} €</p>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="cardParams">
+    <mat-card-header>
+      <mat-card-title>Prix d'équilibre</mat-card-title>
+    </mat-card-header>
+    <hr>
+    <mat-card-content>
+      <div class="containerParams">
+        <div class="paramsSub" *ngIf="this.currentOuvrage.SousLots !== undefined">
+          <mat-card-subtitle>PU HT équilibre</mat-card-subtitle>
+          <div class="itemsParams" >
+            <p>{{this.prixUnitaireEquilibre(this.prixEquilibreHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage), this.currentOuvrage.SousLots[0].SousLotOuvrage?.quantityOuvrage) | number : '1.2-2' }}€</p>
+          </div>
+          <mat-card-subtitle>Prix HT équilibre</mat-card-subtitle>
+          <div class="itemsParams">
+            <p>{{this.prixEquilibreHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage)  | number : '1.2-2'}} €</p>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="cardParams">
+    <mat-card-header>
+      <mat-card-title>Prix Calculé</mat-card-title>
+    </mat-card-header>
+    <hr>
+    <mat-card-content>
+      <div class="containerParams">
+        <div class="paramsSub">
+          <mat-card-subtitle>PU HT calculé</mat-card-subtitle>
+          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
+            <p>{{this.prixUnitaireCalculeHT(this.prixCalculeHT(this.currentOuvrage.benefice,this.currentOuvrage.aleas,this.prixEquilibreHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage)),this.currentOuvrage.SousLots[0].SousLotOuvrage?.quantityOuvrage)  | number : '1.2-2'}} €</p>
+          </div>
+          <mat-card-subtitle>Prix HT calculé</mat-card-subtitle>
+          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
+            <p>{{this.prixCalculeHT(this.currentOuvrage.benefice,this.currentOuvrage.aleas,this.prixEquilibreHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage)) | number : '1.2-2' }}€</p>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+<!--  this.prixEquilibreHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage)-->
+</div>
+
+    <!--      <mat-card-actions>-->
+    <!--        <button mat-button>LIKE</button>-->
+    <!--        <button mat-button>SHARE</button>-->
+    <!--      </mat-card-actions>-->
+
+
+<!--  <table *ngIf="currentOuvrage" mat-table [dataSource]="currentOuvrage.CoutDuDevis">-->
+<!--    <ng-container matColumnDef="type">-->
+<!--      <th mat-header-cell *matHeaderCellDef> Type</th>-->
+<!--      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.type}} </td>-->
 <!--      <td routerLink="/ouvrageDetail/{{ouvrage.id}}" mat-cell *matCellDef="let ouvrage"> {{ouvrage.designation}} </td>-->
 <!--    </ng-container>-->
 <!--    <ng-container matColumnDef="categorie">-->
@@ -68,7 +204,7 @@
 <!--      <th mat-header-cell *matHeaderCellDef> Prix HT calculé</th>-->
 <!--&lt;!&ndash;      <td mat-cell routerLink="/ouvrageDetail/{{ouvrage.id}}"&ndash;&gt;-->
 <!--&lt;!&ndash;          *matCellDef="let ouvrage;let i = index;">{{prixOuvrage[i]}}</td>&ndash;&gt;-->
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
-  </table>
+<!--    </ng-container>-->
+<!--    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>-->
+<!--    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>-->
+<!--  </table>-->
