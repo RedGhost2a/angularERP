@@ -355,7 +355,7 @@
             <div class="ouvrage-header-description ">
               <div class="flex-column">
                 <p class="bold ">Id</p>
-                <p>{{ ouvrage.id | number }} </p>
+                <p routerLink="/sousDetailPrix/{{ouvrage.id}}">{{ ouvrage.id | number }}</p>
               </div>
               <div class="flex-column">
                 <mat-form-field [formGroup]="myFormGroup">

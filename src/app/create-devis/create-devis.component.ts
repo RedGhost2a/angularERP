@@ -61,14 +61,14 @@ export class CreateDevisComponent implements OnInit {
               @Inject(TOASTR_TOKEN) private toastr: Toastr,
               private sousLotService: SousLotService,
               private devisService: DevisService,
-              private dataSharingService: DataSharingService,
               private changeDetectorRef: ChangeDetectorRef,
               private ouvrageService: OuvrageService,
               private sousLotOuvrageService: SousLotOuvrageService,
               public dialog: MatDialog,
               private coutService: CoutService,
               private sousDetailPrixService: SousDetailPrixService,
-              private ouvrageCoutService: OuvrageCoutService
+              private ouvrageCoutService: OuvrageCoutService,
+              private sharedData: DataSharingService
   ) {
     this.expandedLotId = undefined;
   }
