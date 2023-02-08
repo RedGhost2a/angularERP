@@ -55,6 +55,20 @@ export class OuvrageService {
     console.log(`${baseUrl}/${id}`)
     return this.http.delete(`${baseUrl}/${id}`)
   }
+  getAllExceptFraisDeChantier(entrepriseId:number):Observable<Ouvrage[]>{
+    return this.http.get<Ouvrage[]>(`${baseUrl}/exceptFrais`, {
+      params: {
+        EntrepriseId: entrepriseId
+      }
+    });
+  }
+  getAllFraisDeChantier(entrepriseId:number):Observable<Ouvrage[]>{
+    return this.http.get<Ouvrage[]>(`${baseUrl}/isFraisDeChantiers`, {
+      params: {
+        EntrepriseId: entrepriseId
+      }
+    });
+  }
 
   createOuvrageDuDevis(data:Ouvrage):Observable<Ouvrage>{
     return this.http.post<Ouvrage>(`${baseUrl}DuDevis/new`, data)
@@ -62,6 +76,10 @@ export class OuvrageService {
 
   getOuvrageDuDevisByDesignation(data:Ouvrage):Observable<Ouvrage>{
     return this.http.get<Ouvrage>(`${baseUrl}DuDevis/`)
+  }
+  deleteOuvrageDuDevisByID(id: any): Observable<any> {
+    console.log(`${baseUrl}/${id}`)
+    return this.http.delete(`${baseUrl}DuDevis/${id}`)
   }
 
 

@@ -12,4 +12,7 @@ export class CoutDuDevis {
   remarque!:string;
   EntrepriseId?:number;
   OuvrageCoutDuDevis?:OuvrageCout
+  ratio?:number;
+  quantite?:number;
+
 }

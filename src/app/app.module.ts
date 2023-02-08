@@ -67,6 +67,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {MatRadioModule} from "@angular/material/radio";
 import { DialogConfirmSuppComponent } from './dialog-confirm-supp/dialog-confirm-supp.component';
 import { SousDetailPrixComponent } from './sous-detail-prix/sous-detail-prix.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 
 
@@ -117,38 +118,39 @@ declare const toastr: Toastr;
 
 
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatToolbarModule,
-    MatButtonModule,
-    RouterModule.forRoot(appRoutes),
-    HttpClientModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    MatSidenavModule,
-    MatDialogModule,
-    FontAwesomeModule,
-    MatTableModule,
-    MatCardModule,
-    BrowserAnimationsModule,
-    ToastrModule.forRoot(),
-    FormsModule,
-    MatExpansionModule,
-    LayoutModule,
-    MatMenuModule,
-    MatCheckboxModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatAutocompleteModule,
-    MatListModule,
-    MatTabsModule,
-    MatRadioModule,
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatToolbarModule,
+        MatButtonModule,
+        RouterModule.forRoot(appRoutes),
+        HttpClientModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        MatSidenavModule,
+        MatDialogModule,
+        FontAwesomeModule,
+        MatTableModule,
+        MatCardModule,
+        BrowserAnimationsModule,
+        ToastrModule.forRoot(),
+        FormsModule,
+        MatExpansionModule,
+        LayoutModule,
+        MatMenuModule,
+        MatCheckboxModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatAutocompleteModule,
+        MatListModule,
+        MatTabsModule,
+        MatRadioModule,
+        MatProgressSpinnerModule,
 
-  ],
+    ],
   providers: [{
     provide: TOASTR_TOKEN,
     useValue: toastr,

@@ -37,6 +37,7 @@ export class CreateDevisComponent implements OnInit {
   curentLotId!: number;
   currentSousLotId!: number;
   listOuvrage!: Ouvrage[];
+  listOuvrageFraisDeChantier!: Ouvrage[];
   selectedOuvrageIds: number [] = [];
   hiddenChildren = new Map<number, boolean>();
   expandedLotId!: number | undefined;
@@ -51,7 +52,7 @@ export class CreateDevisComponent implements OnInit {
   resultAleasLots!: number;
   resultBeneficeFraisDeChantier!: number;
   resultAleasFraisDeChantier!: number;
-  dataLoad: boolean = false;
+  dataLoad: boolean = true;
 
 //TODO ON NE PEUT METTRE QUE UN SEUL ET MEME OUVRAGE PAR SOUS_LOT; //
 
@@ -86,7 +87,7 @@ export class CreateDevisComponent implements OnInit {
     this.getAllLots();
     this.formQuantityOuvrage()
     this.prixUnitaireDebourseSecHT()
-
+    this.dataLoad = false;
 
   }
 
@@ -305,7 +306,8 @@ export class CreateDevisComponent implements OnInit {
       this.resultAleasLots = this.resultAleasLots / nombreOuvrage
       // console.log("console log de DATA LOT : ", data)
       //recuperation de tous les ouvrages de l'entreprise
-      this.getAllOuvrage(data.EntrepriseId);
+      this.getAllOuvrageExceptFraisDeChantier(data.EntrepriseId);
+      this.getAllOuvrageFraisDeChantier(data.EntrepriseId)
       this.getSommeOuvrage()
       // this.dataLoad = true
     })
@@ -321,7 +323,7 @@ export class CreateDevisComponent implements OnInit {
       this.resultAleasFraisDeChantier = 0;
       this.resultBeneficeFraisDeChantier = 0;
       this.lotFraisDeChantier = data.Lots[0];
-      // console.log("console log frais de chantier:", data)
+      console.log("console log frais de chantier:", this.lotFraisDeChantier);
       this.lotFraisDeChantier.SousLots.forEach(sousLot => {
         sousLot.prix = 0;
         this.getSommeSousLot(sousLot, this.lotFraisDeChantier)
@@ -333,16 +335,24 @@ export class CreateDevisComponent implements OnInit {
       })
       this.resultBeneficeFraisDeChantier = this.resultBeneficeFraisDeChantier / nombreOuvrage
       this.resultAleasFraisDeChantier = this.resultAleasFraisDeChantier / nombreOuvrage
-      this.getAllOuvrage(data.EntrepriseId);
+      this.getAllOuvrageExceptFraisDeChantier(data.EntrepriseId);
       this.getSommeOuvrageFraisDeChantier()
     })
   }
 
-  getAllOuvrage(id: number) {
+  getAllOuvrageExceptFraisDeChantier(id: number) {
     // console.log("console log id get all ouvrage", id)
-    this.ouvrageService.getAll(id).subscribe(data => {
-      // console.log("Ouvrage de l'entreprise : ", data)
+    // this.ouvrageService.getAll(id).subscribe(data => {
+      this.ouvrageService.getAllExceptFraisDeChantier(id).subscribe(data =>{
       this.listOuvrage = data;
+    })
+  }
+  getAllOuvrageFraisDeChantier(id: number) {
+    // console.log("console log id get all ouvrage", id)
+    // this.ouvrageService.getAll(id).subscribe(data => {
+      this.ouvrageService.getAllFraisDeChantier(id).subscribe(data =>{
+      this.listOuvrageFraisDeChantier = data;
+      console.log('ouvrage frais de chantier',data)
     })
   }
 
@@ -375,6 +385,12 @@ export class CreateDevisComponent implements OnInit {
       this.success("Lot effacer!")
     })
   }
+  deleteOuvrageDuDevis(id: number): void {
+    this.ouvrageService.deleteOuvrageDuDevisByID(id).subscribe(() => {
+      this.getAllLots()
+      this.success("Ouvrage effacer!")
+    })
+  }
 
   deleteSousLot(id: number): void {
     this.sousLotService.deleteByID(id).subscribe(() => {
@@ -388,6 +404,26 @@ export class CreateDevisComponent implements OnInit {
   openDialog(sousLotId: number) {
     this.dialog.open(DialogComponent, {
       data: this.listOuvrage,
+      width: '90%',
+      height: '70%'
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.selectedOuvrageIds = result.selectedOuvrageIds;
+        //this.createOuvrageSousLot(sousLotId)
+        // console.log('debut de la fonction create ouvrage du devis')
+        this.createOuvrageDuDevis(sousLotId)
+        // console.log('fin de la fonction create ouvrage du devis')
+      } else {
+        // Afficher un message d'erreur si aucun sous-lot n'est sélectionné
+        this.warning("error",);
+      }
+
+    });
+  }
+
+  openDialogFraisDeChantier(sousLotId: number) {
+    this.dialog.open(DialogComponent, {
+      data: this.listOuvrageFraisDeChantier,
       width: '90%',
       height: '70%'
     }).afterClosed().subscribe(result => {

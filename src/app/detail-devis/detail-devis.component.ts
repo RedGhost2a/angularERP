@@ -20,7 +20,6 @@ export class DetailDevisComponent implements OnInit {
   devisID!: number;
   user!: User;
   lot = new Lot ;
-  // lot = { designation: "Frais de chantier", devisId: 0 };
 
   constructor(private devisService: DevisService, private route: ActivatedRoute,
               private lotService : LotService,@Inject(TOASTR_TOKEN) private toastr: Toastr) {
@@ -28,7 +27,6 @@ export class DetailDevisComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("bonne page ?")
     this.getById();
   }
 
@@ -49,23 +47,10 @@ export class DetailDevisComponent implements OnInit {
     console.log("ENFJKDSLQ",devisId)
       this.lot.devisId = devisId;
       this.lot.designation = `Frais de chantier ${this.lot.devisId}`
-      // this.lot.designation = "fdsfqds"
       console.log("console lot detail devis",this.lot)
       this.lotService.create(this.lot)
         .subscribe((response: any) => {
-
-          // this.lotsDevis = response.lot.lot
-          // this.lots.push(this.lotsDevis); // ajouts dans le tableaux
-          // // console.log(this.lotsDevis)
-          // const lotId = response.lot.lotId;
-          // console.log(lotId)
-// Récupérer l'ID du lot créé et le stocker dans le service de partage de données
-//           this.dataSharingService.setLotId(lotId);
           this.success("Nouveau lot en vue !")
-          //this.refreshData()
-         // this.changeDetectorRef.detectChanges(); // Déclencher la détection de changements manuellement//pas sur a voir
-
-// this.router.navigate(['/devis']);
         }, error => {
           console.log(error)
           this.warning("Une erreur est survenue lors de la création")

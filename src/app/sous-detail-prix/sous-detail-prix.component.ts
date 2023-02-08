@@ -12,10 +12,11 @@ export class SousDetailPrixComponent implements OnInit {
   ouvrageID!:number;
   currentOuvrage !: OuvrageDuDevis;
   columnsToDisplay = ["type"
-    // , "categorie", "designation", "unite", "uRatio", "ratio", "quantite", "prixUnitaire",
-    //                   "DSTotal", "PUHTEquilibre", "prixHTEquilibre", "PUHTCalcule", "prixHTCalcule"
-  ];
-  coefEqui!:number;
+    , "categorie", "designation", "unite","uRatio","ratio", "efficience","quantite","prixUnitaireHT",
+    "DSTotal","PUHTEquilibre","prixHTEquilibre",
+    "PUHTCalcule",
+    "prixHTCalcule"];
+  coefEqui:number = 35.79;
 
   constructor(private ouvrageService : OuvrageService,private route: ActivatedRoute,
               private sousDetailPrixService : SousDetailPrixService) { }
@@ -25,11 +26,8 @@ export class SousDetailPrixComponent implements OnInit {
       this.ouvrageID = +params['id'];
       this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe( data =>{
        this.currentOuvrage = data;
-       if(data.SousLots !== undefined){
-        console.log("data sous lot ouvrage",data.SousLots[0].SousLotOuvrage);
-       }
-
-       this.coefEqui = this.sousDetailPrixService.coefEqui;
+       //this.coefEqui = this.sousDetailPrixService.coefEqui;
+       console.log(data)
       })
     })
   }
@@ -41,6 +39,8 @@ export class SousDetailPrixComponent implements OnInit {
     return 0
   }
   prixEquilibreHT(prixOuvrage:any):number{
+    console.log(prixOuvrage * this.coefEqui)
+
     return prixOuvrage * this.coefEqui;
   }
   prixUnitaireEquilibre(prixEquilibreHT:number, quantityOuvrage:any):number{
@@ -58,7 +58,17 @@ export class SousDetailPrixComponent implements OnInit {
   prixUnitaireCalculeHT(prixCalculeHT:number, quantityOuvrage:any):number{
     return prixCalculeHT / quantityOuvrage
   }
-
-
+  quantityCout(ratio:number, quantityOuvrage:any):number{
+    return ratio * quantityOuvrage
+  }
+  debousesSecTotalCout(prixCout:number, quantityCout:number):number{
+    return prixCout * quantityCout
+  }
+  prixEquilibreHTCout(debouseSecTotalCout:number):number{
+    return debouseSecTotalCout * this.coefEqui
+  }
+  prixUnitaireEquilibreHTCout(prixEquilibreHTCout:number, quantityOuvrage:any):number{
+    return prixEquilibreHTCout / quantityOuvrage
+  }
 
 }

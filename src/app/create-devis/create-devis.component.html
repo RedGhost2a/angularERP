@@ -1,14 +1,14 @@
-<mat-tab-group animationDuration="0ms" class="onglet">
+<ng-container *ngIf="dataLoad; else content">
+  <mat-spinner></mat-spinner>
+</ng-container>
 
-  <mat-tab label="Frais de chantier" *ngIf="lotFraisDeChantier">
+<ng-template #content>
+
+<mat-tab-group animationDuration="0ms" class="onglet" >
+
+  <mat-tab label="Frais de chantier" *ngIf="lotFraisDeChantier !== undefined">
     <h3>{{lotFraisDeChantier.id}}</h3>
     <h3>{{lotFraisDeChantier.prix}}</h3>
-    <!--    <form [formGroup]="myFormGroup">-->
-    <!--      <button (click)="ajouterChamp()">Ajouter un champ</button>-->
-    <!--      <mat-form-field *ngFor="let control of myFormGroup.controls | keyvalue">-->
-    <!--        <input matInput [formControlName]="control.key">-->
-    <!--      </mat-form-field>-->
-    <!--    </form>-->
     <form [formGroup]="form" (ngSubmit)="onSubmit()" [hidden]="!showForm">
       <!-- Formulaire avec champ de saisie et bouton de validation -->
       <mat-form-field appearance="outline" color="primary">
@@ -116,7 +116,7 @@
           </div>
         </div>
         <mat-menu class="menuBoutonSl" #boutonSL>
-          <button (click)="openDialog(sublot.id);currentSousLotId = sublot.id" mat-menu-item class="buttonImport">
+          <button (click)="openDialogFraisDeChantier(sublot.id);currentSousLotId = sublot.id" mat-menu-item class="buttonImport">
             <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
             Importer un ouvrage
           </button>
@@ -134,118 +134,9 @@
   </mat-tab>
 
 
-  <!--  <mat-tab class="devis" label="Devis">-->
-  <!--    <button class="button" mat-flat-button (click)="showForm = true; currentLot = null">Créer un lot</button>-->
-  <!--    &lt;!&ndash; Formulaire avec champ de saisie et bouton de validation &ndash;&gt;-->
-  <!--    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value.designation,lotId)" [hidden]="!showForm">-->
-  <!--      &lt;!&ndash; Formulaire avec champ de saisie et bouton de validation &ndash;&gt;-->
-  <!--      <mat-form-field appearance="outline" color="primary">-->
-  <!--        <mat-label>Designation</mat-label>-->
-  <!--        <input matInput formControlName="designation" placeholder="Entrer le nom."/>-->
-  <!--      </mat-form-field>-->
-  <!--      <button mat-flat-button type="submit">Valider</button>-->
-  <!--    </form>-->
-  <!--    <div *ngFor="let lot of lots">-->
-  <!--      <div class="lot">-->
-  <!--        <button class="btn" *ngIf="hasSublots(lot)"-->
-  <!--                (click)="toggleChildren(lot); setExpandedLotId(lot.id)">-->
-  <!--          <mat-icon>expand_more</mat-icon>-->
-  <!--          <span>Lot N°: {{ lot.id | number }}</span>-->
-  <!--        </button>-->
-  <!--        <span class="designation">{{ lot.designation | titlecase }}</span>-->
-  <!--        <mat-icon [matMenuTriggerFor]="boutonLOT">more_vert</mat-icon>-->
-  <!--      </div>-->
-  <!--      <mat-menu class="menuBoutonSl" #boutonLOT>-->
-  <!--        <button mat-flat-button *ngIf="lot" (click)="handleLotClick(lot.id); currentLot = lot;toggleForm()">Créer un-->
-  <!--          sous-lot-->
-  <!--        </button>-->
-  <!--        <button mat-menu-item class="buttonSup" *ngIf="lot"-->
-  <!--                (click)="handleLotClick(lot.id); currentLot = lot;deleteLot(lot.id)">-->
-  <!--          Effacer ce lot-->
-  <!--        </button>-->
-  <!--      </mat-menu>-->
-
-  <!--      <div *ngFor="let sublot of sousLots" [hidden]="expandedLotId !== lot.id">-->
-  <!--        <div *ngIf="sublot.LotSousLot && sublot.LotSousLot.LotId === lot.id">-->
-  <!--          <div class="sousLot">-->
-  <!--            <div class="sous-lot-headers">-->
-  <!--              <button *ngIf="hasOuvrages(sublot)" class="btn" (click)="toggleChildren(sublot)">-->
-  <!--                <mat-icon>expand_more</mat-icon>-->
-  <!--                <span>Sous-lot N°: {{ sublot.id | number }}</span>-->
-  <!--              </button>-->
-  <!--              <span-->
-  <!--                class="designation">{{ sublot.designation | uppercase }}</span>-->
-  <!--              <mat-icon [matMenuTriggerFor]="boutonSL">more_vert</mat-icon>-->
-  <!--            </div>-->
-  <!--          </div>-->
 
 
-  <!--          <div *ngFor="let ouvrage of ouvrages" [hidden]="hiddenChildren.get(sublot.id)">-->
-  <!--            <div *ngIf="ouvrage && ouvrage.SousLotOuvrage && ouvrage.SousLotOuvrage.SousLotId === sublot.id">-->
-  <!--              <div class="ouvrage" *ngIf="ouvrage && ouvrage.id && ouvrage.designation">-->
-  <!--                <div class="ouvrage-headers">-->
-  <!--                  <div class="ouvrage-header-description">-->
-  <!--                    <span>Id</span> <span>Désignation</span> <span>Bénéfice</span> <span>Aléas</span> <span>Unité</span>-->
-  <!--                    <span>Ratio</span> <span>U Ratio</span>-->
-  <!--                  </div>-->
-  <!--                  <div class="ouvrage-header-detail">-->
-  <!--                    <span>{{ ouvrage.id | number }} </span>-->
-  <!--                    <span>{{ ouvrage.designation  }}</span>-->
-  <!--                    <span>{{ ouvrage.benefice | number }}</span>-->
-  <!--                    <span>{{ ouvrage.aleas | number }}</span>-->
-  <!--                    <span>{{ ouvrage.unite | titlecase }}</span>-->
-  <!--                    <span>{{ ouvrage.ratio | number }}</span>-->
-  <!--                    <span>{{ ouvrage.uRatio | number }}</span>-->
-  <!--                  </div>-->
-  <!--                </div>-->
-  <!--              </div>-->
-  <!--              <div>-->
-  <!--                <div class="cout-header">-->
-  <!--                  <div class="cout-header-description">-->
-  <!--                    <span>Id</span>-->
-  <!--                    <span>Désignation</span>-->
-  <!--                    <span>Unité</span>-->
-  <!--                    <span>P U</span>-->
-  <!--                    <span>Fournisseur</span>-->
-  <!--                    <span>Remarque</span>-->
-  <!--                  </div>-->
-
-  <!--                  <div *ngFor="let ct of coutElement; first as isFirst">-->
-  <!--                    <div *ngIf="ct && ct.OuvrageCout && ct.OuvrageCout.OuvrageId === ouvrage.id" class="cout">-->
-  <!--                      <div class="cout-header-detail">-->
-  <!--                        <span>{{ ct.id }}</span>-->
-  <!--                        <span>{{ ct.designation }}</span>-->
-  <!--                        <span>{{ ct.unite }}</span>-->
-  <!--                        <span>{{ ct.prixUnitaire }}</span>-->
-  <!--                        <span>{{ ct.fournisseur }}</span>-->
-  <!--                        <span>{{ ct.remarque }}</span>-->
-  <!--                      </div>-->
-  <!--                    </div>-->
-
-  <!--                  </div>-->
-  <!--                </div>-->
-  <!--              </div>-->
-
-  <!--            </div>-->
-
-  <!--          </div>-->
-  <!--        </div>-->
-  <!--        <mat-menu class="menuBoutonSl" #boutonSL>-->
-  <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
-  <!--            Importer un ouvrage-->
-  <!--          </button>-->
-  <!--          <button mat-menu-item class="buttonSup" *ngIf="lot" (click)="handleSousLotClick(sublot.id); currentLot = lot">-->
-  <!--            Effacer ce sous-lot-->
-  <!--          </button>-->
-  <!--        </mat-menu>-->
-
-  <!--      </div>-->
-  <!--    </div>-->
-
-  <!--  </mat-tab>-->
-
-
-  <mat-tab class="devis" label="Devis">
+  <mat-tab class="devis" label="Devis" *ngIf="lotFraisDeChantier !== undefined && testLots !== undefined">
     <button class="button" mat-flat-button (click)="showForm = true; isLot=false">Créer un lot</button>
     <h3>Total : {{prixDevis}} €</h3>
     <div class="totaux-header">
@@ -310,7 +201,7 @@
       <button mat-flat-button type="submit">Valider</button>
     </form>
     <div *ngFor="let lot of testLots">
-      <div class="lot">
+      <div class="lot" *ngIf="lot">
         <button class="btn" *ngIf="lot.SousLots && lot.SousLots.length"
                 (click)="setExpandedLotId(lot.id)">
           <mat-icon>expand_more</mat-icon>
@@ -386,11 +277,10 @@
                 <p>{{ ouvrage.uRatio  }}</p>
               </div>
               <div class="flex-column">
-                <p class="bold">{{ ouvrage.ratio  }}</p>
-                <p>Ratio</p>
+                <p class="bold">Ratio</p>
+                <p >{{ ouvrage.ratio  }}</p>
               </div>
-              <!--                <span>Quantité</span>-->
-              <!--              <span>Prix</span>-->
+              <mat-icon [matMenuTriggerFor]="boutonOuv">more_vert</mat-icon>
             </div>
             <div class="totaux-header">
               <div class="flex-column">
@@ -433,70 +323,18 @@
                   <p class="totaux-header-result ">3453</p>
                 </div>
               </div>
-
-
-              <!--              <div class="ouvrage-header-detail">-->
-              <!--                <mat-form-field style="  align-items: center;text-align: center;-->
-              <!--  width: 100px;" [formGroup]="myFormGroup">-->
-              <!--                  <input type="number" formControlName="quantityOuvrage" matInput required-->
-              <!--                         (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lotFraisDeChantier, prixOuvrageFraisDeChantier)">-->
-              <!--                </mat-form-field>-->
-              <!--                <span routerLink="/sousDetailPrix/{{ouvrage.id}}">{{ ouvrage.id | number }} </span>-->
-              <!--                <span>{{ ouvrage.designation  }}</span>-->
-              <!--                <span>{{ ouvrage.benefice | number }}</span>-->
-              <!--                &lt;!&ndash;                <input [(ngModel)]="resultBenefice" [value]="ouvrage.benefice">&ndash;&gt;-->
-              <!--                <span>{{ ouvrage.aleas | number }}</span>-->
-              <!--                <span>{{ ouvrage.unite | titlecase }}</span>-->
-              <!--                <span>{{ ouvrage.uRatio }}</span>-->
-              <!--                <span>{{ ouvrage.ratio | number }}</span>-->
-
-              <!--                &lt;!&ndash;                  <ng-container [formGroup]="this.myFormGroup">&ndash;&gt;-->
-              <!--                &lt;!&ndash;                    <p>&ndash;&gt;-->
-              <!--                &lt;!&ndash;                      <mat-form-field appearance="legacy">&ndash;&gt;-->
-              <!--                &lt;!&ndash;                        <mat-label>Quantité</mat-label>&ndash;&gt;-->
-              <!--                &lt;!&ndash;                        <input formControlName="quantityOuvrage" >&ndash;&gt;-->
-              <!--                &lt;!&ndash;                      </mat-form-field>&ndash;&gt;-->
-              <!--                &lt;!&ndash;                    </p>&ndash;&gt;-->
-              <!--                &lt;!&ndash;                  </ng-container>&ndash;&gt;-->
-              <!--                &lt;!&ndash;                <mat-form-field appearance="legacy" [formGroup]="myFormGroup">&ndash;&gt;-->
-              <!--                &lt;!&ndash;                  <mat-label>Quantité</mat-label>&ndash;&gt;-->
-              <!--                &lt;!&ndash;                  <input formControlName="quantityOuvrage" matInput required&ndash;&gt;-->
-              <!--                &lt;!&ndash;                         (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lot, prixOuvrage)">&ndash;&gt;-->
-              <!--                &lt;!&ndash;                </mat-form-field>&ndash;&gt;-->
-              <!--                &lt;!&ndash;                <span>{{ ouvrage.SousLotOuvrage?.quantityOuvrage }}</span>&ndash;&gt;-->
-              <!--                <span>{{ ouvrage.SousLotOuvrage?.prixOuvrage }}</span>-->
-              <!--                <span></span>-->
-              <!--              </div>-->
             </div>
-            <!--            </div>-->
             <div>
-              <!--              <div class="cout-header">-->
-              <!--                <div class="cout-header-description">-->
-              <!--                  <span>Id</span>-->
-              <!--                  <span>Désignation</span>-->
-              <!--                  <span>Unité</span>-->
-              <!--                  <span>P U</span>-->
-              <!--                  <span>Fournisseur</span>-->
-              <!--                  &lt;!&ndash;                  <span>Remarque</span>&ndash;&gt;-->
-              <!--                </div>-->
-
-              <!--                <div *ngFor="let ct of ouvrage.CoutDuDevis; first as isFirst">-->
-              <!--                  &lt;!&ndash;                  <div *ngIf="ct && ct.OuvrageCout && ct.OuvrageCout.OuvrageId === ouvrage.id" class="cout">&ndash;&gt;-->
-              <!--                  <div class="cout-header-detail">-->
-              <!--                    <span>{{ ct.id }}</span>-->
-              <!--                    <span>{{ ct.designation }}</span>-->
-              <!--                    <span>{{ ct.unite }}</span>-->
-              <!--                    <span>{{ ct.prixUnitaire }} </span>-->
-              <!--                    <span>{{ ct.fournisseur }}</span>-->
-              <!--                    &lt;!&ndash;                      <span>{{ ct.remarque }}</span>&ndash;&gt;-->
-              <!--                  </div>-->
-              <!--                  &lt;!&ndash;                  </div>&ndash;&gt;-->
-
-              <!--                </div>-->
-              <!--              </div>-->
             </div>
 
           </div>
+
+
+          <mat-menu class="menuBoutonSl" #boutonOuv>
+            <button mat-menu-item class="buttonSup" *ngIf="lot" (click)="deleteOuvrageDuDevis(ouvrage.id)">
+              Effacer cet ouvrage
+            </button>
+          </mat-menu>
 
 
         </div>
@@ -509,6 +347,7 @@
             Effacer ce sous-lot
           </button>
         </mat-menu>
+
       </div>
 
     </div>
@@ -517,7 +356,7 @@
   </mat-tab>
 
 
-  <mat-tab label="Paramètre de chantier">
+  <mat-tab label="Paramètre de chantier" *ngIf="lotFraisDeChantier !== undefined && testLots !== undefined">
     <div class="bigContainerParams">
       <div class="ContainerParamsFraisDevis">
         <mat-card class="cardParams">
@@ -552,10 +391,6 @@
 
             </div>
           </mat-card-content>
-          <!--      <mat-card-actions>-->
-          <!--        <button mat-button>LIKE</button>-->
-          <!--        <button mat-button>SHARE</button>-->
-          <!--      </mat-card-actions>-->
         </mat-card>
 
         <mat-card class="cardParams">
@@ -589,10 +424,6 @@
             </div>
 
           </mat-card-content>
-          <!--      <mat-card-actions>-->
-          <!--        <button mat-button>LIKE</button>-->
-          <!--        <button mat-button>SHARE</button>-->
-          <!--      </mat-card-actions>-->
         </mat-card>
       </div>
       <div class="ContainerParamsFraisDevis">
@@ -644,10 +475,6 @@
             </div>
 
           </mat-card-content>
-          <!--      <mat-card-actions>-->
-          <!--        <button mat-button>LIKE</button>-->
-          <!--        <button mat-button>SHARE</button>-->
-          <!--      </mat-card-actions>-->
         </mat-card>
       </div>
 
@@ -679,3 +506,5 @@
 
 
 </mat-tab-group>
+
+</ng-template>
