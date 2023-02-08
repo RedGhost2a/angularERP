@@ -151,7 +151,7 @@
 
       <div class="flex-column">
         <p class="totaux-header-designation">Prix d'equilibre</p>
-        <p class="totaux-header-result">46230.4 €</p>
+        <p class="totaux-header-result">{{this.sommePrixEquilibre()| number: '1.2-2'}} €</p>
         <p class="subtotaux-header">Equilibre</p>
 
       </div>
@@ -184,7 +184,8 @@
 
         <div class="flex-row">
           <p class="totaux-header-designation">Total prix de vente HT </p>
-          <p class="totaux-header-result">{{coutTotal()| number : '1.2-2'}} €</p>
+          <!--          <p class="totaux-header-result">{{coutTotal()| number : '1.2-2'}} €</p>-->
+          <p class="totaux-header-result">{{calculateTotal() }} €</p>
         </div>
         <p class="subtotaux-header">Vente</p>
 
@@ -300,17 +301,22 @@
 
               <div class="flex-column">
                 <p class="totaux-header-designation ">Prix HT équilibre</p>
-                <p class="totaux-header-result ">12346</p>
+                <p *ngIf="ouvrage.SousLotOuvrage?.prixOuvrage"
+                   class="totaux-header-result ">{{this.prixEquilibreHT(ouvrage.SousLotOuvrage?.prixOuvrage)| number : '1.2-2'}}</p>
               </div>
 
               <div class="flex-column">
                 <div class="flex-row">
-                  <p class="totaux-header-designation ">PU calculé HT</p>
                   <p class="totaux-header-designation ">Prix calculé HT</p>
+                  <p class="totaux-header-designation ">PU calculé HT</p>
                 </div>
                 <div class="flex-row">
-                  <p class="totaux-header-result ">1344</p>
-                  <p class="totaux-header-result ">3453</p>
+
+                  <p
+                    class="totaux-header-result ">{{this.sharedData.prixCalculeHT(this.ouvrage.benefice, ouvrage.aleas, this.sharedData.prixEquilibreHT(ouvrage.SousLotOuvrage?.prixOuvrage)) | number : '1.2-2' }}</p>
+                  <p
+                    class="totaux-header-result ">{{this.sharedData.prixUnitaireCalculeHT(this.sharedData.prixCalculeHT(this.ouvrage.benefice, this.ouvrage.aleas, this.sharedData.prixEquilibreHT(ouvrage.SousLotOuvrage?.prixOuvrage)), ouvrage)  | number : '1.2-2'}}
+                    €</p>
                 </div>
               </div>
               <div class="flex-column">
@@ -319,8 +325,13 @@
                   <p class="totaux-header-designation ">Prix vente HT</p>
                 </div>
                 <div class="flex-row ">
-                  <p class="totaux-header-result ">1344</p>
-                  <p class="totaux-header-result ">3453</p>
+                  <input class="totaux-header-result " type="text"
+                         [ngModel]="getPrix(ouvrage)"
+                         (ngModelChange)="this.onPrixUnitaireCalculeHtChange($event,ouvrage.SousLotOuvrage?.id) ">
+                  <!--                         [value]="ouvrage.SousLotOuvrage.prixArrondi > 0 ? ouvrage.SousLotOuvrage.prixArrondi : this.sharedData.prixUnitaireCalculeHT(this.sharedData.prixCalculeHT(this.ouvrage.benefice, this.ouvrage.aleas, this.sharedData.prixEquilibreHT(ouvrage?.SousLotOuvrage.prixOuvrage)), ouvrage?.SousLotOuvrage.quantityOuvrage) | number : '1.2-2'">-->
+                  <p
+                    class="totaux-header-result ">{{ (ouvrage.SousLotOuvrage?.quantityOuvrage || 0) * this.getPrix(ouvrage)}}
+                  </p>
                 </div>
               </div>
             </div>
