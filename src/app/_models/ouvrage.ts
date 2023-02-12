@@ -1,6 +1,7 @@
 import {Cout} from "./cout";
 import {SousLotOuvrage} from "./sousLotOuvrage";
 import {OuvrageCout} from "./ouvrageCout";
+import {SousLot} from "./sous-lot";
 
 export interface Ouvrage {
   // cout: any;
@@ -18,4 +19,5 @@ export interface Ouvrage {
   //EntrepriseId?:number;
   OuvrageDuDevis?:Ouvrage
   Couts?:Cout[]
+  SousLots?:SousLot[];
 }

@@ -15,8 +15,8 @@ export class OuvrageService {
   constructor(private http: HttpClient) {
   }
 
-  getOuvrageDuDevisById(id: number):Observable<OuvrageDuDevis>{
-    return this.http.get<OuvrageDuDevis>(`${baseUrl}DuDevis/${id}`)
+  getOuvrageDuDevisById(id: number):Observable<Ouvrage>{
+    return this.http.get<Ouvrage>(`${baseUrl}DuDevis/${id}`)
   }
 
   getAll(entrepriseId: number): Observable<any> {

@@ -138,12 +138,12 @@
 
   <mat-tab class="devis" label="Devis" *ngIf="lotFraisDeChantier !== undefined && testLots !== undefined">
     <button class="button" mat-flat-button (click)="showForm = true; isLot=false">Créer un lot</button>
-    <h3>Total : {{prixDevis}} €</h3>
+    <h3>Total : {{this.devis.debourseSecTotal}} €</h3>
     <div class="totaux-header">
       <div class="flex-column">
         <div class="flex-row">
           <p class="totaux-header-designation">Total déboursé sec </p>
-          <p class="totaux-header-result">{{prixDevis | number: '1.2-2'}}  €</p>
+          <p class="totaux-header-result">{{this.devis.debourseSecTotal | number: '1.2-2'}}  €</p>
         </div>
         <p class="subtotaux-header">Déboursé sec</p>
       </div>
@@ -151,7 +151,8 @@
 
       <div class="flex-column">
         <p class="totaux-header-designation">Prix d'equilibre</p>
-        <p class="totaux-header-result">{{this.sommePrixEquilibre()| number: '1.2-2'}} €</p>
+<!--        <p class="totaux-header-result">{{this.sommePrixEquilibre()| number: '1.2-2'}} €</p>-->
+        <p class="totaux-header-result">{{this.devis.prixEquiHT | number: '1.2-2'}} €</p>
         <p class="subtotaux-header">Equilibre</p>
 
       </div>
@@ -159,17 +160,17 @@
       <div class="flex-column">
         <div class="flex-row">
           <p class="totaux-header-designation">Bénefice total calculé </p>
-          <p class="totaux-header-result">4239 €</p>
+          <p class="totaux-header-result">{{this.devis.beneficeInEuro}}</p>
         </div>
 
         <div class="flex-row">
           <p class="totaux-header-designation">Aléas total calculé </p>
-          <p class="totaux-header-result">3339 €</p>
+          <p class="totaux-header-result">{{this.devis.aleasInEuro}}</p>
         </div>
 
         <div class="flex-row">
           <p class="totaux-header-designation">Prix calculé HT </p>
-          <p class="totaux-header-result">13239 €</p>
+          <p class="totaux-header-result">{{this.devis.prixCalcHT}}</p>
         </div>
         <p class="subtotaux-header">Calculé</p>
 
@@ -178,7 +179,7 @@
       <div class="flex-column">
         <div class="flex-row">
           <p class="totaux-header-designation">B&A total</p>
-          <p class="totaux-header-result">{{coefEquilibre()| number : '1.2-2'}} %</p>
+          <p class="totaux-header-result">Benefice et aleas total %</p>
 
         </div>
 
@@ -301,8 +302,8 @@
 
               <div class="flex-column">
                 <p class="totaux-header-designation ">Prix HT équilibre</p>
-                <p *ngIf="ouvrage.SousLotOuvrage?.prixOuvrage"
-                   class="totaux-header-result ">{{this.prixEquilibreHT(ouvrage.SousLotOuvrage?.prixOuvrage)| number : '1.2-2'}}</p>
+                <p class="totaux-header-result">{{ouvrage.SousLotOuvrage?.prixEquiHT}} </p>
+<!--                <p *ngIf="ouvrage.SousLotOuvrage?.prixOuvrage" class="totaux-header-result ">{{this.prixEquilibreHT(ouvrage.SousLotOuvrage?.prixOuvrage)| number : '1.2-2'}}</p>-->
               </div>
 
               <div class="flex-column">
@@ -310,12 +311,12 @@
                   <p class="totaux-header-designation ">Prix calculé HT</p>
                   <p class="totaux-header-designation ">PU calculé HT</p>
                 </div>
-                <div class="flex-row">
+                <div class="flex-row" *ngIf="ouvrage.SousLotOuvrage">
 
                   <p
-                    class="totaux-header-result ">{{this.sharedData.prixCalculeHT(this.ouvrage.benefice, ouvrage.aleas, this.sharedData.prixEquilibreHT(ouvrage.SousLotOuvrage?.prixOuvrage)) | number : '1.2-2' }}</p>
+                    class="totaux-header-result ">{{ouvrage.SousLotOuvrage.prixCalcHT | number : '1.2-2' }}</p>
                   <p
-                    class="totaux-header-result ">{{this.sharedData.prixUnitaireCalculeHT(this.sharedData.prixCalculeHT(this.ouvrage.benefice, this.ouvrage.aleas, this.sharedData.prixEquilibreHT(ouvrage.SousLotOuvrage?.prixOuvrage)), ouvrage)  | number : '1.2-2'}}
+                    class="totaux-header-result ">{{ouvrage.SousLotOuvrage.prixUniCalcHT  | number : '1.2-2'}}
                     €</p>
                 </div>
               </div>
@@ -324,14 +325,24 @@
                   <p class="totaux-header-designation ">PU vente HT</p>
                   <p class="totaux-header-designation ">Prix vente HT</p>
                 </div>
-                <div class="flex-row ">
-                  <input class="totaux-header-result " type="text"
-                         [ngModel]="getPrix(ouvrage)"
-                         (ngModelChange)="this.onPrixUnitaireCalculeHtChange($event,ouvrage.SousLotOuvrage?.id) ">
-                  <!--                         [value]="ouvrage.SousLotOuvrage.prixArrondi > 0 ? ouvrage.SousLotOuvrage.prixArrondi : this.sharedData.prixUnitaireCalculeHT(this.sharedData.prixCalculeHT(this.ouvrage.benefice, this.ouvrage.aleas, this.sharedData.prixEquilibreHT(ouvrage?.SousLotOuvrage.prixOuvrage)), ouvrage?.SousLotOuvrage.quantityOuvrage) | number : '1.2-2'">-->
+                <div class="flex-row " *ngIf="ouvrage.SousLotOuvrage">
+                  <p *ngIf="ouvrage.SousLotOuvrage"> {{ouvrage.SousLotOuvrage.prixUniArrondi}}</p>
+
+                  <mat-form-field [formGroup]="myFormGroup" *ngIf="ouvrage.SousLotOuvrage">
+                    <p class="bold">Qte</p>
+                    <input type="number" formControlName="prixArrondi" matInput required *ngIf="ouvrage.SousLotOuvrage"
+                           (ngModelChange)="this.onPrixUnitaireCalculeHtChange($event,ouvrage.SousLotOuvrage)" [value]="ouvrage.SousLotOuvrage?.prixUniArrondi">
+                  </mat-form-field>
+<!--                  <input class="totaux-header-result " type="text"-->
+<!--                         (ngModelChange)="this.onPrixUnitaireCalculeHtChange($event,ouvrage.SousLotOuvrage?.id)" [value]="ouvrage.SousLotOuvrage.prixUniArrondi">-->
+<!--                  &lt;!&ndash;                         [value]="ouvrage.SousLotOuvrage.prixArrondi > 0 ? ouvrage.SousLotOuvrage.prixArrondi : this.sharedData.prixUnitaireCalculeHT(this.sharedData.prixCalculeHT(this.ouvrage.benefice, this.ouvrage.aleas, this.sharedData.prixEquilibreHT(ouvrage?.SousLotOuvrage.prixOuvrage)), ouvrage?.SousLotOuvrage.quantityOuvrage) | number : '1.2-2'">&ndash;&gt;-->
                   <p
-                    class="totaux-header-result ">{{ (ouvrage.SousLotOuvrage?.quantityOuvrage || 0) * this.getPrix(ouvrage)}}
+                    class="totaux-header-result ">{{ ouvrage.SousLotOuvrage.prixArrondi}}
                   </p>
+
+
+<!--                    <p class="totaux-header-result ">{{ (ouvrage.SousLotOuvrage?.quantityOuvrage || 0) * this.getPrix(ouvrage)}}-->
+<!--                  </p>-->
                 </div>
               </div>
             </div>
@@ -424,7 +435,7 @@
               <div class="paramsSub">
                 <div class="itemsParams">
                   <mat-card-subtitle>Total</mat-card-subtitle>
-                  <p>{{this.prixDevis | number : '1.2-2'}} €</p>
+                  <p>{{this.devis.debourseSecTotal | number : '1.2-2'}} €</p>
                 </div>
                 <div class="itemsParams">
                   <mat-card-subtitle>Bénéfice & Aléas</mat-card-subtitle>
@@ -448,25 +459,25 @@
               <div class="paramsSub">
                 <div class="itemsParams">
                   <mat-card-subtitle>Total Dépense</mat-card-subtitle>
-                  <p>{{this.totalDepense() | number : '1.2-2'}} €</p>
+                  <p>{{this.devis.totalDepense | number : '1.2-2'}} €</p>
                 </div>
                 <div class="itemsParams">
                   <mat-card-subtitle>Cout Total</mat-card-subtitle>
-                  <p>{{this.coutTotal() | number : '1.2-2'}} €</p>
+                  <p>{{this.devis.coutTotal | number : '1.2-2'}} €</p>
                 </div>
               </div>
               <div class="paramsSub">
                 <div class="itemsParams">
                   <mat-card-subtitle>Bénefice</mat-card-subtitle>
-                  <p>{{this.moyenneBenefice() | number : '1.2-2'}} %</p>
+                  <p>{{this.devis.moyenneBenefice | number : '1.2-2'}} %</p>
                 </div>
                 <div class="itemsParams">
                   <mat-card-subtitle>Aléas</mat-card-subtitle>
-                  <p>{{this.moyenneAleas() | number : '1.2-2' }} %</p>
+                  <p>{{this.devis.moyenneAleas | number : '1.2-2' }} %</p>
                 </div>
                 <div class="itemsParams">
                   <mat-card-subtitle>Bénéfice & Aléas</mat-card-subtitle>
-                  <p>{{this.moyenneBeneficeAleasTotal() | number : '1.2-2'}} %</p>
+                  <p>{{this.devis.moyenneBeneficeAleas | number : '1.2-2'}} %</p>
                 </div>
 
               </div>
@@ -474,11 +485,11 @@
               <div class="paramsSub">
                 <div class="itemsParams">
                   <mat-card-subtitle>Frais généraux</mat-card-subtitle>
-                  <p>{{this.fraisGeneraux() | number : '1.2-2'}} €</p>
+                  <p>{{this.devis.fraisGeneraux | number : '1.2-2'}} €</p>
                 </div>
                 <div class="itemsParams">
                   <mat-card-subtitle>Coéfficient d'équilibre</mat-card-subtitle>
-                  <p>{{this.coefEquilibre() | number : '1.2-2'}}</p>
+                  <p>{{this.devis.coeffEquilibre | number : '1.2-2'}}</p>
                 </div>
 
               </div>
@@ -492,26 +503,26 @@
     </div>
 
     <div *ngIf="lotFraisDeChantier !== undefined">
-      <p>Benefice theorique moyenne des benefices des ouvrages des lot du devis valeur en %, valeur en E </p>
-      <h2>{{this.resultBeneficeLots}}</h2>
-      <p>Aleas theorique moyenne des aleas des ouvrages des lot des devis, valeur en %, valeur en E </p>
-      <h2>{{this.resultAleasLots}}</h2>
-      <p>Benefice theorique moyenne des benefices des ouvrages du Frais de chantier valeur en %, valeur en E </p>
-      <h2>{{this.resultBeneficeFraisDeChantier}}</h2>
-      <p>Aleas theorique moyenne des aleas des ouvrages du Frais de chantier, valeur en %, valeur en E </p>
-      <h2>{{this.resultAleasFraisDeChantier}}</h2>
-      <p>Frais de chantier total de l'onglet frais de chantier = </p>
-      <h2>{{lotFraisDeChantier.prix}}</h2>
-      <p>Frais generaux 20% total deboursés sec + frais de chantier</p>
-      <h2>{{fraisGeneraux()}}</h2>
-      <p> total deboursés sec (total devis) </p>
-      <h2>{{prixDevis}}</h2>
-      <p>total depense total debousés sec + frais de chantier</p>
-      <h2> {{totalDepense()}}</h2>
-      <p>cout total total debourses sec + frais de chantier + frais generaux</p>
-      <h2>{{coutTotal()}}</h2>
-      <p> coefficient d'equilibre cout total / total deboursé sec /</p>
-      <h2>{{coefEquilibre()}}</h2>
+<!--      <p>Benefice theorique moyenne des benefices des ouvrages des lot du devis valeur en %, valeur en E </p>-->
+<!--      <h2>{{this.resultBeneficeLots}}</h2>-->
+<!--      <p>Aleas theorique moyenne des aleas des ouvrages des lot des devis, valeur en %, valeur en E </p>-->
+<!--      <h2>{{this.resultAleasLots}}</h2>-->
+<!--      <p>Benefice theorique moyenne des benefices des ouvrages du Frais de chantier valeur en %, valeur en E </p>-->
+<!--      <h2>{{this.resultBeneficeFraisDeChantier}}</h2>-->
+<!--      <p>Aleas theorique moyenne des aleas des ouvrages du Frais de chantier, valeur en %, valeur en E </p>-->
+<!--      <h2>{{this.resultAleasFraisDeChantier}}</h2>-->
+<!--      <p>Frais de chantier total de l'onglet frais de chantier = </p>-->
+<!--      <h2>{{lotFraisDeChantier.prix}}</h2>-->
+<!--      <p>Frais generaux 20% total deboursés sec + frais de chantier</p>-->
+<!--      <h2>{{fraisGeneraux()}}</h2>-->
+<!--      <p> total deboursés sec (total devis) </p>-->
+<!--      <h2>{{prixDevis}}</h2>-->
+<!--      <p>total depense total debousés sec + frais de chantier</p>-->
+<!--      <h2> {{totalDepense()}}</h2>-->
+<!--      <p>cout total total debourses sec + frais de chantier + frais generaux</p>-->
+<!--      <h2>{{coutTotal()}}</h2>-->
+<!--      <p> coefficient d'equilibre cout total / total deboursé sec /</p>-->
+<!--      <h2>{{coefEquilibre()}}</h2>-->
     </div>
   </mat-tab>
 

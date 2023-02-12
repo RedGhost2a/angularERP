@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {OuvrageService} from "../_service/ouvrage.service";
 import {ActivatedRoute} from "@angular/router";
 import {OuvrageDuDevis} from "../_models/ouvrage-du-devis";
-import {SousDetailPrixService} from "../_service/sous-detail-prix.service";
+import {DataSharingService} from "../_service/data-sharing-service.service";
+import {Ouvrage} from "../_models/ouvrage";
+
 @Component({
   selector: 'app-sous-detail-prix',
   templateUrl: './sous-detail-prix.component.html',
@@ -10,7 +12,7 @@ import {SousDetailPrixService} from "../_service/sous-detail-prix.service";
 })
 export class SousDetailPrixComponent implements OnInit {
   ouvrageID!:number;
-  currentOuvrage !: OuvrageDuDevis;
+  currentOuvrage !: Ouvrage;
   columnsToDisplay = ["type"
     , "categorie", "designation", "unite","uRatio","ratio", "efficience","quantite","prixUnitaireHT",
     "DSTotal","PUHTEquilibre","prixHTEquilibre",
@@ -19,56 +21,122 @@ export class SousDetailPrixComponent implements OnInit {
   coefEqui:number = 35.79;
 
   constructor(private ouvrageService : OuvrageService,private route: ActivatedRoute,
-              private sousDetailPrixService : SousDetailPrixService) { }
+              public dataShared : DataSharingService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params =>{
       this.ouvrageID = +params['id'];
       this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe( data =>{
        this.currentOuvrage = data;
+       if(data.SousLots){
+       this.currentOuvrage.SousLotOuvrage = data.SousLots[0].SousLotOuvrage
+       }
        //this.coefEqui = this.sousDetailPrixService.coefEqui;
-       console.log(data)
+       console.log(this.currentOuvrage)
+        this.prixUnitaireHT()
+        this.prixEquilibreHT()
+        this.prixUnitaireEquilibreHT()
+        this.beneficePercentToEuro()
+        this.aleasPercentToEuro()
+        this.prixCalculeHT()
+        this.prixUnitaireCalculeHT()
+        this.quantityCout()
+        this.debousesSecTotalCout()
+        this.prixEquilibreHTCout()
+        this.prixUnitaireEquilibreHTCout()
+        this.prixCalculeHTCout()
+        this.prixUnitaireCalculeHTCout()
       })
     })
   }
 
-  prixUnitaireHT(prixOuvrage:any, quantiteOuvrage:any):number{
-    if(prixOuvrage !== undefined && quantiteOuvrage !== undefined){
-    return prixOuvrage/ quantiteOuvrage
+  prixUnitaireHT():void{
+    if(this.currentOuvrage.SousLotOuvrage !== undefined){
+    this.dataShared.prixUnitaireHT(this.currentOuvrage.SousLotOuvrage)
     }
-    return 0
   }
-  prixEquilibreHT(prixOuvrage:any):number{
-    console.log(prixOuvrage * this.coefEqui)
 
-    return prixOuvrage * this.coefEqui;
+  prixEquilibreHT():void{
+    console.log("ouvrage",this.currentOuvrage)
+    if(this.currentOuvrage.SousLotOuvrage){
+      console.log("prixEquilibreHT")
+    this.dataShared.prixEquilibreHT(this.currentOuvrage.SousLotOuvrage)
+    }
   }
-  prixUnitaireEquilibre(prixEquilibreHT:number, quantityOuvrage:any):number{
-    return prixEquilibreHT / quantityOuvrage
+
+  prixUnitaireEquilibreHT():void{
+    if(this.currentOuvrage.SousLotOuvrage){
+    this.dataShared.prixUnitaireEquilibre(this.currentOuvrage.SousLotOuvrage)
+    }
   }
-  beneficePercentToEuro(prixEquilibreHT:number, benefice:number):number{
-    return prixEquilibreHT * (benefice / 100)
+
+  beneficePercentToEuro():void{
+    if(this.currentOuvrage.SousLotOuvrage)
+    this.dataShared.beneficePercentToEuro(this.currentOuvrage.SousLotOuvrage,this.currentOuvrage.benefice)
   }
-  aleasPercentToEuro(prixEquilibreHT:number, aleas:number):number{
-    return prixEquilibreHT * (aleas / 100)
+
+  aleasPercentToEuro():void{
+    if(this.currentOuvrage.SousLotOuvrage)
+    this.dataShared.aleasPercentToEuro(this.currentOuvrage.SousLotOuvrage,this.currentOuvrage.aleas)
   }
-  prixCalculeHT(benefice:number, aleas:number, prixEquilibreHT: number):number{
-    return prixEquilibreHT *(1 + (benefice/100) + (aleas /100))
+  prixCalculeHT():void{
+    if (this.currentOuvrage.SousLotOuvrage)
+    this.dataShared.prixCalculeHT(this.currentOuvrage.SousLotOuvrage,this.currentOuvrage.benefice, this.currentOuvrage.aleas)
   }
-  prixUnitaireCalculeHT(prixCalculeHT:number, quantityOuvrage:any):number{
-    return prixCalculeHT / quantityOuvrage
+  prixUnitaireCalculeHT():void{
+    if(this.currentOuvrage.SousLotOuvrage){
+  this.dataShared.prixUnitaireCalculeHT(this.currentOuvrage.SousLotOuvrage)
+    }
   }
-  quantityCout(ratio:number, quantityOuvrage:any):number{
-    return ratio * quantityOuvrage
+  quantityCout():void{
+    if(this.currentOuvrage.CoutDuDevis){
+    this.currentOuvrage.CoutDuDevis.forEach(coutDuDevis =>{
+      if (coutDuDevis.OuvrageCoutDuDevis?.ratio && this.currentOuvrage.SousLotOuvrage)
+        coutDuDevis.quantite = coutDuDevis.OuvrageCoutDuDevis?.ratio  * this.currentOuvrage.SousLotOuvrage?.quantityOuvrage
+    })
+    }
   }
-  debousesSecTotalCout(prixCout:number, quantityCout:number):number{
-    return prixCout * quantityCout
+
+  debousesSecTotalCout():void{
+    if(this.currentOuvrage.CoutDuDevis){
+      this.currentOuvrage.CoutDuDevis.forEach(coutDuDevis =>{
+        if (coutDuDevis.OuvrageCoutDuDevis?.ratio && this.currentOuvrage.SousLotOuvrage)
+        coutDuDevis.debourseSecTotal = coutDuDevis.prixUnitaire * (coutDuDevis.OuvrageCoutDuDevis?.ratio  * this.currentOuvrage.SousLotOuvrage?.quantityOuvrage)
+      })
+    }
   }
-  prixEquilibreHTCout(debouseSecTotalCout:number):number{
-    return debouseSecTotalCout * this.coefEqui
+  prixEquilibreHTCout():void{
+    if(this.currentOuvrage.CoutDuDevis){
+    this.currentOuvrage.CoutDuDevis.forEach(coutDuDevis =>{
+      if (coutDuDevis.debourseSecTotal)
+        coutDuDevis.prixEquiHT = coutDuDevis.debourseSecTotal * this.dataShared.coefEqui
+    })
+    }
   }
-  prixUnitaireEquilibreHTCout(prixEquilibreHTCout:number, quantityOuvrage:any):number{
-    return prixEquilibreHTCout / quantityOuvrage
+  prixUnitaireEquilibreHTCout():void{
+    if(this.currentOuvrage.CoutDuDevis) {
+      this.currentOuvrage.CoutDuDevis.forEach(coutDuDevis => {
+        if (coutDuDevis.prixEquiHT && this.currentOuvrage.SousLotOuvrage)
+          coutDuDevis.prixUnitaireEquiHT = coutDuDevis.prixEquiHT / this.currentOuvrage.SousLotOuvrage?.quantityOuvrage
+      })
+    }
+  }
+  prixCalculeHTCout():void{
+    if(this.currentOuvrage.CoutDuDevis) {
+      this.currentOuvrage.CoutDuDevis.forEach(coutDuDevis => {
+        if (coutDuDevis.prixEquiHT)
+          coutDuDevis.prixCalcHT = coutDuDevis.prixEquiHT * (1 + (this.currentOuvrage.benefice / 100) + (this.currentOuvrage.aleas / 100))
+      })
+    }
+  }
+  prixUnitaireCalculeHTCout():void{
+    if(this.currentOuvrage.CoutDuDevis) {
+      this.currentOuvrage.CoutDuDevis.forEach(coutDuDevis => {
+        if (coutDuDevis.prixCalcHT &&  this.currentOuvrage.SousLotOuvrage)
+          coutDuDevis.prixUnitaireCalcHT = coutDuDevis.prixCalcHT / this.currentOuvrage.SousLotOuvrage?.quantityOuvrage
+      })
+    }
+
   }
 
 }

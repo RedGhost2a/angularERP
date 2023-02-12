@@ -14,5 +14,10 @@ export class CoutDuDevis {
   OuvrageCoutDuDevis?:OuvrageCout
   ratio?:number;
   quantite?:number;
+  debourseSecTotal ?:number;
+  prixEquiHT?:number;
+  prixUnitaireEquiHT?:number;
+  prixCalcHT?:number;
+  prixUnitaireCalcHT?:number;
 
 }
