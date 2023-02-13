@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
+import {DialogNotesComponent} from "./dialog-notes/dialog-notes.component";
+import {MatDialog} from "@angular/material/dialog";
 import {UserService} from "./_service/user.service";
-import {User} from "./_models/users";
 
 @Component({
   selector: 'app-root',
@@ -9,22 +10,29 @@ import {User} from "./_models/users";
 })
 export class AppComponent {
   title = 'app';
-  user!: User;
-  role!: String;
+  user!: any;
 
-  constructor(public userService: UserService) {
+
+  constructor(public dialog: MatDialog, public userService: UserService) {
+  }
+
+  ngOnInit() {
 
   }
 
-  ngOnInit(): void {
-    // this.getRole()
+  openDialog() {
+    const dialogRef = this.dialog.open(DialogNotesComponent, {
+      width: '250px'
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Fin de commentaieres', result);
+
+
+    });
   }
-
-  // getRole() {
-  //   this.role = this.userService.getRole()
-  //   console.log(this.role)
-  //   return this.role
-  // }
-
 }
+
+
+
+

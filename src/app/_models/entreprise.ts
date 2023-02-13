@@ -12,6 +12,7 @@ export interface Entreprise {
   tvaNumber: number;
   email: string;
   phoneNumber: number;
+  capital: number;
 
 
 }

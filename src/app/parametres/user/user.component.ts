@@ -2,6 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../_service/user.service";
 import {User} from "../../_models/users";
 import {DevisService} from 'src/app/_service/devis.service';
+import {Notes} from "../../_models/notes";
+import {NotesService} from "../../_service/notes.service";
+import {EntrepriseService} from "../../_service/entreprise.service";
+import {Entreprise} from "../../_models/entreprise";
+import {DialogConfirmSuppComponent} from "../../dialog-confirm-supp/dialog-confirm-supp.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-user',
@@ -9,30 +15,89 @@ import {DevisService} from 'src/app/_service/devis.service';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements OnInit {
-  user: User;
+  user!: User;
   devis!: any;
+  notes!: Notes[];
+  userEntreprise!: Entreprise;
+  curentUser !: any;
 
 
-  constructor(private accountService: UserService, private devisService: DevisService) {
-    this.user = this.accountService.userValue;
-    console.log(this.user)
+  constructor(private accountService: UserService,
+              private devisService: DevisService,
+              private notesService: NotesService,
+              private entrepriseService: EntrepriseService,
+              private dialog: MatDialog) {
+
 
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.user = this.accountService.userValue;
+    // console.log(this.user)
+    this.getCurrentUser()
     this.getDevisByUser(this.user.id)
+    this.getNoteByUser(this.user.id)
+    // this.getEntreprise()
 
+  }
+
+  getCurrentUser(): any {
+    const curentUser = this.user.id;
+    this.accountService.getById(curentUser).subscribe(value => {
+      this.curentUser = value
+      // console.log(curentUser)
+      console.log(this.curentUser)
+      this.entrepriseService.getById(this.curentUser.Entreprises[0].UserEntreprise.EntrepriseId).subscribe(data => {
+        this.userEntreprise = data
+        console.log(this.userEntreprise)
+        // return this.userEntreprise
+      })
+
+    })
 
   }
 
   getDevisByUser(id: any): void {
-    // @ts-ignore
     this.devis = this.devisService.getDevisByUser(id).subscribe(data => {
       this.devis = data
-      console.log(this.devis)
-      return this.devis;
+      // console.log(this.devis)
 
     });
+  }
+
+  getNoteByUser(id: any): void {
+    this.notesService.getNoteByUser(id).subscribe(data => {
+      this.notes = data
+      // console.log(this.notes)
+
+    });
+  }
+
+  deleteItem(id: number) {
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Appeler la fonction de suppression ici
+        this.notesService.delete(id).subscribe(() => this.ngOnInit());
+      }
+    });
+  }
+
+
+  getColor(note: Notes) {
+    switch (note.typeError) {
+      case "J'ai une demande / suggestion !":
+        return '#2196F3';
+      case "Je souhaite créer une note !":
+        return '#FFC107';
+      case "J'ai rencontré une erreur !":
+        return 'rgb(245 114 114)';
+      case 'Autres':
+        return '#9E9E9E';
+      default:
+        return 'white';
+    }
   }
 
 }
