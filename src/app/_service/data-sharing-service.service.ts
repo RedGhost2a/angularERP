@@ -43,6 +43,7 @@ export class DataSharingService {
   }
 
   prixEquilibreHT(sousLotOuvrage: SousLotOuvrage): void{
+    console.log("prixEquilibreHT")
     sousLotOuvrage.prixEquiHT = sousLotOuvrage?.prixOuvrage * this.coefEqui
   }
 

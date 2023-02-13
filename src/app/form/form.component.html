@@ -47,7 +47,7 @@
 
 
     </div>
-    <button mat-raised-button (click)="createAndUpdateCout()">{{textButton}}</button>
+    <button mat-raised-button [routerLink]="['/listCout']" (click)="createAndUpdateCout()">{{textButton}}</button>
   </div>
 
 </ng-container>
@@ -72,7 +72,7 @@
     </div>
 
 
-    <button mat-raised-button (click)="createAndUpdateFournisseur()">{{textButton}}</button>
+    <button mat-raised-button [routerLink]="['/listFournisseur']" (click)="createAndUpdateFournisseur()">{{textButton}}</button>
   </div>
 </ng-container>
 
@@ -97,7 +97,7 @@
     </div>
 
 
-    <button mat-raised-button (click)="createAndUpdateTypeCout()">{{textButton}}</button>
+    <button mat-raised-button [routerLink]="['/listTypeCout']" (click)="createAndUpdateTypeCout()">{{textButton}}</button>
   </div>
 </ng-container>
 
@@ -159,7 +159,7 @@
       <!--        </mat-form-field>-->
       <!--      </p>-->
     </div>
-    <button mat-raised-button (click)="createAndUpdateOuvrage()">{{textButton}}</button>
+    <button mat-raised-button  [routerLink]="['/listOuvrage']"(click)="createAndUpdateOuvrage()">{{textButton}}</button>
     <!--    <button routerLink="/listOuvrage" mat-raised-button (click)="createAndUpdateOuvrage()">{{textButton}}</button>-->
   </div>
 

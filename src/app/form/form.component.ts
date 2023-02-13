@@ -114,6 +114,7 @@ export class FormComponent implements OnInit {
   //Recupere l'id de l'entreprise de l'utilisateur courant, et creer le formulaire
   getUserById(): void {
     this.userService.getById(this.userId).subscribe(data => {
+      console.log(data)
       this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id),
         this.getAllTypeCouts(data.Entreprises[0].id)
     })

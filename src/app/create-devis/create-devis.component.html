@@ -136,7 +136,7 @@
 
 
 
-  <mat-tab class="devis" label="Devis" *ngIf="lotFraisDeChantier !== undefined && testLots !== undefined">
+  <mat-tab class="devis" label="Devis" *ngIf="lotFraisDeChantier !== undefined ">
     <button class="button" mat-flat-button (click)="showForm = true; isLot=false">Créer un lot</button>
     <h3>Total : {{this.devis.debourseSecTotal}} €</h3>
     <div class="totaux-header">
@@ -179,14 +179,15 @@
       <div class="flex-column">
         <div class="flex-row">
           <p class="totaux-header-designation">B&A total</p>
-          <p class="totaux-header-result">Benefice et aleas total %</p>
+          <p class="totaux-header-result">{{this.devis.beneficeAleasTotal}}</p>
 
         </div>
 
         <div class="flex-row">
           <p class="totaux-header-designation">Total prix de vente HT </p>
           <!--          <p class="totaux-header-result">{{coutTotal()| number : '1.2-2'}} €</p>-->
-          <p class="totaux-header-result">{{calculateTotal() }} €</p>
+          <p class="totaux-header-result">{{devis.prixVenteHT}} €</p>
+<!--          <p class="totaux-header-result">{{calculateTotal() }} €</p>-->
         </div>
         <p class="subtotaux-header">Vente</p>
 
@@ -250,10 +251,10 @@
                 <p class="bold ">Id</p>
                 <p routerLink="/sousDetailPrix/{{ouvrage.id}}">{{ ouvrage.id | number }}</p>
               </div>
-              <div class="flex-column">
-                <mat-form-field [formGroup]="myFormGroup">
-                  <p class="bold">Qte</p>
-                  <input type="number" formControlName="quantityOuvrage" matInput required
+              <div class="flex-column" *ngIf="ouvrage.SousLotOuvrage && ouvrage.SousLotOuvrage.quantityOuvrage">
+                <mat-form-field [formGroup]="myFormGroup" >
+<!--                  <p class="bold">Qte</p>-->
+                  <input type="number" formControlName="quantityOuvrage" matInput required [placeholder]="ouvrage.SousLotOuvrage.quantityOuvrage.toString()"
                          (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lot, prixOuvrage)">
                 </mat-form-field>
 
@@ -326,13 +327,14 @@
                   <p class="totaux-header-designation ">Prix vente HT</p>
                 </div>
                 <div class="flex-row " *ngIf="ouvrage.SousLotOuvrage">
+
                   <p *ngIf="ouvrage.SousLotOuvrage"> {{ouvrage.SousLotOuvrage.prixUniArrondi}}</p>
 
-                  <mat-form-field [formGroup]="myFormGroup" *ngIf="ouvrage.SousLotOuvrage">
-                    <p class="bold">Qte</p>
-                    <input type="number" formControlName="prixArrondi" matInput required *ngIf="ouvrage.SousLotOuvrage"
-                           (ngModelChange)="this.onPrixUnitaireCalculeHtChange($event,ouvrage.SousLotOuvrage)" [value]="ouvrage.SousLotOuvrage?.prixUniArrondi">
+                  <mat-form-field [formGroup]="myFormGroup" >
+                    <input type="number" formControlName="quantityOuvrage" matInput required
+                           (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">
                   </mat-form-field>
+
 <!--                  <input class="totaux-header-result " type="text"-->
 <!--                         (ngModelChange)="this.onPrixUnitaireCalculeHtChange($event,ouvrage.SousLotOuvrage?.id)" [value]="ouvrage.SousLotOuvrage.prixUniArrondi">-->
 <!--                  &lt;!&ndash;                         [value]="ouvrage.SousLotOuvrage.prixArrondi > 0 ? ouvrage.SousLotOuvrage.prixArrondi : this.sharedData.prixUnitaireCalculeHT(this.sharedData.prixCalculeHT(this.ouvrage.benefice, this.ouvrage.aleas, this.sharedData.prixEquilibreHT(ouvrage?.SousLotOuvrage.prixOuvrage)), ouvrage?.SousLotOuvrage.quantityOuvrage) | number : '1.2-2'">&ndash;&gt;-->
@@ -378,7 +380,7 @@
   </mat-tab>
 
 
-  <mat-tab label="Paramètre de chantier" *ngIf="lotFraisDeChantier !== undefined && testLots !== undefined">
+  <mat-tab label="Paramètre de chantier" *ngIf="lotFraisDeChantier !== undefined">
     <div class="bigContainerParams">
       <div class="ContainerParamsFraisDevis">
         <mat-card class="cardParams">

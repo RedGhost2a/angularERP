@@ -16,4 +16,6 @@ export class Devis {
   beneficeInEuro!:number;
   aleasInEuro!:number;
   prixCalcHT!:number;
+  prixVenteHT!:number;
+  beneficeAleasTotal!:number;
 }
