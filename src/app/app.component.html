@@ -1,1 +1,8 @@
 <app-navbar></app-navbar>
+<button style="position: sticky;left: 90%;bottom: 50px;z-index: 1" *ngIf="userService.userValue"
+        (click)="openDialog()" mat-fab
+        color="warn"
+        aria-label="Example icon button with a bookmark icon">
+
+  <mat-icon>bookmark</mat-icon>
+</button>

@@ -36,6 +36,7 @@ const routes: Routes = [
     component: HomeComponent,
     data: {title: 'Home',}
   },
+  // {path: 'notes', component: NotesComponent},
 
   // {path: 'cout/:id', component: FormCoutComponent},
   // {path: 'cout',  component: FormCoutComponent,},

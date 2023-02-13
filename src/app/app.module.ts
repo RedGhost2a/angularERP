@@ -65,10 +65,10 @@ import {DetailDevisComponent} from './detail-devis/detail-devis.component';
 import {CreateDevisComponent} from './create-devis/create-devis.component';
 import {MatTabsModule} from "@angular/material/tabs";
 import {MatRadioModule} from "@angular/material/radio";
-import { DialogConfirmSuppComponent } from './dialog-confirm-supp/dialog-confirm-supp.component';
-import { SousDetailPrixComponent } from './sous-detail-prix/sous-detail-prix.component';
+import {DialogConfirmSuppComponent} from './dialog-confirm-supp/dialog-confirm-supp.component';
+import {SousDetailPrixComponent} from './sous-detail-prix/sous-detail-prix.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-
+import {DialogNotesComponent} from './dialog-notes/dialog-notes.component';
 
 
 const appRoutes: Routes = [];
@@ -115,45 +115,47 @@ declare const toastr: Toastr;
     CreateDevisComponent,
     DialogConfirmSuppComponent,
     SousDetailPrixComponent,
+    DialogNotesComponent,
 
 
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatToolbarModule,
-        MatButtonModule,
-        RouterModule.forRoot(appRoutes),
-        HttpClientModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatInputModule,
-        ReactiveFormsModule,
-        MatSidenavModule,
-        MatDialogModule,
-        FontAwesomeModule,
-        MatTableModule,
-        MatCardModule,
-        BrowserAnimationsModule,
-        ToastrModule.forRoot(),
-        FormsModule,
-        MatExpansionModule,
-        LayoutModule,
-        MatMenuModule,
-        MatCheckboxModule,
-        MatOptionModule,
-        MatSelectModule,
-        MatAutocompleteModule,
-        MatListModule,
-        MatTabsModule,
-        MatRadioModule,
-        MatProgressSpinnerModule,
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatButtonModule,
+    RouterModule.forRoot(appRoutes),
+    HttpClientModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatSidenavModule,
+    MatDialogModule,
+    FontAwesomeModule,
+    MatTableModule,
+    MatCardModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
+    FormsModule,
+    MatExpansionModule,
+    LayoutModule,
+    MatMenuModule,
+    MatCheckboxModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatListModule,
+    MatTabsModule,
+    MatRadioModule,
+    MatProgressSpinnerModule,
 
-    ],
+  ],
   providers: [{
     provide: TOASTR_TOKEN,
     useValue: toastr,
+
 
   },
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

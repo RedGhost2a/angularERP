@@ -7,7 +7,7 @@
     <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
     <h1>Outils d'étude de prix</h1>
     <a mat-icon-button
-       routerLink="/profil" [matMenuTriggerFor]="menu">
+       [matMenuTriggerFor]="menu">
       <!--      <mat-icon *ngIf="!userService.userValue">account_circle</mat-icon>-->
       <!--       finir Avatar dans la nav bar -->
       <img *ngIf="userService.userValue" class="avatar"
@@ -19,12 +19,12 @@
 
 
     <mat-menu #menu="matMenu">
-      <button mat-menu-item>
-        <mat-icon [routerLink]="['/mon_profile']">account_circle</mat-icon>
+      <button mat-menu-item [routerLink]="['/mon_profile']">
+        <mat-icon>account_circle</mat-icon>
         <span> Mon compte</span>
       </button>
-      <button mat-menu-item>
-        <mat-icon color="warn" (click)="userService.logout()">logout</mat-icon>
+      <button mat-menu-item (click)="userService.logout()">
+        <mat-icon color="warn">logout</mat-icon>
         <span>Logout</span>
       </button>
 

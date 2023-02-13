@@ -1,3 +1,6 @@
+import {Adresse} from "./adresse";
+import {Entreprise} from "./entreprise";
+
 export class User {
   id!: string;
   title!: string;
@@ -7,9 +10,11 @@ export class User {
   email!: string;
   password!: string;
   avatarUrl: any;
-  EntrepriseId!: string;
-  AdresseId!: string;
+  EntrepriseId!: number;
+  AdresseId?: number;
   token!: string;
+  Adresse!: Adresse
+  Entreprises!: Entreprise
 
 
 }

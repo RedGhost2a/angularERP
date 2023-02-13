@@ -1,0 +1,33 @@
+<div class="container">
+  <form class="flex-column" [formGroup]="editNoteForm">
+    <mat-form-field>
+      <input matInput type="text" formControlName="title" placeholder="Titre">
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <textarea rows="6" matInput formControlName="text" placeholder="Vos commentaires"></textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select formControlName="typeError" placeholder="Options">
+        <mat-option *ngFor="let errorOption of typeErrorOptions" [value]="errorOption">
+          {{ errorOption }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="this.editNoteForm.controls['typeError'].value === 'J\'ai rencontré une erreur !'">
+      <mat-select formControlName="optionsTypeError" placeholder="Précison">
+        <mat-option *ngFor="let errorOption of SubtypeError" [value]="errorOption">
+          {{ errorOption }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-error *ngIf="errorMessage">{{errorMessage}}</mat-error>
+
+    <button mat-raised-button color="primary" (click)="saveNote()">Enregistrer</button>
+  </form>
+
+</div>

@@ -63,8 +63,8 @@ export const navbarData = [
     label: "Type de Cout"
   },
   {
-    routeLink: 'parametre',
+    routeLink: 'mon_profile',
     icon: faGear,
-    label: 'Paramètres'
+    label: 'Mon compte'
   }]
 

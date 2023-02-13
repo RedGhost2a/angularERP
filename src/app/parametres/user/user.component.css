@@ -1,25 +1,12 @@
-.header {
-  margin-top: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+* {
+  color: #000000;
 }
 
-.container {
+.user_header {
+  text-align: center;
   display: flex;
-  flex-direction: column;
-  margin: 20px;
-}
-
-.user-card {
-  margin: 30px;
-  width: 200px;
-  background: rgba(71, 96, 203, 0.09);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-radius: 10px;
-  border: 1px solid rgba(154, 167, 46, 0.25);
+  flex-direction: row;
+  justify-content: center;
 }
 
 .wrapper {
@@ -27,63 +14,91 @@
   flex-direction: row;
   text-align: center;
   padding: 10px;
+  margin: 10px;
+  /* font-size: 5px; */
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.images {
+  width: 96px;
+  margin: 10px;
+  border-radius: 50%;
+}
+
+.devis {
+  width: 800px;
+  display: flex;
+  height: 50px;
+  line-height: 15px;
+  margin: 25px 0px 5px 70px;
+  /* padding: 18px; */
+  align-items: center;
   justify-content: space-around;
   align-content: center;
-  align-items: center;
-}
-
-mat-card-image {
-  width: 100%;
-  margin: 30px 0px 20px 0px;
-  display: block;
-  overflow: hidden;
-}
-
-.mat-card-header {
-  display: flex;
   flex-direction: row;
+}
+.devis_header {
+  margin-top: 5px;
+  font-size: large;
+}
+
+.card {
+  width: 210px;
+  height: 200px;
+  text-align: justify;
+  padding: 17px;
+  margin: 10px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.mat-card-actions {
+.entreprise {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  margin: 10px;
 }
 
-.devis-form {
-  width: 165px;
-  height: 100px;
-  margin: 5px;
-  padding: 10px;
+.avatar {
   background: rgba(71, 96, 203, 0.09);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+}
+
+.content {
+  font-size: 15px;
+}
+
+.post-it {
+  width: 250px;
+  height: 250px;
+  transform: rotate(10deg);
+  background-color: #FFC107;
+  box-shadow: 0px 0px 10px #888;
   border-radius: 10px;
-  border: 1px solid rgba(154, 167, 46, 0.25);
-}
-
-.devis {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  width: 520px;
-}
-
-.icon {
-  margin-top: 10px;
-}
-
-.devis-status {
-  transform: rotate(315deg);
-  font-size: 10px;
-  /* border: 1px solid; */
-  border-radius: 50%;
+  padding: 20px;
+  display: inline-block;
+  position: fixed;
+  top: 170px;
+  right: 40px;
 }
 
 /*# sourceMappingURL=user.component.css.map */
