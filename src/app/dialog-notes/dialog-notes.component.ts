@@ -28,7 +28,7 @@ export class DialogNotesComponent implements OnInit {
   errorMessage!: string;
   // @ts-ignore
   user = JSON.parse(localStorage.getItem('user'));
-
+  checked = false;
   submitted = false;
 
   ngOnInit() {
@@ -37,7 +37,10 @@ export class DialogNotesComponent implements OnInit {
       'text': new FormControl(''),
       'typeError': new FormControl(''),
       'optionsTypeError': new FormControl(' '),
-      'userId': new FormControl(this.user.id)
+      'userId': new FormControl(this.user.id),
+      'optionsTimestamp': new FormControl(''),
+      // 'showDate': new FormControl(false),
+
     });
 
 
