@@ -340,6 +340,8 @@ export class CreateDevisComponent implements OnInit{
 
         this.getSommeSousLot(sousLot, lot)
       })
+      // sousLotOuvrage.prixUniArrondi = sousLotOuvrage.prixUniCalcHT
+      this.allCalculOuvrage()
       console.log("sousLotOuvrage", sousLotOuvrage)
       console.log("sousLotOuvrage", sousLotOuvrage.prixOuvrage)
     }
