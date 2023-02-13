@@ -38,19 +38,20 @@ export class DataSharingService {
   //      this.prixUniHT = prixOuvrage / quantiteOuvrage
   //   }
   // }
-  prixUnitaireHT(sousLotOuvrage: SousLotOuvrage):void{
+  async prixUnitaireHT(sousLotOuvrage: SousLotOuvrage){
+    console.log("prix unitaire",sousLotOuvrage.prixOuvrage, sousLotOuvrage.quantityOuvrage)
     sousLotOuvrage.prixUniHT = sousLotOuvrage.prixOuvrage/ sousLotOuvrage.quantityOuvrage
   }
 
-  prixEquilibreHT(sousLotOuvrage: SousLotOuvrage): void{
-    console.log("prixEquilibreHT")
+   async prixEquilibreHT(sousLotOuvrage: SousLotOuvrage){
     sousLotOuvrage.prixEquiHT = sousLotOuvrage?.prixOuvrage * this.coefEqui
+    console.log("prixEquilibreHT", sousLotOuvrage.prixEquiHT )
   }
 
   // prixUnitaireEquilibre(quantityOuvrage:any):void{
   //   this.prixEquiUniHT = this.prixEquiHT /quantityOuvrage
   // }
-  prixUnitaireEquilibre(sousLotOuvrage : SousLotOuvrage):void{
+  async prixUnitaireEquilibre(sousLotOuvrage : SousLotOuvrage){
     sousLotOuvrage.prixUniEquiHT = sousLotOuvrage.prixEquiHT / sousLotOuvrage.quantityOuvrage
   }
   // beneficePercentToEuro(benefice:number):void{
@@ -59,11 +60,11 @@ export class DataSharingService {
   // aleasPercentToEuro(aleas:number):void{
   //   this.aleasInEuro = this.prixEquiHT * (aleas / 100)
   // }
-  beneficePercentToEuro(sousLotOuvrage : SousLotOuvrage,benefice:number):void{
+  async beneficePercentToEuro(sousLotOuvrage : SousLotOuvrage,benefice:number){
     sousLotOuvrage.beneficeInEuro = sousLotOuvrage.prixEquiHT * (benefice / 100)
     }
 
-    aleasPercentToEuro(sousLotOuvrage : SousLotOuvrage, aleas:number):void{
+  async  aleasPercentToEuro(sousLotOuvrage : SousLotOuvrage, aleas:number){
       sousLotOuvrage.aleasInEuro = sousLotOuvrage.prixEquiHT * (aleas / 100)
 
     }
@@ -71,14 +72,14 @@ export class DataSharingService {
   // prixCalculeHT(benefice: number, aleas: number): void {
   //   this.prixCalcHT = this.prixEquiHT * (1 + (benefice / 100) + (aleas / 100))
   // }
-  prixCalculeHT(sousLotOuvrage : SousLotOuvrage,benefice: number, aleas: number): void {
+  async prixCalculeHT(sousLotOuvrage : SousLotOuvrage,benefice: number, aleas: number) {
     sousLotOuvrage.prixCalcHT = sousLotOuvrage.prixEquiHT * (1 + (benefice / 100) + (aleas / 100))
   }
 
   // prixUnitaireCalculeHT(quantityOuvrage: any): void {
   //   this.prixUniCalcHT = this.prixCalcHT / quantityOuvrage
   // }
-  prixUnitaireCalculeHT(sousLotOuvrage : SousLotOuvrage): void {
+  async prixUnitaireCalculeHT(sousLotOuvrage : SousLotOuvrage) {
     sousLotOuvrage.prixUniCalcHT = sousLotOuvrage.prixCalcHT / sousLotOuvrage.quantityOuvrage
   }
 

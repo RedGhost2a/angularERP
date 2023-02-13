@@ -218,27 +218,28 @@ export class CreateDevisComponent implements OnInit{
 
     this.testLots.forEach(lot=>{
       lot.SousLots.forEach(sousLot =>{
-        sousLot.OuvrageDuDevis.forEach(ouvrageDuDevis =>{
+         sousLot.OuvrageDuDevis.forEach( async ouvrageDuDevis =>{
           if(ouvrageDuDevis.SousLotOuvrage){
             // ouvrageDuDevis.SousLotOuvrage.prixUniArrondi = 0;
-            this.sharedData.prixEquilibreHT(ouvrageDuDevis.SousLotOuvrage)
-            this.sharedData.prixCalculeHT(ouvrageDuDevis.SousLotOuvrage,ouvrageDuDevis.benefice, ouvrageDuDevis.aleas)
-            this.sharedData.prixUnitaireCalculeHT(ouvrageDuDevis.SousLotOuvrage)
-            this.sharedData.beneficePercentToEuro(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.benefice)
-            this.sharedData.aleasPercentToEuro(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.aleas)
+             await this.sharedData.prixEquilibreHT(ouvrageDuDevis.SousLotOuvrage)
+            await this.sharedData.prixCalculeHT(ouvrageDuDevis.SousLotOuvrage,ouvrageDuDevis.benefice, ouvrageDuDevis.aleas)
+            await this.sharedData.prixUnitaireCalculeHT(ouvrageDuDevis.SousLotOuvrage)
+            await this.sharedData.beneficePercentToEuro(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.benefice)
+            await this.sharedData.aleasPercentToEuro(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.aleas)
             //ouvrageDuDevis.SousLotOuvrage.prixUniArrondi = ouvrageDuDevis.SousLotOuvrage.prixUniCalcHT
 
-            setTimeout(() => {
-              if(ouvrageDuDevis.SousLotOuvrage)
-              if(ouvrageDuDevis.SousLotOuvrage.prixArrondi === 0){
-                ouvrageDuDevis.SousLotOuvrage.prixUniArrondi = ouvrageDuDevis.SousLotOuvrage.prixUniCalcHT
-                ouvrageDuDevis.SousLotOuvrage.prixArrondi = ouvrageDuDevis.SousLotOuvrage.prixCalcHT
-                console.log("test prix calcht ", ouvrageDuDevis.SousLotOuvrage.prixCalcHT)
-                // this.devis.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixArrondi
-                this.devis.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixArrondi
-                this.devis.beneficeAleasTotal = this.devis.prixVenteHT - this.devis.prixEquiHT
-              }
-            }, 500);
+            // setTimeout(() => {
+            //   if(ouvrageDuDevis.SousLotOuvrage)
+            //   if(ouvrageDuDevis.SousLotOuvrage.prixArrondi === 0){
+            //     ouvrageDuDevis.SousLotOuvrage.prixUniArrondi = ouvrageDuDevis.SousLotOuvrage.prixUniCalcHT
+            //     ouvrageDuDevis.SousLotOuvrage.prixArrondi = ouvrageDuDevis.SousLotOuvrage.prixCalcHT
+            //     console.log("test prix calcht ", ouvrageDuDevis.SousLotOuvrage.prixCalcHT)
+            //     // this.devis.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixArrondi
+            //     this.devis.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixArrondi
+            //     this.devis.beneficeAleasTotal = this.devis.prixVenteHT - this.devis.prixEquiHT
+            //   }
+            // }, 500);
+            await this.testAsync(ouvrageDuDevis)
 
             console.log("prix unitaire arrondi ",ouvrageDuDevis.SousLotOuvrage.prixUniArrondi )
             console.log("prix unitaire calcule ", ouvrageDuDevis.SousLotOuvrage.prixUniCalcHT)
@@ -256,6 +257,16 @@ export class CreateDevisComponent implements OnInit{
 
       })
     })
+  }
+  async testAsync(ouvrageDuDevis : Ouvrage){
+    if(ouvrageDuDevis.SousLotOuvrage){
+      ouvrageDuDevis.SousLotOuvrage.prixUniArrondi = ouvrageDuDevis.SousLotOuvrage.prixUniCalcHT
+      ouvrageDuDevis.SousLotOuvrage.prixArrondi = ouvrageDuDevis.SousLotOuvrage.prixCalcHT
+      console.log("test prix calcht ", ouvrageDuDevis.SousLotOuvrage.prixCalcHT)
+      // this.devis.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixArrondi
+      this.devis.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixArrondi
+      this.devis.beneficeAleasTotal = this.devis.prixVenteHT - this.devis.prixEquiHT
+    }
   }
 
   getSommeSousLot(sousLot: SousLot, lot: Lot) {
@@ -565,8 +576,8 @@ export class CreateDevisComponent implements OnInit{
 
   openDialogFraisDeChantier(sousLotId: number) {
     this.dialog.open(DialogComponent, {
-      // data: this.listOuvrageFraisDeChantier,
-      data: this.listOuvrage,
+      data: this.listOuvrageFraisDeChantier,
+      // data: this.listOuvrage,
       width: '90%',
       height: '70%'
     }).afterClosed().subscribe(result => {
