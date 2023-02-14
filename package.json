@@ -30,6 +30,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "bcryptjs": "2.4.3",
     "crypto-js": "^4.1.1",
+    "json2csv": "^6.0.0-alpha.2",
     "jsonwebtoken": "^9.0.0",
     "ngx-toastr": "^15.2.1",
     "rxjs": "~7.5.0",
