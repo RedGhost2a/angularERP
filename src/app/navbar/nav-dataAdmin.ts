@@ -10,14 +10,19 @@ export const navbarDataAdmin = [
     label: 'Administration'
   },
   {
-    routeLink: 'entreprises',
+    routeLink: 'dashboard',
     icon: faChartLine,
-    label: 'Entreprise'
+    label: 'Dashboard'
   },
   {
     routeLink: 'users',
     icon: faList,
-    label: 'Utilisateur'
+    label: 'Utilisateurs'
+  },
+  {
+    routeLink: 'mon_profile',
+    icon: faList,
+    label: 'Mon compte'
   },
   // {
   //   routeLink: 'devis',

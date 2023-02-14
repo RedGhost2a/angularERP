@@ -38,7 +38,7 @@ export class DialogNotesComponent implements OnInit {
       'typeError': new FormControl(''),
       'optionsTypeError': new FormControl(' '),
       'userId': new FormControl(this.user.id),
-      'optionsTimestamp': new FormControl(''),
+      'optionsTimestamp': new FormControl(new Date()),
       // 'showDate': new FormControl(false),
 
     });
