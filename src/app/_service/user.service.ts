@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {User} from "../_models/users";
 import {BehaviorSubject, map, Observable} from "rxjs";
+import {StorageService} from "./storage.service";
 
 
 @Injectable({
@@ -14,14 +15,20 @@ export class UserService {
   role !: any
 
 
-  constructor(private router: Router,
-              private http: HttpClient,
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private storageService: StorageService,
   ) {
-
-    // @ts-ignore
-    this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')))
+    const string = localStorage.getItem('user');
+    if (string) {
+      const decryptUser = this.storageService.decrypt(string);
+      const parse = JSON.parse(decryptUser);
+      this.userSubject = new BehaviorSubject<User>(parse);
+    } else {
+      this.userSubject = new BehaviorSubject<User>(new User());
+    }
     this.user = this.userSubject.asObservable();
-
   }
 
 
@@ -34,7 +41,9 @@ export class UserService {
       .pipe(map(user => {
 
         // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('user', JSON.stringify(user));
+        let string = JSON.stringify(user)
+        let encryptUser = this.storageService.encrypt(string)
+        localStorage.setItem('user', encryptUser);
         this.userSubject.next(user);
         return user;
       }));
@@ -73,12 +82,5 @@ export class UserService {
     return this.http.delete(`http://localhost:4000/users/${id}`)
   }
 
-  getRoles(id: any): Observable<any> {
-    return this.http.get(`http://localhost:4000/users/${id}`).pipe(
-      map((response: any) => {
-        return response.roles;
-      })
-    );
-  }
 
 }
