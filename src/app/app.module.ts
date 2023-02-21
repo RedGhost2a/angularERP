@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule, Routes} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
@@ -71,6 +71,9 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {DialogNotesComponent} from './dialog-notes/dialog-notes.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import {LoggerModule, NgxLoggerLevel} from "ngx-logger";
+import {LogsComponent} from './logs/logs.component';
+import {CustomErrorHandler} from "./_helpers/errorHandler";
 
 
 const appRoutes: Routes = [];
@@ -118,6 +121,7 @@ declare const toastr: Toastr;
     DialogConfirmSuppComponent,
     SousDetailPrixComponent,
     DialogNotesComponent,
+    LogsComponent,
 
 
   ],
@@ -155,6 +159,12 @@ declare const toastr: Toastr;
     MatDatepickerModule,
     MatNativeDateModule,
     MatTooltipModule,
+    LoggerModule.forRoot({
+      serverLoggingUrl: 'http://localhost:4000/logs', // Replace with YOUR API
+      level: NgxLoggerLevel.DEBUG,
+      serverLogLevel: NgxLoggerLevel.DEBUG,
+      disableConsoleLogging: false
+    })
 
 
   ],
@@ -166,6 +176,8 @@ declare const toastr: Toastr;
   },
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    {provide: ErrorHandler, useClass: CustomErrorHandler}
+
 
   ],
   bootstrap: [AppComponent],

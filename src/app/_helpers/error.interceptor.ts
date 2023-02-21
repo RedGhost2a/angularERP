@@ -1,27 +1,42 @@
 import {Injectable} from '@angular/core';
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {catchError} from 'rxjs/operators';
-
-import {UserService} from "../_service/user.service";
+import {
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponse
+} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {NGXLogger} from 'ngx-logger';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private accountService: UserService) {
+
+  constructor(private logger: NGXLogger) {
   }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return next.handle(request).pipe(catchError(err => {
-      //TEST
-      // if ([500].includes(err.status) && this.accountService.userValue) {
-      //   // auto logout if 401 or 403 response returned from api
-      //   this.accountService.logout();
-      // }
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-      const error = err.error?.message || err.statusText;
-      console.error(err);
-      return throwError(error);
+    const started = Date.now();
+    let status: string;
 
-    }))
+    return next.handle(req).pipe(
+      tap(
+        event => {
+          if (event instanceof HttpResponse) {
+            status = 'succeeded';
+            const elapsed = Date.now() - started;
+            this.logger.info('Info', `${req.method} "${req.urlWithParams}" ${status} in ${elapsed} ms`);
+          }
+        },
+        error => {
+          if (error instanceof HttpErrorResponse) {
+            this.logger.error('Error Http', error);
+          }
+        }
+      )
+    );
   }
 }

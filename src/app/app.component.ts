@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {DialogNotesComponent} from "./dialog-notes/dialog-notes.component";
 import {MatDialog} from "@angular/material/dialog";
 import {UserService} from "./_service/user.service";
+import {NGXLogger} from "ngx-logger";
+
 
 @Component({
   selector: 'app-root',
@@ -13,7 +15,10 @@ export class AppComponent {
   user!: any;
 
 
-  constructor(public dialog: MatDialog, public userService: UserService) {
+  constructor(public dialog: MatDialog,
+              public userService: UserService,
+              private logger: NGXLogger) {
+
   }
 
   ngOnInit() {
@@ -27,6 +32,7 @@ export class AppComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('Fin de commentaieres', result);
+      // this.logger.error('error');
 
 
     });
