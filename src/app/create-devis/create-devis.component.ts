@@ -8,7 +8,7 @@ import {DevisService} from "../_service/devis.service";
 import {DataSharingService} from "../_service/data-sharing-service.service";
 import {OuvrageService} from "../_service/ouvrage.service";
 import {MatDialog} from "@angular/material/dialog";
-import {DialogComponent} from "../dialog/dialog.component";
+import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {Lot} from "../_models/lot";
 import {SousLot} from "../_models/sous-lot";
 import {Ouvrage} from "../_models/ouvrage";
@@ -20,8 +20,7 @@ import {SousDetailPrixService} from "../_service/sous-detail-prix.service";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 import {Devis} from "../_models/devis";
-import {OuvrageDuDevis} from "../_models/ouvrage-du-devis";
-
+import {Json2CsvTransform} from "json2csv";
 
 @Component({
   selector: 'app-create-devis',
@@ -82,11 +81,13 @@ export class CreateDevisComponent implements OnInit{
               private ouvrageCoutService: OuvrageCoutService,
               public sharedData: DataSharingService,
               private changeDetector: ChangeDetectorRef,
+
   ) {
     this.expandedLotId = undefined;
   }
 
   ngOnInit() {
+
     // this.sousDetailPrixService.setCoefEqui(this.coutTotal() / this.prixDevis)
     this.route.params.subscribe(params => {
       this.devis.id = +params['id'];

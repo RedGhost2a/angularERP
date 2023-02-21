@@ -55,7 +55,6 @@
                   <p>{{this.currentOuvrage.aleas}} %</p>
                   <p>{{this.currentOuvrage.SousLotOuvrage.aleasInEuro | number : '1.2-2'}} €</p>
                 </div>
-
               </div>
             </div>
           </mat-card-content>
@@ -129,7 +128,17 @@
       </div>
     </mat-card-content>
   </mat-card>
+
 </div>
+  <div class="btnSousDetails">
+  <button mat-raised-button (click)="openDialog(this.currentOuvrage.id)">
+    Importer un composant
+  </button >
+
+    <button mat-raised-button>
+      Creer un composant
+    </button >
+  </div>
 
 
 <div *ngIf="this.currentOuvrage.CoutDuDevis">

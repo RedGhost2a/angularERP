@@ -4,6 +4,15 @@ import {ActivatedRoute} from "@angular/router";
 import {OuvrageDuDevis} from "../_models/ouvrage-du-devis";
 import {DataSharingService} from "../_service/data-sharing-service.service";
 import {Ouvrage} from "../_models/ouvrage";
+// import {DialogComponent} from "../dialogListOuvrage/dialog.component";
+// import {OuvrageAddCoutComponent} from "../ouvrage-add-cout/ouvrage-add-cout.component";
+import {DialogListCoutComponent} from "../dialog-list-cout/dialog-list-cout.component";
+import {MatDialog} from "@angular/material/dialog";
+import {CoutService} from "../_service/cout.service";
+import {User} from "../_models/users";
+import {UserService} from "../_service/user.service";
+import {Cout} from "../_models/cout";
+import {SousLotOuvrageService} from "../_service/sous-lot-ouvrage.service";
 
 @Component({
   selector: 'app-sous-detail-prix',
@@ -20,14 +29,23 @@ export class SousDetailPrixComponent implements OnInit {
     "prixHTCalcule"];
   coefEqui:number = 35.79;
 
+  totalDBS = {
+    prixOuvrage : 0
+  };
+
+  currentUser !:User
+  listCout !:Cout[]
+
   constructor(private ouvrageService : OuvrageService,private route: ActivatedRoute,
-              public dataShared : DataSharingService) { }
+              public dataShared : DataSharingService, private coutService: CoutService, private userService:UserService,
+              public dialog: MatDialog, private sousLotOuvrageService : SousLotOuvrageService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params =>{
       this.ouvrageID = +params['id'];
       this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe( data =>{
        this.currentOuvrage = data;
+       this.dataShared.ouvrage = data;
        if(data.SousLots){
        this.currentOuvrage.SousLotOuvrage = data.SousLots[0].SousLotOuvrage
        }
@@ -46,9 +64,33 @@ export class SousDetailPrixComponent implements OnInit {
         this.prixUnitaireEquilibreHTCout()
         this.prixCalculeHTCout()
         this.prixUnitaireCalculeHTCout()
+        this.getCurrentUser()
       })
     })
   }
+
+  getCurrentUser():void{
+    this.currentUser = this.userService.userValue;
+    this.userService.getById(this.currentUser.id).subscribe(
+      data=>{
+        this.currentUser = data
+        this.getAllCout(data.Entreprises[0].id)
+      }
+    )
+  }
+
+  getAllCout(entrepriseID : number):void{
+    this.coutService.getAll(entrepriseID).subscribe(
+      data => {
+        console.log( "liste de couts ",data)
+        this.listCout = data
+      }
+
+    )
+
+  }
+
+
 
   prixUnitaireHT():void{
     if(this.currentOuvrage.SousLotOuvrage !== undefined){
@@ -98,11 +140,20 @@ export class SousDetailPrixComponent implements OnInit {
   }
 
   debousesSecTotalCout():void{
+
     if(this.currentOuvrage.CoutDuDevis){
       this.currentOuvrage.CoutDuDevis.forEach(coutDuDevis =>{
-        if (coutDuDevis.OuvrageCoutDuDevis?.ratio && this.currentOuvrage.SousLotOuvrage)
+        if (coutDuDevis.OuvrageCoutDuDevis?.ratio && this.currentOuvrage.SousLotOuvrage){
         coutDuDevis.debourseSecTotal = coutDuDevis.prixUnitaire * (coutDuDevis.OuvrageCoutDuDevis?.ratio  * this.currentOuvrage.SousLotOuvrage?.quantityOuvrage)
+        console.log("prix de l'ouvrage : ",this.currentOuvrage.SousLotOuvrage?.prixOuvrage)
+
+          //test mise a jour du debousés sec apres l'import d'un cout dans le sous details de prix
+      this.totalDBS.prixOuvrage += coutDuDevis.debourseSecTotal
+          console.log(this.totalDBS)
+        }
       })
+      if(this.currentOuvrage.SousLotOuvrage?.id)
+        this.sousLotOuvrageService.updatedPrice(this.currentOuvrage.SousLotOuvrage.id, this.totalDBS).subscribe()
     }
   }
   prixEquilibreHTCout():void{
@@ -136,7 +187,32 @@ export class SousDetailPrixComponent implements OnInit {
           coutDuDevis.prixUnitaireCalcHT = coutDuDevis.prixCalcHT / this.currentOuvrage.SousLotOuvrage?.quantityOuvrage
       })
     }
+  }
+  openDialog(ouvragDuDevisId: number) {
+    this.dialog.open(DialogListCoutComponent, {
+      data: this.listCout,
+      width: '90%',
+      height: '70%'
+    }).afterClosed().subscribe(result => {
+      console.log("afterClose")
+      if (result) {
+      console.log("afterClose if")
+        // this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe( data =>{
+        //   this.currentOuvrage = data;
+        // })
+        this.ngOnInit()
+        console.log(result.selectedOuvrageIds);
+        //this.createOuvrageSousLot(sousLotId)
+        // console.log('debut de la fonction create ouvrage du devis')
+        // this.createOuvrageDuDevis(sousLotId)
+        // console.log('fin de la fonction create ouvrage du devis')
+      } else {
+      console.log("afterClose else")
+        // Afficher un message d'erreur si aucun sous-lot n'est sélectionné
+        // this.warning("error",);
+      }
 
+    });
   }
 
 }

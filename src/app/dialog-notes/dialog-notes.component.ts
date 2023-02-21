@@ -8,7 +8,7 @@ import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 
 
 @Component({
-  selector: 'app-dialog-notes',
+  selector: 'app-dialogListOuvrage-notes',
   templateUrl: './dialog-notes.component.html',
   styleUrls: ['./dialog-notes.component.scss']
 })

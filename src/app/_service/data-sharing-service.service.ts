@@ -3,6 +3,7 @@ import {SousDetailPrixService} from "./sous-detail-prix.service";
 import {SousLotOuvrageService} from "./sous-lot-ouvrage.service";
 import {OuvrageDuDevis} from "../_models/ouvrage-du-devis";
 import {SousLotOuvrage} from "../_models/sousLotOuvrage";
+import {Ouvrage} from "../_models/ouvrage";
 
 @Injectable({
   providedIn: 'root'
@@ -11,17 +12,8 @@ import {SousLotOuvrage} from "../_models/sousLotOuvrage";
 //service de partage de données entre les diffs composants avec une methode get et set
 export class DataSharingService {
   lotId!: number
-  coefEqui!: number;
-  prixUnitaireCalculeHt: number = 0;
-  prixUniHT!:number;
-  prixEquiHT!:number;
-  prixEquiUniHT!:number;
-  beneficeInEuro!:number;
-  aleasInEuro!:number;
-  prixCalcHT!:number;
-  prixUniCalcHT!:number
-
-  // private prixEquilibres: number[] = [];
+  coefEqui!: number
+  ouvrage!:Ouvrage
 
   constructor(private sousDetailPrixService: SousDetailPrixService,
               private sousLotOuvrageService: SousLotOuvrageService) {

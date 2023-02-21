@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {ClientsComponent} from './clients/clients.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule} from "@angular/material/button";
-import {DialogComponent} from './dialog/dialog.component';
+import {DialogComponent} from './dialogListOuvrage/dialog.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -69,6 +69,7 @@ import {DialogConfirmSuppComponent} from './dialog-confirm-supp/dialog-confirm-s
 import {SousDetailPrixComponent} from './sous-detail-prix/sous-detail-prix.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {DialogNotesComponent} from './dialog-notes/dialog-notes.component';
+import { DialogListCoutComponent } from './dialog-list-cout/dialog-list-cout.component';
 
 
 const appRoutes: Routes = [];
@@ -116,6 +117,7 @@ declare const toastr: Toastr;
     DialogConfirmSuppComponent,
     SousDetailPrixComponent,
     DialogNotesComponent,
+    DialogListCoutComponent,
 
 
   ],

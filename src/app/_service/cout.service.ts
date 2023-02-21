@@ -24,8 +24,8 @@ export class CoutService {
       }
     });
   }
-  getById(id:number) :Observable<Cout> {
-    return this.http.get<Cout>(`${baseUrl}/${id}`);
+  getById(id:number) :Observable<any> {
+    return this.http.get(`${baseUrl}/${id}`);
   }
   create(data: Cout) :Observable<Cout> {
     return this.http.post<Cout>(`${baseUrl}/new`, data);
