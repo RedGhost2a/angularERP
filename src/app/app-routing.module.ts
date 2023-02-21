@@ -29,6 +29,7 @@ import {HomeComponent} from "./home/home.component";
 import {DetailDevisComponent} from "./detail-devis/detail-devis.component";
 import {CreateDevisComponent} from "./create-devis/create-devis.component";
 import {SousDetailPrixComponent} from "./sous-detail-prix/sous-detail-prix.component";
+import {LogsComponent} from "./logs/logs.component";
 
 const routes: Routes = [
   {
@@ -95,6 +96,7 @@ const routes: Routes = [
     data: {title: 'Detail des utilisateurs', roles: [Role.SuperAdmin, Role.Admin]}
   },
   {path: 'mon_profile', canActivate: [AuthGuard], component: UserComponent, data: {title: 'Profil utilisateurs'}},
+  {path: 'logs', canActivate: [AuthGuard], component: LogsComponent, data: {title: 'log utilisateurs'}},
 
   {
     path: 'entreprises',

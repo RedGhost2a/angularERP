@@ -7,12 +7,16 @@ import {NotesService} from "../_service/notes.service";
 import {Notes} from "../_models/notes";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
 import {MatDialog} from "@angular/material/dialog";
+import {NGXLogger} from "ngx-logger";
 
 
 @Component({
   selector: 'app-super-admin',
   templateUrl: './super-admin.component.html',
-  styleUrls: ['./super-admin.component.scss']
+  styleUrls: ['./super-admin.component.scss'],
+  providers: [
+    NGXLogger
+  ]
 })
 export class SuperAdminComponent implements OnInit {
 
@@ -29,7 +33,10 @@ export class SuperAdminComponent implements OnInit {
   constructor(private entrepriseService: EntrepriseService,
               private superAdminService: SuperAdminService,
               private notesService: NotesService,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private logger: NGXLogger) {
+    // this.logger.debug('debug', );
+
 
   }
 

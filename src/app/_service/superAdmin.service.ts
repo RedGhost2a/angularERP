@@ -3,6 +3,8 @@ import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {User} from "../_models/users";
 import {BehaviorSubject, Observable} from "rxjs";
+import {StorageService} from "./storage.service";
+import {LogsService} from "./logs.service";
 
 
 @Injectable({
@@ -16,28 +18,32 @@ export class SuperAdminService {
 
   constructor(private router: Router,
               private http: HttpClient,
+              private storageService: StorageService,
+              private logsService: LogsService,
   ) {
-    // @ts-ignore
-    this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
-    this.user = this.userSubject.asObservable();
-  }
+    //   // @ts-ignore
+    //   this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
+    //   this.user = this.userSubject.asObservable();
+    // }
+    this.logsService.getLogs().subscribe(logs => {
+      console.log(logs)
+    })
+    let string = localStorage.getItem('user')
+    if (string) {
 
-  //   let string = localStorage.getItem('user')
-  //   if (string) {
-  //
-  //     let decryptUser = this.storageService.decrypt(string)
-  //     let parse = JSON.parse(decryptUser)
-  //     // @ts-ignore
-  //     this.userSubject = new BehaviorSubject<User>(parse);
-  //     this.user = this.userSubject.asObservable();
-  //   } else {
-  //     // @ts-ignore
-  //     this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
-  //
-  //   }
-  //   // console.log(string)
-  //   // console.log(parse)
-  // }
+      let decryptUser = this.storageService.decrypt(string)
+      let parse = JSON.parse(decryptUser)
+      // @ts-ignore
+      this.userSubject = new BehaviorSubject<User>(parse);
+      this.user = this.userSubject.asObservable();
+    } else {
+      // @ts-ignore
+      this.userSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('user')));
+
+    }
+    // console.log(string)
+    // console.log(parse)
+  }
 
 
   public get userValue(): User {
