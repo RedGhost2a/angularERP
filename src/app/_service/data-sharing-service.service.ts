@@ -14,6 +14,7 @@ export class DataSharingService {
   lotId!: number
   coefEqui!: number
   ouvrage!:Ouvrage
+  prixOuvrage !:number
 
   constructor(private sousDetailPrixService: SousDetailPrixService,
               private sousLotOuvrageService: SousLotOuvrageService) {
@@ -30,6 +31,9 @@ export class DataSharingService {
   //      this.prixUniHT = prixOuvrage / quantiteOuvrage
   //   }
   // }
+  async SetPrixOuvrage(prix :{prixOuvrage:number } , sousLotOuvrage:SousLotOuvrage){
+    sousLotOuvrage.prixOuvrage = prix.prixOuvrage
+  }
   async prixUnitaireHT(sousLotOuvrage: SousLotOuvrage){
     console.log("prix unitaire",sousLotOuvrage.prixOuvrage, sousLotOuvrage.quantityOuvrage)
     sousLotOuvrage.prixUniHT = sousLotOuvrage.prixOuvrage/ sousLotOuvrage.quantityOuvrage

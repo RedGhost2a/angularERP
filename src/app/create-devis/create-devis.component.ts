@@ -1,4 +1,4 @@
-import {AfterContentChecked, ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
+import {AfterContentChecked, ChangeDetectorRef, Component, Inject, Injectable, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LotService} from "../_service/lot.service"
 import {ActivatedRoute, Router} from "@angular/router";
@@ -28,6 +28,7 @@ import {Json2CsvTransform} from "json2csv";
   styleUrls: ['./create-devis.component.scss']
 })
 //, AfterContentChecked
+@Injectable()
 export class CreateDevisComponent implements OnInit{
 
   lotFraisDeChantier!: Lot;
