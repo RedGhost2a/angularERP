@@ -25,7 +25,6 @@ export class DialogListCoutComponent implements OnInit {
     "categorie", "designation", "unite", "prixUnitaire", "fournisseur", "remarque"
   ];
 
-  dataSource: CoutDuDevis [] = [];
   initialData!: any[]; // Déclarez la variable initialData comme étant un tableau de type any
   coutDuDevis !: CoutDuDevis
 
@@ -100,11 +99,9 @@ export class DialogListCoutComponent implements OnInit {
               this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCout).subscribe()
             }
           )
-          // creer le coutDuDevis
         }
 
       })
-      // this.coutService.createCoutDuDevis()
     })
 
   }

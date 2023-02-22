@@ -1,1 +1,54 @@
-<p>dialog-form-cout works!</p>
+<ng-container [formGroup]="this.myFormGroup">
+  <button routerLink="/listCout" mat-raised-button color="accent">Retour</button>
+  <div class="container">
+    <h1> test </h1>
+    <div class="group1">
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Désignation</mat-label>
+          <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm">
+        </mat-form-field>
+      </p>
+    </div>
+    <div class="group2">
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Unité</mat-label>
+          <input formControlName="unite" matInput placeholder="Ex: M2">
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Prix Unitaire</mat-label>
+          <input formControlName="prixUnitaire" matInput placeholder="Ex: 9,2">
+        </mat-form-field>
+      </p>
+    </div>
+
+    <div class="group3">
+      <mat-form-field appearance="fill">
+        <mat-label>Type et catégorie du cout</mat-label>
+        <mat-select formControlName="TypeCoutId">
+<!--          <mat-option *ngFor="let item of typeCout" [value]="item.id">-->
+<!--            {{item.type}} {{item.categorie}} {{item.id}}-->
+<!--          </mat-option>-->
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Fournisseur</mat-label>
+        <mat-select formControlName="FournisseurId">
+          <!--        <mat-select formControlName="Fournisseurs">-->
+<!--          <mat-option *ngFor="let item of fournisseur" [value]="item.id">-->
+<!--            {{item.commercialName}} {{item.id}}-->
+<!--          </mat-option>-->
+        </mat-select>
+      </mat-form-field>
+
+
+    </div>
+<!--    <button mat-raised-button [routerLink]="['/listCout']" (click)="createAndUpdateCout()">{{textButton}}</button>-->
+<!--    <button mat-raised-button [routerLink]="['/listCout']" (click)="createAndUpdateCout()">{{textButton}}</button>-->
+  </div>
+
+</ng-container>

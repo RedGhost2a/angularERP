@@ -131,11 +131,11 @@
 
 </div>
   <div class="btnSousDetails">
-  <button mat-raised-button (click)="openDialog(this.currentOuvrage.id)">
+  <button mat-raised-button (click)="openDialogImport(this.currentOuvrage.id)">
     Importer un composant
   </button >
 
-    <button mat-raised-button>
+    <button mat-raised-button (click)="openDialogCreate(this.currentOuvrage.id)">
       Creer un composant
     </button >
   </div>

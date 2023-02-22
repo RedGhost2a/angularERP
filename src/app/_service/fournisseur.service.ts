@@ -14,8 +14,13 @@ export class FournisseurService {
 
   constructor(private http: HttpClient) { }
 
-  getAllFournisseurs():Observable<Fournisseur[]>{
-    return this.http.get<Fournisseur[]>(`${baseUrl}`)
+  getAllFournisseurs(entrepriseId:number):Observable<Fournisseur[]>{
+    return this.http.get<Fournisseur[]>(`${baseUrl}`,{
+      params: {
+        EntrepriseId: entrepriseId
+
+      }
+    })
   }
   deleteFournisseurById(id:number):Observable<Fournisseur>{
     return this.http.delete<Fournisseur>(`${baseUrl}/${id}`)

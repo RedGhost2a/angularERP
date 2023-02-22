@@ -445,6 +445,7 @@ export class CreateDevisComponent implements OnInit{
       this.resultAleasLots = this.resultAleasLots / nombreOuvrage
       // console.log("console log de DATA LOT : ", data)
       //recuperation de tous les ouvrages de l'entreprise
+      this.sharedData.entrepriseId = data.EntrepriseId;
       this.getAllOuvrageExceptFraisDeChantier(data.EntrepriseId);
       this.getAllOuvrageFraisDeChantier(data.EntrepriseId)
       this.getSommeOuvrage()

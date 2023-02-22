@@ -44,7 +44,7 @@ export class FormCoutComponent implements OnInit {
     this.getUserById();
     //this.getAllTypeCouts();
     this.generateFormUpdate();
-    this.getAllFournisseur()
+    // this.getAllFournisseur()
   }
 
   //Determine si c'est l'ajout d'un nouveau cout ou la modification d'un cout existant au click
@@ -79,6 +79,8 @@ export class FormCoutComponent implements OnInit {
     this.userService.getById(this.userId).subscribe(data => {
       this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id),
         this.getAllTypeCouts(data.Entreprises[0].id)
+      this.getAllFournisseur(data.Entreprises[0].id)
+
 
     })
   }
@@ -109,8 +111,8 @@ export class FormCoutComponent implements OnInit {
     // })
   }
   //Recupere tous les fournisseurs pour implementer le select picker du template
-  getAllFournisseur(): void {
-    this.fournisseurService.getAllFournisseurs().subscribe(data => {
+  getAllFournisseur(entrepriseId:number): void {
+    this.fournisseurService.getAllFournisseurs(entrepriseId).subscribe(data => {
       this.fournisseur = data;
       //this.typeCout = Array.from(this.typeCout.reduce((m, t) => m.set(t.type, t), new Map()).values());
     })

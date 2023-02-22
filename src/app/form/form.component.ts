@@ -34,6 +34,7 @@ export class FormComponent implements OnInit {
   isFournisseur: boolean = false;
   isTypeCout: boolean = false;
   isOuvrage: boolean = false;
+  entrepriseId!:number;
 
   constructor(private formBuilder: FormBuilder, private coutService: CoutService,
               private route: ActivatedRoute, private userService: UserService,
@@ -61,12 +62,14 @@ export class FormComponent implements OnInit {
       this.getUserById();
       //this.getAllTypeCouts();
       this.generateFormUpdateCout();
-      this.getAllFournisseur()
+
       this.isCout = true;
       console.log(this.isCout)
     }
     if (regexFournisseur.test(window.location.href)) {
       this.createFormFournisseur()
+      this.getUserById();
+      // this.getAllFournisseur(this.entrepriseId)
       this.generateFormUpdateFournisseur()
       this.isFournisseur = true;
     }
@@ -115,8 +118,10 @@ export class FormComponent implements OnInit {
   getUserById(): void {
     this.userService.getById(this.userId).subscribe(data => {
       console.log(data)
+      this.entrepriseId = data.Entreprises[0].id
       this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id),
         this.getAllTypeCouts(data.Entreprises[0].id)
+        this.getAllFournisseur(data.Entreprises[0].id)
     })
   }
 
@@ -144,8 +149,9 @@ export class FormComponent implements OnInit {
   }
 
   //Recupere tous les fournisseurs pour implementer le select picker du template
-  getAllFournisseur(): void {
-    this.fournisseurService.getAllFournisseurs().subscribe(data => {
+  getAllFournisseur(entrepriseID:number): void {
+    console.log("entrepriseID getAllFournisseur",entrepriseID)
+    this.fournisseurService.getAllFournisseurs(entrepriseID).subscribe(data => {
       this.fournisseur = data;
       //this.typeCout = Array.from(this.typeCout.reduce((m, t) => m.set(t.type, t), new Map()).values());
     })
@@ -210,6 +216,7 @@ export class FormComponent implements OnInit {
       id: new FormControl(),
       commercialName: new FormControl(),
       remarque: new FormControl(''),
+      EntrepriseId: new FormControl(""),
     });
   }
 
@@ -219,6 +226,7 @@ export class FormComponent implements OnInit {
       if (isNaN(fournisseurID)) {
         this.fournisseurService.createFournisseur(this.myFormGroup.getRawValue()).subscribe(
           (): void => {
+            console.log(this.myFormGroup.getRawValue())
             alert('Nouveau fournisseur enregistrer')
           }
         );
@@ -242,7 +250,8 @@ export class FormComponent implements OnInit {
           data = {
             id: data.id,
             commercialName: data.commercialName,
-            remarque: data.remarque
+            remarque: data.remarque,
+            EntrepriseId:data.EntrepriseId
           }
           this.myFormGroup.patchValue(data);
         });

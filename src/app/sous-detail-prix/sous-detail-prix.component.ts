@@ -14,6 +14,10 @@ import {UserService} from "../_service/user.service";
 import {Cout} from "../_models/cout";
 import {SousLotOuvrageService} from "../_service/sous-lot-ouvrage.service";
 import {CreateDevisComponent} from "../create-devis/create-devis.component";
+import {Fournisseur} from "../_models/fournisseur";
+import {TypeCout} from "../_models/type-cout";
+import {FournisseurService} from "../_service/fournisseur.service";
+import {TypeCoutService} from "../_service/typeCout.service";
 
 @Component({
   selector: 'app-sous-detail-prix',
@@ -36,10 +40,13 @@ export class SousDetailPrixComponent implements OnInit {
 
   currentUser !: User
   listCout !: Cout[]
+  listFournisseur!: Fournisseur[]
+  listTypeCout!: TypeCout []
 
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute,
               public dataShared: DataSharingService, private coutService: CoutService, private userService: UserService,
-              public dialog: MatDialog, private sousLotOuvrageService: SousLotOuvrageService,
+              public dialog: MatDialog, private sousLotOuvrageService: SousLotOuvrageService,private fournisseurService : FournisseurService,
+              private typeCoutService : TypeCoutService
   ) {
   }
 
@@ -50,12 +57,9 @@ export class SousDetailPrixComponent implements OnInit {
       await this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe(async data => {
         this.currentOuvrage = data;
         this.dataShared.ouvrage = data;
-        // console.log("data", data)
         if (data.SousLots) {
           this.currentOuvrage.SousLotOuvrage = data.SousLots[0].SousLotOuvrage
         }
-        //this.coefEqui = this.sousDetailPrixService.coefEqui;
-        // console.log(this.currentOuvrage)
         await this.debousesSecTotalCout()
         this.getCurrentUser()
         await this.prixUnitaireHT()
@@ -89,11 +93,12 @@ export class SousDetailPrixComponent implements OnInit {
   getAllCout(entrepriseID: number): void {
     this.coutService.getAll(entrepriseID).subscribe(
       data => {
-        // console.log("liste de couts ", data)
         this.listCout = data
       }
     )
-
+  }
+  getAllFournisseurs(entrepriseID:number):void {
+    this.fournisseurService.getAllFournisseurs(entrepriseID).subscribe()
   }
 
 
@@ -148,18 +153,11 @@ export class SousDetailPrixComponent implements OnInit {
   }
 
   async debousesSecTotalCout() {
-    // this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe( async data => {
-    //   this.currentOuvrage = data;
-    // })
-
-      //   this.currentOuvrage = data;
     this.totalDBS.prixOuvrage = 0;
     if (this.currentOuvrage.CoutDuDevis) {
       this.currentOuvrage.CoutDuDevis.forEach( coutDuDevis  => {
         if (coutDuDevis.OuvrageCoutDuDevis?.ratio && this.currentOuvrage.SousLotOuvrage) {
           coutDuDevis.debourseSecTotal = coutDuDevis.prixUnitaire * (coutDuDevis.OuvrageCoutDuDevis?.ratio * this.currentOuvrage.SousLotOuvrage?.quantityOuvrage)
-          ///////////////////////////////////////////////////////////////////////////////////////////
-          //test mise a jour du debousés sec apres l'import d'un cout dans le sous details de prix
           this.totalDBS.prixOuvrage += coutDuDevis.debourseSecTotal
           console.log(this.totalDBS)
         }
@@ -168,17 +166,11 @@ export class SousDetailPrixComponent implements OnInit {
       if(this.currentOuvrage.SousLotOuvrage)
       this.dataShared.SetPrixOuvrage(this.totalDBS, this.currentOuvrage.SousLotOuvrage)
       if (this.currentOuvrage.SousLotOuvrage?.id){
-          // console.log("prix de l'ouvrage : ", this.currentOuvrage.SousLotOuvrage?.prixOuvrage)
         this.sousLotOuvrageService.updatedPrice(this.currentOuvrage.SousLotOuvrage.id, this.totalDBS).subscribe((res)=>{
-          // if(this.currentOuvrage.SousLotOuvrage)
           console.log("response",res)
-          //  this.dataShared.prixUnitaireHT(this.currentOuvrage.SousLotOuvrage)
-          // this.ngOnInit()
 
 
         })
-          // console.log("console prix de l ouvrage apres update",this.currentOuvrage.SousLotOuvrage?.prixOuvrage)
-
       }
     }
   }
@@ -219,38 +211,31 @@ export class SousDetailPrixComponent implements OnInit {
     }
   }
 
-  openDialog(ouvragDuDevisId: number) {
+  openDialogImport(ouvragDuDevisId: number) {
     this.dialog.open(DialogListCoutComponent, {
       data: this.listCout,
       width: '90%',
       height: '70%'
     }).afterClosed().subscribe(async result => {
-      console.log("afterClose")
       if (result) {
-        console.log("afterClose if")
-        // await this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe( async data => {
-        //   this.currentOuvrage = data;
-        //   console.log("data", data)
-        //   // await this.ngOnInit()
-        //   await this.debousesSecTotalCout()
-        // })
-
-        //  this.prixUnitaireHT()
-
-        //  await this.debousesSecTotalCout()
-        // setTimeout(()=>{
         this.ngOnInit()
-        //
-        // },2000)
-
-        // this.createOuvrageSousLot(sousLotId)
-        // console.log('debut de la fonction create ouvrage du devis')
-        // this.createOuvrageDuDevis(sousLotId)
-        // console.log('fin de la fonction create ouvrage du devis')
       } else {
         console.log("afterClose else")
-        // Afficher un message d'erreur si aucun sous-lot n'est sélectionné
-        // this.warning("error",);
+      }
+
+    });
+  }
+
+  openDialogCreate(ouvragDuDevisId: number) {
+    this.dialog.open(DialogListCoutComponent, {
+      data: [],
+      width: '90%',
+      height: '70%'
+    }).afterClosed().subscribe(async result => {
+      if (result) {
+        this.ngOnInit()
+      } else {
+        console.log("afterClose else")
       }
 
     });

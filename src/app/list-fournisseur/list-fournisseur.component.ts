@@ -4,6 +4,8 @@ import {Fournisseur} from "../_models/fournisseur";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
+import {User} from "../_models/users";
+import {UserService} from "../_service/user.service";
 
 
 @Component({
@@ -15,12 +17,21 @@ export class ListFournisseurComponent implements OnInit {
   listFournisseur !: Fournisseur[];
   columnsToDisplay = ["commercialName", "remarque", "boutons"];
   dataSource!: any;
+  user!:User
 
-  constructor(private fournisseurService: FournisseurService, private dialog: MatDialog) {
+  constructor(private fournisseurService: FournisseurService, private dialog: MatDialog,
+              private userService : UserService) {
   }
 
   ngOnInit(): void {
-    this.getAllFournisseur()
+    this.getUser()
+    // this.getAllFournisseur()
+  }
+  getUser():void{
+    console.log(this.userService.userValue)
+    this.userService.getById(this.userService.userValue.id).subscribe( data=>{
+      this.getAllFournisseur(data.Entreprises[0].id)
+    })
   }
 
   applyFilter(event: Event) {
@@ -28,8 +39,8 @@ export class ListFournisseurComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  getAllFournisseur(): void {
-    this.fournisseurService.getAllFournisseurs().subscribe(data => {
+  getAllFournisseur(entrepriseId:number): void {
+    this.fournisseurService.getAllFournisseurs(entrepriseId).subscribe(data => {
       this.listFournisseur = data;
       this.dataSource = new MatTableDataSource(this.listFournisseur);
     })

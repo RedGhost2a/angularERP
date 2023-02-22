@@ -10,7 +10,7 @@ export interface Cout {
   EntrepriseId:number;
   TypeCoutId:number;
   FournisseurId:number;
-  Fournisseurs?:Fournisseur[]
+  Fournisseur?:Fournisseur
   fournisseur?:string;
   TypeCout?:TypeCout
   quantite?:number;
