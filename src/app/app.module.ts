@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, OnInit} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule, Routes} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
@@ -70,6 +70,7 @@ import {SousDetailPrixComponent} from './sous-detail-prix/sous-detail-prix.compo
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {DialogNotesComponent} from './dialog-notes/dialog-notes.component';
 import { DialogListCoutComponent } from './dialog-list-cout/dialog-list-cout.component';
+import { DialogFormCoutComponent } from './dialog-form-cout/dialog-form-cout.component';
 
 
 const appRoutes: Routes = [];
@@ -118,6 +119,7 @@ declare const toastr: Toastr;
     SousDetailPrixComponent,
     DialogNotesComponent,
     DialogListCoutComponent,
+    DialogFormCoutComponent,
 
 
   ],
@@ -159,7 +161,9 @@ declare const toastr: Toastr;
     useValue: toastr,
 
 
+
   },
+
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
 
