@@ -22,7 +22,8 @@ export class DialogListCoutComponent implements OnInit {
   columnsToDisplay = [
     "checkBox",
     "type",
-    "categorie", "designation", "unite", "prixUnitaire", "fournisseur", "remarque"
+    "categorie", "designation", "unite", "prixUnitaire", "fournisseur"
+    // , "remarque"
   ];
 
   initialData!: any[]; // Déclarez la variable initialData comme étant un tableau de type any
@@ -80,15 +81,16 @@ export class DialogListCoutComponent implements OnInit {
     this.selectedCoutIds.forEach((element, index) => {
       this.coutService.getById(element).subscribe(cout => {
         console.log("cout checked", cout)
-        if (cout.Fournisseurs && cout.TypeCout) {
+        if (cout.Fournisseur && cout.TypeCout) {
           this.coutDuDevis = cout;
-          this.coutDuDevis.fournisseur = cout.Fournisseurs[0].commercialName
-          this.coutDuDevis.remarque = cout.Fournisseurs[0].remarque !== null ? cout.Fournisseurs[0].remarque : ""
+          this.coutDuDevis.fournisseur = cout.Fournisseur.commercialName
+          this.coutDuDevis.remarque = cout.Fournisseur.remarque !== null ? cout.Fournisseurs[0].remarque : ""
           //donne comme valeur undefined a l'id sinon le coutDuDevis sera creer avec l'id du Cout
           this.coutDuDevis.id = undefined
           this.coutDuDevis.type = cout.TypeCout.type
           this.coutDuDevis.categorie = cout.TypeCout.categorie
           const uRatio = `${cout.unite}/${this.dataSharingService.ouvrage.unite}`
+          console.log('this cout du devis ', this.coutDuDevis)
           this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe(responseCout => {
               const ouvrageCout: OuvrageCoutDuDevis = {
                 OuvrageDuDeviId: this.dataSharingService.ouvrage.id,
