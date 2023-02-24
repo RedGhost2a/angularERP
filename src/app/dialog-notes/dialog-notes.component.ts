@@ -9,7 +9,7 @@ import {UserService} from "../_service/user.service";
 
 
 @Component({
-  selector: 'app-dialog-notes',
+  selector: 'app-dialogListOuvrage-notes',
   templateUrl: './dialog-notes.component.html',
   styleUrls: ['./dialog-notes.component.scss']
 })

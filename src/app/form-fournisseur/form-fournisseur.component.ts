@@ -62,7 +62,8 @@ export class FormFournisseurComponent implements OnInit {
           data = {
             id: data.id,
             commercialName: data.commercialName,
-            remarque: data.remarque
+            remarque: data.remarque,
+            EntrepriseId:data.EntrepriseId
           }
           this.myFormGroup.patchValue(data);
         });

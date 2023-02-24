@@ -4,7 +4,6 @@ import {DevisService} from "../_service/devis.service";
 import {ActivatedRoute} from "@angular/router";
 import {Client} from "../_models/client";
 import {User} from "../_models/users";
-import {FormBuilder, FormGroup} from "@angular/forms";
 import {LotService} from "../_service/lot.service";
 import {Lot} from "../_models/lot";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
@@ -28,6 +27,7 @@ export class DetailDevisComponent implements OnInit {
 
   ngOnInit(): void {
     this.getById();
+
   }
 
   getById(): void {

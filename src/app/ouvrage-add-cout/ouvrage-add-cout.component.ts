@@ -37,8 +37,9 @@ export class OuvrageAddCoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params =>{
+      console.log("params",params)
       this.currentOuvrageId = +params['id']
-      console.log(this.currentOuvrageId)
+      // console.log("current ouvrage id ",this.currentOuvrageId)
     })
     this.currentUser = this.userService.userValue;
     this.userService.getById(this.currentUser.id).subscribe(data =>{

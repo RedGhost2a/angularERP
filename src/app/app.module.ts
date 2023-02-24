@@ -1,3 +1,4 @@
+import { OnInit} from '@angular/core';
 import {ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule, Routes} from '@angular/router';
@@ -6,7 +7,7 @@ import {AppComponent} from './app.component';
 import {ClientsComponent} from './clients/clients.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule} from "@angular/material/button";
-import {DialogComponent} from './dialog/dialog.component';
+import {DialogComponent} from './dialogListOuvrage/dialog.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -69,6 +70,8 @@ import {DialogConfirmSuppComponent} from './dialog-confirm-supp/dialog-confirm-s
 import {SousDetailPrixComponent} from './sous-detail-prix/sous-detail-prix.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {DialogNotesComponent} from './dialog-notes/dialog-notes.component';
+import { DialogListCoutComponent } from './dialog-list-cout/dialog-list-cout.component';
+import { DialogFormCoutComponent } from './dialog-form-cout/dialog-form-cout.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {LoggerModule, NgxLoggerLevel, TOKEN_LOGGER_SERVER_SERVICE} from "ngx-logger";
@@ -124,6 +127,8 @@ declare const toastr: Toastr;
     DialogConfirmSuppComponent,
     SousDetailPrixComponent,
     DialogNotesComponent,
+    DialogListCoutComponent,
+    DialogFormCoutComponent,
     LogsComponent,
 
 
@@ -184,7 +189,9 @@ declare const toastr: Toastr;
     useValue: toastr,
 
 
+
   },
+
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     {provide: ErrorHandler, useClass: CustomErrorHandler}

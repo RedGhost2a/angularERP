@@ -4,531 +4,678 @@
 
 <ng-template #content>
 
-<mat-tab-group animationDuration="0ms" class="onglet" >
+  <mat-tab-group animationDuration="0ms" class="onglet">
 
-  <mat-tab label="Frais de chantier" *ngIf="lotFraisDeChantier !== undefined">
-    <h3>{{lotFraisDeChantier.id}}</h3>
-    <h3>{{lotFraisDeChantier.prix}}</h3>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" [hidden]="!showForm">
-      <!-- Formulaire avec champ de saisie et bouton de validation -->
-      <mat-form-field appearance="outline" color="primary">
-        <mat-label>Designation</mat-label>
-        <input matInput formControlName="designation" placeholder="Entrer le nom."/>
-      </mat-form-field>
-      <button mat-flat-button type="submit">Valider</button>
-    </form>
-    <div>
-      <div class="lot">
-        <!--        *ngIf="hasSublots(lotFraisDeChantier)"-->
-        <button class="btn"
-                (click)="setExpandedLotId(lotFraisDeChantier.id)">
-          <!--                (click)="toggleChildren(lotFraisDeChantier); setExpandedLotId(lotFraisDeChantier.id)">-->
-          <mat-icon>expand_more</mat-icon>
-          <span>Lot N°: {{ lotFraisDeChantier.id }}</span>
-        </button>
-        <span class="designation">{{ lotFraisDeChantier.designation | titlecase }}</span>
-        <span class="designation"> prix du lot{{ lotFraisDeChantier.prix }}</span>
-        <mat-icon [matMenuTriggerFor]="boutonLOT">more_vert</mat-icon>
+    <mat-tab label="Frais de chantier" *ngIf="lotFraisDeChantier !== undefined">
+
+      <div class="container-frais-chantier">
+        <div class="container-card-frais-chantier">
+          <div class="text-frais-chantier">
+            <h4 class="title-frais-chantier">Chiffrage du devis</h4>
+            <p class="text-frais-chantier">Veuillez ajouter les sous-lots et les ouvrages <br> que vous souhaitez afficher dans vos frais de
+              chantier.
+            </p>
+          </div>
+          <!--        <div class="cards">-->
+
+
+          <mat-card class="card">
+            <mat-card-content>
+              <div>
+                <mat-card-subtitle>Débousé sec HT</mat-card-subtitle>
+                <div>
+                  <p>{{this.lotFraisDeChantier.prix | number : '1.2-2'}} € OK</p>
+                </div>
+                <mat-card-subtitle>Prix Equilibre HT</mat-card-subtitle>
+                <div>
+                  <p>{{this.fraisDeChantier.prixEquiHT | number: '1.2-2'}} €</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="card">
+            <mat-card-content>
+              <div>
+                <mat-card-subtitle>Bénéfice</mat-card-subtitle>
+                <div>
+                  <p>{{this.fraisDeChantier.beneficeInEuro | number : '1.2-2'}} € OK</p>
+                </div>
+                <mat-card-subtitle>Aléas</mat-card-subtitle>
+                <div>
+                  <p>{{this.fraisDeChantier.aleasInEuro | number: '1.2-2'}} €</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+
+          <mat-card class="card">
+            <mat-card-content>
+              <div>
+                <mat-card-subtitle>Prix Calculé</mat-card-subtitle>
+                <div>
+                  <p>{{this.fraisDeChantier.prixCalcHT | number : '1.2-2'}} € OK</p>
+                </div>
+                <mat-card-subtitle>Prix de Vente</mat-card-subtitle>
+                <div>
+                  <p>{{this.fraisDeChantier.prixVenteHT | number: '1.2-2'}} €</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+
+          <mat-card class="card">
+            <mat-card-content>
+              <div>
+                <mat-card-subtitle>Bénéfice & Aléas en %</mat-card-subtitle>
+                <div>
+                  <p>A FAIRE ! ! ! !</p>
+                </div>
+                <mat-card-subtitle>Bénéfice & Aléas en €</mat-card-subtitle>
+                <div>
+                  <p>{{this.fraisDeChantier.beneficeAleasTotal| number: '1.2-2'}} €</p>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+
+          <!--        </div>-->
+        </div>
+
+
+        <!--    <h3>{{lotFraisDeChantier.id}}</h3>-->
+        <!--    <h3>{{lotFraisDeChantier.prix}}</h3>-->
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" [hidden]="!showForm">
+          <!-- Formulaire avec champ de saisie et bouton de validation -->
+          <mat-form-field appearance="outline" color="primary">
+            <mat-label>Designation</mat-label>
+            <input matInput formControlName="designation" placeholder="Entrer le nom."/>
+          </mat-form-field>
+          <button mat-flat-button type="submit">Valider</button>
+        </form>
+        <!--    <div>-->
+        <div class="lot-frais-chantier">
+          <span class="designation-lot-frais-chantier">{{ lotFraisDeChantier.id }}</span>
+          <span class="designation-lot-frais-chantier">{{ lotFraisDeChantier.designation | titlecase }}</span>
+          <span class="designation-lot-frais-chantier">{{ lotFraisDeChantier.prix | number }} €</span>
+          <mat-icon [matMenuTriggerFor]="boutonLOT">more_vert</mat-icon>
+          <mat-menu class="menuBoutonSl" #boutonLOT>
+            <button mat-button color="primary" *ngIf="lotFraisDeChantier"
+                    (click)="showForm = !showForm; isLot = true; curentLotId= lotFraisDeChantier.id">
+              Créer un sous-lot
+            </button>
+
+          </mat-menu>
+        </div>
+
+        <div class="container-sous-lot-frais-chantier" *ngFor="let sublot of lotFraisDeChantier.SousLots">
+
+
+          <div class="sous-lot-frais-chantier">
+            <button class="btn">
+              <mat-icon>expand_more</mat-icon>
+              <span class="designation-sous-lot-frais-chantier">{{ sublot.id | number }}</span>
+            </button>
+            <span
+              class="designation-sous-lot-frais-chantier">{{ sublot.designation | uppercase }}</span>
+            <span class="designation-sous-lot-frais-chantier"> {{ sublot.prix | number }} €</span>
+            <mat-icon [matMenuTriggerFor]="boutonSL">more_vert</mat-icon>
+            <!--            </div>-->
+            <!--          </div>-->
+            <mat-menu class="menuBoutonSl" #boutonSL>
+              <button (click)="openDialogFraisDeChantier(sublot.id);currentSousLotId = sublot.id"mat-button color="primary" >
+                <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
+                Importer un ouvrage
+              </button>
+              <button mat-button color="warn" *ngIf="lotFraisDeChantier"
+                      (click)="deleteSousLot(sublot.id)">
+                <!--                  (click)="handleSousLotClick(sublot.id); currentLot = lot; deleteSousLot(sublot.id)">-->
+                Effacer ce sous-lot
+              </button>
+            </mat-menu>
+          </div>
+          <div class="container-ouvrage-frais-chantier" *ngFor="let ouvrage of sublot.OuvrageDuDevis"
+               [hidden]="hiddenChildren.get(sublot.id)">
+            <div>
+              <div class="ouvrage-frais-chantier" *ngIf="ouvrage.SousLotOuvrage">
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">Id</span>
+                  <span class="designation-ouvrage-frais-chantier">{{ouvrage.id}}</span>
+                </div>
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">Qte</span>
+                  <mat-form-field appearance="legacy"
+                                                                                   [formGroup]="myFormGroup"
+                                                                                   id="quantity-ouvrage-frias-de-chantier">
+                                  <input formControlName="quantityOuvrage" matInput required
+                                         [placeholder]="ouvrage.SousLotOuvrage.quantityOuvrage.toString()"
+                                         (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lotFraisDeChantier, prixOuvrageFraisDeChantier)">
+                         </mat-form-field>
+                </div>
+
+
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">Désignation</span>
+                  <span class="designation-ouvrage-frais-chantier">{{ouvrage.designation}}</span>
+                </div>
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">Bénéfice</span>
+                  <span class="designation-ouvrage-frais-chantier">{{ouvrage.benefice}}</span>
+                </div>
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">Aléas</span>
+                  <span class="designation-ouvrage-frais-chantier">{{ouvrage.aleas}}</span>
+                </div>
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">Unité</span>
+                  <span class="designation-ouvrage-frais-chantier">{{ouvrage.unite}}</span>
+                </div>
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">U/Ratio</span>
+                  <span class="designation-ouvrage-frais-chantier">{{ouvrage.uRatio}}</span>
+                </div>
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">Ratio</span>
+                  <span class="designation-ouvrage-frais-chantier">{{ouvrage.ratio}}</span>
+                </div>
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">Total DS HT</span>
+                  <span
+                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixOuvrage | number: '1.2-2'}}
+                    €</span>
+                </div>
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">PU DS HT</span>
+                  <span
+                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniHT | number: '1.2-2'}}
+                    €</span>
+                </div>
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">Prix Equilibre HT</span>
+                  <span
+                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixEquiHT | number: '1.2-2'}}
+                    €</span>
+                </div>
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">Prix Calculé HT</span>
+                  <span
+                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixCalcHT | number: '1.2-2'}}
+                    €</span>
+                </div>
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">PU Vente HT</span>
+                  <span
+                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniVenteHT | number: '1.2-2'}}
+                    €</span>
+                </div>
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">Prix Vente HT</span>
+                  <span class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixVenteHT | number: '1.2-2'}} €</span>
+                </div>
+                <div>
+                  <span class="designation-ouvrage-frais-chantier">
+                  <mat-icon [matMenuTriggerFor]="boutonOuv">more_vert</mat-icon>
+                <mat-menu class="menuBoutonSl" #boutonOuv >
+                  <button mat-button color="primary" routerLink="/sousDetailPrix/{{ouvrage.id}}">
+                    Voir le detail de l'ouvrage
+                  </button>
+                  <button mat-button color="warn" (click)="deleteOuvrageDuDevis(ouvrage.id)">
+                    Effacer cet ouvrage
+                  </button>
+                </mat-menu>
+
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--            &lt;!&ndash;            <div *ngIf="ouvrage && ouvrage.SousLotOuvrage && ouvrage.SousLotOuvrage.SousLotId === sublot.id">&ndash;&gt;-->
+        <!--            <div class="ouvrage" *ngIf="ouvrage && ouvrage.id && ouvrage.designation">-->
+        <!--              <div class="ouvrage-headers">-->
+        <!--                <div class="ouvrage-header-description">-->
+
+        <!--                  <span>Id</span> <span>Désignation</span> <span>Bénéfice</span>-->
+        <!--                  <span>Aléas</span> <span>Unité</span>-->
+        <!--                  <span>Ratio</span> <span>U Ratio</span>-->
+        <!--                  <span>Quantité</span>-->
+        <!--                  <span>Prix</span>-->
+        <!--                </div>-->
+        <!--                <div class="ouvrage-header-detail">-->
+        <!--                  <span>{{ ouvrage.id | number }} </span>-->
+        <!--                  <span>{{ ouvrage.designation  }}</span>-->
+        <!--                  <span>{{ ouvrage.benefice | number }}</span>-->
+        <!--                  <span>{{ ouvrage.aleas | number }}</span>-->
+        <!--                  <span>{{ ouvrage.unite | titlecase }}</span>-->
+        <!--                  <span>{{ ouvrage.ratio | number }}</span>-->
+        <!--                  <span>{{ ouvrage.uRatio }}</span>-->
+        <!--                  <mat-form-field appearance="legacy" [formGroup]="myFormGroup">-->
+        <!--                    <mat-label>Quantité</mat-label>-->
+        <!--                    <input formControlName="quantityOuvrage" matInput required-->
+        <!--                           (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lotFraisDeChantier, prixOuvrageFraisDeChantier)">-->
+        <!--                  </mat-form-field>-->
+        <!--                  <span>{{ ouvrage.SousLotOuvrage?.quantityOuvrage }}</span>-->
+        <!--                  <span>{{ ouvrage.SousLotOuvrage?.prixOuvrage }}</span>-->
+        <!--                </div>-->
+        <!--                &lt;!&ndash;                </div>&ndash;&gt;-->
+        <!--              </div>-->
+
+
+        <!--                </div>-->
+        <!--              </div>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <!--        </div>-->
+
+
+        <!--      </div>-->
+        <!--    </div>-->
+
+
       </div>
-      <mat-menu class="menuBoutonSl" #boutonLOT>
-        <button mat-flat-button *ngIf="lotFraisDeChantier"
-                (click)="showForm = !showForm; isLot = true; curentLotId= lotFraisDeChantier.id">
-          <!--                (click)="handleLotClick(lotFraisDeChantier.id); currentLot = lotFraisDeChantier;toggleForm()">-->
-          Créer un sous-lot
-        </button>
+      <!--      </div>-->
+    </mat-tab>
 
-      </mat-menu>
 
-      <div *ngFor="let sublot of lotFraisDeChantier.SousLots" [hidden]="expandedLotId !== lotFraisDeChantier.id">
-        <div *ngIf="sublot">
+    <mat-tab class="devis" label="Devis" *ngIf="lotFraisDeChantier !== undefined ">
+      <button class="button" mat-flat-button (click)="showForm = true; isLot=false">Créer un lot</button>
+      <h3>Total : {{this.devis.debourseSecTotal}} €</h3>
+      <div class="totaux-header">
+        <div class="flex-column">
+          <div class="flex-row">
+            <p class="totaux-header-designation">Total déboursé sec </p>
+            <p class="totaux-header-result">{{this.devis.debourseSecTotal | number: '1.2-2'}}  €</p>
+          </div>
+          <p class="subtotaux-header">Déboursé sec</p>
+        </div>
+
+
+        <div class="flex-column">
+          <p class="totaux-header-designation">Prix d'equilibre</p>
+          <!--        <p class="totaux-header-result">{{this.sommePrixEquilibre()| number: '1.2-2'}} €</p>-->
+          <p class="totaux-header-result">{{this.devis.prixEquiHT | number: '1.2-2'}} €</p>
+          <p class="subtotaux-header">Equilibre</p>
+
+        </div>
+
+        <div class="flex-column">
+          <div class="flex-row">
+            <p class="totaux-header-designation">Bénefice total calculé </p>
+            <p class="totaux-header-result">{{this.devis.beneficeInEuro}}</p>
+          </div>
+
+          <div class="flex-row">
+            <p class="totaux-header-designation">Aléas total calculé </p>
+            <p class="totaux-header-result">{{this.devis.aleasInEuro}}</p>
+          </div>
+
+          <div class="flex-row">
+            <p class="totaux-header-designation">Prix calculé HT </p>
+            <p class="totaux-header-result">{{this.devis.prixCalcHT}}</p>
+          </div>
+          <p class="subtotaux-header">Calculé</p>
+
+        </div>
+
+        <div class="flex-column">
+          <div class="flex-row">
+            <p class="totaux-header-designation">B&A total</p>
+            <p class="totaux-header-result">{{this.devis.beneficeAleasTotal}}</p>
+
+          </div>
+
+          <div class="flex-row">
+            <p class="totaux-header-designation">Total prix de vente HT </p>
+            <!--          <p class="totaux-header-result">{{coutTotal()| number : '1.2-2'}} €</p>-->
+            <p class="totaux-header-result">{{devis.prixVenteHT}} €</p>
+            <!--          <p class="totaux-header-result">{{calculateTotal() }} €</p>-->
+          </div>
+          <p class="subtotaux-header">Vente</p>
+
+        </div>
+
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" [hidden]="!showForm">
+        <!-- Formulaire avec champ de saisie et bouton de validation -->
+        <mat-form-field appearance="outline" color="primary">
+          <mat-label>Designation</mat-label>
+          <input matInput formControlName="designation" placeholder="Entrer le nom."/>
+        </mat-form-field>
+        <button mat-flat-button type="submit">Valider</button>
+      </form>
+      <div *ngFor="let lot of testLots">
+        <div class="lot" *ngIf="lot">
+          <button class="btn" *ngIf="lot.SousLots && lot.SousLots.length"
+                  (click)="setExpandedLotId(lot.id)">
+            <mat-icon>expand_more</mat-icon>
+            <span>Lot N°: {{ lot.id | number }}</span>
+          </button>
+          <span class="designation">{{ lot.designation | titlecase }}</span>
+          <!--        <span class="designation"> prix du lot{{ lot.prix }}</span>-->
+          <mat-icon [matMenuTriggerFor]="boutonLOT">more_vert</mat-icon>
+        </div>
+        <mat-menu class="menuBoutonSl" #boutonLOT>
+          <button mat-flat-button *ngIf="lot" (click)="curentLotId = lot.id;isLot = true;showForm = !showForm">Créer un
+            <!--        <button mat-flat-button *ngIf="lot" (click)="handleLotClick(lot.id); currentLot = lot;toggleForm()">Créer un-->
+            sous-lot
+          </button>
+          <button mat-menu-item class="buttonSup" *ngIf="lot"
+                  (click)="deleteLot(lot.id)">
+            <!--                (click)="handleLotClick(lot.id); currentLot = lot;deleteLot(lot.id)">-->
+            Effacer ce lot
+          </button>
+        </mat-menu>
+
+        <div *ngFor="let sublot of lot.SousLots" [hidden]="expandedLotId !== lot.id">
+          <!--        <div *ngIf="sublot.LotSousLot && sublot.LotSousLot.LotId === lot.id">-->
           <div class="sousLot">
             <div class="sous-lot-headers">
-              <button class="btn">
-                <!--              <button  class="btn" (click)="toggleChildren(lotFraisDeChantier)">-->
-                <!--              <button *ngIf="hasOuvrages(sublot)" class="btn" (click)="toggleChildren(lotFraisDeChantier)">-->
+              <button *ngIf="sublot.OuvrageDuDevis && sublot.OuvrageDuDevis.length" class="btn">
+
+                <!--            <button *ngIf="hasOuvrages(sublot)" class="btn">-->
                 <mat-icon>expand_more</mat-icon>
                 <span>Sous-lot N°: {{ sublot.id | number }}</span>
               </button>
               <span
                 class="designation">{{ sublot.designation | uppercase }}</span>
-              <span> Prix du sous lot{{ sublot.prix | number }}</span>
+              <!--            <span> Prix du sous lot{{ sublot.prix | number }}</span>-->
               <mat-icon [matMenuTriggerFor]="boutonSL">more_vert</mat-icon>
             </div>
           </div>
 
 
-          <div *ngFor="let ouvrage of sublot.OuvrageDuDevis" [hidden]="hiddenChildren.get(sublot.id)">
-            <!--            <div *ngIf="ouvrage && ouvrage.SousLotOuvrage && ouvrage.SousLotOuvrage.SousLotId === sublot.id">-->
-            <div class="ouvrage" *ngIf="ouvrage && ouvrage.id && ouvrage.designation">
-              <div class="ouvrage-headers">
-                <div class="ouvrage-header-description">
+          <div *ngFor="let ouvrage of sublot.OuvrageDuDevis;" [hidden]="hiddenChildren.get(sublot.id)">
+            <div class="ouvrage border" *ngIf="ouvrage && ouvrage.id && ouvrage.designation">
+              <div class="ouvrage-header-description ">
+                <div class="flex-column">
+                  <p class="bold ">Id</p>
+                  <p routerLink="/sousDetailPrix/{{ouvrage.id}}">{{ ouvrage.id | number }}</p>
+                </div>
+                <div class="flex-column" *ngIf="ouvrage.SousLotOuvrage && ouvrage.SousLotOuvrage.quantityOuvrage">
+                  <mat-form-field [formGroup]="myFormGroup">
+                    <!--                  <p class="bold">Qte</p>-->
+                    <input type="number" formControlName="quantityOuvrage" matInput required
+                           [placeholder]="ouvrage.SousLotOuvrage.quantityOuvrage.toString()"
 
-                  <span>Id</span> <span>Désignation</span> <span>Bénéfice</span>
-                  <span>Aléas</span> <span>Unité</span>
-                  <span>Ratio</span> <span>U Ratio</span>
-                  <span>Quantité</span>
-                  <span>Prix</span>
-                </div>
-                <div class="ouvrage-header-detail">
-                  <span>{{ ouvrage.id | number }} </span>
-                  <span>{{ ouvrage.designation  }}</span>
-                  <span>{{ ouvrage.benefice | number }}</span>
-                  <span>{{ ouvrage.aleas | number }}</span>
-                  <span>{{ ouvrage.unite | titlecase }}</span>
-                  <span>{{ ouvrage.ratio | number }}</span>
-                  <span>{{ ouvrage.uRatio }}</span>
-                  <mat-form-field appearance="legacy" [formGroup]="myFormGroup">
-                    <mat-label>Quantité</mat-label>
-                    <input formControlName="quantityOuvrage" matInput required
-                           (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lotFraisDeChantier, prixOuvrageFraisDeChantier)">
+                           (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lot, prixOuvrage)">
                   </mat-form-field>
-                  <span>{{ ouvrage.SousLotOuvrage?.quantityOuvrage }}</span>
-                  <span>{{ ouvrage.SousLotOuvrage?.prixOuvrage }}</span>
+
                 </div>
-                <!--                </div>-->
+                <div class="flex-column">
+                  <p class="bold">Désignation</p>
+                  <p>{{ ouvrage.designation  }}</p>
+                </div>
+                <div class="flex-column">
+                  <p class="bold">Bénéfice</p>
+                  <p>{{ ouvrage.benefice  }}</p>
+                </div>
+                <div class="flex-column">
+                  <p class="bold">Aléas</p>
+                  <p>{{ ouvrage.aleas  }}</p>
+                </div>
+                <div class="flex-column">
+                  <p class="bold">Unité</p>
+                  <p>{{ ouvrage.unite  }}</p>
+                </div>
+                <div class="flex-column">
+                  <p class="bold">U Ratio</p>
+                  <p>{{ ouvrage.uRatio  }}</p>
+                </div>
+                <div class="flex-column">
+                  <p class="bold">Ratio</p>
+                  <p>{{ ouvrage.ratio  }}</p>
+                </div>
+                <mat-icon [matMenuTriggerFor]="boutonOuv">more_vert</mat-icon>
+              </div>
+              <div class="totaux-header">
+                <div class="flex-column">
+                  <div class="flex-row ">
+                    <p class="totaux-header-designation ">Déboursé sec HT</p>
+                    <p class="totaux-header-designation ">PU DS HT</p>
+                  </div>
+                  <div class="flex-row ">
+                    <p class="totaux-header-result ">{{ ouvrage.SousLotOuvrage?.prixOuvrage }}</p>
+                    <ng-container *ngFor="let item of prixOuvrage">
+                      <p *ngIf="item.id === ouvrage.id"
+                         class="totaux-header-result ">{{item.prix}}</p>
+                    </ng-container>
+
+                  </div>
+                </div>
+
+                <div class="flex-column">
+                  <p class="totaux-header-designation ">Prix HT équilibre</p>
+                  <p class="totaux-header-result">{{ouvrage.SousLotOuvrage?.prixEquiHT}} </p>
+                  <!--                <p *ngIf="ouvrage.SousLotOuvrage?.prixOuvrage" class="totaux-header-result ">{{this.prixEquilibreHT(ouvrage.SousLotOuvrage?.prixOuvrage)| number : '1.2-2'}}</p>-->
+                </div>
+
+                <div class="flex-column">
+                  <div class="flex-row">
+                    <p class="totaux-header-designation ">Prix calculé HT</p>
+                    <p class="totaux-header-designation ">PU calculé HT</p>
+                  </div>
+                  <div class="flex-row" *ngIf="ouvrage.SousLotOuvrage">
+
+                    <p
+                      class="totaux-header-result ">{{ouvrage.SousLotOuvrage.prixCalcHT | number : '1.2-2' }}</p>
+                    <p
+                      class="totaux-header-result ">{{ouvrage.SousLotOuvrage.prixUniCalcHT  | number : '1.2-2'}}
+                      €</p>
+                  </div>
+                </div>
+                <div class="flex-column">
+                  <div class="flex-row">
+                    <p class="totaux-header-designation ">PU vente HT</p>
+                    <p class="totaux-header-designation ">Prix vente HT</p>
+                  </div>
+                  <div class="flex-row " *ngIf="ouvrage.SousLotOuvrage">
+
+                    <p *ngIf="ouvrage.SousLotOuvrage"> {{ouvrage.SousLotOuvrage.prixUniVenteHT}}</p>
+
+                    <mat-form-field [formGroup]="myFormGroup">
+                      <input type="number" formControlName="quantityOuvrage" matInput required
+                             (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">
+                    </mat-form-field>
+
+                    <!--                  <input class="totaux-header-result " type="text"-->
+                    <!--                         (ngModelChange)="this.onPrixUnitaireCalculeHtChange($event,ouvrage.SousLotOuvrage?.id)" [value]="ouvrage.SousLotOuvrage.prixUniArrondi">-->
+                    <!--                  &lt;!&ndash;                         [value]="ouvrage.SousLotOuvrage.prixArrondi > 0 ? ouvrage.SousLotOuvrage.prixArrondi : this.sharedData.prixUnitaireCalculeHT(this.sharedData.prixCalculeHT(this.ouvrage.benefice, this.ouvrage.aleas, this.sharedData.prixEquilibreHT(ouvrage?.SousLotOuvrage.prixOuvrage)), ouvrage?.SousLotOuvrage.quantityOuvrage) | number : '1.2-2'">&ndash;&gt;-->
+                    <p
+                      class="totaux-header-result ">{{ ouvrage.SousLotOuvrage.prixVenteHT}}
+                    </p>
+
+
+                    <!--                    <p class="totaux-header-result ">{{ (ouvrage.SousLotOuvrage?.quantityOuvrage || 0) * this.getPrix(ouvrage)}}-->
+                    <!--                  </p>-->
+                  </div>
+                </div>
               </div>
               <div>
-                <div class="cout-header">
-                  <div class="cout-header-description">
-                    <span>Id</span>
-                    <span>Désignation</span>
-                    <span>Unité</span>
-                    <span>P U</span>
-                    <span>Fournisseur</span>
-                    <span>Remarque</span>
-                  </div>
-
-                  <div *ngFor="let ct of ouvrage.CoutDuDevis; first as isFirst">
-                    <!--                    <div *ngIf="ct && ct.OuvrageCout && ct.OuvrageCout.OuvrageId === ouvrage.id" class="cout">-->
-                    <div class="cout-header-detail">
-                      <span>{{ ct.id }}</span>
-                      <span>{{ ct.designation }}</span>
-                      <span>{{ ct.unite }}</span>
-                      <span>{{ ct.prixUnitaire }}</span>
-                      <!--                        <span>{{ ct.fournisseur }}</span>-->
-                      <!--                        <span>{{ ct.remarque }}</span>-->
-                    </div>
-                    <!--                    </div>-->
-                  </div>
-                </div>
               </div>
+
             </div>
+
+
+            <mat-menu class="menuBoutonSl" #boutonOuv>
+              <button mat-menu-item class="buttonSup" *ngIf="lot" (click)="deleteOuvrageDuDevis(ouvrage.id)">
+                Effacer cet ouvrage
+              </button>
+            </mat-menu>
+
+
           </div>
-        </div>
-        <mat-menu class="menuBoutonSl" #boutonSL>
-          <button (click)="openDialogFraisDeChantier(sublot.id);currentSousLotId = sublot.id" mat-menu-item class="buttonImport">
-            <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
-            Importer un ouvrage
-          </button>
-          <button mat-menu-item class="buttonSup" *ngIf="lotFraisDeChantier"
-                  (click)="deleteSousLot(sublot.id)">
-            <!--                  (click)="handleSousLotClick(sublot.id); currentLot = lot; deleteSousLot(sublot.id)">-->
-            Effacer ce sous-lot
-          </button>
-        </mat-menu>
-
-      </div>
-    </div>
-
-
-  </mat-tab>
-
-
-
-
-  <mat-tab class="devis" label="Devis" *ngIf="lotFraisDeChantier !== undefined ">
-    <button class="button" mat-flat-button (click)="showForm = true; isLot=false">Créer un lot</button>
-    <h3>Total : {{this.devis.debourseSecTotal}} €</h3>
-    <div class="totaux-header">
-      <div class="flex-column">
-        <div class="flex-row">
-          <p class="totaux-header-designation">Total déboursé sec </p>
-          <p class="totaux-header-result">{{this.devis.debourseSecTotal | number: '1.2-2'}}  €</p>
-        </div>
-        <p class="subtotaux-header">Déboursé sec</p>
-      </div>
-
-
-      <div class="flex-column">
-        <p class="totaux-header-designation">Prix d'equilibre</p>
-<!--        <p class="totaux-header-result">{{this.sommePrixEquilibre()| number: '1.2-2'}} €</p>-->
-        <p class="totaux-header-result">{{this.devis.prixEquiHT | number: '1.2-2'}} €</p>
-        <p class="subtotaux-header">Equilibre</p>
-
-      </div>
-
-      <div class="flex-column">
-        <div class="flex-row">
-          <p class="totaux-header-designation">Bénefice total calculé </p>
-          <p class="totaux-header-result">{{this.devis.beneficeInEuro}}</p>
-        </div>
-
-        <div class="flex-row">
-          <p class="totaux-header-designation">Aléas total calculé </p>
-          <p class="totaux-header-result">{{this.devis.aleasInEuro}}</p>
-        </div>
-
-        <div class="flex-row">
-          <p class="totaux-header-designation">Prix calculé HT </p>
-          <p class="totaux-header-result">{{this.devis.prixCalcHT}}</p>
-        </div>
-        <p class="subtotaux-header">Calculé</p>
-
-      </div>
-
-      <div class="flex-column">
-        <div class="flex-row">
-          <p class="totaux-header-designation">B&A total</p>
-          <p class="totaux-header-result">{{this.devis.beneficeAleasTotal}}</p>
-
-        </div>
-
-        <div class="flex-row">
-          <p class="totaux-header-designation">Total prix de vente HT </p>
-          <!--          <p class="totaux-header-result">{{coutTotal()| number : '1.2-2'}} €</p>-->
-          <p class="totaux-header-result">{{devis.prixVenteHT}} €</p>
-<!--          <p class="totaux-header-result">{{calculateTotal() }} €</p>-->
-        </div>
-        <p class="subtotaux-header">Vente</p>
-
-      </div>
-
-    </div>
-
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" [hidden]="!showForm">
-      <!-- Formulaire avec champ de saisie et bouton de validation -->
-      <mat-form-field appearance="outline" color="primary">
-        <mat-label>Designation</mat-label>
-        <input matInput formControlName="designation" placeholder="Entrer le nom."/>
-      </mat-form-field>
-      <button mat-flat-button type="submit">Valider</button>
-    </form>
-    <div *ngFor="let lot of testLots">
-      <div class="lot" *ngIf="lot">
-        <button class="btn" *ngIf="lot.SousLots && lot.SousLots.length"
-                (click)="setExpandedLotId(lot.id)">
-          <mat-icon>expand_more</mat-icon>
-          <span>Lot N°: {{ lot.id | number }}</span>
-        </button>
-        <span class="designation">{{ lot.designation | titlecase }}</span>
-        <!--        <span class="designation"> prix du lot{{ lot.prix }}</span>-->
-        <mat-icon [matMenuTriggerFor]="boutonLOT">more_vert</mat-icon>
-      </div>
-      <mat-menu class="menuBoutonSl" #boutonLOT>
-        <button mat-flat-button *ngIf="lot" (click)="curentLotId = lot.id;isLot = true;showForm = !showForm">Créer un
-          <!--        <button mat-flat-button *ngIf="lot" (click)="handleLotClick(lot.id); currentLot = lot;toggleForm()">Créer un-->
-          sous-lot
-        </button>
-        <button mat-menu-item class="buttonSup" *ngIf="lot"
-                (click)="deleteLot(lot.id)">
-          <!--                (click)="handleLotClick(lot.id); currentLot = lot;deleteLot(lot.id)">-->
-          Effacer ce lot
-        </button>
-      </mat-menu>
-
-      <div *ngFor="let sublot of lot.SousLots" [hidden]="expandedLotId !== lot.id">
-        <!--        <div *ngIf="sublot.LotSousLot && sublot.LotSousLot.LotId === lot.id">-->
-        <div class="sousLot">
-          <div class="sous-lot-headers">
-            <button *ngIf="sublot.OuvrageDuDevis && sublot.OuvrageDuDevis.length" class="btn">
-
-              <!--            <button *ngIf="hasOuvrages(sublot)" class="btn">-->
-              <mat-icon>expand_more</mat-icon>
-              <span>Sous-lot N°: {{ sublot.id | number }}</span>
+          <mat-menu class="menuBoutonSl" #boutonSL>
+            <!--        <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
+            <button (click)="openDialog(sublot.id)" mat-menu-item class="buttonImport">
+              Importer un ouvrage
             </button>
-            <span
-              class="designation">{{ sublot.designation | uppercase }}</span>
-            <!--            <span> Prix du sous lot{{ sublot.prix | number }}</span>-->
-            <mat-icon [matMenuTriggerFor]="boutonSL">more_vert</mat-icon>
-          </div>
-        </div>
-
-
-        <div *ngFor="let ouvrage of sublot.OuvrageDuDevis;" [hidden]="hiddenChildren.get(sublot.id)">
-          <div class="ouvrage border" *ngIf="ouvrage && ouvrage.id && ouvrage.designation">
-            <div class="ouvrage-header-description ">
-              <div class="flex-column">
-                <p class="bold ">Id</p>
-                <p routerLink="/sousDetailPrix/{{ouvrage.id}}">{{ ouvrage.id | number }}</p>
-              </div>
-              <div class="flex-column" *ngIf="ouvrage.SousLotOuvrage && ouvrage.SousLotOuvrage.quantityOuvrage">
-                <mat-form-field [formGroup]="myFormGroup" >
-<!--                  <p class="bold">Qte</p>-->
-                  <input type="number" formControlName="quantityOuvrage" matInput required [placeholder]="ouvrage.SousLotOuvrage.quantityOuvrage.toString()"
-                         (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lot, prixOuvrage)">
-                </mat-form-field>
-
-              </div>
-              <div class="flex-column">
-                <p class="bold">Désignation</p>
-                <p>{{ ouvrage.designation  }}</p>
-              </div>
-              <div class="flex-column">
-                <p class="bold">Bénéfice</p>
-                <p>{{ ouvrage.benefice  }}</p>
-              </div>
-              <div class="flex-column">
-                <p class="bold">Aléas</p>
-                <p>{{ ouvrage.aleas  }}</p>
-              </div>
-              <div class="flex-column">
-                <p class="bold">Unité</p>
-                <p>{{ ouvrage.unite  }}</p>
-              </div>
-              <div class="flex-column">
-                <p class="bold">U Ratio</p>
-                <p>{{ ouvrage.uRatio  }}</p>
-              </div>
-              <div class="flex-column">
-                <p class="bold">Ratio</p>
-                <p >{{ ouvrage.ratio  }}</p>
-              </div>
-              <mat-icon [matMenuTriggerFor]="boutonOuv">more_vert</mat-icon>
-            </div>
-            <div class="totaux-header">
-              <div class="flex-column">
-                <div class="flex-row ">
-                  <p class="totaux-header-designation ">Déboursé sec HT</p>
-                  <p class="totaux-header-designation ">PU DS HT</p>
-                </div>
-                <div class="flex-row ">
-                  <p class="totaux-header-result ">{{ ouvrage.SousLotOuvrage?.prixOuvrage }}</p>
-                  <ng-container *ngFor="let item of prixOuvrage">
-                    <p *ngIf="item.id === ouvrage.id"
-                       class="totaux-header-result ">{{item.prix}}</p>
-                  </ng-container>
-
-                </div>
-              </div>
-
-              <div class="flex-column">
-                <p class="totaux-header-designation ">Prix HT équilibre</p>
-                <p class="totaux-header-result">{{ouvrage.SousLotOuvrage?.prixEquiHT}} </p>
-<!--                <p *ngIf="ouvrage.SousLotOuvrage?.prixOuvrage" class="totaux-header-result ">{{this.prixEquilibreHT(ouvrage.SousLotOuvrage?.prixOuvrage)| number : '1.2-2'}}</p>-->
-              </div>
-
-              <div class="flex-column">
-                <div class="flex-row">
-                  <p class="totaux-header-designation ">Prix calculé HT</p>
-                  <p class="totaux-header-designation ">PU calculé HT</p>
-                </div>
-                <div class="flex-row" *ngIf="ouvrage.SousLotOuvrage">
-
-                  <p
-                    class="totaux-header-result ">{{ouvrage.SousLotOuvrage.prixCalcHT | number : '1.2-2' }}</p>
-                  <p
-                    class="totaux-header-result ">{{ouvrage.SousLotOuvrage.prixUniCalcHT  | number : '1.2-2'}}
-                    €</p>
-                </div>
-              </div>
-              <div class="flex-column">
-                <div class="flex-row">
-                  <p class="totaux-header-designation ">PU vente HT</p>
-                  <p class="totaux-header-designation ">Prix vente HT</p>
-                </div>
-                <div class="flex-row " *ngIf="ouvrage.SousLotOuvrage">
-
-                  <p *ngIf="ouvrage.SousLotOuvrage"> {{ouvrage.SousLotOuvrage.prixUniArrondi}}</p>
-
-                  <mat-form-field [formGroup]="myFormGroup" >
-                    <input type="number" formControlName="quantityOuvrage" matInput required
-                           (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">
-                  </mat-form-field>
-
-<!--                  <input class="totaux-header-result " type="text"-->
-<!--                         (ngModelChange)="this.onPrixUnitaireCalculeHtChange($event,ouvrage.SousLotOuvrage?.id)" [value]="ouvrage.SousLotOuvrage.prixUniArrondi">-->
-<!--                  &lt;!&ndash;                         [value]="ouvrage.SousLotOuvrage.prixArrondi > 0 ? ouvrage.SousLotOuvrage.prixArrondi : this.sharedData.prixUnitaireCalculeHT(this.sharedData.prixCalculeHT(this.ouvrage.benefice, this.ouvrage.aleas, this.sharedData.prixEquilibreHT(ouvrage?.SousLotOuvrage.prixOuvrage)), ouvrage?.SousLotOuvrage.quantityOuvrage) | number : '1.2-2'">&ndash;&gt;-->
-                  <p
-                    class="totaux-header-result ">{{ ouvrage.SousLotOuvrage.prixArrondi}}
-                  </p>
-
-
-<!--                    <p class="totaux-header-result ">{{ (ouvrage.SousLotOuvrage?.quantityOuvrage || 0) * this.getPrix(ouvrage)}}-->
-<!--                  </p>-->
-                </div>
-              </div>
-            </div>
-            <div>
-            </div>
-
-          </div>
-
-
-          <mat-menu class="menuBoutonSl" #boutonOuv>
-            <button mat-menu-item class="buttonSup" *ngIf="lot" (click)="deleteOuvrageDuDevis(ouvrage.id)">
-              Effacer cet ouvrage
+            <button mat-menu-item class="buttonSup" *ngIf="lot" (click)="deleteSousLot(sublot.id)">
+              Effacer ce sous-lot
             </button>
           </mat-menu>
 
-
         </div>
-        <mat-menu class="menuBoutonSl" #boutonSL>
-          <!--        <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
-          <button (click)="openDialog(sublot.id)" mat-menu-item class="buttonImport">
-            Importer un ouvrage
-          </button>
-          <button mat-menu-item class="buttonSup" *ngIf="lot" (click)="deleteSousLot(sublot.id)">
-            Effacer ce sous-lot
-          </button>
-        </mat-menu>
+
+      </div>
+      <!--    </div>-->
+
+    </mat-tab>
+
+
+    <mat-tab label="Paramètre de chantier" *ngIf="lotFraisDeChantier !== undefined">
+      <div class="bigContainerParams">
+        <div class="ContainerParamsFraisDevis">
+          <mat-card class="cardParams">
+            <mat-card-header>
+              <mat-card-title>Frais de chantier</mat-card-title>
+
+              <!--        <mat-card-subtitle>Start</mat-card-subtitle>-->
+            </mat-card-header>
+            <hr>
+            <mat-card-content>
+              <div class="containerParams">
+                <div class="paramsSub">
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Bénéfice</mat-card-subtitle>
+                    <p>{{this.resultBeneficeFraisDeChantier | number : '1.2-2'}} %</p>
+                  </div>
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Aléas</mat-card-subtitle>
+                    <p>{{this.resultAleasFraisDeChantier | number : '1.2-2'}} %</p>
+                  </div>
+                </div>
+                <div class="paramsSub">
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Total</mat-card-subtitle>
+                    <p>{{this.lotFraisDeChantier.prix | number : '1.2-2'}} €</p>
+                  </div>
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Bénéfice & Aléas</mat-card-subtitle>
+                    <p>{{this.resultAleasFraisDeChantier + this.resultBeneficeFraisDeChantier  | number : '1.2-2'}}
+                      %</p>
+                  </div>
+                </div>
+
+              </div>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="cardParams">
+            <mat-card-header>
+              <mat-card-title>Devis</mat-card-title>
+            </mat-card-header>
+            <hr>
+            <mat-card-content>
+              <div class="containerParams">
+                <div class="paramsSub">
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Bénéfice</mat-card-subtitle>
+                    <p>{{this.resultBeneficeLots | number : '1.2-2'}} %</p>
+                  </div>
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Aléas</mat-card-subtitle>
+                    <p>{{this.resultAleasLots | number : '1.2-2'}} %</p>
+                  </div>
+                </div>
+                <div class="paramsSub">
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Total</mat-card-subtitle>
+                    <p>{{this.devis.debourseSecTotal | number : '1.2-2'}} €</p>
+                  </div>
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Bénéfice & Aléas</mat-card-subtitle>
+                    <p>{{this.resultAleasLots + this.resultBeneficeLots  | number : '1.2-2'}} %</p>
+                  </div>
+                </div>
+
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div class="ContainerParamsFraisDevis">
+          <mat-card class="cardParams">
+            <mat-card-header>
+              <mat-card-title>Total</mat-card-title>
+            </mat-card-header>
+            <hr>
+            <mat-card-content>
+              <div class="containerParams">
+                <div class="paramsSub">
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Total Dépense</mat-card-subtitle>
+                    <p>{{this.devis.totalDepense | number : '1.2-2'}} €</p>
+                  </div>
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Cout Total</mat-card-subtitle>
+                    <p>{{this.devis.coutTotal | number : '1.2-2'}} €</p>
+                  </div>
+                </div>
+                <div class="paramsSub">
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Bénefice</mat-card-subtitle>
+                    <p>{{this.devis.moyenneBenefice | number : '1.2-2'}} %</p>
+                  </div>
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Aléas</mat-card-subtitle>
+                    <p>{{this.devis.moyenneAleas | number : '1.2-2' }} %</p>
+                  </div>
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Bénéfice & Aléas</mat-card-subtitle>
+                    <p>{{this.devis.moyenneBeneficeAleas | number : '1.2-2'}} %</p>
+                  </div>
+
+                </div>
+
+                <div class="paramsSub">
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Frais généraux</mat-card-subtitle>
+                    <p>{{this.devis.fraisGeneraux | number : '1.2-2'}} €</p>
+                  </div>
+                  <div class="itemsParams">
+                    <mat-card-subtitle>Coéfficient d'équilibre</mat-card-subtitle>
+                    <p>{{this.devis.coeffEquilibre | number : '1.2-2'}}</p>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
 
       </div>
 
-    </div>
-    <!--    </div>-->
-
-  </mat-tab>
-
-
-  <mat-tab label="Paramètre de chantier" *ngIf="lotFraisDeChantier !== undefined">
-    <div class="bigContainerParams">
-      <div class="ContainerParamsFraisDevis">
-        <mat-card class="cardParams">
-          <mat-card-header>
-            <mat-card-title>Frais de chantier</mat-card-title>
-
-            <!--        <mat-card-subtitle>Start</mat-card-subtitle>-->
-          </mat-card-header>
-          <hr>
-          <mat-card-content>
-            <div class="containerParams">
-              <div class="paramsSub">
-                <div class="itemsParams">
-                  <mat-card-subtitle>Bénéfice</mat-card-subtitle>
-                  <p>{{this.resultBeneficeFraisDeChantier | number : '1.2-2'}} %</p>
-                </div>
-                <div class="itemsParams">
-                  <mat-card-subtitle>Aléas</mat-card-subtitle>
-                  <p>{{this.resultAleasFraisDeChantier | number : '1.2-2'}} %</p>
-                </div>
-              </div>
-              <div class="paramsSub">
-                <div class="itemsParams">
-                  <mat-card-subtitle>Total</mat-card-subtitle>
-                  <p>{{this.lotFraisDeChantier.prix | number : '1.2-2'}} €</p>
-                </div>
-                <div class="itemsParams">
-                  <mat-card-subtitle>Bénéfice & Aléas</mat-card-subtitle>
-                  <p>{{this.resultAleasFraisDeChantier + this.resultBeneficeFraisDeChantier  | number : '1.2-2'}} %</p>
-                </div>
-              </div>
-
-            </div>
-          </mat-card-content>
-        </mat-card>
-
-        <mat-card class="cardParams">
-          <mat-card-header>
-            <mat-card-title>Devis</mat-card-title>
-          </mat-card-header>
-          <hr>
-          <mat-card-content>
-            <div class="containerParams">
-              <div class="paramsSub">
-                <div class="itemsParams">
-                  <mat-card-subtitle>Bénéfice</mat-card-subtitle>
-                  <p>{{this.resultBeneficeLots | number : '1.2-2'}} %</p>
-                </div>
-                <div class="itemsParams">
-                  <mat-card-subtitle>Aléas</mat-card-subtitle>
-                  <p>{{this.resultAleasLots | number : '1.2-2'}} %</p>
-                </div>
-              </div>
-              <div class="paramsSub">
-                <div class="itemsParams">
-                  <mat-card-subtitle>Total</mat-card-subtitle>
-                  <p>{{this.devis.debourseSecTotal | number : '1.2-2'}} €</p>
-                </div>
-                <div class="itemsParams">
-                  <mat-card-subtitle>Bénéfice & Aléas</mat-card-subtitle>
-                  <p>{{this.resultAleasLots + this.resultBeneficeLots  | number : '1.2-2'}} %</p>
-                </div>
-              </div>
-
-            </div>
-
-          </mat-card-content>
-        </mat-card>
+      <div *ngIf="lotFraisDeChantier !== undefined">
+        <!--      <p>Benefice theorique moyenne des benefices des ouvrages des lot du devis valeur en %, valeur en E </p>-->
+        <!--      <h2>{{this.resultBeneficeLots}}</h2>-->
+        <!--      <p>Aleas theorique moyenne des aleas des ouvrages des lot des devis, valeur en %, valeur en E </p>-->
+        <!--      <h2>{{this.resultAleasLots}}</h2>-->
+        <!--      <p>Benefice theorique moyenne des benefices des ouvrages du Frais de chantier valeur en %, valeur en E </p>-->
+        <!--      <h2>{{this.resultBeneficeFraisDeChantier}}</h2>-->
+        <!--      <p>Aleas theorique moyenne des aleas des ouvrages du Frais de chantier, valeur en %, valeur en E </p>-->
+        <!--      <h2>{{this.resultAleasFraisDeChantier}}</h2>-->
+        <!--      <p>Frais de chantier total de l'onglet frais de chantier = </p>-->
+        <!--      <h2>{{lotFraisDeChantier.prix}}</h2>-->
+        <!--      <p>Frais generaux 20% total deboursés sec + frais de chantier</p>-->
+        <!--      <h2>{{fraisGeneraux()}}</h2>-->
+        <!--      <p> total deboursés sec (total devis) </p>-->
+        <!--      <h2>{{prixDevis}}</h2>-->
+        <!--      <p>total depense total debousés sec + frais de chantier</p>-->
+        <!--      <h2> {{totalDepense()}}</h2>-->
+        <!--      <p>cout total total debourses sec + frais de chantier + frais generaux</p>-->
+        <!--      <h2>{{coutTotal()}}</h2>-->
+        <!--      <p> coefficient d'equilibre cout total / total deboursé sec /</p>-->
+        <!--      <h2>{{coefEquilibre()}}</h2>-->
       </div>
-      <div class="ContainerParamsFraisDevis">
-        <mat-card class="cardParams">
-          <mat-card-header>
-            <mat-card-title>Total</mat-card-title>
-          </mat-card-header>
-          <hr>
-          <mat-card-content>
-            <div class="containerParams">
-              <div class="paramsSub">
-                <div class="itemsParams">
-                  <mat-card-subtitle>Total Dépense</mat-card-subtitle>
-                  <p>{{this.devis.totalDepense | number : '1.2-2'}} €</p>
-                </div>
-                <div class="itemsParams">
-                  <mat-card-subtitle>Cout Total</mat-card-subtitle>
-                  <p>{{this.devis.coutTotal | number : '1.2-2'}} €</p>
-                </div>
-              </div>
-              <div class="paramsSub">
-                <div class="itemsParams">
-                  <mat-card-subtitle>Bénefice</mat-card-subtitle>
-                  <p>{{this.devis.moyenneBenefice | number : '1.2-2'}} %</p>
-                </div>
-                <div class="itemsParams">
-                  <mat-card-subtitle>Aléas</mat-card-subtitle>
-                  <p>{{this.devis.moyenneAleas | number : '1.2-2' }} %</p>
-                </div>
-                <div class="itemsParams">
-                  <mat-card-subtitle>Bénéfice & Aléas</mat-card-subtitle>
-                  <p>{{this.devis.moyenneBeneficeAleas | number : '1.2-2'}} %</p>
-                </div>
-
-              </div>
-
-              <div class="paramsSub">
-                <div class="itemsParams">
-                  <mat-card-subtitle>Frais généraux</mat-card-subtitle>
-                  <p>{{this.devis.fraisGeneraux | number : '1.2-2'}} €</p>
-                </div>
-                <div class="itemsParams">
-                  <mat-card-subtitle>Coéfficient d'équilibre</mat-card-subtitle>
-                  <p>{{this.devis.coeffEquilibre | number : '1.2-2'}}</p>
-                </div>
-
-              </div>
-
-            </div>
-
-          </mat-card-content>
-        </mat-card>
-      </div>
-
-    </div>
-
-    <div *ngIf="lotFraisDeChantier !== undefined">
-<!--      <p>Benefice theorique moyenne des benefices des ouvrages des lot du devis valeur en %, valeur en E </p>-->
-<!--      <h2>{{this.resultBeneficeLots}}</h2>-->
-<!--      <p>Aleas theorique moyenne des aleas des ouvrages des lot des devis, valeur en %, valeur en E </p>-->
-<!--      <h2>{{this.resultAleasLots}}</h2>-->
-<!--      <p>Benefice theorique moyenne des benefices des ouvrages du Frais de chantier valeur en %, valeur en E </p>-->
-<!--      <h2>{{this.resultBeneficeFraisDeChantier}}</h2>-->
-<!--      <p>Aleas theorique moyenne des aleas des ouvrages du Frais de chantier, valeur en %, valeur en E </p>-->
-<!--      <h2>{{this.resultAleasFraisDeChantier}}</h2>-->
-<!--      <p>Frais de chantier total de l'onglet frais de chantier = </p>-->
-<!--      <h2>{{lotFraisDeChantier.prix}}</h2>-->
-<!--      <p>Frais generaux 20% total deboursés sec + frais de chantier</p>-->
-<!--      <h2>{{fraisGeneraux()}}</h2>-->
-<!--      <p> total deboursés sec (total devis) </p>-->
-<!--      <h2>{{prixDevis}}</h2>-->
-<!--      <p>total depense total debousés sec + frais de chantier</p>-->
-<!--      <h2> {{totalDepense()}}</h2>-->
-<!--      <p>cout total total debourses sec + frais de chantier + frais generaux</p>-->
-<!--      <h2>{{coutTotal()}}</h2>-->
-<!--      <p> coefficient d'equilibre cout total / total deboursé sec /</p>-->
-<!--      <h2>{{coefEquilibre()}}</h2>-->
-    </div>
-  </mat-tab>
+    </mat-tab>
 
 
-</mat-tab-group>
+  </mat-tab-group>
 
 </ng-template>

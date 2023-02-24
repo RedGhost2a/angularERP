@@ -3,6 +3,7 @@ import {SousDetailPrixService} from "./sous-detail-prix.service";
 import {SousLotOuvrageService} from "./sous-lot-ouvrage.service";
 import {OuvrageDuDevis} from "../_models/ouvrage-du-devis";
 import {SousLotOuvrage} from "../_models/sousLotOuvrage";
+import {Ouvrage} from "../_models/ouvrage";
 
 @Injectable({
   providedIn: 'root'
@@ -11,17 +12,10 @@ import {SousLotOuvrage} from "../_models/sousLotOuvrage";
 //service de partage de données entre les diffs composants avec une methode get et set
 export class DataSharingService {
   lotId!: number
-  coefEqui!: number;
-  prixUnitaireCalculeHt: number = 0;
-  prixUniHT!:number;
-  prixEquiHT!:number;
-  prixEquiUniHT!:number;
-  beneficeInEuro!:number;
-  aleasInEuro!:number;
-  prixCalcHT!:number;
-  prixUniCalcHT!:number
+  coefEqui!: number
+  ouvrage!:Ouvrage
+  entrepriseId!:number;
 
-  // private prixEquilibres: number[] = [];
 
   constructor(private sousDetailPrixService: SousDetailPrixService,
               private sousLotOuvrageService: SousLotOuvrageService) {
@@ -32,60 +26,38 @@ export class DataSharingService {
   ngOnInit() {
   }
 
-
-  // prixUnitaireHT(prixOuvrage:any, quantiteOuvrage:any):void{
-  //   if(prixOuvrage !== undefined && quantiteOuvrage !== undefined){
-  //      this.prixUniHT = prixOuvrage / quantiteOuvrage
-  //   }
-  // }
-  prixUnitaireHT(sousLotOuvrage: SousLotOuvrage):void{
+  async SetPrixOuvrage(prix :{prixOuvrage:number } , sousLotOuvrage:SousLotOuvrage){
+    sousLotOuvrage.prixOuvrage = prix.prixOuvrage
+  }
+  async prixUnitaireHT(sousLotOuvrage: SousLotOuvrage){
+    console.log("prix unitaire",sousLotOuvrage.prixOuvrage, sousLotOuvrage.quantityOuvrage)
     sousLotOuvrage.prixUniHT = sousLotOuvrage.prixOuvrage/ sousLotOuvrage.quantityOuvrage
   }
 
-  prixEquilibreHT(sousLotOuvrage: SousLotOuvrage): void{
-    console.log("prixEquilibreHT")
+   async prixEquilibreHT(sousLotOuvrage: SousLotOuvrage){
+    this.coefEqui = Number(localStorage.getItem("coef"));
     sousLotOuvrage.prixEquiHT = sousLotOuvrage?.prixOuvrage * this.coefEqui
+    console.log("prixEquilibreHT", sousLotOuvrage.prixEquiHT )
   }
 
-  // prixUnitaireEquilibre(quantityOuvrage:any):void{
-  //   this.prixEquiUniHT = this.prixEquiHT /quantityOuvrage
-  // }
-  prixUnitaireEquilibre(sousLotOuvrage : SousLotOuvrage):void{
+  async prixUnitaireEquilibre(sousLotOuvrage : SousLotOuvrage){
     sousLotOuvrage.prixUniEquiHT = sousLotOuvrage.prixEquiHT / sousLotOuvrage.quantityOuvrage
   }
-  // beneficePercentToEuro(benefice:number):void{
-  //   this.beneficeInEuro = this.prixEquiHT * (benefice / 100)
-  // }
-  // aleasPercentToEuro(aleas:number):void{
-  //   this.aleasInEuro = this.prixEquiHT * (aleas / 100)
-  // }
-  beneficePercentToEuro(sousLotOuvrage : SousLotOuvrage,benefice:number):void{
+  async beneficePercentToEuro(sousLotOuvrage : SousLotOuvrage,benefice:number){
     sousLotOuvrage.beneficeInEuro = sousLotOuvrage.prixEquiHT * (benefice / 100)
     }
 
-    aleasPercentToEuro(sousLotOuvrage : SousLotOuvrage, aleas:number):void{
+  async  aleasPercentToEuro(sousLotOuvrage : SousLotOuvrage, aleas:number){
       sousLotOuvrage.aleasInEuro = sousLotOuvrage.prixEquiHT * (aleas / 100)
 
     }
 
-  // prixCalculeHT(benefice: number, aleas: number): void {
-  //   this.prixCalcHT = this.prixEquiHT * (1 + (benefice / 100) + (aleas / 100))
-  // }
-  prixCalculeHT(sousLotOuvrage : SousLotOuvrage,benefice: number, aleas: number): void {
+  async prixCalculeHT(sousLotOuvrage : SousLotOuvrage,benefice: number, aleas: number) {
     sousLotOuvrage.prixCalcHT = sousLotOuvrage.prixEquiHT * (1 + (benefice / 100) + (aleas / 100))
   }
 
-  // prixUnitaireCalculeHT(quantityOuvrage: any): void {
-  //   this.prixUniCalcHT = this.prixCalcHT / quantityOuvrage
-  // }
-  prixUnitaireCalculeHT(sousLotOuvrage : SousLotOuvrage): void {
+  async prixUnitaireCalculeHT(sousLotOuvrage : SousLotOuvrage) {
     sousLotOuvrage.prixUniCalcHT = sousLotOuvrage.prixCalcHT / sousLotOuvrage.quantityOuvrage
   }
 
-//   onPrixUnitaireCalculeHtChange(event: any, sousLotOuvrage: SousLotOuvrage | undefined) {
-//     this.prixUnitaireCalculeHt = event;
-//     this.sousLotOuvrageService.update(event, sousLotOuvrage)
-//
-// // Traitement supplémentaire pour la nouvelle valeur modifiée
-//   }
 }

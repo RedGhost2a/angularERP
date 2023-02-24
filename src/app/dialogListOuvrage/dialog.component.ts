@@ -3,7 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 
 @Component({
-  selector: 'app-dialog',
+  selector: 'app-dialogListOuvrage',
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss']
 })
@@ -38,7 +38,7 @@ export class DialogComponent implements OnInit {
   }
 
   closeDialog() {
-    // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialog
+    // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
     this.dialogRef.close({selectedOuvrageIds: this.selectedOuvrageIds});
   }
 
@@ -56,7 +56,7 @@ export class DialogComponent implements OnInit {
       // Utilisez la méthode filter
       filteredData = filteredData.filter(obj => obj.designation.toLowerCase().includes(filterValue.trim().toLowerCase()));
 
-      // Affectez la valeur de filteredData à la propriété data 
+      // Affectez la valeur de filteredData à la propriété data
       this.data = filteredData;
     }
   }
