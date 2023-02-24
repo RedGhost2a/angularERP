@@ -1,4 +1,5 @@
 import {NgModule, OnInit} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule, Routes} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
@@ -73,6 +74,12 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import { DialogListCoutComponent } from './dialog-list-cout/dialog-list-cout.component';
 import { DialogFormCoutComponent } from './dialog-form-cout/dialog-form-cout.component';
+import {LoggerModule, NgxLoggerLevel, TOKEN_LOGGER_SERVER_SERVICE} from "ngx-logger";
+import {LogsComponent} from './logs/logs.component';
+import {CustomErrorHandler} from "./_helpers/errorHandler";
+import {CustomBodyForNGXLoggerService} from "./_service/customBodyForNGXLogger.service";
+import {MatBadgeModule} from "@angular/material/badge";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 
 const appRoutes: Routes = [];
@@ -122,6 +129,7 @@ declare const toastr: Toastr;
     DialogNotesComponent,
     DialogListCoutComponent,
     DialogFormCoutComponent,
+    LogsComponent,
 
 
   ],
@@ -159,6 +167,20 @@ declare const toastr: Toastr;
     MatDatepickerModule,
     MatNativeDateModule,
     MatTooltipModule,
+    MatPaginatorModule,
+    LoggerModule.forRoot({
+      serverLoggingUrl: 'http://localhost:4000/logs',
+      level: NgxLoggerLevel.DEBUG,
+      serverLogLevel: NgxLoggerLevel.DEBUG,
+      disableConsoleLogging: false
+    }, {
+      serverProvider: {
+        provide: TOKEN_LOGGER_SERVER_SERVICE,
+        useClass: CustomBodyForNGXLoggerService
+      }
+    }),
+    MatBadgeModule,
+    MatPaginatorModule
 
 
   ],
@@ -170,6 +192,8 @@ declare const toastr: Toastr;
   },
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    {provide: ErrorHandler, useClass: CustomErrorHandler}
+
 
   ],
   bootstrap: [AppComponent],

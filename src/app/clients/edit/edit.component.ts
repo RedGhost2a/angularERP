@@ -3,6 +3,7 @@ import {ClientService} from "../../_service/client.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
+import {NGXLogger} from "ngx-logger";
 
 
 @Component({
@@ -36,7 +37,8 @@ export class EditComponent implements OnInit {
 
 
   constructor(private clientService: ClientService, private formBuilder: FormBuilder,
-              private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr) {
+              private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr,
+              private logger: NGXLogger) {
 
   }
 
@@ -68,6 +70,7 @@ export class EditComponent implements OnInit {
             this.router.navigate(['/clients']);
 
           }, error => {
+            // this.logger.error("Error message", error);
             console.log(error)
             // console.log(this.profileForm.value)
             // console.log(this.myAdressFormGroup)

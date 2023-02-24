@@ -1,3 +1,5 @@
+import {Log} from "./log";
+
 export class Notes {
   id!: number;
   title!: string;
@@ -5,6 +7,9 @@ export class Notes {
   typeError!: string;
   optionsTypeError!: string;
   createdAt!: Date;
+  optionsTimestamp!: Date;
+  errorLogs!: Log[];
+  resolution!: boolean;
 
 }
 

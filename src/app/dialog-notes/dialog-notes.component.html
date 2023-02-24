@@ -33,11 +33,9 @@
     <!--    </mat-form-field>-->
 
     <mat-form-field *ngIf="this.editNoteForm.controls['typeError'].value === 'J\'ai rencontré une erreur !'">
-      <input matInput type="datetime-local" [matDatepicker]="picker" placeholder="Horaire"
+      <input matInput type="datetime-local" placeholder="Horaire"
              formControlName="optionsTimestamp" matTooltip="Préciser le moment ou vous avez rencontré votre erreur"
-             aria-label="Préciser le moment ou vous avez rencontré votre erreur">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+      >
     </mat-form-field>
 
     <mat-error *ngIf="errorMessage">{{errorMessage}}</mat-error>
