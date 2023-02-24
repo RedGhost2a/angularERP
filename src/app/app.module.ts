@@ -37,7 +37,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {LayoutModule} from '@angular/cdk/layout';
 import {MatMenuModule} from "@angular/material/menu";
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import {MatOptionModule} from "@angular/material/core";
+import {MatNativeDateModule, MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {SuperAdminComponent} from './super-admin/super-admin.component';
 import {ErrorInterceptor, JwtInterceptor} from "./_helpers";
@@ -69,6 +69,8 @@ import {DialogConfirmSuppComponent} from './dialog-confirm-supp/dialog-confirm-s
 import {SousDetailPrixComponent} from './sous-detail-prix/sous-detail-prix.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {DialogNotesComponent} from './dialog-notes/dialog-notes.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 
 const appRoutes: Routes = [];
@@ -150,6 +152,10 @@ declare const toastr: Toastr;
     MatTabsModule,
     MatRadioModule,
     MatProgressSpinnerModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTooltipModule,
+
 
   ],
   providers: [{

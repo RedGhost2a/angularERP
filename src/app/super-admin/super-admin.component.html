@@ -1,82 +1,138 @@
-<div class="header">
+<!--<div class="header">-->
 
-  <button mat-flat-button>
-    <mat-icon [routerLink]="'/'">arrow_back</mat-icon>
-  </button>
+<!--  <button mat-flat-button>-->
+<!--    <mat-icon [routerLink]="'/'">arrow_back</mat-icon>-->
+<!--  </button>-->
+<!--</div>-->
+
+<mat-tab-group mat-stretch-tabs>
 
 
-</div>
-
-
-<!--  <div class="flex-row">-->
-
-<!--    <div class="button-droite">-->
-<!--      <button mat-stroked-button color="primary" [routerLink]="'/devis/'">Liste des devis-->
-<!--        <mat-icon>list</mat-icon>-->
-<!--      </button>-->
-<!--      <button mat-stroked-button color="primary" [routerLink]="">Changer Avatar-->
-<!--        <mat-icon>list</mat-icon>-->
-<!--      </button>-->
-<!--      <button class="btn" color="primary" mat-stroked-button [routerLink]="'/entreprises/new'">Ajouter une entreprise-->
-<!--        <mat-icon>create</mat-icon>-->
-<!--      </button>-->
-
-<!--      <button class="btn" color="primary" mat-stroked-button [routerLink]="'/users/new'">Ajouter un utilisateur-->
-<!--        <mat-icon>create</mat-icon>-->
-<!--      </button>-->
-<!--    </div>-->
-<!--  </div>-->
-<div class="section three">
-  <div id="button">
-    <div class="button span">Administration</div>
-    <div *ngFor="let entreprise of listEntreprise index as i"
-         [routerLink]="['/admin/entreprise/'+ entreprise.id]">
-      <div [ngClass]="ring[i]"
-      >{{entreprise.commercialName|uppercase}}</div>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">account_circle</mat-icon>
+      Paramètres
+    </ng-template>
+    <h1>Options </h1>
+    <div class="wrapper">
+      <button mat-stroked-button [routerLink]="'/entreprises/new'">Ajouter une entreprise-->
+        <mat-icon>create</mat-icon>
+      </button>
+      <button mat-stroked-button [routerLink]="'/devis/'">Liste des devis-->
+        <mat-icon>list</mat-icon>
+      </button>
+      <button mat-stroked-button [routerLink]="'/users/new'">Ajouter un utilisateur
+        <mat-icon>create</mat-icon>
+      </button>
     </div>
+  </mat-tab>
 
-  </div>
 
-  <div id="button2">
-    <div class="button span">Parametres</div>
-    <div>
-      <div class="ring one">
-        <button class="btn" color="primary" mat-stroked-button [routerLink]="'/entreprises/new'">Ajouter une entreprise
-          <mat-icon>create</mat-icon>
-        </button>
-        <button mat-stroked-button color="primary" [routerLink]="'/devis/'">Liste des devis-->
-          <mat-icon>list</mat-icon>
-        </button>
-        <button class="btn" color="primary" mat-stroked-button [routerLink]="'/entreprises/new'">Ajouter une entreprise
-          <mat-icon>create</mat-icon>
-        </button>
-        <button class="btn" color="primary" mat-stroked-button [routerLink]="'/users/new'">Ajouter un utilisateur
-          <mat-icon>create</mat-icon>
-        </button>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">account_circle</mat-icon>
+      Entreprises
+    </ng-template>
+    <h1>Liste des entreprises </h1>
+    <div class="wrapper">
+      <div *ngFor="let entreprise of listEntreprise index as i"
+           [routerLink]="['/admin/entreprise/'+ entreprise.id]">
+        <button mat-stroked-button>{{entreprise.commercialName|uppercase}}</button>
       </div>
     </div>
-
-  </div>
-</div>
+  </mat-tab>
 
 
-<!--  <div class="wrapper">-->
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">account_circle</mat-icon>
+      Gestion des tickets
+    </ng-template>
+    <h1>Liste des tickets inter-entreprises</h1>
+    <div *ngFor="let note of this.notes;">
+      <mat-card class="devis" *ngIf="note.typeError === 'J\'ai rencontré une erreur !'">
+        <div>
+          <h1 style="width: 20%">{{note.id|number}} </h1>
+        </div>
+        <mat-card-header class="devis_header">
+          <mat-card-title>{{note.title|uppercase}}</mat-card-title>
+          <mat-card-subtitle> {{note.typeError}} {{note?.optionsTypeError}}</mat-card-subtitle>
+          <mat-card-subtitle>Le: {{note.createdAt |date}}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content style="width: 50%">
+          <p class="devis-row">Sujet:  {{note.text|uppercase}}</p>
+          <!--          <p class="devis-row">Le: {{userDevis.Client.firstName |date}}</p>-->
+        </mat-card-content>
+        <mat-icon class="icon" (click)="deleteItem(note.id)">delete</mat-icon>
+        <mat-checkbox>Résolu !</mat-checkbox>
+      </mat-card>
+    </div>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">account_circle</mat-icon>
+      Gestion des erreurs
+    </ng-template>
+    <h1>Gestion des erreurs inter-entreprises</h1>
+    <div class="wrapper">
+      <h3>Liste de toutes les erreurs </h3>
+
+    </div>
+  </mat-tab>
+
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon class="example-tab-icon">account_circle</mat-icon>
+      Logs
+    </ng-template>
+    <h1>Liste des logs inter-entreprisqe </h1>
+    <div class="wrapper">
+      <div>
+        <button mat-stroked-button>A voir !</button>
+      </div>
+    </div>
+  </mat-tab>
+
+
+</mat-tab-group>
+
+<!--<div class="section three">-->
+<!--  <div id="button">-->
+<!--    <div class="button span">Administration</div>-->
 <!--    <div *ngFor="let entreprise of listEntreprise index as i"-->
 <!--         [routerLink]="['/admin/entreprise/'+ entreprise.id]">-->
-<!--      <mat-card class="user-card">-->
-<!--        <mat-card-header>-->
-<!--          <img class="image" mat-card-image src="./assets/images/PngItem_4750674.png">-->
-<!--          <mat-card-title>{{entreprise.commercialName|uppercase}}</mat-card-title>-->
-<!--        </mat-card-header>-->
-<!--        <mat-card-content>-->
-<!--          <span>Nombre de devis :{{this.devis[i]}} </span>-->
-<!--        </mat-card-content>-->
-<!--        <mat-card-actions>-->
-
-<!--        </mat-card-actions>-->
-<!--      </mat-card>-->
+<!--      <div [ngClass]="ring[i]"-->
+<!--      >{{entreprise.commercialName|uppercase}}</div>-->
 <!--    </div>-->
+
 <!--  </div>-->
+
+<!--  <div id="button2">-->
+<!--    <div class="button span">Parametres</div>-->
+<!--    <div>-->
+<!--      <div class="ring one">-->
+<!--        <button class="btn" color="primary" mat-stroked-button [routerLink]="'/entreprises/new'">Ajouter une entreprise-->
+<!--          <mat-icon>create</mat-icon>-->
+<!--        </button>-->
+<!--        <button mat-stroked-button color="primary" [routerLink]="'/devis/'">Liste des devis&ndash;&gt;-->
+<!--          <mat-icon>list</mat-icon>-->
+<!--        </button>-->
+<!--        <button class="btn" color="primary" mat-stroked-button [routerLink]="'/entreprises/new'">Ajouter une entreprise-->
+<!--          <mat-icon>create</mat-icon>-->
+<!--        </button>-->
+<!--        <button class="btn" color="primary" mat-stroked-button [routerLink]="'/users/new'">Ajouter un utilisateur-->
+<!--          <mat-icon>create</mat-icon>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
+
+<!--  </div>-->
+<!--</div>-->
+
+
 
 
 

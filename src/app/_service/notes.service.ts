@@ -22,6 +22,10 @@ export class NotesService {
     return this.http.get<Notes>(`http://localhost:4000/notes/${id}`,)
   }
 
+  getAllNote(): Observable<any> {
+    return this.http.get<Notes>(`http://localhost:4000/notes`,)
+  }
+
   delete(id: any): Observable<any> {
     return this.http.delete<Notes>(`http://localhost:4000/notes/${id}`,)
   }

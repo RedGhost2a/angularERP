@@ -128,7 +128,8 @@ export class UserEditComponent implements OnInit {
     this.route.params.subscribe(params => {
       const userID = +params['id']
       if (!isNaN(userID)) {
-        this.textButton = "Modifier l'utilisateur"
+        this.textButton = "Modification d'un  utilisateur"
+
         this.userService.getById(userID).subscribe(data => {
           // Assuming res has a structure like:
           data = {
@@ -147,7 +148,7 @@ export class UserEditComponent implements OnInit {
           this.userForm.patchValue(data);
         });
       } else {
-        this.textButton = "VALIDER"
+        this.textButton = "Création d'un utilisateur"
         this.formBuilder.group({
           title: [],
           firstName: [],

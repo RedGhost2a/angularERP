@@ -5,6 +5,7 @@ import {Notes} from "../_models/notes";
 import {NotesService} from "../_service/notes.service";
 import {ActivatedRoute} from "@angular/router";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
+import {UserService} from "../_service/user.service";
 
 
 @Component({
@@ -18,7 +19,8 @@ export class DialogNotesComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any,
               private noteService: NotesService,
               private route: ActivatedRoute,
-              @Inject(TOASTR_TOKEN) private toastr: Toastr) {
+              @Inject(TOASTR_TOKEN) private toastr: Toastr,
+              private userService: UserService) {
   }
 
   editNoteForm!: FormGroup;
@@ -27,8 +29,8 @@ export class DialogNotesComponent implements OnInit {
   SubtypeError: string[] = ['Création', 'Lecture', 'Modification', 'Suppression', "Autres", 'Je ne sais pas'];
   errorMessage!: string;
   // @ts-ignore
-  user = JSON.parse(localStorage.getItem('user'));
-
+  user = this.userService.userValue;
+  checked = false;
   submitted = false;
 
   ngOnInit() {
@@ -37,7 +39,10 @@ export class DialogNotesComponent implements OnInit {
       'text': new FormControl(''),
       'typeError': new FormControl(''),
       'optionsTypeError': new FormControl(' '),
-      'userId': new FormControl(this.user.id)
+      'userId': new FormControl(this.user.id),
+      'optionsTimestamp': new FormControl(new Date()),
+      // 'showDate': new FormControl(false),
+
     });
 
 

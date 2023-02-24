@@ -3,7 +3,10 @@ import {EntrepriseService} from "../_service/entreprise.service";
 import {Entreprise} from "../_models/entreprise";
 import {SuperAdminService} from "../_service/superAdmin.service";
 import {User} from "../_models/users";
-import {StorageService} from "../_service/storage.service";
+import {NotesService} from "../_service/notes.service";
+import {Notes} from "../_models/notes";
+import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
+import {MatDialog} from "@angular/material/dialog";
 
 
 @Component({
@@ -20,17 +23,19 @@ export class SuperAdminComponent implements OnInit {
   listUser !: User[];
   user!: string;
   devis: any;
-  nbDevisByCompany: any;
+  notes!: Notes[];
 
-  ring = ['ring one', 'ring two', 'ring three', 'ring four'];
- 
-  constructor(private entrepriseService: EntrepriseService, private superAdminService: SuperAdminService, private storageService: StorageService) {
+
+  constructor(private entrepriseService: EntrepriseService,
+              private superAdminService: SuperAdminService,
+              private notesService: NotesService,
+              private dialog: MatDialog) {
 
   }
 
   ngOnInit(): void {
     this.getAll()
-    // this.getDevisByCompany()
+    this.getAllNotes()
   }
 
 
@@ -52,6 +57,25 @@ export class SuperAdminComponent implements OnInit {
   getAllUserByEntreprise(id: any): void {
     this.superAdminService.getById(id).subscribe(data => this.listUser = data)
 
+  }
+
+  getAllNotes(): void {
+    this.notesService.getAllNote().subscribe(data => {
+      this.notes = data
+      // console.log(this.notes)
+
+    });
+  }
+
+  deleteItem(id: number) {
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Appeler la fonction de suppression ici
+        this.notesService.delete(id).subscribe(() => this.ngOnInit());
+      }
+    });
   }
 
 
