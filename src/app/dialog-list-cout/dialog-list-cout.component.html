@@ -1,5 +1,4 @@
 <div class="container">
-  <button class="btnBack" routerLink="/listOuvrage" mat-raised-button >Retour</button>
   <div class="subContainer">
     <h1>Ajout d'un ou plusieurs composant a l'ouvrage</h1>
     <p>Veuillez sélectionner un ou plusieurs composant à associer à l'ouvrage.</p>
@@ -42,18 +41,12 @@
         <td mat-cell *matCellDef="let cout"> {{cout.Fournisseur.commercialName}} </td>
         <th mat-header-cell *matHeaderCellDef>  </th>
       </ng-container>
-<!--      <ng-container matColumnDef="remarque">-->
-<!--        <th mat-header-cell *matHeaderCellDef> Remarque </th>-->
-<!--        <td mat-cell *matCellDef="let cout"> {{cout.Fournisseurs[0].remarque}} </td>-->
-<!--        <th mat-header-cell *matHeaderCellDef>  </th>-->
-<!--      </ng-container>-->
       <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
       <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
     </table>
 
   </div>
   <div class="divButton">
-    <button  class='button'  (click)="addCoutOuvrageDuDevis();closeDialog()" mat-raised-button color="primary">Valider </button>
-    <!--    <button  class='button' routerLink="/ouvrageDetail/{{ouvrageId}}" (click)="addCoutOuvrage()" mat-raised-button color="primary">Valider </button>-->
+    <button  class='button'  (click)="addCoutOuvrageDuDevis();closeDialog()" mat-raised-button color="primary">Valider la selection</button>
   </div>
 </div>

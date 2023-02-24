@@ -18,6 +18,7 @@ import {Fournisseur} from "../_models/fournisseur";
 import {TypeCout} from "../_models/type-cout";
 import {FournisseurService} from "../_service/fournisseur.service";
 import {TypeCoutService} from "../_service/typeCout.service";
+import {DialogFormCoutComponent} from "../dialog-form-cout/dialog-form-cout.component";
 
 @Component({
   selector: 'app-sous-detail-prix',
@@ -85,7 +86,10 @@ export class SousDetailPrixComponent implements OnInit {
     this.userService.getById(this.currentUser.id).subscribe(
       data => {
         this.currentUser = data
+        this.dataShared.entrepriseId = data.Entreprises[0].id;
         this.getAllCout(data.Entreprises[0].id)
+        this.getAllFournisseurs(data.Entreprises[0].id)
+        this.getAllTypeCouts(data.Entreprises[0].id)
       }
     )
   }
@@ -98,7 +102,16 @@ export class SousDetailPrixComponent implements OnInit {
     )
   }
   getAllFournisseurs(entrepriseID:number):void {
-    this.fournisseurService.getAllFournisseurs(entrepriseID).subscribe()
+    this.fournisseurService.getAllFournisseurs(entrepriseID).subscribe(fournisseurs =>{
+      console.log("liste des fournisseurs: ", fournisseurs)
+      this.listFournisseur = fournisseurs;
+    })
+  }
+  getAllTypeCouts(entrepriseID: number):void {
+    this.typeCoutService.getAllTypeCouts(entrepriseID).subscribe(typeCouts =>{
+      console.log("liste des type de couts : ", typeCouts)
+      this.listTypeCout = typeCouts;
+    })
   }
 
 
@@ -218,6 +231,7 @@ export class SousDetailPrixComponent implements OnInit {
       height: '70%'
     }).afterClosed().subscribe(async result => {
       if (result) {
+        console.log("result ? list cout: ", result)
         this.ngOnInit()
       } else {
         console.log("afterClose else")
@@ -227,16 +241,12 @@ export class SousDetailPrixComponent implements OnInit {
   }
 
   openDialogCreate(ouvragDuDevisId: number) {
-    this.dialog.open(DialogListCoutComponent, {
-      data: [],
-      width: '90%',
-      height: '70%'
+    this.dialog.open(DialogFormCoutComponent, {
+      data: [ this.listTypeCout, this.listFournisseur],
+      width: '55%',
+      height: '60%'
     }).afterClosed().subscribe(async result => {
-      if (result) {
         this.ngOnInit()
-      } else {
-        console.log("afterClose else")
-      }
 
     });
   }

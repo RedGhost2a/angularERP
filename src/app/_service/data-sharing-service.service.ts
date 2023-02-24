@@ -35,6 +35,7 @@ export class DataSharingService {
   }
 
    async prixEquilibreHT(sousLotOuvrage: SousLotOuvrage){
+    this.coefEqui = Number(localStorage.getItem("coef"));
     sousLotOuvrage.prixEquiHT = sousLotOuvrage?.prixOuvrage * this.coefEqui
     console.log("prixEquilibreHT", sousLotOuvrage.prixEquiHT )
   }

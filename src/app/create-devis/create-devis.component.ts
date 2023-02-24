@@ -63,6 +63,7 @@ export class CreateDevisComponent implements OnInit{
   prixEquilibre!: number;
   prixEquilibres: number[] = [];
   coefEqui!: number;
+  fraisDeChantier= new Devis()
 
 
 //TODO ON NE PEUT METTRE QUE UN SEUL ET MEME OUVRAGE PAR SOUS_LOT; //
@@ -108,23 +109,23 @@ export class CreateDevisComponent implements OnInit{
 
 
 
-  quantityCout(quantityOuvrage: number, sousLot: SousLot): void {
-    console.log("quantityCout")
-    if (quantityOuvrage) {
-      console.log("quantityCout dans le premier IF")
-      sousLot.OuvrageDuDevis.forEach(sousLot => {
-        sousLot.CoutDuDevis?.forEach(coutDuDevis => {
-          if (coutDuDevis.OuvrageCoutDuDevis && coutDuDevis.OuvrageCoutDuDevis.ratio !== undefined) {
-            console.log("cout du devis", coutDuDevis)
-            console.log("RATIO OUVRAGECOUTDUDEVIS", coutDuDevis.OuvrageCoutDuDevis.ratio)
-            coutDuDevis.quantite = coutDuDevis.OuvrageCoutDuDevis.ratio * quantityOuvrage
-            // this.getAllLots()
-          }
-        })
-      })
-
-    }
-  }
+  // quantityCout(quantityOuvrage: number, sousLot: SousLot): void {
+  //   console.log("quantityCout")
+  //   if (quantityOuvrage) {
+  //     console.log("quantityCout dans le premier IF")
+  //     sousLot.OuvrageDuDevis.forEach(sousLot => {
+  //       sousLot.CoutDuDevis?.forEach(coutDuDevis => {
+  //         if (coutDuDevis.OuvrageCoutDuDevis && coutDuDevis.OuvrageCoutDuDevis.ratio !== undefined) {
+  //           console.log("cout du devis", coutDuDevis)
+  //           console.log("RATIO OUVRAGECOUTDUDEVIS", coutDuDevis.OuvrageCoutDuDevis.ratio)
+  //           coutDuDevis.quantite = coutDuDevis.OuvrageCoutDuDevis.ratio * quantityOuvrage
+  //           // this.getAllLots()
+  //         }
+  //       })
+  //     })
+  //
+  //   }
+  // }
 
   fraisGeneraux(): void {
     if (this.lotFraisDeChantier.prix !== undefined) {
@@ -175,10 +176,9 @@ export class CreateDevisComponent implements OnInit{
   coefEquilibre(): void {
     if (this.lotFraisDeChantier.prix) {
       this.devis.coeffEquilibre = this.devis.coutTotal / this.devis.debourseSecTotal
-      this.sousDetailPrixService.coefEqui = this.devis.coutTotal / this.devis.debourseSecTotal
-      this.sharedData.coefEqui = this.devis.coutTotal / this.devis.debourseSecTotal
-      // this.sousDetailPrixService.coefEqui = this.coutTotal() / this.prixDevis
-      // this.sharedData.coefEqui = this.coutTotal() / this.prixDevis
+      localStorage.setItem("coef", this.devis.coeffEquilibre.toString())
+      // this.sousDetailPrixService.coefEqui = this.devis.coutTotal / this.devis.debourseSecTotal
+      // this.sharedData.coefEqui = this.devis.coutTotal / this.devis.debourseSecTotal
       // return this.coutTotal() / this.prixDevis
 
     }
@@ -210,6 +210,7 @@ export class CreateDevisComponent implements OnInit{
 
     this.fraisGeneraux()
     this.allCalculOuvrage();
+    this.allCalculOuvrageFraisDeChantier()
   }
   allCalculOuvrage():void{
     this.devis.prixEquiHT = 0;
@@ -250,6 +251,55 @@ export class CreateDevisComponent implements OnInit{
       })
     })
   }
+
+  allCalculOuvrageFraisDeChantier():void{
+    this.fraisDeChantier.prixEquiHT = 0;
+    this.fraisDeChantier.beneficeInEuro = 0;
+    this.fraisDeChantier.aleasInEuro = 0;
+    this.fraisDeChantier.prixCalcHT = 0;
+    this.fraisDeChantier.prixVenteHT = 0;
+    this.fraisDeChantier.beneficeAleasTotal = 0;
+
+    this.lotFraisDeChantier.SousLots.forEach(sousLot =>{
+        sousLot.OuvrageDuDevis.forEach( async ouvrageDuDevis =>{
+          if(ouvrageDuDevis.SousLotOuvrage){
+            // ouvrageDuDevis.SousLotOuvrage.prixUniArrondi = 0;
+            await this.sharedData.prixEquilibreHT(ouvrageDuDevis.SousLotOuvrage)
+            await this.sharedData.prixUnitaireHT(ouvrageDuDevis.SousLotOuvrage)
+            await this.sharedData.prixCalculeHT(ouvrageDuDevis.SousLotOuvrage,ouvrageDuDevis.benefice, ouvrageDuDevis.aleas)
+            await this.sharedData.prixUnitaireCalculeHT(ouvrageDuDevis.SousLotOuvrage)
+            await this.sharedData.beneficePercentToEuro(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.benefice)
+            await this.sharedData.aleasPercentToEuro(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.aleas)
+            //ouvrageDuDevis.SousLotOuvrage.prixUniArrondi = ouvrageDuDevis.SousLotOuvrage.prixUniCalcHT
+
+            await this.testAsync(ouvrageDuDevis)
+
+            console.log("prix unitaire arrondi ",ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT )
+            console.log("prix unitaire calcule ", ouvrageDuDevis.SousLotOuvrage.prixUniCalcHT)
+            console.log("prix arrondi ", ouvrageDuDevis.SousLotOuvrage.prixVenteHT)
+            // this.sommePrixArrondi(ouvrageDuDevis.SousLotOuvrage)
+            this.fraisDeChantier.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixVenteHT
+            this.fraisDeChantier.prixEquiHT += ouvrageDuDevis.SousLotOuvrage.prixEquiHT
+            this.fraisDeChantier.beneficeInEuro += ouvrageDuDevis.SousLotOuvrage.beneficeInEuro
+            this.fraisDeChantier.aleasInEuro += ouvrageDuDevis.SousLotOuvrage.aleasInEuro
+            this.fraisDeChantier.prixCalcHT += ouvrageDuDevis.SousLotOuvrage.prixCalcHT
+            this.fraisDeChantier.beneficeAleasTotal = this.fraisDeChantier.prixVenteHT - this.fraisDeChantier.prixEquiHT
+          }
+
+        })
+
+    })
+  }
+
+
+
+
+
+
+
+
+
+
   async testAsync(ouvrageDuDevis : Ouvrage){
     if(ouvrageDuDevis.SousLotOuvrage){
       if(ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT !== 0 && ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT){
@@ -613,8 +663,8 @@ export class CreateDevisComponent implements OnInit{
           data.Couts.forEach((cout: any) => {
             //creer un coutDuDevis avec les données du cout
             this.coutDuDevis = cout;
-            this.coutDuDevis.fournisseur = cout.Fournisseurs[0].commercialName
-            this.coutDuDevis.remarque = cout.Fournisseurs[0].remarque !== null ? cout.Fournisseurs[0].remarque : ""
+            this.coutDuDevis.fournisseur = cout.Fournisseur.commercialName
+            this.coutDuDevis.remarque = cout.Fournisseur.remarque !== null ? cout.Fournisseur.remarque : ""
             //donne comme valeur undefined a l'id sinon le coutDuDevis sera creer avec l'id du Cout
             this.coutDuDevis.id = undefined
             this.coutDuDevis.type = cout.TypeCout.type
