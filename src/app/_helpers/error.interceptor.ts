@@ -14,29 +14,36 @@ import {NGXLogger} from 'ngx-logger';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
-  constructor(private logger: NGXLogger) {
+  constructor(private logger: NGXLogger,
+  ) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
     const started = Date.now();
-    let status: string;
+    let status: number;
 
     return next.handle(req).pipe(
       tap(
         event => {
           if (event instanceof HttpResponse) {
-            status = 'succeeded';
+            status = event.status;
             const elapsed = Date.now() - started;
-            this.logger.info('Info', `${req.method} "${req.urlWithParams}" ${status} in ${elapsed} ms`);
+            // this.logger.info('Info', `${req.method} "${req.urlWithParams}" ${status} in ${elapsed} ms`);
+            // console.log(event.type)
+            this.logger.info('Info', req.method, req.urlWithParams, status, {duration: elapsed});
           }
         },
         error => {
           if (error instanceof HttpErrorResponse) {
-            this.logger.error('Error Http', error);
+            const elapsed = Date.now() - started;
+            this.logger.error('Error Http', error, error.headers, error.ok, elapsed);
+
           }
         }
       )
     );
+
   }
+
 }

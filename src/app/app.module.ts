@@ -71,9 +71,12 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {DialogNotesComponent} from './dialog-notes/dialog-notes.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {LoggerModule, NgxLoggerLevel} from "ngx-logger";
+import {LoggerModule, NgxLoggerLevel, TOKEN_LOGGER_SERVER_SERVICE} from "ngx-logger";
 import {LogsComponent} from './logs/logs.component';
 import {CustomErrorHandler} from "./_helpers/errorHandler";
+import {CustomBodyForNGXLoggerService} from "./_service/customBodyForNGXLogger.service";
+import {MatBadgeModule} from "@angular/material/badge";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 
 const appRoutes: Routes = [];
@@ -159,12 +162,20 @@ declare const toastr: Toastr;
     MatDatepickerModule,
     MatNativeDateModule,
     MatTooltipModule,
+    MatPaginatorModule,
     LoggerModule.forRoot({
-      serverLoggingUrl: 'http://localhost:4000/logs', // Replace with YOUR API
+      serverLoggingUrl: 'http://localhost:4000/logs',
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.DEBUG,
       disableConsoleLogging: false
-    })
+    }, {
+      serverProvider: {
+        provide: TOKEN_LOGGER_SERVER_SERVICE,
+        useClass: CustomBodyForNGXLoggerService
+      }
+    }),
+    MatBadgeModule,
+    MatPaginatorModule
 
 
   ],

@@ -97,6 +97,7 @@ const routes: Routes = [
   },
   {path: 'mon_profile', canActivate: [AuthGuard], component: UserComponent, data: {title: 'Profil utilisateurs'}},
   {path: 'logs', canActivate: [AuthGuard], component: LogsComponent, data: {title: 'log utilisateurs'}},
+  {path: 'logs/:id', canActivate: [AuthGuard], component: LogsComponent, data: {title: 'log utilisateurs'}},
 
   {
     path: 'entreprises',

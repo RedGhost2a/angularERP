@@ -19,8 +19,13 @@ export class NotesService {
   }
 
   getNoteByUser(id: any): Observable<any> {
-    return this.http.get<Notes>(`http://localhost:4000/notes/${id}`,)
+    return this.http.get<Notes>(`http://localhost:4000/notes/${id}`)
   }
+
+  getNoteById(id: any): Observable<any> {
+    return this.http.get<Notes>(`http://localhost:4000/notes/note/${id}`)
+  }
+
 
   getAllNote(): Observable<any> {
     return this.http.get<Notes>(`http://localhost:4000/notes`,)
@@ -29,5 +34,11 @@ export class NotesService {
   delete(id: any): Observable<any> {
     return this.http.delete<Notes>(`http://localhost:4000/notes/${id}`,)
   }
+
+  updateNoteResolution(note: Notes): Observable<any> {
+    const body = {resolution: note.resolution};
+    return this.http.put(`http://localhost:4000/notes/${note.id}`, body);
+  }
+
 
 }

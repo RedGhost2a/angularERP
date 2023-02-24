@@ -1,3 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  /* padding: 10px; */
+  /* text-align: center; */
+  flex-wrap: wrap;
+  margin: 0 50px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
 .wrapper {
   display: flex;
   flex-direction: row;
@@ -24,6 +38,24 @@
 .devis_header {
   margin-top: 5px;
   font-size: large;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.margin-right {
+  margin-right: 30px;
+}
+
+.mat-badge.mat-badge {
+  overflow: visible;
+  /* font-size: 15px; */
+  margin-top: 13px;
+  height: 20px;
 }
 
 /*# sourceMappingURL=super-admin.component.css.map */
