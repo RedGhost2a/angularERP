@@ -1,0 +1,82 @@
+  <div class="container">
+<ng-container [formGroup]="this.myFormGroup">
+  <!--  <button routerLink="/listCout" mat-raised-button color="accent">Retour</button>-->
+    <div class="textModal">
+      <h2> Ajout d'un composant dans l'ouvrage </h2>
+      <p> L'ajout d'un composant à la volée ne l'inclut pas dans la blibliothèque de composant</p>
+    </div>
+
+    <div class="form">
+
+      <div class="group">
+        <mat-form-field appearance="legacy">
+          <mat-label>Désignation</mat-label>
+          <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm">
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Unité</mat-label>
+          <input formControlName="unite" matInput placeholder="Ex: M2">
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Prix Unitaire</mat-label>
+          <input formControlName="prixUnitaire" matInput placeholder="Ex: 9,2">
+        </mat-form-field>
+      </div>
+
+
+      <div class="group">
+
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Ratio</mat-label>
+          <input formControlName="ratio" matInput placeholder="Ex: 9,2">
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>U/Ratio</mat-label>
+          <input formControlName="uRatio" matInput placeholder="Ex: 9,2">
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Efficience</mat-label>
+          <input formControlName="efficience" matInput placeholder="Ex: 9,2">
+        </mat-form-field>
+
+      </div>
+      <div class="selectPicker">
+        <mat-form-field appearance="legacy">
+          <mat-label>Type et catégorie du cout</mat-label>
+          <mat-select formControlName="TypeCoutId">
+            <mat-option *ngFor="let item of initialData[0]"[value]="[item.type, item.categorie]" >
+              {{item.type}} {{item.categorie}} {{item.id}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Fournisseur</mat-label>
+          <mat-select formControlName="FournisseurId">
+            <!--                  <mat-select formControlName="Fournisseurs">-->
+            <mat-option *ngFor="let item of initialData[1]" [value]="[item.commercialName, item.remarque]">
+              {{item.commercialName}} {{item.id}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="containerButton">
+<!--      <div class="buttons">-->
+        <button mat-stroked-button color="primary"> Retour</button>
+        <button mat-raised-button color="primary" (click)="createCoutDuDevis(); closeDialog()"> Ajouter ce composant</button>
+
+        <!--    <button mat-raised-button [routerLink]="['/listCout']" (click)="createAndUpdateCout()">{{textButton}}</button>-->
+<!--      </div>-->
+    </div>
+
+
+
+</ng-container>
+  </div>

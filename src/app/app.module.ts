@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, OnInit} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule, Routes} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {ClientsComponent} from './clients/clients.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatButtonModule} from "@angular/material/button";
-import {DialogComponent} from './dialog/dialog.component';
+import {DialogComponent} from './dialogListOuvrage/dialog.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -71,6 +71,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {DialogNotesComponent} from './dialog-notes/dialog-notes.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatTooltipModule} from "@angular/material/tooltip";
+import { DialogListCoutComponent } from './dialog-list-cout/dialog-list-cout.component';
+import { DialogFormCoutComponent } from './dialog-form-cout/dialog-form-cout.component';
 
 
 const appRoutes: Routes = [];
@@ -118,6 +120,8 @@ declare const toastr: Toastr;
     DialogConfirmSuppComponent,
     SousDetailPrixComponent,
     DialogNotesComponent,
+    DialogListCoutComponent,
+    DialogFormCoutComponent,
 
 
   ],
