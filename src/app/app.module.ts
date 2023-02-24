@@ -1,4 +1,5 @@
-import {NgModule, OnInit} from '@angular/core';
+import { OnInit} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule, Routes} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
@@ -37,7 +38,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {LayoutModule} from '@angular/cdk/layout';
 import {MatMenuModule} from "@angular/material/menu";
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import {MatOptionModule} from "@angular/material/core";
+import {MatNativeDateModule, MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {SuperAdminComponent} from './super-admin/super-admin.component';
 import {ErrorInterceptor, JwtInterceptor} from "./_helpers";
@@ -71,6 +72,14 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {DialogNotesComponent} from './dialog-notes/dialog-notes.component';
 import { DialogListCoutComponent } from './dialog-list-cout/dialog-list-cout.component';
 import { DialogFormCoutComponent } from './dialog-form-cout/dialog-form-cout.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {LoggerModule, NgxLoggerLevel, TOKEN_LOGGER_SERVER_SERVICE} from "ngx-logger";
+import {LogsComponent} from './logs/logs.component';
+import {CustomErrorHandler} from "./_helpers/errorHandler";
+import {CustomBodyForNGXLoggerService} from "./_service/customBodyForNGXLogger.service";
+import {MatBadgeModule} from "@angular/material/badge";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 
 const appRoutes: Routes = [];
@@ -120,6 +129,7 @@ declare const toastr: Toastr;
     DialogNotesComponent,
     DialogListCoutComponent,
     DialogFormCoutComponent,
+    LogsComponent,
 
 
   ],
@@ -154,6 +164,24 @@ declare const toastr: Toastr;
     MatTabsModule,
     MatRadioModule,
     MatProgressSpinnerModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatTooltipModule,
+    MatPaginatorModule,
+    LoggerModule.forRoot({
+      serverLoggingUrl: 'http://localhost:4000/logs',
+      level: NgxLoggerLevel.DEBUG,
+      serverLogLevel: NgxLoggerLevel.DEBUG,
+      disableConsoleLogging: false
+    }, {
+      serverProvider: {
+        provide: TOKEN_LOGGER_SERVER_SERVICE,
+        useClass: CustomBodyForNGXLoggerService
+      }
+    }),
+    MatBadgeModule,
+    MatPaginatorModule
+
 
   ],
   providers: [{
@@ -166,6 +194,8 @@ declare const toastr: Toastr;
 
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    {provide: ErrorHandler, useClass: CustomErrorHandler}
+
 
   ],
   bootstrap: [AppComponent],

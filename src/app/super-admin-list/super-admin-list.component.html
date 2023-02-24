@@ -30,15 +30,20 @@
   </div>
 
 
-  <div class="card-user">
-    <mat-list>
+  <div>
+    <mat-list class="card-user">
       <div class="titre" mat-subheader>Liste des utilisateurs</div>
-      <mat-list-item *ngFor="let user of userAll ">
-        <mat-icon matListItemIcon>folder</mat-icon>
-        <div matListItemTitle>{{user.title}} </div>
-        <div matListItemTitle>{{user.firstName}} </div>
-        <div matListItemTitle>{{user.lastName}} </div>
-        <span matListItemLine>{{user.roles | date}}</span>
+      <mat-list-item *ngFor="let user of userAll">
+        <div class="flex-row" [routerLink]="['/users', user.id]">
+          <p>
+            <mat-icon matListItemIcon>folder</mat-icon>
+          </p>
+          <p matListItemTitle>{{user.title}} </p>
+          <p matListItemTitle>{{user.firstName}} </p>
+          <p matListItemTitle>{{user.lastName}} </p>
+          <p matListItemLine>{{user.role }}</p>
+        </div>
+
       </mat-list-item>
     </mat-list>
   </div>
