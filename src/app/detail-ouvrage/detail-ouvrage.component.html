@@ -232,18 +232,12 @@
 
 
   <ng-template #otherContent>
-    <div *ngIf="ouvrage">
-      <mat-card class="example-card">
+      <mat-card class="card-no-cout" >
         <mat-card-title-group class="group">
-          <div class="bouton">
-            <mat-card-title>Aucun composant dans cet ouvrage</mat-card-title>
-            <p></p>
-            <button routerLink="/ajoutCout/{{ouvrage.id}}" mat-raised-button>Importer un composant</button>
-          </div>
+            <mat-card-title >Aucun composant dans cet ouvrage</mat-card-title>
         </mat-card-title-group>
       </mat-card>
 
-    </div>
   </ng-template>
 
 </div>

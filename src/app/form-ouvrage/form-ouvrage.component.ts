@@ -1,7 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {OuvrageService} from "../_service/ouvrage.service";
 import {ActivatedRoute} from "@angular/router";
+import {User} from "../_models/users";
+import {UserService} from "../_service/user.service";
+import {MatDialogRef} from "@angular/material/dialog";
+import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 
 @Component({
   selector: 'app-form-ouvrage',
@@ -9,79 +13,47 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./form-ouvrage.component.scss']
 })
 export class FormOuvrageComponent implements OnInit {
-  public myFormGroup: FormGroup;
-  textButton!: string;
-  titreForm!: string;
+  public myFormGroup!: FormGroup;
+  private currentUser!: User;
 
-  constructor(private formBuilder: FormBuilder, private ouvrageService: OuvrageService,
-              private route: ActivatedRoute) {
-    this.myFormGroup = this.formBuilder.group({
-      designation: [],
-      benefice: [],
-      aleas: [],
-      unite: [],
-      ratio: [],
-      uRatio: [],
-      fournisseur: [],
+  constructor(private formBuilder: FormBuilder, private ouvrageService: OuvrageService, private userService: UserService,
+              private dialogRef: MatDialogRef<DialogComponent>) {
+  }
+
+  ngOnInit(): void {
+    this.getUserById()
+    this.createFormOuvrage()
+
+  }
+
+
+  createOuvrage(): void {
+    this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe()
+  }
+  closeDialog() {
+    // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
+    this.dialogRef.close();
+  }
+
+
+  createFormOuvrage(): void {
+    this.myFormGroup = new FormGroup({
+      designation: new FormControl(),
+      benefice: new FormControl({value: 10, disabled: false}),
+      aleas: new FormControl({value: 5, disabled: false}),
+      unite: new FormControl(),
+      ratio: new FormControl(),
+      uRatio: new FormControl(),
+      EntrepriseId: new FormControl(),
     });
   }
 
-  createAndUpdate(): void {
-    this.route.params.subscribe(params => {
-      const ouvrageID = +params['id']
-      if (isNaN(ouvrageID)) {
-        this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe(
-          (): void => {
-            alert('Nouveau ouvrage enregistrer')
-          }
-        )
-      } else {
-        this.ouvrageService.update(this.myFormGroup.getRawValue(), ouvrageID)
-          .subscribe((): void => {
-            alert('ouvrage update!');
-          });
-      }
+  getUserById(): void {
+    this.currentUser = this.userService.userValue;
+    this.userService.getById(this.currentUser.id).subscribe(data => {
+      this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id)
     })
   }
 
-
-  ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      const ouvrageID = +params['id']
-      if (!isNaN(ouvrageID)) {
-        this.textButton = "Modifier l'ouvrage"
-        this.titreForm = "Modification de l'ouvrage"
-        this.ouvrageService.getById(ouvrageID).subscribe(data => {
-          // Assuming res has a structure like:
-          data = {
-            designation: data.designation,
-            benefice: data.benefice,
-            aleas: data.aleas,
-            unite: data.unite,
-            ratio: data.ratio,
-            uRatio: data.uRatio,
-            fournisseur: data.fournisseur,
-          }
-          // Values in res that don't line up to the form structure
-          // are discarded. You can also pass in your own object you
-          // construct ad-hoc.
-          this.myFormGroup.patchValue(data);
-        });
-      } else {
-        this.textButton = 'Créer un nouvelle ouvrage'
-        this.titreForm = "Création d'un  ouvrage"
-        this.formBuilder.group({
-          designation: [],
-          benefice: [],
-          aleas: [],
-          unite: [],
-          ratio: [],
-          uRatio: [],
-          fournisseur: [],
-        });
-
-      }
-    })
-  }
 
 }

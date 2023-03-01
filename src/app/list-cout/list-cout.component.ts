@@ -70,7 +70,7 @@ export class ListCoutComponent implements OnInit {
     this.dialog.open(FormCoutComponent, {
       data: cout,
       width: '70%',
-      height: '35%'
+      height: '37%'
     }).afterClosed().subscribe(async result => {
         this.ngOnInit()
 

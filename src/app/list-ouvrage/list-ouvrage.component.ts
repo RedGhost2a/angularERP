@@ -10,6 +10,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {Cout} from "../_models/cout";
 import {FormCoutComponent} from "../form-cout/form-cout.component";
 import {FormOuvrageComponent} from "../form-ouvrage/form-ouvrage.component";
+import {MatTableDataSource} from "@angular/material/table";
 
 
 @Component({
@@ -36,6 +37,7 @@ export class ListOuvrageComponent implements OnInit {
 
   }
   applyFilter(event: Event) {
+    console.log(event)
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -43,6 +45,7 @@ export class ListOuvrageComponent implements OnInit {
   getAll(entrepriseId:number): void {
     this.ouvrageService.getAll(entrepriseId).subscribe(data => {
       this.listOuvrage = data;
+      this.dataSource = new MatTableDataSource(this.listOuvrage);
       data.forEach((ouvrage : Ouvrage) =>{
         ouvrage.prix = 0 ;
         ouvrage.Couts?.forEach((cout:Cout)=>{
