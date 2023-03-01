@@ -98,7 +98,7 @@ export class FormComponent implements OnInit {
       if (isNaN(coutID)) {
         this.coutService.create(this.myFormGroup.getRawValue()).subscribe(
           (): void => {
-            this.fournisseurId = this.myFormGroup.getRawValue().Fournisseurs
+            this.fournisseurId = this.myFormGroup.getRawValue().Fournisseur
             this.success("Nouveau composant en vue !")
             // this.getLastCout()
             // this.createCoutFournisseur(this.lastCoutId,this.fournisseurId)
@@ -106,8 +106,8 @@ export class FormComponent implements OnInit {
       } else {
         this.coutService.update(this.myFormGroup.getRawValue(), coutID)
           .subscribe((data): void => {
-            this.fournisseurCout = this.myFormGroup.getRawValue().Fournisseurs;
-            console.log("this.fournisseur[0]", this.fournisseur[0])
+            this.fournisseurCout = this.myFormGroup.getRawValue().Fournisseur;
+            console.log("this.fournisseur[0]", this.fournisseur)
             alert('Update!')
           });
       }
@@ -169,7 +169,7 @@ export class FormComponent implements OnInit {
         this.textButton = 'Modifier le cout'
         this.titreForm = 'Modification du cout'
         this.coutService.getById(coutID).subscribe(data => {
-          const {Fournisseurs}: any = data;
+          // const {Fournisseurs}: any = data;
           data = {
             id: data.id,
             designation: data.designation,
@@ -178,7 +178,7 @@ export class FormComponent implements OnInit {
             EntrepriseId: data.EntrepriseId,
             TypeCoutId: data.TypeCoutId,
             // Fournisseurs: Fournisseurs[0].id
-            FournisseurId: Fournisseurs[0].id
+            FournisseurId: data.Fournisseur.id
           }
           this.myFormGroup.patchValue(data);
         });

@@ -7,6 +7,9 @@ import {UserService} from "../_service/user.service";
 import {User} from "../_models/users";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
 import {MatDialog} from "@angular/material/dialog";
+import {Cout} from "../_models/cout";
+import {FormCoutComponent} from "../form-cout/form-cout.component";
+import {FormOuvrageComponent} from "../form-ouvrage/form-ouvrage.component";
 
 
 @Component({
@@ -17,33 +20,35 @@ import {MatDialog} from "@angular/material/dialog";
 export class ListOuvrageComponent implements OnInit {
   listOuvrage!: Ouvrage[];
   currentUser!: User;
-  entrepriseId!: number;
-  prixOuvrage: number[] = [];
+  dataSource!: any;
   columnsToDisplay = ["designation", "benefice", "aleas", "unite", "ratio", "uRatio", "prixUnitaire", "boutons"];
 
   constructor(private ouvrageService: OuvrageService, private ouvrageCoutService: OuvrageCoutService,
-              private dialog: MatDialog,
-              private userService: UserService) {
+              private dialog: MatDialog, private userService: UserService) {
   }
 
   ngOnInit(): void {
     this.currentUser = this.userService.userValue;
     this.userService.getById(this.currentUser.id).subscribe(data => {
       console.log("user by id ", data)
-      this.entrepriseId = data.Entreprises[0].id
-      this.getAll()
-      this.getAllPrice()
+      this.getAll(data.Entreprises[0].id)
     })
-    //.log("Entreprise ID",this.entrepriseId)
 
   }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
-  getAll(): void {
-    // this.ouvrageService.getAll().subscribe(data => console.log(data) )
-    this.ouvrageService.getAll(this.entrepriseId).subscribe(data => {
+  getAll(entrepriseId:number): void {
+    this.ouvrageService.getAll(entrepriseId).subscribe(data => {
       this.listOuvrage = data;
-      // console.log(data[0].cout[0].type);
-      console.log("get all ouvrage list ouvrage data : ", data)
+      data.forEach((ouvrage : Ouvrage) =>{
+        ouvrage.prix = 0 ;
+        ouvrage.Couts?.forEach((cout:Cout)=>{
+          ouvrage.prix += cout.prixUnitaire
+        })
+      })
     })
   }
 
@@ -53,7 +58,6 @@ export class ListOuvrageComponent implements OnInit {
 
   deleteItem(id: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Appeler la fonction de suppression ici
@@ -62,15 +66,18 @@ export class ListOuvrageComponent implements OnInit {
     });
   }
 
-  getAllPrice(): void {
-    this.ouvrageCoutService.getSumAllOuvrage().subscribe(data => {
-      console.log("list ouvrage get all price data : ", data)
-      for (const somme of data) {
-        console.log("list ouvrage getAllPrice somme : ", somme.sommeCouts)
-        this.prixOuvrage.push(somme.sommeCouts);
-      }
-      console.log('tableau de prix', this.prixOuvrage)
-    })
+
+  openDialogCreate(ouvrage:Ouvrage | null) {
+    this.dialog.open(FormOuvrageComponent, {
+      data: ouvrage,
+      width: '70%',
+      height: '35%'
+    }).afterClosed().subscribe(async result => {
+      console.log("result ? list cout: ", result)
+      // this.ngOnInit()
+      this.ngOnInit()
+
+    });
   }
 
 

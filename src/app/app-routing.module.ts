@@ -30,6 +30,8 @@ import {DetailDevisComponent} from "./detail-devis/detail-devis.component";
 import {CreateDevisComponent} from "./create-devis/create-devis.component";
 import {SousDetailPrixComponent} from "./sous-detail-prix/sous-detail-prix.component";
 import {LogsComponent} from "./logs/logs.component";
+import {FormCoutComponent} from "./form-cout/form-cout.component";
+import {FormOuvrageComponent} from "./form-ouvrage/form-ouvrage.component";
 
 const routes: Routes = [
   {
@@ -40,7 +42,7 @@ const routes: Routes = [
   // {path: 'notes', component: NotesComponent},
 
   // {path: 'cout/:id', component: FormCoutComponent},
-  // {path: 'cout',  component: FormCoutComponent,},
+  {path: 'ouvragecss',  component: FormOuvrageComponent,},
   // {path: 'ouvrage/:id', component: FormOuvrageComponent,},
   // {path: 'ouvrage',  component: FormOuvrageComponent,},
   {path: 'ouvrageDetail/:id', component: DetailOuvrageComponent,},

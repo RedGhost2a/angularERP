@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Cout} from "../_models/cout";
 import {CoutService} from "../_service/cout.service";
@@ -9,6 +9,8 @@ import {UserService} from "../_service/user.service";
 import {User} from "../_models/users";
 import {OuvrageCout} from "../_models/ouvrageCout";
 import {Ouvrage} from "../_models/ouvrage";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 
 @Component({
   selector: 'app-ouvrage-add-cout',
@@ -22,16 +24,22 @@ export class OuvrageAddCoutComponent implements OnInit {
   coutOuvrage!: Cout;
   coutChecked: number[] = [];
   ouvrageId!: number
-  columnsToDisplay = ["checkBox", "type", "categorie", "designation", "unite", "prixUnitaire", "fournisseur", "remarque"];
+  columnsToDisplay = ["checkBox", "type", "categorie", "designation", "unite", "prixUnitaire", "fournisseur",
+    // "remarque"
+  ];
   coutDuDevis!: CoutDuDevis;
   currentUser!:User;
   currentOuvrageId!:number;
   ouvrageCout !: OuvrageCout ;
+  initialData!: Ouvrage;
 
 
   constructor(private route: ActivatedRoute, private coutService: CoutService,
               private ouvrageService: OuvrageService, private ouvrageCoutService: OuvrageCoutService,
-              private userService : UserService) {
+              private userService : UserService,@Inject(MAT_DIALOG_DATA) public data: any,
+              private dialogRef: MatDialogRef<DialogComponent>,) {
+
+    this.initialData = this.data;
   }
 
 
@@ -61,11 +69,13 @@ export class OuvrageAddCoutComponent implements OnInit {
     this.coutChecked.forEach(cout => {
       console.log("valeur de cout", cout)
       this.ouvrageCout = {
-        OuvrageId: this.currentOuvrageId,
-        CoutId: cout
+        OuvrageId: this.initialData.id,
+        CoutId: cout,
+        ratio: 1,
       }
        this.ouvrageCoutService.create(this.ouvrageCout).subscribe()
     })
+
     // console.log(this.ouvrageCout)
     //
     // for (let val of this.coutChecked) {
@@ -98,7 +108,10 @@ export class OuvrageAddCoutComponent implements OnInit {
 //       })
 // }
   }
-
+  closeDialog() {
+    // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
+    this.dialogRef.close();
+  }
 
   onCheck(idCout: number): void {
     if (this.coutChecked.indexOf(idCout) !== -1) {

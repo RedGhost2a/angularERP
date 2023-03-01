@@ -7,6 +7,7 @@ import {Entreprise} from "../../_models/entreprise";
 import {EntrepriseService} from 'src/app/_service/entreprise.service';
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {UserService} from "../../_service/user.service";
 
 @Component({
   selector: 'app-edit-devis',
@@ -16,8 +17,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class EditDevisComponent implements OnInit {
   public myFormGroup: FormGroup;
   // @ts-ignore
-  userId = JSON.parse(localStorage.getItem('user'))
-  currentUser = this.userId.id;
+  // userId = JSON.parse(localStorage.getItem('user'))
+
+  userId  = this.userService.userValue.id;
   submitted = false;
 
 
@@ -33,16 +35,16 @@ export class EditDevisComponent implements OnInit {
               private clientService: ClientService,
               private entrepriseService: EntrepriseService,
               @Inject(TOASTR_TOKEN) private toastr: Toastr,
-              private router: Router,
-              private route: ActivatedRoute,) {
+              private router: Router, private userService : UserService,
+              private route: ActivatedRoute) {
     this.myFormGroup = this.formBuilder.group({
       name: new FormControl('', [Validators.required, Validators.minLength(3)]),
       status: [],
       ClientId: [],
       EntrepriseId: [],
-      UserId: this.currentUser,
+      UserId: this.userId,
     });
-    console.log(this.currentUser)
+    // console.log(this.currentUser)
 
   }
 
@@ -122,7 +124,7 @@ export class EditDevisComponent implements OnInit {
           status: [],
           ClientId: [],
           EntrepriseId: [],
-          UserId: this.currentUser,
+          UserId: this.userId,
         });
 
 

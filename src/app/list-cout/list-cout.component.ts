@@ -5,6 +5,9 @@ import {UserService} from "../_service/user.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
 import {MatDialog} from "@angular/material/dialog";
+import {DialogListCoutComponent} from "../dialog-list-cout/dialog-list-cout.component";
+import {FormCoutComponent} from "../form-cout/form-cout.component";
+import {User} from "../_models/users";
 
 
 @Component({
@@ -15,7 +18,7 @@ import {MatDialog} from "@angular/material/dialog";
 export class ListCoutComponent implements OnInit {
   @Input() listCout!: Cout[]
   columnsToDisplay = ["type", "categorie", "designation", "unite", "prixUnitaire", "fournisseur", "boutons"];
-  userId = this.userService.userValue.id
+  currentUser !:User ;
   dataSource!: any;
 
   constructor(private coutService: CoutService, private userService: UserService, private dialog: MatDialog) {
@@ -37,13 +40,11 @@ export class ListCoutComponent implements OnInit {
     this.coutService.getAll(entrepriseId).subscribe(data => {
       this.listCout = data;
       console.log("list cout TS getAllCouts DATA:", data)
-      this.dataSource = new MatTableDataSource(this.listCout)
-
+      this.dataSource = new MatTableDataSource(this.listCout);
     });
   }
 
   delete(id: number): void {
-    // this.coutService.deleteByID(this.listCout.map(value => value.id)).subscribe(() => this.deleteCout.emit())
     this.coutService.deleteByID(id).subscribe(() => this.ngOnInit())
   }
 
@@ -59,11 +60,22 @@ export class ListCoutComponent implements OnInit {
   }
 
   getUserEntreprise(): void {
-    this.userService.getById(this.userId).subscribe(data => {
-      console.log(data)
-      console.log(this.userId)
+    this.userService.getById(this.userService.userValue.id).subscribe(data => {
+      this.currentUser = data;
       this.getAllCouts(data.Entreprises[0].id)
     })
   }
+
+  openDialogCreate(cout:Cout | null) {
+    this.dialog.open(FormCoutComponent, {
+      data: cout,
+      width: '70%',
+      height: '35%'
+    }).afterClosed().subscribe(async result => {
+        this.ngOnInit()
+
+    });
+  }
+
 
 }

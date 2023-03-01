@@ -1,5 +1,5 @@
-import {NgModule, OnInit} from '@angular/core';
-import {ErrorHandler, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
+import {ErrorHandler} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule, Routes} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';

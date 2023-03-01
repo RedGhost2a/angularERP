@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Devis} from "../_models/devis";
 import {DevisService} from "../_service/devis.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Client} from "../_models/client";
 import {User} from "../_models/users";
 import {LotService} from "../_service/lot.service";
@@ -20,7 +20,7 @@ export class DetailDevisComponent implements OnInit {
   user!: User;
   lot = new Lot ;
 
-  constructor(private devisService: DevisService, private route: ActivatedRoute,
+  constructor(private devisService: DevisService, private route: ActivatedRoute, private router: Router,
               private lotService : LotService,@Inject(TOASTR_TOKEN) private toastr: Toastr) {
 
   }
@@ -51,6 +51,7 @@ export class DetailDevisComponent implements OnInit {
       this.lotService.create(this.lot)
         .subscribe((response: any) => {
           this.success("Nouveau lot en vue !")
+          this.router.navigate([`/devisCreate/${devisId}`]);
         }, error => {
           console.log(error)
           this.warning("Une erreur est survenue lors de la création")

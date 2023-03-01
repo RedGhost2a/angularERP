@@ -3,15 +3,21 @@
 }
 
 .container {
-
+  background-color: #F0F4F8;
+  //width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  margin-left: 50px;
-  margin-top: 30px;
+  color: #334E68;
+
 
   .example-card {
-    max-width: 90%;
-    margin-bottom: 8px;
+    //display: flex;
+    color: #334E68;
+    width: 70%;
+    margin-left: auto;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    margin-right: auto;
 
     .group {
       display: flex;
@@ -20,6 +26,8 @@
 
     .detailList {
       display: flex;
+      justify-content: space-between;
+
 
       .subTitle {
         margin-top: 0;
@@ -49,4 +57,46 @@
     justify-content: space-between;
   }
 
+}
+
+.header-table-button {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 6%;
+  margin-right: 6%;
+  margin-top: 4%;
+  align-items: center;
+
+  h4 {
+
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin: 0;
+  }
+}
+
+.header {
+  display: flex;
+  margin-top: 4%;
+  margin-left: 15%;
+  margin-bottom: 2%;
+  align-items: center;
+
+  p {
+    font-size: 1.4rem;
+    margin-bottom: 0;
+    margin-left: 1%;
+    font-weight: 500;
+  }
+}
+
+table {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  width: 90%;
+  margin-top: 1%;
+
+  margin-left: auto;
+  margin-right: auto;
+  //margin-left: 2%;
+  //margin-right: 2%;
 }

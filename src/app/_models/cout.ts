@@ -15,6 +15,7 @@ export interface Cout {
   TypeCout?:TypeCout
   quantite?:number;
   OuvrageCoutDuDevis?:OuvrageCout
+OuvrageCout?:OuvrageCout
   debourseSecTotal ?:number;
   prixEquiHT?:number;
   prixUnitaireEquiHT?:number;

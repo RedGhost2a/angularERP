@@ -14,5 +14,4 @@ export interface Entreprise {
   phoneNumber: number;
   capital: number;
 
-
 }

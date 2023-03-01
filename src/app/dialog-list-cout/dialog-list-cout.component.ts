@@ -17,7 +17,6 @@ import {SousLotOuvrageService} from "../_service/sous-lot-ouvrage.service";
 })
 export class DialogListCoutComponent implements OnInit {
 
-  panelOpenState = false;
   selectedCoutIds: number[] = [];
   columnsToDisplay = [
     "checkBox",

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {CoutService} from "../_service/cout.service";
 import {ActivatedRoute} from '@angular/router';
@@ -7,10 +7,13 @@ import {FournisseurService} from "../_service/fournisseur.service";
 import {Fournisseur} from "../_models/fournisseur";
 import {TypeCout} from "../_models/type-cout";
 import {TypeCoutService} from "../_service/typeCout.service";
+import {Cout} from "../_models/cout";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 
 
-interface FournisseurCout{
-  CoutId:number;
+interface FournisseurCout {
+  CoutId: number;
   Fournisseurid: number;
 }
 
@@ -21,58 +24,39 @@ interface FournisseurCout{
 })
 export class FormCoutComponent implements OnInit {
   myFormGroup!: FormGroup;
-  textButton: string = "Creer un nouveau cout";
-  titreForm: string = "Création d'un du cout";
+  textButton: string = "Ajouter ce composant";
+  titreForm: string = "Ajout d'un composant dans la blibliothèque de prix";
+  textForm : string = "L'ajout d'un composant permet de l'utiliser au sein de la bibliothèque de prix et dans la création de devis"
   typeCout !: TypeCout[];
   fournisseur!: Fournisseur[];
-  userId = localStorage.getItem("userID");
-  lastCoutId!: number;
-  fournisseurId!:number;
-  fournisseurCout!:FournisseurCout;
+  userId = this.userService.userValue.id;
+  initialData: Cout
+  cout!: Cout
 
-  constructor(private formBuilder: FormBuilder, private coutService: CoutService,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Cout, private dialogRef: MatDialogRef<DialogComponent>, private formBuilder: FormBuilder, private coutService: CoutService,
               private route: ActivatedRoute, private userService: UserService,
-              private fournisseurService : FournisseurService, private typeCoutService: TypeCoutService) {}
+              private fournisseurService: FournisseurService, private typeCoutService: TypeCoutService) {
+    this.initialData = this.data;
+  }
 
 
   ngOnInit(): void {
-    console.log("FORM FOURNISSEUR",this.route.url)
-    const test = this.route.url;
-    console.log('TEST', )
-    console.log(window.location.href)
     this.createFormCout();
     this.getUserById();
-    //this.getAllTypeCouts();
-    this.generateFormUpdate();
-    // this.getAllFournisseur()
+    if (this.initialData !== null)
+      this.generateFormUpdate();
   }
 
   //Determine si c'est l'ajout d'un nouveau cout ou la modification d'un cout existant au click
   createAndUpdate(): void {
-    this.route.params.subscribe(params => {
-      const coutID = +params['id']
-      if (isNaN(coutID)) {
-        this.coutService.create(this.myFormGroup.getRawValue()).subscribe(
-          (): void => {
-           this.fournisseurId = this.myFormGroup.getRawValue().Fournisseurs
-            alert('Nouveau cout enregistrer')
-             this.getLastCout()
-              this.createCoutFournisseur(this.lastCoutId,this.fournisseurId)
-             //this.createCoutFournisseur(this.lastCoutId,this.fournisseurId)
-
-          }
-        );
-
-      } else {
-        this.coutService.update(this.myFormGroup.getRawValue(), coutID)
-          .subscribe((data): void => {
-            this.fournisseurCout = this.myFormGroup.getRawValue().Fournisseurs;
-            console.log("this.fournisseur[0]",this.fournisseur[0])
-            alert('Update!')
-          });
-      }
-    })
+    if (this.initialData === null) {
+      this.cout = this.myFormGroup.getRawValue()
+      this.coutService.create(this.myFormGroup.getRawValue()).subscribe();
+    } else {
+      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe();
+    }
   }
+
 
   //Recupere l'id de l'entreprise de l'utilisateur courant, et creer le formulaire
   getUserById(): void {
@@ -85,7 +69,7 @@ export class FormCoutComponent implements OnInit {
     })
   }
 
-  createFormCout():void{
+  createFormCout(): void {
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
       designation: new FormControl(),
@@ -93,25 +77,22 @@ export class FormCoutComponent implements OnInit {
       prixUnitaire: new FormControl(),
       EntrepriseId: new FormControl(),
       TypeCoutId: new FormControl(),
-      Fournisseurs: new FormControl()
+      FournisseurId: new FormControl()
     });
   }
 
 
 //Recupere tous les type de couts pour implementer le select picker du template
-  getAllTypeCouts(entrepriseID:number): void {
-    this.typeCoutService.getAllTypeCouts(entrepriseID).subscribe(data =>{
-      this.typeCout = data;
+  getAllTypeCouts(entrepriseID: number): void {
+    this.typeCoutService.getAllTypeCouts(entrepriseID).subscribe(data => {
+        this.typeCout = data;
 
-    }
+      }
     )
-    // this.coutService.getAllTypeCout().subscribe(data => {
-    //   this.typeCout = data;
-      //this.typeCout = Array.from(this.typeCout.reduce((m, t) => m.set(t.type, t), new Map()).values());
-    // })
   }
+
   //Recupere tous les fournisseurs pour implementer le select picker du template
-  getAllFournisseur(entrepriseId:number): void {
+  getAllFournisseur(entrepriseId: number): void {
     this.fournisseurService.getAllFournisseurs(entrepriseId).subscribe(data => {
       this.fournisseur = data;
       //this.typeCout = Array.from(this.typeCout.reduce((m, t) => m.set(t.type, t), new Map()).values());
@@ -121,43 +102,16 @@ export class FormCoutComponent implements OnInit {
   //Genere le formulaire de modification avec la data du cout selectionnner, change le titre du formulaire
   //et le texte du bouton de validation
   generateFormUpdate(): void {
-    this.route.params.subscribe(params => {
-      const coutID = +params['id']
-      if (!isNaN(coutID)) {
-        this.textButton = 'Modifier le cout'
-        this.titreForm = 'Modification du cout'
-        this.coutService.getById(coutID).subscribe(data => {
-           const {Fournisseurs}:any = data;
-          data = {
-            id: data.id,
-            designation: data.designation,
-            unite: data.unite,
-            prixUnitaire: data.prixUnitaire,
-            EntrepriseId: data.EntrepriseId,
-            TypeCoutId: data.TypeCoutId,
-            FournisseurId: Fournisseurs[0].id
-          }
-          this.myFormGroup.patchValue(data);
-        });
-      }
-    })
-
+    this.titreForm = "Modification d'un composant de la bibliothèque de prix"
+    this.textForm = "La modification de ce composant va impacter les ouvrages de la bibliothèque de prix associés. Les devis déjà existants ne seront pas modifiés."
+    this.textButton = "Modifier ce composant"
+    this.myFormGroup.patchValue(this.initialData)
+  }
+  closeDialog() {
+    // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
+    this.dialogRef.close();
   }
 
-  getLastCout():void{
-    this.coutService.getLast().subscribe(data=>{
-      console.log("LAST COUT",data)
-      this.lastCoutId = data[0].id
-      console.log("TEST", this.lastCoutId)
-      this.createCoutFournisseur(this.lastCoutId, this.fournisseurId)
-    })
-  }
 
-   createCoutFournisseur(LastCoutId:number,FournisseurId:number){
-     this.fournisseurService.createFournisseurCout(LastCoutId,FournisseurId ).subscribe()
-  }
-  updateCoutFournisseur(CoutId:number, FournisseurId:number, data:FournisseurCout):void{
-    this.fournisseurService.updateFournisseurCout(CoutId,FournisseurId,data).subscribe()
-  }
 }
 
