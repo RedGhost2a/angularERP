@@ -24,8 +24,11 @@ import {FormBuilder, FormGroup} from "@angular/forms";
   ]
 })
 export class SuperAdminComponent implements OnInit, AfterViewInit {
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatPaginator) paginator2!: MatPaginator;
+  // @ViewChild(MatPaginator) paginator!: MatPaginator;
+  // @ViewChild(MatPaginator) paginator2!: MatPaginator;
+
+  @ViewChild('paginator') paginator!: MatPaginator;
+  @ViewChild('paginator2') paginator2!: MatPaginator;
 
 
   listEntreprise !: Entreprise[];
@@ -74,6 +77,10 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
 
   }
 
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource2.paginator = this.paginator2;
+  }
 
   ngOnInit(): void {
     this.getAll()
@@ -82,10 +89,6 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
     this.getNotesAndLogsByTimestamp()
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource2.paginator = this.paginator2;
-  }
 
   getAll(): void {
     this.entrepriseService.getAll().subscribe((data: any) => {
@@ -112,7 +115,9 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
     this.logService.getLogs().subscribe(logs => {
       this.logs = logs;
       // console.log(logs)
+      this.logEntries = this.logs.sort((a: { id: number; }, b: { id: number; }) => b.id - a.id); // trier les logs par ID en ordre décroissant
       this.logEntries = this.logs.filter((entry: Log) => entry.level === '2');
+
       this.errorEntries = this.logs.filter((entry: Log) => entry.level === '5' || entry.level === '6');
       // console.log(this.errorEntries)
       this.dataSource = new MatTableDataSource<Log>(this.logEntries);
@@ -124,6 +129,7 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
     });
 
   }
+
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -170,6 +176,7 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
 
           logs.forEach(log => {
             const logTimestamp = new Date(log.timestamp).getTime();
+            // console.log("logtimestamp", log.id, logTimestamp)
             const diff = Math.abs(logTimestamp - noteTimestamp);
             const marginOfError = 100000; // 100 secondes de marge d'erreur
 
@@ -197,7 +204,14 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
   }
 
   onNoteResolutionChanged(note: Notes) {
-
+    this.notesService.updateNoteResolution(note).subscribe(
+      (response) => {
+        console.log('Note résolue sauvegardée avec succès', response);
+      },
+      (error) => {
+        console.error('Une erreur est survenue lors de la sauvegarde de la note résolue', error);
+      }
+    );
   }
 
 

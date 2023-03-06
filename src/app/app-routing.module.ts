@@ -30,7 +30,6 @@ import {DetailDevisComponent} from "./detail-devis/detail-devis.component";
 import {CreateDevisComponent} from "./create-devis/create-devis.component";
 import {SousDetailPrixComponent} from "./sous-detail-prix/sous-detail-prix.component";
 import {LogsComponent} from "./logs/logs.component";
-import {FormCoutComponent} from "./form-cout/form-cout.component";
 import {FormOuvrageComponent} from "./form-ouvrage/form-ouvrage.component";
 
 const routes: Routes = [
@@ -42,58 +41,58 @@ const routes: Routes = [
   // {path: 'notes', component: NotesComponent},
 
   // {path: 'cout/:id', component: FormCoutComponent},
-  {path: 'ouvragecss',  component: FormOuvrageComponent,},
+  {path: 'ouvragecss', canActivate: [AuthGuard], component: FormOuvrageComponent,},
   // {path: 'ouvrage/:id', component: FormOuvrageComponent,},
   // {path: 'ouvrage',  component: FormOuvrageComponent,},
-  {path: 'ouvrageDetail/:id', component: DetailOuvrageComponent,},
-  {path: 'listCout', component: ListCoutComponent},
-  {path: 'listOuvrage', component: ListOuvrageComponent},
-  {path: 'ajoutCout/:id', component: OuvrageAddCoutComponent},
-  {path: 'listFournisseur', component: ListFournisseurComponent},
+  {path: 'ouvrageDetail/:id', canActivate: [AuthGuard], component: DetailOuvrageComponent,},
+  {path: 'listCout', canActivate: [AuthGuard], component: ListCoutComponent},
+  {path: 'listOuvrage', canActivate: [AuthGuard], component: ListOuvrageComponent},
+  {path: 'ajoutCout/:id', canActivate: [AuthGuard], component: OuvrageAddCoutComponent},
+  {path: 'listFournisseur', canActivate: [AuthGuard], component: ListFournisseurComponent},
   // {path:'fournisseur',component:FormFournisseurComponent},
   // {path:'fournisseur/:id',component:FormFournisseurComponent},
-  {path: 'listTypeCout', component: ListTypeCoutComponent},
+  {path: 'listTypeCout', canActivate: [AuthGuard], component: ListTypeCoutComponent},
   // {path:'typeCout',component:FormTypeCoutComponent},
   // {path:'typeCout/:id',component:FormTypeCoutComponent},
 
 
-  {path: 'cout', component: FormComponent},
-  {path: 'cout/:id', component: FormComponent},
-  {path: 'fournisseur', component: FormComponent},
-  {path: 'fournisseur/:id', component: FormComponent},
-  {path: 'typeCout', component: FormComponent},
-  {path: 'typeCout/:id', component: FormComponent},
-  {path: 'ouvrage', component: FormComponent},
-  {path: 'ouvrage/:id', component: FormComponent},
-  {path: 'devisDetail/:id', component: DetailDevisComponent},
-  {path: 'devisCreate/:id', component: CreateDevisComponent},
+  {path: 'cout', canActivate: [AuthGuard], component: FormComponent},
+  {path: 'cout/:id', canActivate: [AuthGuard], component: FormComponent},
+  {path: 'fournisseur', canActivate: [AuthGuard], component: FormComponent},
+  {path: 'fournisseur/:id', canActivate: [AuthGuard], component: FormComponent},
+  {path: 'typeCout', canActivate: [AuthGuard], component: FormComponent},
+  {path: 'typeCout/:id', canActivate: [AuthGuard], component: FormComponent},
+  {path: 'ouvrage', canActivate: [AuthGuard], component: FormComponent},
+  {path: 'ouvrage/:id', canActivate: [AuthGuard], component: FormComponent},
+  {path: 'devisDetail/:id', canActivate: [AuthGuard], component: DetailDevisComponent},
+  {path: 'devisCreate/:id', canActivate: [AuthGuard], component: CreateDevisComponent},
 
 
   {path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'}},
 
-  {path: 'clients', component: ListClientComponent, data: {title: 'Liste des clients'}},
-  {path: 'clients/new', component: EditComponent, data: {title: 'Creation des clients'}},
-  {path: 'clients/:id', component: EditComponent, data: {title: 'Details du clients'}},
-  {path: 'clients/:id', component: ClientsComponent, data: {title: 'Details du clients'}},
+  {path: 'clients', canActivate: [AuthGuard], component: ListClientComponent, data: {title: 'Liste des clients'}},
+  {path: 'clients/new', canActivate: [AuthGuard], component: EditComponent, data: {title: 'Creation des clients'}},
+  {path: 'clients/:id', canActivate: [AuthGuard], component: EditComponent, data: {title: 'Details du clients'}},
+  {path: 'clients/:id', canActivate: [AuthGuard], component: ClientsComponent, data: {title: 'Details du clients'}},
   /*
     {path: 'clients/detail/:id', component: UserComponent, data: {title: 'Detail des utilisateurs'}},
   */
 
   {
     path: 'users',
-
+    canActivate: [AuthGuard],
     component: UserListComponent,
     data: {title: 'Liste des utilisateurs', roles: [Role.SuperAdmin, Role.Admin]}
   },
   {
     path: 'users/new',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     component: UserEditComponent,
     data: {title: 'Création des utilisateurs', roles: [Role.SuperAdmin, Role.Admin]}
   },
   {
     path: 'users/:id',
-
+    canActivate: [AuthGuard],
     component: UserEditComponent,
     data: {title: 'Detail des utilisateurs', roles: [Role.SuperAdmin, Role.Admin]}
   },
@@ -103,40 +102,46 @@ const routes: Routes = [
 
   {
     path: 'entreprises',
-
+    canActivate: [AuthGuard],
     component: EntrepriseListComponent,
     data: {title: 'Liste des entreprise'}
   },
   {
     path: 'entreprises/new',
-
+    canActivate: [AuthGuard],
     data: {roles: [Role.SuperAdmin], title: 'Création des entreprises'},
     component: EntrepriseEditComponent,
   },
   {
     path: 'entreprises/:id',
-
+    canActivate: [AuthGuard],
     component: EntrepriseEditComponent,
     data: {roles: [Role.SuperAdmin], title: 'Détails des entreprises'}
   },
 
-  {path: 'devis', component: ListDevisComponent, data: {title: 'Liste des devis'}},
-  {path: 'devis/new', component: EditDevisComponent, data: {title: 'Devis'}},
-  {path: 'devis/:id', component: EditDevisComponent, data: {title: 'Devis'}},
-  {path: 'sousDetailPrix/:id', component: SousDetailPrixComponent, data: {title: 'Sous détail de prix'}},
+  {path: 'devis', canActivate: [AuthGuard], component: ListDevisComponent, data: {title: 'Liste des devis'}},
+  {path: 'devis/new', canActivate: [AuthGuard], component: EditDevisComponent, data: {title: 'Devis'}},
+  {path: 'devis/:id', canActivate: [AuthGuard], component: EditDevisComponent, data: {title: 'Devis'}},
+  {
+    path: 'sousDetailPrix/:id',
+    canActivate: [AuthGuard],
+    component: SousDetailPrixComponent,
+    data: {title: 'Sous détail de prix'}
+  },
 
   {
     path: 'bibliotheque',
-
+    canActivate: [AuthGuard],
     component: BibliothequesComponent,
     data: {title: 'Bibiothèque de prix'}
   },
-  {path: 'parametre', component: ParametresComponent, data: {title: 'Paramètres'}},
+  {path: 'parametre', canActivate: [AuthGuard], component: ParametresComponent, data: {title: 'Paramètres'}},
   {
-    path: 'admin', component: SuperAdminComponent, data: {roles: [Role.SuperAdmin]}
+    path: 'admin', canActivate: [AuthGuard], component: SuperAdminComponent, data: {roles: [Role.SuperAdmin]}
   },
   {
     path: 'admin/entreprise/:id',
+    canActivate: [AuthGuard],
     component: SuperAdminListComponent,
     data: {title: 'Administration',}
   },

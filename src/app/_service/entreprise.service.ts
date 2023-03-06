@@ -3,6 +3,7 @@ import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Entreprise} from "../_models/entreprise";
 import {Observable} from "rxjs";
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,30 +15,30 @@ export class EntrepriseService {
   }
 
   register(entreprise: Entreprise): Observable<any> {
-    return this.http.post('http://localhost:4000/entreprises/new', entreprise);
+    return this.http.post(`${environment.apiUrl}/entreprises/new`, entreprise);
   }
 
 
   getAll(): Observable<any> {
-    return this.http.get(`http://localhost:4000/entreprises`)
+    return this.http.get(`${environment.apiUrl}/entreprises`)
 
   }
 
 
   update(entreprise: Entreprise, id: string): Observable<any> {
-    return this.http.put(`http://localhost:4000/entreprises/${id}`, entreprise)
+    return this.http.put(`${environment.apiUrl}/entreprises/${id}`, entreprise)
   }
 
   getById(id: any): Observable<any> {
-    return this.http.get(`http://localhost:4000/entreprises/${id}`)
+    return this.http.get(`${environment.apiUrl}/entreprises/${id}`)
   }
 
   getClientByEntreprise(id: any): Observable<any> {
-    return this.http.get(`http://localhost:4000/entreprises//admin/entreprise/client/${id}`)
+    return this.http.get(`${environment.apiUrl}/entreprises//admin/entreprise/client/${id}`)
   }
 
   deleteByID(id: any): Observable<any> {
-    return this.http.delete(`http://localhost:4000/entreprises/${id}`)
+    return this.http.delete(`${environment.apiUrl}/entreprises/${id}`)
   }
 
 }

@@ -124,7 +124,7 @@
           <h1 style="width: 20%">{{note.id|number}} </h1>
         </div>
 
-        <mat-card-header class="devis_header">
+        <mat-card-header class="devis_header" style="width: 50%">
           <mat-card-title>{{note.title|uppercase}}</mat-card-title>
           <mat-card-subtitle> {{note.typeError}} {{note?.optionsTypeError}}</mat-card-subtitle>
           <mat-card-subtitle>Le: {{note.createdAt |date}}</mat-card-subtitle>
@@ -132,9 +132,14 @@
 
         <mat-card-content style="width: 50%">
           <p class="devis-row">Sujet:  {{note.text|uppercase}}</p>
-          <!--          <p class="devis-row">Le: {{userDevis.Client.firstName |date}}</p>-->
+          <mat-card-subtitle style="color: blue" *ngIf="note.resolution">Problème résolu! <br> Vous pouvez supprimer
+          </mat-card-subtitle>
         </mat-card-content>
-        <mat-icon class="icon" (click)="deleteItem(note.id)">delete</mat-icon>
+        <mat-icon class="icon" style="color: blue" *ngIf="note.resolution" (click)="deleteItem(note.id)">delete
+        </mat-icon>
+        <mat-icon class="icon" style="color: blue" *ngIf="note.typeError==='Je souhaite créer une note !'"
+                  (click)="deleteItem(note.id)">delete
+        </mat-icon>
 
       </mat-card>
 

@@ -1,5 +1,6 @@
 .container-frais-chantier {
   background-color: #F0F4F8 !important;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   min-height:93vh ;
@@ -52,13 +53,6 @@
       //width: 100px;
     }
 
-    //:nth-child(2){
-    //  //text-align: center;
-    //  min-width: 458px;
-    //}
-    //:nth-child(3){
-    //  width: 100px;
-    //}
 
     .designation-lot-frais-chantier {
       font-size: 1.1rem;
@@ -84,14 +78,7 @@
         //width: 100px;
       }
 
-      //:nth-child(2){
-      //  //text-align: center;
-      //  min-width: 450px;
-      //}
 
-      //:nth-child(3){
-      //  width: 95px;
-      //}
       .designation-sous-lot-frais-chantier {
         font-size: 1.1rem;
       }
@@ -134,13 +121,7 @@
 
       }
 
-      //.test{
-      //  display: flex;
-      //
-      //}
-      //span{
-      //  border: solid #9DC5C3;
-      //}
+
     }
 
     #quantity-ouvrage-frias-de-chantier {
@@ -202,16 +183,10 @@
   margin: 5px 20px 0 10px;
   background: rgba(179, 151, 160, 0.13);
 
-  //height: 18px;
-  //padding: 8px;
-  //
+
 }
 
-//.cout {
-//  margin: 5px 20px 0 10px;
-//  //height: 18px;
-//  //padding: 8px;
-//}
+
 
 .hidden {
   display: none;
@@ -229,12 +204,7 @@
   width: 39px;
 }
 
-//.ouvrage-header-description span {
-//  width: 160px;
-//  text-align: center;
-//  text-transform: uppercase;
-//  border: black solid 1px;
-//}
+
 
 .totaux-header {
   display: flex;
@@ -295,52 +265,7 @@
   font-weight: bold;
 }
 
-//.cout-header-description span {
-//  width: 160px;
-//  text-align: center;
-//  margin: 5px 20px 0 10px;
-//  background: rgba(179, 151, 160, 0.13);
-//  text-transform: uppercase;
-//
-//}
-//
-//.cout-header {
-//  border: solid 1px;
-//  margin: 11px 20px 0 26px;
-//  text-align: center;
-//  padding: 5px;
-//
-//}
 
-//.cout-header-description {
-//  display: flex;
-//  justify-content: space-between;
-//  //background-color: rgba(149, 195, 236, 0.13);
-//  align-items: center;
-//  width: 100%;
-//  color: #ffc107;
-//
-//}
-
-////.cout-header-description span,
-//.ouvrage-header-detail span,
-//.cout-header-detail span {
-//  height: 40px;
-//  line-height: 40px;
-//  //background-color: rgba(149, 195, 236, 0.13);
-//  align-items: center;
-//  width: 160px;
-//}
-
-//.ouvrage-header-description span {
-//  font-size: 10px;
-//  height: 40px;
-//  line-height: 40px;
-//  //background-color: rgba(149, 195, 236, 0.13);
-//  align-items: center;
-//  width: 160px;
-//
-//}
 
 .designation {
   font-size: 20px;
@@ -353,16 +278,6 @@
 
 }
 
-//.cout-header-detail {
-//  display: flex;
-//  justify-content: space-between;
-//  background-color: rgba(149, 195, 236, 0.13);
-//  align-items: center;
-//  width: 100%;
-//  text-transform: uppercase;
-//
-//
-//}
 
 .ouvrage-header-detail,
 .ouvrage-header-description {
@@ -375,7 +290,6 @@
   text-align: center;
 
 
-  //margin: 5px 20px 0 10px;
 
 }
 

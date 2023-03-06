@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {User} from "../_models/users";
 import {BehaviorSubject, map, Observable} from "rxjs";
 import {StorageService} from "./storage.service";
+import {environment} from '../../environments/environment';
 
 
 @Injectable({
@@ -37,7 +38,7 @@ export class UserService {
   }
 
   login(email: string, password: string) {
-    return this.http.post<User>(`http://localhost:4000/users/authenticate`, {email, password})
+    return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, {email, password})
       .pipe(map(user => {
 
         // store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -45,7 +46,12 @@ export class UserService {
         let encryptUser = this.storageService.encrypt(string)
         localStorage.setItem('user', encryptUser);
         this.userSubject.next(user);
+
+        let crypt = this.storageService.encrypt('blalblabla')
+        let decrypt = this.storageService.decrypt(crypt)
+        console.log("crypt", crypt, "decrypt", decrypt)
         return user;
+
       }));
   }
 
@@ -58,28 +64,28 @@ export class UserService {
   }
 
   register(user: User): Observable<any> {
-    return this.http.post('http://localhost:4000/users/new', user);
+    return this.http.post(`${environment.apiUrl}/users/new`, user);
   }
 
   getCurrentUser(): Observable<any> {
-    return this.http.get('http://localhost:4000/users/current')
+    return this.http.get(`${environment.apiUrl}/users/current`)
   }
 
   getAll(): Observable<any> {
-    return this.http.get(`http://localhost:4000/users`)
+    return this.http.get(`${environment.apiUrl}/users`)
 
   }
 
   update(user: User, id: any): Observable<any> {
-    return this.http.put(`http://localhost:4000/users/${id}`, user)
+    return this.http.put(`${environment.apiUrl}/users/${id}`, user)
   }
 
   getById(id: any): Observable<any> {
-    return this.http.get(`http://localhost:4000/users/${id}`)
+    return this.http.get(`${environment.apiUrl}/users/${id}`)
   }
 
   deleteByID(id: any): Observable<any> {
-    return this.http.delete(`http://localhost:4000/users/${id}`)
+    return this.http.delete(`${environment.apiUrl}/users/${id}`)
   }
 
 

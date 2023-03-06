@@ -1,10 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  Injectable,
-  OnInit,
-} from '@angular/core';
+import {ChangeDetectorRef, Component, Inject, Injectable, OnInit,} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LotService} from "../_service/lot.service"
 import {ActivatedRoute, Router} from "@angular/router";
@@ -26,7 +20,9 @@ import {SousDetailPrixService} from "../_service/sous-detail-prix.service";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 import {Devis} from "../_models/devis";
-import {Json2CsvTransform} from "json2csv";
+import {DevisExport} from "../_models/devisExport";
+
+// import {Json2CsvTransform} from "json2csv";
 
 @Component({
   selector: 'app-create-devis',
@@ -70,6 +66,8 @@ export class CreateDevisComponent implements OnInit {
   prixEquilibres: number[] = [];
   coefEqui!: number;
   fraisDeChantier = new Devis()
+  devisExport: DevisExport[] = []
+  // fraisDeChantier = new Devis()
 
 
 //TODO ON NE PEUT METTRE QUE UN SEUL ET MEME OUVRAGE PAR SOUS_LOT; //
@@ -91,7 +89,6 @@ export class CreateDevisComponent implements OnInit {
               private changeDetector: ChangeDetectorRef,
   ) {
     this.expandedLotId = undefined;
-    this.fraisDeChantier.prixCalcHT = 0;
   }
 
   ngOnInit() {
@@ -109,28 +106,28 @@ export class CreateDevisComponent implements OnInit {
     this.formPrixArrondiOuvrage()
     this.getLotFraisDeChantier();
     this.getAllLots();
+    this.dataLoad = false;
+
+    this.getDevisExport()
+
+
+    // quantityCout(quantityOuvrage: number, sousLot: SousLot): void {
+    //   console.log("quantityCout")
+    //   if (quantityOuvrage) {
+    //     console.log("quantityCout dans le premier IF")
+    //     sousLot.OuvrageDuDevis.forEach(sousLot => {
+    //       sousLot.CoutDuDevis?.forEach(coutDuDevis => {
+    //         if (coutDuDevis.OuvrageCoutDuDevis && coutDuDevis.OuvrageCoutDuDevis.ratio !== undefined) {
+    //           console.log("cout du devis", coutDuDevis)
+    //           console.log("RATIO OUVRAGECOUTDUDEVIS", coutDuDevis.OuvrageCoutDuDevis.ratio)
+    //           coutDuDevis.quantite = coutDuDevis.OuvrageCoutDuDevis.ratio * quantityOuvrage
+    //           // this.getAllLots()
+    //         }
+    //       })
+    //     })
+    //
+    //   }
   }
-
-
-
-
-  // quantityCout(quantityOuvrage: number, sousLot: SousLot): void {
-  //   console.log("quantityCout")
-  //   if (quantityOuvrage) {
-  //     console.log("quantityCout dans le premier IF")
-  //     sousLot.OuvrageDuDevis.forEach(sousLot => {
-  //       sousLot.CoutDuDevis?.forEach(coutDuDevis => {
-  //         if (coutDuDevis.OuvrageCoutDuDevis && coutDuDevis.OuvrageCoutDuDevis.ratio !== undefined) {
-  //           console.log("cout du devis", coutDuDevis)
-  //           console.log("RATIO OUVRAGECOUTDUDEVIS", coutDuDevis.OuvrageCoutDuDevis.ratio)
-  //           coutDuDevis.quantite = coutDuDevis.OuvrageCoutDuDevis.ratio * quantityOuvrage
-  //           // this.getAllLots()
-  //         }
-  //       })
-  //     })
-  //
-  //   }
-  // }
 
   fraisGeneraux(): void {
     if (this.lotFraisDeChantier.prix !== undefined) {
@@ -242,9 +239,9 @@ export class CreateDevisComponent implements OnInit {
 
             await this.testAsync(ouvrageDuDevis)
 
-            console.log("prix unitaire arrondi ", ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT)
-            console.log("prix unitaire calcule ", ouvrageDuDevis.SousLotOuvrage.prixUniCalcHT)
-            console.log("prix arrondi ", ouvrageDuDevis.SousLotOuvrage.prixVenteHT)
+            // console.log("prix unitaire arrondi ", ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT)
+            // console.log("prix unitaire calcule ", ouvrageDuDevis.SousLotOuvrage.prixUniCalcHT)
+            // console.log("prix arrondi ", ouvrageDuDevis.SousLotOuvrage.prixVenteHT)
             // this.sommePrixArrondi(ouvrageDuDevis.SousLotOuvrage)
             this.devis.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixVenteHT
             this.devis.prixEquiHT += ouvrageDuDevis.SousLotOuvrage.prixEquiHT
@@ -282,9 +279,9 @@ export class CreateDevisComponent implements OnInit {
 
           await this.testAsync(ouvrageDuDevis)
 
-          console.log("prix unitaire arrondi ", ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT)
-          console.log("prix unitaire calcule ", ouvrageDuDevis.SousLotOuvrage.prixUniCalcHT)
-          console.log("prix arrondi ", ouvrageDuDevis.SousLotOuvrage.prixVenteHT)
+          // console.log("prix unitaire arrondi ", ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT)
+          // console.log("prix unitaire calcule ", ouvrageDuDevis.SousLotOuvrage.prixUniCalcHT)
+          // console.log("prix arrondi ", ouvrageDuDevis.SousLotOuvrage.prixVenteHT)
           // this.sommePrixArrondi(ouvrageDuDevis.SousLotOuvrage)
           this.fraisDeChantier.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixVenteHT
           this.fraisDeChantier.prixEquiHT += ouvrageDuDevis.SousLotOuvrage.prixEquiHT
@@ -297,23 +294,33 @@ export class CreateDevisComponent implements OnInit {
       })
 
     })
+    this.devisExport.push({"coutTotal": this.devis.coutTotal})
+
+  }
+
+  getDevisExport() {
+    this.devisService.getById(this.devisId).subscribe(value => {
+      console.log(value)
+
+      console.log(this.devisExport)
+    })
   }
 
 
   async testAsync(ouvrageDuDevis: Ouvrage) {
     if (ouvrageDuDevis.SousLotOuvrage) {
       if (ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT !== 0 && ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT) {
-        console.log("prix de vente unitaire IF", ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT)
+        // console.log("prix de vente unitaire IF", ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT)
         ouvrageDuDevis.SousLotOuvrage.prixVenteHT = ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT * ouvrageDuDevis.SousLotOuvrage.quantityOuvrage
 
       } else {
         ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT = ouvrageDuDevis.SousLotOuvrage.prixUniCalcHT
         ouvrageDuDevis.SousLotOuvrage.prixVenteHT = ouvrageDuDevis.SousLotOuvrage.prixCalcHT
-        console.log("prix de vente unitaire ELSE", ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT)
+        // console.log("prix de vente unitaire ELSE", ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT)
 
       }
       // if(ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT === 0){
-      console.log("test prix calcht ", ouvrageDuDevis.SousLotOuvrage.prixCalcHT)
+      // console.log("test prix calcht ", ouvrageDuDevis.SousLotOuvrage.prixCalcHT)
       // this.devis.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixArrondi
       // this.devis.beneficeAleasTotal = this.devis.prixVenteHT - this.devis.prixEquiHT
       // }
@@ -329,13 +336,13 @@ export class CreateDevisComponent implements OnInit {
 
   getSommeSousLot(sousLot: SousLot, lot: Lot) {
     this.sousLotOuvrageService.getSommeSousLot(sousLot.id).subscribe(data => {
-      console.log("sousLot prix : ", sousLot.prix)
+      // console.log("sousLot prix : ", sousLot.prix)
       sousLot.prix = data
       lot.prix = 0;
       for (let sub of lot.SousLots) {
         lot.prix += sub.prix
       }
-      console.log("lot.prix", lot.prix, "lot id ", lot.id)
+      // console.log("lot.prix", lot.prix, "lot id ", lot.id)
       this.getSommeDevis()
     })
   }
@@ -355,7 +362,7 @@ export class CreateDevisComponent implements OnInit {
     if (sousLotOuvrage.id)
       this.sousLotOuvrageService.updatedPrice(sousLotOuvrage.id, prixArrondiSousLotOuvrage).subscribe(
         data => {
-          console.log(data);
+          // console.log(data);
         },
         error => {
           console.error(error);
@@ -368,8 +375,8 @@ export class CreateDevisComponent implements OnInit {
 
   quantityChange(event: any, sousLotOuvrage: SousLotOuvrage | undefined, sousLot: SousLot, lot: Lot, prixOuvrages: { id: 0, prix: 0 }[]) {
     // this.prixOuvrage = []
-    console.log('quantity:', event);
-    console.log('this prixOuvrage', this.prixOuvrage);
+    // console.log('quantity:', event);
+    // console.log('this prixOuvrage', this.prixOuvrage);
     //verifie que le sous lot contient au moins un ouvrage
     // this.quantityCout(event, sousLot)
     if (sousLotOuvrage !== undefined && sousLotOuvrage.id) {
@@ -399,15 +406,15 @@ export class CreateDevisComponent implements OnInit {
 
       //on update la nouvelle quantité et le nouveau prix de l'ouvrage au sousLotOuvrage
       sousLotOuvrage.prixUniVenteHT = 0;
-      console.log("console from quantityChange", sousLotOuvrage)
+      // console.log("console from quantityChange", sousLotOuvrage)
       this.sousLotOuvrageService.update(sousLotOuvrage.id, sousLotOuvrage).subscribe(() => {
 
         this.getSommeSousLot(sousLot, lot)
       })
       // sousLotOuvrage.prixUniArrondi = sousLotOuvrage.prixUniCalcHT
-      // this.allCalculOuvrage()
-      console.log("sousLotOuvrage", sousLotOuvrage)
-      console.log("sousLotOuvrage", sousLotOuvrage.prixOuvrage)
+      // // this.allCalculOuvrage()
+      // console.log("sousLotOuvrage", sousLotOuvrage)
+      // console.log("sousLotOuvrage", sousLotOuvrage.prixOuvrage)
     }
   }
 
@@ -422,7 +429,7 @@ export class CreateDevisComponent implements OnInit {
         prix: ouvrage?.CoutDuDevis && ouvrage.CoutDuDevis.reduce((acc, ct) => acc + ct.prixUnitaire, 0)
       }));
 
-    console.log("tableau de prix des ouvrage", this.prixOuvrageFraisDeChantier)
+    // console.log("tableau de prix des ouvrage", this.prixOuvrageFraisDeChantier)
   }
 
   getSommeOuvrage(): void {
@@ -436,7 +443,7 @@ export class CreateDevisComponent implements OnInit {
         prix: ouvrage?.CoutDuDevis && ouvrage.CoutDuDevis.reduce((acc, ct) => acc + ct.prixUnitaire * (ct.OuvrageCoutDuDevis?.ratio || 1), 0)
       }));
 
-    console.log("tableau de prix des ouvrage", this.prixOuvrage)
+    // console.log("tableau de prix des ouvrage", this.prixOuvrage)
   }
 
 
@@ -445,68 +452,65 @@ export class CreateDevisComponent implements OnInit {
     // this.prixDevis = 0;
     this.devisService.getByIdExceptFrais(this.devisId).subscribe(data => {
 
-      console.log("console log de getalllots  LOT DATA:", data)
-
-
-        let nombreOuvrage = 0
-        this.resultBeneficeLots = 0;
-        this.resultAleasLots = 0;
-        this.testLots = data.Lots;
-        this.testLots.forEach(lot => {
-          lot.SousLots.forEach(sousLot => {
-            sousLot.prix = 0;
-            console.log("sousLot", sousLot)
+      // console.log("console log de getalllots  LOT DATA:", data.Lots)
+      let nombreOuvrage = 0
+      this.resultBeneficeLots = 0;
+      this.resultAleasLots = 0;
+      this.testLots = data.Lots;
+      this.testLots.forEach(lot => {
+        lot.SousLots.forEach(sousLot => {
+          sousLot.prix = 0;
+          console.log("sousLot", sousLot)
 //ICI A FAIRE
-            this.prixVenteHt = 0
-            this.getSommeSousLot(sousLot, lot)
-            sousLot.OuvrageDuDevis.forEach(ouvrage => {
+          this.prixVenteHt = 0
+          this.getSommeSousLot(sousLot, lot)
+          sousLot.OuvrageDuDevis.forEach(ouvrage => {
 
-              // this.coefEqui = this.sousDetailPrixService.coefEqui;
+            // this.coefEqui = this.sousDetailPrixService.coefEqui;
 
-              // if (ouvrage.SousLotOuvrage) {
-              //
-              //   this.prixEquilibre = ouvrage.SousLotOuvrage.prixOuvrage * this.coefEqui;
-              //   this.prixEquilibres.push(this.prixEquilibre);
-              //
-              // }
-              // console.log("Array PRIXEQUILIBRE", this.prixEquilibres)
-
-
-              // this.prixVenteHt = (ouvrage.SousLotOuvrage?.quantityOuvrage || 0) * this.getPrix(ouvrage)
-              // this.totalArray.push(this.prixVenteHt);
-
-              console.log('prixventeHT', this.totalArray)
+            // if (ouvrage.SousLotOuvrage) {
+            //
+            //   this.prixEquilibre = ouvrage.SousLotOuvrage.prixOuvrage * this.coefEqui;
+            //   this.prixEquilibres.push(this.prixEquilibre);
+            //
+            // }
+            // console.log("Array PRIXEQUILIBRE", this.prixEquilibres)
 
 
-              console.log("OUVRAGE", ouvrage.SousLotOuvrage?.quantityOuvrage)
-              // console.log()
-              // this.quantityCout(ouvrage.SousLotOuvrage?.quantityOuvrage,ouvrage)
-              nombreOuvrage++;
-              this.resultBeneficeLots += ouvrage.benefice
-              this.resultAleasLots += ouvrage.aleas
+            // this.prixVenteHt = (ouvrage.SousLotOuvrage?.quantityOuvrage || 0) * this.getPrix(ouvrage)
+            // this.totalArray.push(this.prixVenteHt);
+            //
+            // console.log('prixventeHT', this.totalArray)
+            //
+            //
+            // console.log("OUVRAGE", ouvrage.SousLotOuvrage?.quantityOuvrage)
+            // console.log()
+            // this.quantityCout(ouvrage.SousLotOuvrage?.quantityOuvrage,ouvrage)
+            nombreOuvrage++;
+            this.resultBeneficeLots += ouvrage.benefice
+            this.resultAleasLots += ouvrage.aleas
 
-            })
-            // this.moyenneBenefice(nombreOuvrage,this.resultBeneficeLots)
           })
-          // console.log("get all lots : ", lot.prix)
-        });
-        // console.log("console log resultBenefice :", this.resultBeneficeLots)
-        // console.log("console log nombre d ouvrage :", nombreOuvrage)
-        this.resultBeneficeLots = this.resultBeneficeLots / nombreOuvrage
-        this.resultAleasLots = this.resultAleasLots / nombreOuvrage
-        // console.log("console log de DATA LOT : ", data)
-        //recuperation de tous les ouvrages de l'entreprise
-        this.sharedData.entrepriseId = data.EntrepriseId;
-        this.getAllOuvrageExceptFraisDeChantier(data.EntrepriseId);
-        // this.getAllOuvrageFraisDeChantier(data.EntrepriseId)
-        this.getSommeOuvrage()
+          // this.moyenneBenefice(nombreOuvrage,this.resultBeneficeLots)
+        })
+        // console.log("get all lots : ", lot.prix)
+      });
+      // console.log("console log resultBenefice :", this.resultBeneficeLots)
+      // console.log("console log nombre d ouvrage :", nombreOuvrage)
+      this.resultBeneficeLots = this.resultBeneficeLots / nombreOuvrage
+      this.resultAleasLots = this.resultAleasLots / nombreOuvrage
+      // console.log("console log de DATA LOT : ", data)
+      //recuperation de tous les ouvrages de l'entreprise
+      this.sharedData.entrepriseId = data.EntrepriseId;
+      this.getAllOuvrageExceptFraisDeChantier(data.EntrepriseId);
+      this.getAllOuvrageFraisDeChantier(data.EntrepriseId)
+      this.getSommeOuvrage()
 
-        this.moyenneAleas()
-        console.log("devis : ", this.devis.moyenneAleas)
-        this.moyenneBenefice()
-        this.moyenneBeneficeAleasTotal()
-        // this.dataLoad = true
-
+      this.moyenneAleas()
+      console.log("devis : ", this.devis.moyenneAleas)
+      this.moyenneBenefice()
+      this.moyenneBeneficeAleasTotal()
+      // this.dataLoad = true
     })
   }
 
@@ -515,7 +519,7 @@ export class CreateDevisComponent implements OnInit {
     const prix = prixOuvrage * this.coefEqui;
     if (prix && !this.prixEquilibres.includes(prix)) {
       this.prixEquilibres.push(prix);
-      console.log(this.prixEquilibres)
+      // console.log(this.prixEquilibres)
     }
     return prix;
   }
@@ -528,31 +532,31 @@ export class CreateDevisComponent implements OnInit {
   //"Frais de chantier"
 
   getLotFraisDeChantier(): void {
-      this.devisService.getLotFraisDeChantier(this.devisId).subscribe(data => {
-        console.log("GET LOT FRAIS DE CHANTIER", data);
+    this.devisService.getLotFraisDeChantier(this.devisId).subscribe(data => {
+      console.log("GET LOT FRAIS DE CHANTIER", data);
 
 
-          let nombreOuvrage = 0;
-          this.resultAleasFraisDeChantier = 0;
-          this.resultBeneficeFraisDeChantier = 0;
-          this.lotFraisDeChantier = data.Lots[0];
-          // console.log("console log frais de chantier:", data)
-          this.lotFraisDeChantier.SousLots.forEach(sousLot => {
-            sousLot.prix = 0;
-            this.getSommeSousLot(sousLot, this.lotFraisDeChantier)
-            sousLot.OuvrageDuDevis.forEach(ouvrage => {
-              nombreOuvrage++;
-              this.resultBeneficeFraisDeChantier += ouvrage.benefice
-              this.resultAleasFraisDeChantier += ouvrage.aleas
-            })
-          })
-          this.resultBeneficeFraisDeChantier = this.resultBeneficeFraisDeChantier / nombreOuvrage
-          this.resultAleasFraisDeChantier = this.resultAleasFraisDeChantier / nombreOuvrage
-          // this.getAllOuvrageExceptFraisDeChantier(data.EntrepriseId);
-        this.getAllOuvrageFraisDeChantier(data.EntrepriseId)
-          this.getSommeOuvrageFraisDeChantier()
-
+      let nombreOuvrage = 0;
+      this.resultAleasFraisDeChantier = 0;
+      this.resultBeneficeFraisDeChantier = 0;
+      this.lotFraisDeChantier = data.Lots[0];
+      // console.log("console log frais de chantier:", data)
+      this.lotFraisDeChantier.SousLots.forEach(sousLot => {
+        sousLot.prix = 0;
+        this.getSommeSousLot(sousLot, this.lotFraisDeChantier)
+        sousLot.OuvrageDuDevis.forEach(ouvrage => {
+          nombreOuvrage++;
+          this.resultBeneficeFraisDeChantier += ouvrage.benefice
+          this.resultAleasFraisDeChantier += ouvrage.aleas
+        })
       })
+      this.resultBeneficeFraisDeChantier = this.resultBeneficeFraisDeChantier / nombreOuvrage
+      this.resultAleasFraisDeChantier = this.resultAleasFraisDeChantier / nombreOuvrage
+      // this.getAllOuvrageExceptFraisDeChantier(data.EntrepriseId);
+      this.getAllOuvrageFraisDeChantier(data.EntrepriseId)
+      this.getSommeOuvrageFraisDeChantier()
+
+    })
 
   }
 
@@ -561,7 +565,6 @@ export class CreateDevisComponent implements OnInit {
     // this.ouvrageService.getAll(id).subscribe(data => {
     this.ouvrageService.getAllExceptFraisDeChantier(id).subscribe(data => {
       this.listOuvrage = data;
-
     })
   }
 
@@ -570,7 +573,7 @@ export class CreateDevisComponent implements OnInit {
     // this.ouvrageService.getAll(id).subscribe(data => {
     this.ouvrageService.getAllFraisDeChantier(id).subscribe(data => {
       this.listOuvrageFraisDeChantier = data;
-      console.log('ouvrage frais de chantier', data)
+      // console.log('ouvrage frais de chantier', data)
     })
   }
 

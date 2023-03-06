@@ -1,7 +1,7 @@
 <div class="form-group">
   <ng-container>
-    <div class="modal-header">
-      <h1 class="modal-title">{{textButton}}</h1>
+    <div class="form-group-header">
+      <h1 class="form-group-title">{{textButton}}</h1>
     </div>
     <form class="form" [formGroup]="myFormGroup">
       <div class="form-row">
@@ -69,7 +69,9 @@
         </mat-form-field>
 
       </div>
+
     </form>
-    <button mat-stroked-button (click)="createAndUpdate()" type="submit">{{textButton}}</button>
+    <button class="button" mat-flat-button color="primary" (click)="createAndUpdate()"
+            type="submit">{{textButton}}</button>
   </ng-container>
 </div>

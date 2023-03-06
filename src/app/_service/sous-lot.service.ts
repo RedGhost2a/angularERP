@@ -3,8 +3,9 @@ import {Observable} from "rxjs";
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Lot} from "../_models/lot";
+import {environment} from '../../environments/environment';
 
-const baseUrl = 'http://localhost:4000/sousLots';
+const baseUrl = `${environment.apiUrl}/sousLots`;
 
 @Injectable({
   providedIn: 'root'

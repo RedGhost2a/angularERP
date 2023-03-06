@@ -1,6 +1,104 @@
+.container-frais-chantier {
+  background-color: #F0F4F8 !important;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  min-height: 93vh;
+}
+.container-frais-chantier .container-card-frais-chantier {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 2%;
+  margin-bottom: 1%;
+}
+.container-frais-chantier .container-card-frais-chantier .title-frais-chantier {
+  font-size: 1.6rem;
+  margin-top: 10%;
+}
+.container-frais-chantier .container-card-frais-chantier .text-frais-chantier {
+  font-size: 1rem;
+}
+.container-frais-chantier .container-card-frais-chantier .cards {
+  display: flex;
+}
+.container-frais-chantier .container-card-frais-chantier .cards .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.container-frais-chantier .mat-card {
+  width: 10%;
+}
+.container-frais-chantier .lot-frais-chantier {
+  color: #334E68;
+  display: flex;
+  justify-content: space-between;
+  background-color: #D9E2EC;
+  min-height: 3.125rem;
+  align-items: center;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.container-frais-chantier .lot-frais-chantier :first-child {
+  margin-left: 2%;
+}
+.container-frais-chantier .lot-frais-chantier .designation-lot-frais-chantier {
+  font-size: 1.1rem;
+}
+.container-frais-chantier .container-sous-lot-frais-chantier {
+  display: flex;
+  flex-direction: column;
+}
+.container-frais-chantier .container-sous-lot-frais-chantier .sous-lot-frais-chantier {
+  color: #334E68;
+  background-color: #E4EBF3;
+  display: flex;
+  justify-content: space-between;
+  min-height: 3.125rem;
+  align-items: center;
+  margin-left: 1.5%;
+}
+.container-frais-chantier .container-sous-lot-frais-chantier .sous-lot-frais-chantier :first-child {
+  color: #334E68;
+}
+.container-frais-chantier .container-sous-lot-frais-chantier .sous-lot-frais-chantier .designation-sous-lot-frais-chantier {
+  font-size: 1.1rem;
+}
+.container-frais-chantier .container-sous-lot-frais-chantier .container-ouvrage-frais-chantier {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2.5%;
+  background-color: #FFFFFF;
+}
+.container-frais-chantier .container-sous-lot-frais-chantier .ouvrage-frais-chantier {
+  display: flex;
+  justify-content: space-around;
+  height: 5rem;
+  border: solid 0.5px #E4EBF3;
+}
+.container-frais-chantier .container-sous-lot-frais-chantier .ouvrage-frais-chantier .detail-ouvrage-frais-chantier {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container-frais-chantier .container-sous-lot-frais-chantier .ouvrage-frais-chantier .detail-ouvrage-frais-chantier :first-child {
+  font-size: 1rem;
+  font-weight: 300;
+}
+.container-frais-chantier .container-sous-lot-frais-chantier .ouvrage-frais-chantier .detail-ouvrage-frais-chantier .designation-ouvrage-frais-chantier {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  height: 35px;
+  color: #334E68;
+}
+.container-frais-chantier .container-sous-lot-frais-chantier #quantity-ouvrage-frias-de-chantier {
+  position: relative;
+  bottom: 12px;
+  width: 60px;
+}
+
 .onglet {
   width: 100vw;
-  padding: 10px;
   display: flex;
   flex-direction: column;
   color: #000000;
@@ -146,6 +244,7 @@
 }
 
 .menuBoutonSl {
+  width: min-content;
   margin: 5px;
   padding: 5px;
 }

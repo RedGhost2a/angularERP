@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import { Fournisseur } from '../_models/fournisseur'
-import {environment} from "../../environments/environment";
+import {Injectable} from '@angular/core';
+import {Fournisseur} from '../_models/fournisseur'
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Cout} from "../_models/cout";
+import {environment} from '../../environments/environment';
 
 const baseUrl = `${environment.apiUrl}/fournisseurs`;
 
@@ -12,35 +11,41 @@ const baseUrl = `${environment.apiUrl}/fournisseurs`;
 })
 export class FournisseurService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
-  getAllFournisseurs(entrepriseId:number):Observable<Fournisseur[]>{
-    return this.http.get<Fournisseur[]>(`${baseUrl}`,{
+  getAllFournisseurs(entrepriseId: number): Observable<Fournisseur[]> {
+    return this.http.get<Fournisseur[]>(`${baseUrl}`, {
       params: {
         EntrepriseId: entrepriseId
 
       }
     })
   }
-  deleteFournisseurById(id:number):Observable<Fournisseur>{
+
+  deleteFournisseurById(id: number): Observable<Fournisseur> {
     return this.http.delete<Fournisseur>(`${baseUrl}/${id}`)
   }
-  createFournisseur(data:Fournisseur):Observable<Fournisseur>{
-    return this.http.post<Fournisseur>(`${baseUrl}/new`,data)
+
+  createFournisseur(data: Fournisseur): Observable<Fournisseur> {
+    return this.http.post<Fournisseur>(`${baseUrl}/new`, data)
   }
-  updateFournisseur(id:number, data:Fournisseur):Observable<Fournisseur>{
-    return this.http.put<Fournisseur>(`${baseUrl}/${id}`,data)
+
+  updateFournisseur(id: number, data: Fournisseur): Observable<Fournisseur> {
+    return this.http.put<Fournisseur>(`${baseUrl}/${id}`, data)
   }
-  getFournisseurById(id:number):Observable<Fournisseur>{
+
+  getFournisseurById(id: number): Observable<Fournisseur> {
     return this.http.get<Fournisseur>(`${baseUrl}/${id}`)
   }
 
-  createFournisseurCout(CoutId:number, FournisseurId:number):Observable<Fournisseur>{
-    console.log("FOURNISSEUR SERVICE CREATEFOURNISSEURCOUT:",`${baseUrl}Couts/new/${CoutId}/${FournisseurId}`)
+  createFournisseurCout(CoutId: number, FournisseurId: number): Observable<Fournisseur> {
+    console.log("FOURNISSEUR SERVICE CREATEFOURNISSEURCOUT:", `${baseUrl}Couts/new/${CoutId}/${FournisseurId}`)
     return this.http.get<Fournisseur>(`${baseUrl}Couts/new/${CoutId}/${FournisseurId}`)
   }
-  updateFournisseurCout(CoutId:number, FournisseurId:number, data:any): Observable<any>{
-    console.log("FOURNISSEUR SERVICE UPDATEFOURNISSEURCOUT:",`${baseUrl}Couts/${CoutId}/${FournisseurId}`)
+
+  updateFournisseurCout(CoutId: number, FournisseurId: number, data: any): Observable<any> {
+    console.log("FOURNISSEUR SERVICE UPDATEFOURNISSEURCOUT:", `${baseUrl}Couts/${CoutId}/${FournisseurId}`)
     return this.http.put<any>(`${baseUrl}Couts/${CoutId}/${FournisseurId}`, data)
   }
 

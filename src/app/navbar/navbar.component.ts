@@ -5,6 +5,8 @@ import {navbarData} from "./nav-data"
 import {navbarDataAdmin} from "./nav-dataAdmin"
 import {User} from "../_models/users";
 import {faCaretDown, IconDefinition} from "@fortawesome/free-solid-svg-icons";
+import {DialogNotesComponent} from "../dialog-notes/dialog-notes.component";
+import {MatDialog} from "@angular/material/dialog";
 
 
 @Component({
@@ -17,9 +19,20 @@ export class NavbarComponent {
   navDataSuperAdmin = navbarDataAdmin
   @Input() user!: User;
   caretDown: IconDefinition = faCaretDown;
+  currentTime = new Date();
+  weekdays = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+  month = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre']
+
+  formattedTime = this.currentTime.toLocaleTimeString('fr-FR', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+
+  });
 
 
-  constructor(public userService: UserService) {
+  constructor(public userService: UserService,
+              public dialog: MatDialog,) {
 
   }
 
@@ -33,8 +46,29 @@ export class NavbarComponent {
   }
 
   ngOnInit() {
-    // console.log(this.userService.userValue.avatarUrl)
+    setInterval(() => {
+      this.currentTime = new Date();
+      this.formattedTime = this.currentTime.toLocaleTimeString('fr-FR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
 
+      });
+    }, 1000); // mise à jour toutes les secondes
+  }
+
+
+  openDialog() {
+    const dialogRef = this.dialog.open(DialogNotesComponent, {
+      width: '250px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Fin de commentaires', result);
+      // this.logger.error('error');
+
+
+    });
   }
 
 

@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {DialogNotesComponent} from "./dialog-notes/dialog-notes.component";
 import {MatDialog} from "@angular/material/dialog";
 import {UserService} from "./_service/user.service";
 import {NGXLogger} from "ngx-logger";
@@ -25,18 +24,6 @@ export class AppComponent {
 
   }
 
-  openDialog() {
-    const dialogRef = this.dialog.open(DialogNotesComponent, {
-      width: '250px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Fin de commentaieres', result);
-      // this.logger.error('error');
-
-
-    });
-  }
 }
 
 

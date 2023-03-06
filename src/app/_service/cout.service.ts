@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import {environment} from "../../environments/environment";
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 import {Cout} from "../_models/cout";
 import {CoutDuDevis} from "../_models/cout-du-devis";
+import {environment} from '../../environments/environment';
 
 
-const baseUrl = `${environment.apiUrl}/couts`;
-const test = environment.apiUrl
+const baseUrl = `http://localhost:4000/couts`;
 
 
 @Injectable({
@@ -15,38 +14,45 @@ const test = environment.apiUrl
 })
 
 export class CoutService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
-  getAll(entrepriseId:number) :Observable<Cout[]> {
-    return this.http.get<Cout[]>(`${baseUrl}`,{
-      params :{
-        EntrepriseId:entrepriseId
+  getAll(entrepriseId: number): Observable<Cout[]> {
+    return this.http.get<Cout[]>(`${environment.apiUrl}/couts`, {
+      params: {
+        EntrepriseId: entrepriseId
       }
     });
   }
-  getById(id:number) :Observable<any> {
-    return this.http.get(`${baseUrl}/${id}`);
-  }
-  create(data: Cout) :Observable<Cout> {
-    return this.http.post<Cout>(`${baseUrl}/new`, data);
-  }
-  update(data:Cout, id:number):Observable<Cout>{
-    return this.http.put<Cout>(`${baseUrl}/${id}`, data)
-  }
-  deleteByID(id:number):Observable<Cout>{
-    return this.http.delete<Cout>(`${baseUrl}/${id}`)
-  }
-  getLast():Observable<any>{
-    return this.http.get(`${baseUrl}/lastCout`)
-  }
-  createCoutDuDevis(data:CoutDuDevis):Observable<CoutDuDevis>{
-    console.log("createcoutdudevis",data)
-    return this.http.post<CoutDuDevis>(`http://localhost:4000/coutsDuDevis/new`,data)
+
+  getById(id: number): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/couts/${id}`);
   }
 
-  createOuvrageCoutDuDevis(ouvrageId:any, coutDuDevis:CoutDuDevis): Observable<any>{
+  create(data: Cout): Observable<Cout> {
+    return this.http.post<Cout>(`${environment.apiUrl}/couts/new`, data);
+  }
+
+  update(data: Cout, id: number): Observable<Cout> {
+    return this.http.put<Cout>(`${environment.apiUrl}/couts/${id}`, data)
+  }
+
+  deleteByID(id: number): Observable<Cout> {
+    return this.http.delete<Cout>(`${environment.apiUrl}/couts/${id}`)
+  }
+
+  getLast(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/couts/lastCout`)
+  }
+
+  createCoutDuDevis(data: CoutDuDevis): Observable<CoutDuDevis> {
+    console.log("createcoutdudevis", data)
+    return this.http.post<CoutDuDevis>(`${environment.apiUrl}/coutsDuDevis/new`, data)
+  }
+
+  createOuvrageCoutDuDevis(ouvrageId: any, coutDuDevis: CoutDuDevis): Observable<any> {
     console.log('data cout service ', coutDuDevis)
-    return this.http.post(`http://localhost:4000/coutsDuDevis/test/${ouvrageId}`, coutDuDevis)
+    return this.http.post(`${environment.apiUrl}/coutsDuDevis/test/${ouvrageId}`, coutDuDevis)
   }
 
 

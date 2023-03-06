@@ -1,63 +1,37 @@
 .mat-form-field {
-  padding: 10px;
+  padding: 20px;
 }
 
 .form-group {
-  height: 400px;
-  width: 700px;
+  width: 60%;
   margin: auto;
-  padding: 3rem;
-  margin-top: 50px;
-  text-align: center;
-  border-radius: 16px;
-  background: #1a3a5c;
-  box-shadow: inset 10px -10px 20px #0c1c2c, inset -10px 10px 20px #28588c;
-  color: white;
+  margin-top: 20px;
 }
-
-.input-group {
-  padding: 1px;
-  border-radius: 16px;
+.form-group-header {
   text-align: center;
-  margin: 10px;
 }
 
 .form {
-  margin-top: 60px;
+  margin: 60px;
+  color: rgb(8, 31, 44);
 }
 
-.mat-label {
-  color: white;
+.form-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-evenly;
 }
 
 .button {
-  margin-top: 20px;
-}
-
-.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
-  background: rgba(208, 18, 72, 0.12);
-}
-
-.mat-option {
-  white-space: nowrap;
-  text-overflow: clip;
-  line-height: 48px;
-  margin: 10px;
-  padding: 27px 11px;
-  /* padding: 0 12px; */
-  /* text-decoration: auto; */
-  /* max-width: 100%; */
-  position: relative;
-  cursor: pointer;
-  outline: none;
   display: flex;
-  /* flex-direction: row; */
-  /* max-width: 100%; */
-  box-sizing: content-box;
-  /* -webkit-tap-highlight-color: rgba(0,0,0,0); */
-  /* align-content: center; */
-  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
   align-items: center;
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 /*# sourceMappingURL=user-edit.component.css.map */

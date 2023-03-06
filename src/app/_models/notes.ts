@@ -10,6 +10,7 @@ export class Notes {
   optionsTimestamp!: Date;
   errorLogs!: Log[];
   resolution!: boolean;
+  userId!: number;
 
 }
 

@@ -3,8 +3,9 @@ import {Observable} from "rxjs";
 import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Lot} from "../_models/lot";
+import {environment} from '../../environments/environment';
 
-const baseUrl = 'http://localhost:4000/lots';
+const baseUrl = `${environment.apiUrl}/lots`;
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +31,11 @@ export class LotService {
 
   }
 
-  getLotFraisDeChantier(deviID:number): Observable<any>{
-    return this.http.get(`${baseUrl}/fraisDeChantier`,{
-        params : {
-          DeviId: deviID
-        }
-        })
+  getLotFraisDeChantier(deviID: number): Observable<any> {
+    return this.http.get(`${baseUrl}/fraisDeChantier`, {
+      params: {
+        DeviId: deviID
+      }
+    })
   }
 }

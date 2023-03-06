@@ -2,6 +2,10 @@
   color: #000000;
 }
 
+body {
+  min-height: 100%;
+}
+
 .user_header {
   text-align: center;
   display: flex;

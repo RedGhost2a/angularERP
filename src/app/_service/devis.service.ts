@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {environment} from '../../environments/environment';
 
 const baseUrl = 'http://localhost:4000/devis';
 
@@ -15,41 +16,41 @@ export class DevisService {
   }
 
   getAll(): Observable<any> {
-    return this.http.get(baseUrl);
+    return this.http.get(`${environment.apiUrl}/devis`);
   }
 
   getLotSubLot(id: any): Observable<any> {
-    return this.http.get(`http://localhost:4000/devis/${id}`)
+    return this.http.get(`${environment.apiUrl}/devis/${id}`)
 
   }
 
   update(devis: any, id: any): Observable<any> {
-    return this.http.put(`http://localhost:4000/devis/${id}`, devis)
+    return this.http.put(`${environment.apiUrl}/devis/${id}`, devis)
   }
 
   deleteByID(id: any): Observable<any> {
-    return this.http.delete(`http://localhost:4000/devis/${id}`)
+    return this.http.delete(`${environment.apiUrl}/devis/${id}`)
   }
 
   getById(id: any): Observable<any> {
-    return this.http.get(`http://localhost:4000/devis/${id}`)
+    return this.http.get(`${environment.apiUrl}/devis/${id}`)
   }
 
   getByIdExceptFrais(id: any): Observable<any> {
     console.log("devis service id : ", id)
-    return this.http.get(`http://localhost:4000/devis/exceptFrais/${id}`)
+    return this.http.get(`${environment.apiUrl}/devis/exceptFrais/${id}`)
   }
 
   getDevisByUser(id: any): Observable<any> {
-    return this.http.get(`http://localhost:4000/devis/byUser/${id}`)
+    return this.http.get(`${environment.apiUrl}/devis/byUser/${id}`)
   }
 
   create(data: any): Observable<any> {
-    return this.http.post(`${baseUrl}/new`, data)
+    return this.http.post(`${environment.apiUrl}/devis/new`, data)
   }
 
   getLotFraisDeChantier(id: number): Observable<any> {
-    return this.http.get(`${baseUrl}/fraisDeChantier/${id}`)
+    return this.http.get(`${environment.apiUrl}/devis/fraisDeChantier/${id}`)
   }
 }
 

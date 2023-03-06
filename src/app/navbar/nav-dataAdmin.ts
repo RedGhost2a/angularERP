@@ -1,12 +1,17 @@
 import {
   faAtom,
   faBook,
+  faBookOpen,
+  faBuilding,
   faChartLine,
   faClose,
   faFileInvoiceDollar,
   faHome,
-  faList
+  faList,
+  faUser,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
+
 
 export const btnClose = faClose
 export const btnHome = faAtom
@@ -24,12 +29,12 @@ export const navbarDataAdmin = [
   },
   {
     routeLink: 'users',
-    icon: faList,
+    icon: faUsers,
     label: 'Utilisateurs'
   },
   {
     routeLink: 'mon_profile',
-    icon: faList,
+    icon: faUser,
     label: 'Mon compte'
   },
   {
@@ -38,23 +43,36 @@ export const navbarDataAdmin = [
     label: 'Devis'
   },
   {
-    routeLink: '/listCout',
-    icon: faBook,
-    label: 'Bibliothéque de couts'
+    routeLink: 'clients',
+    icon: faList,
+    label: 'Clients'
   },
   {
-    routeLink: '/listOuvrage',
+    routeLink: '',
     icon: faBook,
-    label: "Bibliothéque d'ouvrages"
+    label: 'Bibliothèque',
+    children: [
+      {
+        routeLink: '/listOuvrage',
+        label: "Ouvrages",
+        visible: true
+      },
+      {
+        routeLink: '/listCout',
+        label: "Couts",
+        visible: true
+      }
+    ],
+    visible: true
   },
   {
     routeLink: '/listFournisseur',
-    icon: faBook,
+    icon: faBuilding,
     label: "Fournisseur"
   },
   {
     routeLink: '/listTypeCout',
-    icon: faBook,
+    icon: faBookOpen,
     label: "Type de Cout"
   },
   // {

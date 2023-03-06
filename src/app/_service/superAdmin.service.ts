@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {User} from "../_models/users";
 import {BehaviorSubject, Observable} from "rxjs";
 import {StorageService} from "./storage.service";
+import {environment} from '../../environments/environment';
 
 
 @Injectable({
@@ -48,11 +49,11 @@ export class SuperAdminService {
 
 
   getAll(): Observable<any> {
-    return this.http.get(`http://localhost:4000/admin`)
+    return this.http.get(`${environment.apiUrl}/admin`)
   }
 
   getById(id: any): Observable<any> {
-    return this.http.get(`http://localhost:4000/admin/${id}`)
+    return this.http.get(`${environment.apiUrl}/admin/${id}`)
   }
 
 

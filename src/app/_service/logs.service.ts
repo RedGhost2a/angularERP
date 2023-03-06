@@ -2,12 +2,13 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Log} from "../_models/log";
 import {BehaviorSubject, map, Observable} from "rxjs";
+import {environment} from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LogsService {
-  apiUrl = 'http://localhost:4000/logs';
+  apiUrl = `${environment.apiUrl}/logs`;
   public logs$!: Observable<Log[]>;
   private logsSubject: BehaviorSubject<Log[]> = new BehaviorSubject<Log[]>([]);
 
@@ -19,11 +20,11 @@ export class LogsService {
 
 
   getLogs(): Observable<Log[]> {
-    return this.http.get<Log[]>(`http://localhost:4000/logs/`).pipe(
+    return this.http.get<Log[]>(`${environment.apiUrl}/logs/`).pipe(
       map(data => {
         this.AllLogs = data;
         this.logsSubject.next(data)
-        console.log(this.logs$)
+        // console.log(this.logs$)
         return data;
       })
     );

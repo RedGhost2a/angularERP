@@ -1,5 +1,4 @@
-import {NgModule} from '@angular/core';
-import {ErrorHandler} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule, Routes} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
@@ -70,16 +69,19 @@ import {DialogConfirmSuppComponent} from './dialog-confirm-supp/dialog-confirm-s
 import {SousDetailPrixComponent} from './sous-detail-prix/sous-detail-prix.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {DialogNotesComponent} from './dialog-notes/dialog-notes.component';
+// import {DialogListCoutComponent} from './dialog-list-cout/dialog-list-cout.component';
+// import {DialogFormCoutComponent} from './dialog-form-cout/dialog-form-cout.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import { DialogListCoutComponent } from './dialog-list-cout/dialog-list-cout.component';
-import { DialogFormCoutComponent } from './dialog-form-cout/dialog-form-cout.component';
+import {DialogListCoutComponent} from './dialog-list-cout/dialog-list-cout.component';
+import {DialogFormCoutComponent} from './dialog-form-cout/dialog-form-cout.component';
 import {LoggerModule, NgxLoggerLevel, TOKEN_LOGGER_SERVER_SERVICE} from "ngx-logger";
 import {LogsComponent} from './logs/logs.component';
 import {CustomErrorHandler} from "./_helpers/errorHandler";
 import {CustomBodyForNGXLoggerService} from "./_service/customBodyForNGXLogger.service";
 import {MatBadgeModule} from "@angular/material/badge";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import {environment} from "../environments/environment";
 
 
 const appRoutes: Routes = [];
@@ -169,7 +171,7 @@ declare const toastr: Toastr;
     MatTooltipModule,
     MatPaginatorModule,
     LoggerModule.forRoot({
-      serverLoggingUrl: 'http://localhost:4000/logs',
+      serverLoggingUrl: `${environment.apiUrl}/logs`,
       level: NgxLoggerLevel.DEBUG,
       serverLogLevel: NgxLoggerLevel.DEBUG,
       disableConsoleLogging: false
@@ -190,6 +192,7 @@ declare const toastr: Toastr;
 
 
   },
+
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
     {provide: ErrorHandler, useClass: CustomErrorHandler}

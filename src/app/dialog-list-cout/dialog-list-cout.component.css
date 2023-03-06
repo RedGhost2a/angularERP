@@ -1,19 +1,21 @@
-.container .subContainer {
+.subContainer {
   color: #334E68;
   margin-left: 2%;
   margin-top: 2%;
 }
-.container table {
-  width: 100%;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-}
-.container .tableCout {
+
+.tableCout {
   margin-left: 2%;
   margin-right: 2%;
 }
 
 .mat-row:hover {
   background-color: #EEF9FF;
+}
+
+table {
+  width: 100%;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .divButton {
@@ -36,4 +38,4 @@
   margin-right: 2%;
 }
 
-/*# sourceMappingURL=ouvrage-add-cout.component.css.map */
+/*# sourceMappingURL=dialog-list-cout.component.css.map */

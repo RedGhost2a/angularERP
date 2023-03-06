@@ -26,7 +26,7 @@
     "@compodoc/compodoc": "^1.1.19",
     "@fortawesome/angular-fontawesome": "^0.11.1",
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
-    "@fortawesome/free-regular-svg-icons": "^6.2.0",
+    "@fortawesome/free-regular-svg-icons": "^6.3.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "bcryptjs": "2.4.3",
     "crypto-js": "^4.1.1",

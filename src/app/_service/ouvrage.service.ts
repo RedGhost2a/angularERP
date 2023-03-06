@@ -3,9 +3,9 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Ouvrage} from "../_models/ouvrage";
 import {SousLotOuvrage} from "../_models/sousLotOuvrage";
-import {OuvrageDuDevis} from "../_models/ouvrage-du-devis";
+import {environment} from '../../environments/environment';
 
-const baseUrl = 'http://localhost:4000/ouvrages';
+const baseUrl = `${environment.apiUrl}/ouvrages`;
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class OuvrageService {
   constructor(private http: HttpClient) {
   }
 
-  getOuvrageDuDevisById(id: number):Observable<Ouvrage>{
+  getOuvrageDuDevisById(id: number): Observable<Ouvrage> {
     return this.http.get<Ouvrage>(`${baseUrl}DuDevis/${id}`)
   }
 
@@ -43,7 +43,7 @@ export class OuvrageService {
   //   return this.http.post(`${baseUrl}/sousLot`, data);
   // }
   createSousLotOuvrageForDevis(data: SousLotOuvrage): Observable<any> {
-    return this.http.post(`http://localhost:4000/ouvragesDuDevis/sousLot/`, data);
+    return this.http.post(`${environment.apiUrl}/ouvragesDuDevis/sousLot/`, data);
   }
 
 
@@ -55,14 +55,16 @@ export class OuvrageService {
     console.log(`${baseUrl}/${id}`)
     return this.http.delete(`${baseUrl}/${id}`)
   }
-  getAllExceptFraisDeChantier(entrepriseId:number):Observable<Ouvrage[]>{
+
+  getAllExceptFraisDeChantier(entrepriseId: number): Observable<Ouvrage[]> {
     return this.http.get<Ouvrage[]>(`${baseUrl}/exceptFrais`, {
       params: {
         EntrepriseId: entrepriseId
       }
     });
   }
-  getAllFraisDeChantier(entrepriseId:number):Observable<Ouvrage[]>{
+
+  getAllFraisDeChantier(entrepriseId: number): Observable<Ouvrage[]> {
     return this.http.get<Ouvrage[]>(`${baseUrl}/isFraisDeChantiers`, {
       params: {
         EntrepriseId: entrepriseId
@@ -70,19 +72,18 @@ export class OuvrageService {
     });
   }
 
-  createOuvrageDuDevis(data:Ouvrage):Observable<Ouvrage>{
+  createOuvrageDuDevis(data: Ouvrage): Observable<Ouvrage> {
     return this.http.post<Ouvrage>(`${baseUrl}DuDevis/new`, data)
   }
 
-  getOuvrageDuDevisByDesignation(data:Ouvrage):Observable<Ouvrage>{
+  getOuvrageDuDevisByDesignation(data: Ouvrage): Observable<Ouvrage> {
     return this.http.get<Ouvrage>(`${baseUrl}DuDevis/`)
   }
+
   deleteOuvrageDuDevisByID(id: any): Observable<any> {
     console.log(`${baseUrl}/${id}`)
     return this.http.delete(`${baseUrl}DuDevis/${id}`)
   }
-
-
 
 
 }

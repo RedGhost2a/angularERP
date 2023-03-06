@@ -4,10 +4,11 @@ import {
   faChartLine,
   faClose,
   faFileInvoiceDollar,
-  faGear,
   faHome,
   faList
 } from "@fortawesome/free-solid-svg-icons";
+import {faUser} from '@fortawesome/free-regular-svg-icons';
+
 
 export const btnClose = faClose
 export const btnHome = faAtom
@@ -41,16 +42,17 @@ export const navbarData = [
       {
         routeLink: '/listOuvrage',
         icon: faBook,
-        label: "Bibliothéque d'ouvrages",
-        visible: false
+        label: "Bibliothèque d'ouvrages",
+        visible: true
       },
       {
         routeLink: '/listCout',
         icon: faBook,
-        label: "Bibliothéque de couts",
-        visible: false
+        label: "Bibliothèque de couts",
+        visible: true
       }
-    ]
+    ],
+    visible: true
   },
   {
     routeLink: '/listFournisseur',
@@ -64,7 +66,7 @@ export const navbarData = [
   },
   {
     routeLink: 'mon_profile',
-    icon: faGear,
+    icon: faUser,
     label: 'Mon compte'
   }]
 
