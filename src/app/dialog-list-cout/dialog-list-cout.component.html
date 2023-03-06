@@ -47,6 +47,13 @@
 
   </div>
   <div class="divButton">
-    <button  class='button'  (click)="addCoutOuvrageDuDevis();closeDialog()" mat-raised-button color="primary">Valider la selection</button>
+    <button class="btnBack" (click)="closeDialog()" mat-stroked-button color="primary" >Retour</button>
+    <button  class='button' (click)="addCoutOuvrageDuDevis();closeDialog()" mat-raised-button color="primary" [disabled]="selectedCoutIds.length === 0 ? true : false" [innerHTML]="selectedCoutIds.length > 1 ? 'Importer ces composants' : 'Importer ce composant'">Importer ce composant </button>
+    <!--    <button  class='button' routerLink="/ouvrageDetail/{{ouvrageId}}" (click)="addCoutOuvrage()" mat-raised-button color="primary">Valider </button>-->
+
+
   </div>
+<!--  <div class="divButton">-->
+<!--    <button  class='button'  (click)="addCoutOuvrageDuDevis();closeDialog()" mat-raised-button color="primary">Valider la selection</button>-->
+<!--  </div>-->
 </div>

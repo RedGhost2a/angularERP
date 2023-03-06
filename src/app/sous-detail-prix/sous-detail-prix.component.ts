@@ -222,6 +222,7 @@ export class SousDetailPrixComponent implements OnInit {
 
   openDialogImport(ouvragDuDevisId: number) {
     this.dialog.open(DialogListCoutComponent, {
+      panelClass:'test',
       data: this.listCout,
       width: '90%',
       height: '70%'

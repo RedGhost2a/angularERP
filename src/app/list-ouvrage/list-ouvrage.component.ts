@@ -1,14 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {OuvrageService} from "../_service/ouvrage.service";
 import {Ouvrage} from "../_models/ouvrage";
-import {CoutDuDevis} from "../_models/cout-du-devis";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {UserService} from "../_service/user.service";
 import {User} from "../_models/users";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
 import {MatDialog} from "@angular/material/dialog";
 import {Cout} from "../_models/cout";
-import {FormCoutComponent} from "../form-cout/form-cout.component";
 import {FormOuvrageComponent} from "../form-ouvrage/form-ouvrage.component";
 import {MatTableDataSource} from "@angular/material/table";
 
@@ -49,7 +47,8 @@ export class ListOuvrageComponent implements OnInit {
       data.forEach((ouvrage : Ouvrage) =>{
         ouvrage.prix = 0 ;
         ouvrage.Couts?.forEach((cout:Cout)=>{
-          ouvrage.prix += cout.prixUnitaire
+          if(cout.OuvrageCout?.ratio)
+          ouvrage.prix += cout.prixUnitaire * cout.OuvrageCout?.ratio
         })
       })
     })

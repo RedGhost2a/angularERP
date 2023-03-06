@@ -93,7 +93,8 @@ export class DetailOuvrageComponent implements OnInit {
   getPriceOuvrage(): void {
     this.ouvrage.prix = 0;
     this.ouvrage.Couts?.forEach(cout => {
-      this.ouvrage.prix += cout.prixUnitaire;
+      if(cout.OuvrageCout?.ratio)
+      this.ouvrage.prix += cout.prixUnitaire * cout.OuvrageCout?.ratio;
     })
     console.log('PRIX DE L OUVRAGE', this.ouvrage.prix)
   }

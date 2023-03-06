@@ -5,7 +5,6 @@ import {UserService} from "../_service/user.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
 import {MatDialog} from "@angular/material/dialog";
-import {DialogListCoutComponent} from "../dialog-list-cout/dialog-list-cout.component";
 import {FormCoutComponent} from "../form-cout/form-cout.component";
 import {User} from "../_models/users";
 

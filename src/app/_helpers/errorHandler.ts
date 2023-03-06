@@ -26,7 +26,10 @@ export class CustomErrorHandler implements ErrorHandler {
 
 
       // Enregistrer l'erreur dans la console
-      this.logger.fatal('Fatal error', error, error.name, 'Fatal error', 0, errorName);
+
+
+      ////////////////////////////////////////////////////////
+      // this.logger.fatal('Fatal error', error, error.name, 'Fatal error', 0, errorName);
     }
   }
 }
