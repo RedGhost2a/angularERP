@@ -35,7 +35,7 @@ export const navbarData = [
     label: 'Devis'
   },
   {
-    routeLink: '',
+    routeLink: "blibli",
     icon: faBook,
     label: 'Bibliothèque',
     children: [

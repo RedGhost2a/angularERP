@@ -34,7 +34,7 @@ export class ClientService {
   }
 
   getById(id: any): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/${id}`)
+    return this.http.get(`${environment.apiUrl}/clients/${id}`)
   }
 
   deleteByID(id: any): Observable<any> {

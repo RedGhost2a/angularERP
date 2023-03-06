@@ -10,6 +10,7 @@ import {TypeCoutService} from "../_service/typeCout.service";
 import {FournisseurCout} from "../_models/fournisseur-cout";
 import {OuvrageService} from "../_service/ouvrage.service";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
+import {environment} from "../../environments/environment";
 
 @Component({
   selector: 'app-form',
@@ -26,9 +27,10 @@ export class FormComponent implements OnInit {
   titreForm!: string;
   lastCoutId!: number;
   fournisseurId!: number;
+
   urlCout: string = "http://localhost:4200/cout";
-  urlFournisseur: string = "http://localhost:4200/fournisseur";
-  urlTypeCout: string = "http://localhost:4200/typeCout";
+  urlFournisseur: string = `${environment.apiUrl}/fournisseur`;
+  urlTypeCout: string = `${environment.apiUrl}/typeCout`;
   urlOuvrage: string = "http://localhost:4200/ouvrage";
   isCout: boolean = false;
   isFournisseur: boolean = false;

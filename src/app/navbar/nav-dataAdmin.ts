@@ -48,7 +48,7 @@ export const navbarDataAdmin = [
     label: 'Clients'
   },
   {
-    routeLink: '',
+    routeLink: 'blibli',
     icon: faBook,
     label: 'Bibliothèque',
     children: [

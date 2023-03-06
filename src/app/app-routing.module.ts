@@ -60,7 +60,7 @@ const routes: Routes = [
   {path: 'cout/:id', canActivate: [AuthGuard], component: FormComponent},
   {path: 'fournisseur', canActivate: [AuthGuard], component: FormComponent},
   {path: 'fournisseur/:id', canActivate: [AuthGuard], component: FormComponent},
-  {path: 'typeCout', canActivate: [AuthGuard], component: FormComponent},
+  {path: 'typeCout', canActivate: [AuthGuard], component: FormComponent, data: {title: 'Form typeCout'}},
   {path: 'typeCout/:id', canActivate: [AuthGuard], component: FormComponent},
   {path: 'ouvrage', canActivate: [AuthGuard], component: FormComponent},
   {path: 'ouvrage/:id', canActivate: [AuthGuard], component: FormComponent},
@@ -148,7 +148,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
 
 
-  {path: '**', redirectTo: ''}
+//  {path: '**', redirectTo: ''}
 
 
 ];

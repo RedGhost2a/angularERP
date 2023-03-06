@@ -22,10 +22,10 @@ export class EditComponent implements OnInit {
     lastName: new FormControl('', [Validators.required, Validators.minLength(3)]),
     denomination: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    phonenumber: new FormControl('', [Validators.required, Validators.pattern(/^\d{10}$/)]),
+    phonenumber: new FormControl('', [Validators.required, Validators.pattern(/^\d{9}$/)]),
     type: new FormControl('', [Validators.required]),
-    tvaintra: new FormControl(''),
-    siret: new FormControl(''),
+    tvaintra: new FormControl(0),
+    siret: new FormControl(0),
     Adresse: new FormGroup({
       adresses: new FormControl('', [Validators.required]),
       zipcode: new FormControl('', [Validators.required, Validators.pattern(/^\d{5}$/)]),
@@ -79,8 +79,9 @@ export class EditComponent implements OnInit {
           }
         )
       } else {
+console.log('data client',this.profileForm.value);
         this.clientService.update(this.profileForm.value, String(clientID))
-          .subscribe((): void => {
+          .subscribe(data => {
             this.success("Client modifier!");
             this.router.navigate(['/clients']);
 
@@ -107,10 +108,10 @@ export class EditComponent implements OnInit {
           console.log(data)
           data = {
             Adresse: {
-              adresses: data.adresses,
-              zipcode: data.zipcode,
-              city: data.city,
-              country: data.country,
+              adresses: data.Adresse.adresses,
+              zipcode: data.Adresse.zipcode,
+              city: data.Adresse.city,
+              country: data.Adresse.country,
 
             },
             firstName: data.firstName,
