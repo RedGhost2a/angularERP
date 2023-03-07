@@ -1,41 +1,48 @@
-<div class="container">
-  <ng-container [formGroup]="this.myFormGroup">
-    <h1> DEVIS </h1>
+<ng-container [formGroup]="this.myFormGroup">
+  <div class="container">
+    <h3>{{titreForm}}</h3>
+    <p>{{textForm}}</p>
+    <div class="inputs">
 
-    <mat-form-field appearance="legacy">
-      <mat-label>Nom</mat-label>
-      <input formControlName="name" matInput placeholder="Ex: Devis toiture">
-      <div *ngIf=" f['name'].invalid && f['name'].touched  " class="invalid-feedback">
-        <div *ngIf="f['name'].errors?.['required']">L'intitulé du devis est requis !</div>
-        <div *ngIf="f['name'].errors?.['minlength']">L'intitulé du devis doit faire 3 caractéres au min !</div>
+      <mat-form-field appearance="legacy">
+        <mat-label>Nom</mat-label>
+        <input formControlName="name" matInput placeholder="Ex: Devis toiture">
+        <!--      <div *ngIf=" f['name'].invalid && f['name'].touched  " class="invalid-feedback">-->
+        <!--        <div *ngIf="f['name'].errors?.['required']">L'intitulé du devis est requis !</div>-->
+        <!--        <div *ngIf="f['name'].errors?.['minlength']">L'intitulé du devis doit faire 3 caractéres au min !</div>-->
+        <!--      </div>-->
+      </mat-form-field>
+
+      <mat-form-field appearance="legacy">
+        <mat-label>Client</mat-label>
+        <mat-select formControlName="ClientId">
+          <mat-option [value]=+client.id
+                      *ngFor="let client of listClient">{{client.firstName}} {{client.lastName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="legacy">
+        <mat-label>Entreprise</mat-label>
+        <mat-select formControlName="EntrepriseId">
+          <mat-option [value]=+entreprise.id
+                      *ngFor="let entreprise of listEntreprise">{{entreprise.commercialName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+      <mat-form-field appearance="legacy">
+        <mat-label>Status</mat-label>
+        <select formControlName="status" matNativeControl required>
+          <option value="Initialisation">Initialisation</option>
+          <option value="Extraction">Bon pour extraction</option>
+          <option value="Cloturer">Cloturer</option>
+        </select>
+      </mat-form-field>
       </div>
-    </mat-form-field>
+      <div class="buttons">
 
-    <mat-form-field appearance="legacy">
-      <mat-label>Client</mat-label>
-      <mat-select formControlName="ClientId">
-        <mat-option [value]=+client.id
-                    *ngFor="let client of listClient">{{client.firstName}} {{client.lastName}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="legacy">
-      <mat-label>Entreprise</mat-label>
-      <mat-select formControlName="EntrepriseId">
-        <mat-option [value]=+entreprise.id
-                    *ngFor="let entreprise of listEntreprise">{{entreprise.commercialName}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-
-    <mat-form-field appearance="legacy">
-      <mat-label>Status</mat-label>
-      <select formControlName="status" matNativeControl required>
-        <option value="Initialisation">Initialisation</option>
-        <option value="Extraction">Bon pour extraction</option>
-        <option value="Cloturer">Cloturer</option>
-      </select>
-    </mat-form-field>
-  </ng-container>
-  <button (click)="createAndUpdate()" routerLink="/devisTest" mat-raised-button>Créer un devis</button>
-</div>
+        <button mat-stroked-button color="primary" routerLink="/listCout">Retour</button>
+        <button mat-raised-button color="primary" (click)="createDevis();closeDialog()">{{textButton}}</button>
+    </div>
+  </div>
+</ng-container>

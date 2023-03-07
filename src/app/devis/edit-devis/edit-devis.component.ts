@@ -8,6 +8,10 @@ import {EntrepriseService} from 'src/app/_service/entreprise.service';
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../_service/user.service";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {Cout} from "../../_models/cout";
+import {DialogComponent} from "../../dialogListOuvrage/dialog.component";
+import {Devis} from "../../_models/devis";
 
 @Component({
   selector: 'app-edit-devis',
@@ -15,47 +19,62 @@ import {UserService} from "../../_service/user.service";
   styleUrls: ['./edit-devis.component.scss']
 })
 export class EditDevisComponent implements OnInit {
-  public myFormGroup: FormGroup;
+  public myFormGroup!: FormGroup;
   // @ts-ignore
   // userId = JSON.parse(localStorage.getItem('user'))
 
-  userId  = this.userService.userValue.id;
+  userId = this.userService.userValue.id;
   submitted = false;
-
-
   listClient !: Client[];
   listEntreprise !: Entreprise[];
-
   @Input() entreprise!: Entreprise;
   @Input() client!: Client;
+  initialData: Devis;
+  titreForm="Création d'un devis";
+  textForm="Afin de créer un devis, veuillez renseigner les champs suivants.";
+  textButton="Créer ce devis";
 
-
-  constructor(private formBuilder: FormBuilder,
-              private devisService: DevisService,
-              private clientService: ClientService,
-              private entrepriseService: EntrepriseService,
-              @Inject(TOASTR_TOKEN) private toastr: Toastr,
-              private router: Router, private userService : UserService,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Devis, private dialogRef: MatDialogRef<DialogComponent>,
+              private formBuilder: FormBuilder, private devisService: DevisService,
+              private clientService: ClientService,private entrepriseService: EntrepriseService,
+              @Inject(TOASTR_TOKEN) private toastr: Toastr,private router: Router, private userService: UserService,
               private route: ActivatedRoute) {
-    this.myFormGroup = this.formBuilder.group({
-      name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      status: [],
-      ClientId: [],
-      EntrepriseId: [],
-      UserId: this.userId,
-    });
+    this.initialData = data;
+    // this.myFormGroup = this.formBuilder.group({
+    //   name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    //   status: [],
+    //   ClientId: [],
+    //   EntrepriseId: [],
+    //   UserId: this.userId,
+    // });
     // console.log(this.currentUser)
 
   }
 
-  get f() {
-    return this.myFormGroup.controls;
+  ngOnInit(): void {
+    this.getAllClient()
+    this.getAllEntreprise()
+    this.createFormDevis()
+
   }
+  createFormDevis(): void {
+    this.myFormGroup = new FormGroup({
+      id: new FormControl(),
+      name: new FormControl(),
+      status: new FormControl(),
+      ClientId: new FormControl(),
+      EntrepriseId: new FormControl(),
+      UserId: new FormControl(this.userId),
+    });
+  }
+
+  // get f() {
+  //   return this.myFormGroup.controls;
+  // }
 
   getAllClient(): void {
     this.clientService.getAll().subscribe(data => this.listClient = data)
   }
-
   getAllEntreprise(): void {
     this.entrepriseService.getAll().subscribe(data => this.listEntreprise = data)
   }
@@ -68,68 +87,16 @@ export class EditDevisComponent implements OnInit {
     this.toastr.warning(message, "Attention");
   }
 
-  createAndUpdate(): void {
-    this.route.params.subscribe(params => {
-      const devisID = +params['id']
-      console.log(devisID)
-      if (isNaN(devisID)) {
-        this.devisService.create(this.myFormGroup.getRawValue()).subscribe(
-          (): void => {
-            if (this.myFormGroup.status === 'VALID') {
-              this.success("Nouveau devis en vue !")
-              this.router.navigate(['/devis']);
-            }
-          }, error => {
-            this.warning("Complète tout les champs !")
-            console.log(error)
-          }
-        )
-      } else {
-        this.devisService.update(this.myFormGroup.getRawValue(), String(devisID))
-          .subscribe((): void => {
-            this.success("Devis modifier!");
-            this.router.navigate(['/devis']);
-          }, error => {
-            console.log(error)
-            this.warning("Complète tout les champs !")
-          });
-      }
-    })
+  createDevis(): void {
+    console.log(this.myFormGroup.getRawValue())
+    this.devisService.create(this.myFormGroup.getRawValue()).subscribe();
+  }
+
+  closeDialog() {
+    // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
+    this.dialogRef.close();
   }
 
 
-  ngOnInit(): void {
-    this.getAllClient()
-    this.getAllEntreprise()
-    this.route.params.subscribe(params => {
-      const clientID = +params['id']
-      if (!isNaN(clientID)) {
-        this.devisService.getById(clientID).subscribe(data => {
-          console.log(data)
-          // Assuming res has a structure like:
-          data = {
-            name: data.name,
-            status: data.status,
-            ClientId: data.ClientId,
-            EntrepriseId: data.EntrepriseId,
-            UserId: data.UserId,
-
-          }
-
-          this.myFormGroup.patchValue(data);
-        });
-      } else {
-        this.formBuilder.group({
-          name: [],
-          status: [],
-          ClientId: [],
-          EntrepriseId: [],
-          UserId: this.userId,
-        });
-
-
-      }
-    })
-  }
 
 }

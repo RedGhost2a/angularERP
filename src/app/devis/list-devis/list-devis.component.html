@@ -1,78 +1,85 @@
-<div class="header">
-  <button mat-flat-button class="btn">
-    <mat-icon [routerLink]="'/'">arrow_back</mat-icon>
-  </button>
-  <div>
-    <mat-form-field appearance="legacy">
-      <mat-label>Rechercher un devis</mat-label>
-      <input matInput placeholder="Ex: Dupond">
-    </mat-form-field>
+<div class="big-container">
+
+
+  <div class="container-header">
+    <h3 class="title"> Liste des devis</h3>
+    <button mat-flat-button class="btn">
+      <mat-icon [routerLink]="'/'">arrow_back</mat-icon>
+    </button>
+    <div class="header">
+      <mat-form-field>
+        <mat-label>Recherche d'un devis</mat-label>
+        <div>
+
+        </div>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. cim..." #input>
+      </mat-form-field>
+      <div>
+        <button (click)="openDialogCreate()" mat-raised-button color="primary">Creer un devis</button>
+        <!--      <button routerLink="/cout" mat-raised-button color="primary">Ajouter un composant</button>-->
+      </div>
+    </div>
   </div>
-  <div>
-    <button class="btn" routerLink="/devis/new" mat-raised-button>Créer un devis</button>
+
+  <div class="container">
+
+    <table mat-table [dataSource]="listDevis">
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="nDevis">
+        <th mat-header-cell *matHeaderCellDef>N° du devis</th>
+        <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.id}}</td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="nomDevis">
+        <th mat-header-cell *matHeaderCellDef>Nom du devis</th>
+        <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.name}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="dateDevis">
+        <th mat-header-cell *matHeaderCellDef> Date du devis</th>
+        <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.createdAt | date:'dd/MM/YYYY'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="client">
+        <th mat-header-cell *matHeaderCellDef> Client</th>
+        <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.Client.denomination}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.status}}</td>
+      </ng-container>
+      <ng-container matColumnDef="referent">
+        <th mat-header-cell *matHeaderCellDef>Referent</th>
+        <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.Users[0].firstName}}<br>{{devis.Users[0].lastName}}</td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="boutons">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let cout">
+
+          <mat-icon [matMenuTriggerFor]="boutonCout">more_vert</mat-icon>
+          <mat-menu class="menuBoutonCout" #boutonCout>
+            <button (click)="deleteItem(cout.id)" mat-button color="warn">
+              <mat-icon>clear</mat-icon>
+              Supprimer
+            </button>
+          </mat-menu>
+
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
+      <tr mat-row
+          (click)="clickedRows.add(row)"
+          [class.demo-row-is-clicked]="clickedRows.has(row)"
+          *matRowDef="let row; columns: displayedColumns;"  >
+      </tr>
+
+    </table>
+
   </div>
-</div>
-
-<div class="container">
-
-  <table mat-table [dataSource]="listDevis">
-    <!-- Position Column -->
-
-
-    <!-- Name Column -->
-    <ng-container matColumnDef="Devis n°">
-      <th mat-header-cell *matHeaderCellDef>Devis n°</th>
-      <td mat-cell *matCellDef="let devis">{{devis.id}}</td>
-    </ng-container>
-
-    <!-- Weight Column -->
-    <ng-container matColumnDef="Nom">
-      <th mat-header-cell *matHeaderCellDef>Nom</th>
-      <td mat-cell *matCellDef="let devis">{{devis.name}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="Client">
-      <th mat-header-cell *matHeaderCellDef> Client</th>
-      <td mat-cell *matCellDef="let devis">{{devis.Client.firstName}} {{devis.Client.lastName}}</td>
-    </ng-container>
-
-    <ng-container matColumnDef="Status">
-      <th mat-header-cell *matHeaderCellDef>Status</th>
-      <td mat-cell *matCellDef="let devis">{{devis.status}}</td>
-    </ng-container>
-
-
-    <ng-container matColumnDef="Action">
-      <th mat-header-cell *matHeaderCellDef> Action</th>
-      <td mat-cell *matCellDef="let devis ">
-        <button class="button" mat-stroked-button routerLink="/devisDetail/{{devis.id}}">
-          <mat-icon>visibility</mat-icon>
-          Visualiser
-        </button>
-        <button class="button" mat-stroked-button [routerLink]="['/devis', devis.id]">
-          <mat-icon>create</mat-icon>
-          Modifier
-        </button>
-        <button class="button" mat-stroked-button color="warn" (click)="deleteItem(devis.id)">
-          <mat-icon>delete_forever</mat-icon>
-          Supprimer
-        </button>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row
-        (click)="clickedRows.add(row)"
-        [class.demo-row-is-clicked]="clickedRows.has(row)"
-        *matRowDef="let row; columns: displayedColumns;">
-    </tr>
-
-  </table>
-
-  <!--  <ul>Selection :-->
-  <!--    <li *ngFor="let clickedRow of clickedRows">-->
-  <!--      {{clickedRow.lastName}} {{clickedRow.firstName}}-->
-  <!--    </li>-->
-  <!--  </ul>-->
-
 </div>
