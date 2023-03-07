@@ -231,6 +231,7 @@ export class CreateDevisComponent implements OnInit {
           if (ouvrageDuDevis.SousLotOuvrage) {
             // ouvrageDuDevis.SousLotOuvrage.prixUniArrondi = 0;
             await this.sharedData.prixEquilibreHT(ouvrageDuDevis.SousLotOuvrage)
+            await this.sharedData.prixUnitaireHT(ouvrageDuDevis.SousLotOuvrage)
             await this.sharedData.prixCalculeHT(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.benefice, ouvrageDuDevis.aleas)
             await this.sharedData.prixUnitaireCalculeHT(ouvrageDuDevis.SousLotOuvrage)
             await this.sharedData.beneficePercentToEuro(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.benefice)
@@ -465,7 +466,7 @@ export class CreateDevisComponent implements OnInit {
           this.prixVenteHt = 0
           this.getSommeSousLot(sousLot, lot)
           sousLot.OuvrageDuDevis.forEach(ouvrage => {
-
+              console.log("ouvrage sous lot ouvrage get all lot",ouvrage.SousLotOuvrage)
             // this.coefEqui = this.sousDetailPrixService.coefEqui;
 
             // if (ouvrage.SousLotOuvrage) {

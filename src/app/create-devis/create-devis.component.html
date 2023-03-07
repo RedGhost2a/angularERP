@@ -206,8 +206,16 @@
                 <div class="detail-ouvrage-frais-chantier">
                   <span class="designation-ouvrage-frais-chantier">Prix Vente HT</span>
                   <span
-                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixVenteHT | number: '1.2-2'}}
-                    €</span>
+                    class="designation-ouvrage-frais-chantier">
+                      <mat-form-field [formGroup]="myFormGroup" id="prix-arrondi-frais-chantier">
+                                            <input type="number" formControlName="quantityOuvrage" matInput required
+                                                   [placeholder]="ouvrage.SousLotOuvrage.prixUniVenteHT.toString()"
+                                                   (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">
+                                          </mat-form-field>
+                    </span>
+<!--                  <span-->
+<!--                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixVenteHT | number: '1.2-2'}}€-->
+<!--                  </span>-->
                 </div>
                 <div>
                   <span class="designation-ouvrage-frais-chantier">
@@ -321,8 +329,8 @@
         </form>
 
 
-        <div class="container-lot"*ngFor="let lot of testLots">
-          <div class="lot-frais-chantier" >
+        <div class="container-lot" *ngFor="let lot of testLots">
+          <div class="lot-frais-chantier">
             <button class="btn" *ngIf="lot.SousLots && lot.SousLots.length"
                     (click)="setExpandedLotId(lot.id)">
               <mat-icon>expand_more</mat-icon>
@@ -337,10 +345,10 @@
                       (click)="showForm = !showForm; isLot = true; curentLotId= lot.id">
                 Créer un sous-lot
               </button>
-                        <button mat-menu-item class="buttonSup" *ngIf="lot"
-                                (click)="deleteLot(lot.id)">
-                          Effacer ce lot
-                        </button>
+              <button mat-menu-item class="buttonSup" *ngIf="lot"
+                      (click)="deleteLot(lot.id)">
+                Effacer ce lot
+              </button>
             </mat-menu>
           </div>
           <div class="container-sous-lot-frais-chantier" *ngFor="let sublot of lot.SousLots">
@@ -419,7 +427,9 @@
                       €</span>
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier">PU DS HT</span>
+                    <span class="designation-ouvrage-frais-chantier">PU DS HT </span>
+
+
                     <span
                       class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniHT | number: '1.2-2'}}
                       €</span>
@@ -439,8 +449,16 @@
                   <div class="detail-ouvrage-frais-chantier">
                     <span class="designation-ouvrage-frais-chantier">PU Vente HT</span>
                     <span
-                      class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniVenteHT | number: '1.2-2'}}
-                      €</span>
+                      class="designation-ouvrage-frais-chantier">
+                      <mat-form-field [formGroup]="myFormGroup" id="prix-arrondi-devis">
+                                            <input type="number" formControlName="quantityOuvrage" matInput required
+                                                   [placeholder]="ouvrage.SousLotOuvrage.prixUniVenteHT.toString()"
+                                                   (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">
+                                          </mat-form-field>
+                    </span>
+                    <!--                    <span-->
+                    <!--                      class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniVenteHT | number: '1.2-2'}}-->
+                    <!--                      €</span>-->
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
                     <span class="designation-ouvrage-frais-chantier">Prix Vente HT</span>
@@ -531,180 +549,180 @@
 
       <!--      </div>-->
 
-<!--      <div *ngFor="let lot of testLots">-->
-<!--        <div class="lot" *ngIf="lot">-->
-<!--          <button class="btn" *ngIf="lot.SousLots && lot.SousLots.length"-->
-<!--                  (click)="setExpandedLotId(lot.id)">-->
-<!--            <mat-icon>expand_more</mat-icon>-->
-<!--            <span>Lot N°: {{ lot.id | number }}</span>-->
-<!--          </button>-->
-<!--          <span class="designation">{{ lot.designation | titlecase }}</span>-->
-<!--          &lt;!&ndash;        <span class="designation"> prix du lot{{ lot.prix }}</span>&ndash;&gt;-->
-<!--          <mat-icon [matMenuTriggerFor]="boutonLOT">more_vert</mat-icon>-->
-<!--        </div>-->
-<!--        <mat-menu class="menuBoutonSl" #boutonLOT>-->
-<!--          <button mat-flat-button *ngIf="lot" (click)="curentLotId = lot.id;isLot = true;showForm = !showForm">Créer un-->
-<!--            &lt;!&ndash;        <button mat-flat-button *ngIf="lot" (click)="handleLotClick(lot.id); currentLot = lot;toggleForm()">Créer un&ndash;&gt;-->
-<!--            sous-lot-->
-<!--          </button>-->
-<!--          <button mat-menu-item class="buttonSup" *ngIf="lot"-->
-<!--                  (click)="deleteLot(lot.id)">-->
-<!--            &lt;!&ndash;                (click)="handleLotClick(lot.id); currentLot = lot;deleteLot(lot.id)">&ndash;&gt;-->
-<!--            Effacer ce lot-->
-<!--          </button>-->
-<!--        </mat-menu>-->
+      <!--      <div *ngFor="let lot of testLots">-->
+      <!--        <div class="lot" *ngIf="lot">-->
+      <!--          <button class="btn" *ngIf="lot.SousLots && lot.SousLots.length"-->
+      <!--                  (click)="setExpandedLotId(lot.id)">-->
+      <!--            <mat-icon>expand_more</mat-icon>-->
+      <!--            <span>Lot N°: {{ lot.id | number }}</span>-->
+      <!--          </button>-->
+      <!--          <span class="designation">{{ lot.designation | titlecase }}</span>-->
+      <!--          &lt;!&ndash;        <span class="designation"> prix du lot{{ lot.prix }}</span>&ndash;&gt;-->
+      <!--          <mat-icon [matMenuTriggerFor]="boutonLOT">more_vert</mat-icon>-->
+      <!--        </div>-->
+      <!--        <mat-menu class="menuBoutonSl" #boutonLOT>-->
+      <!--          <button mat-flat-button *ngIf="lot" (click)="curentLotId = lot.id;isLot = true;showForm = !showForm">Créer un-->
+      <!--            &lt;!&ndash;        <button mat-flat-button *ngIf="lot" (click)="handleLotClick(lot.id); currentLot = lot;toggleForm()">Créer un&ndash;&gt;-->
+      <!--            sous-lot-->
+      <!--          </button>-->
+      <!--          <button mat-menu-item class="buttonSup" *ngIf="lot"-->
+      <!--                  (click)="deleteLot(lot.id)">-->
+      <!--            &lt;!&ndash;                (click)="handleLotClick(lot.id); currentLot = lot;deleteLot(lot.id)">&ndash;&gt;-->
+      <!--            Effacer ce lot-->
+      <!--          </button>-->
+      <!--        </mat-menu>-->
 
-<!--        <div *ngFor="let sublot of lot.SousLots" [hidden]="expandedLotId !== lot.id">-->
-<!--          &lt;!&ndash;        <div *ngIf="sublot.LotSousLot && sublot.LotSousLot.LotId === lot.id">&ndash;&gt;-->
-<!--          <div class="sousLot">-->
-<!--            <div class="sous-lot-headers">-->
-<!--              <button *ngIf="sublot.OuvrageDuDevis && sublot.OuvrageDuDevis.length" class="btn">-->
+      <!--        <div *ngFor="let sublot of lot.SousLots" [hidden]="expandedLotId !== lot.id">-->
+      <!--          &lt;!&ndash;        <div *ngIf="sublot.LotSousLot && sublot.LotSousLot.LotId === lot.id">&ndash;&gt;-->
+      <!--          <div class="sousLot">-->
+      <!--            <div class="sous-lot-headers">-->
+      <!--              <button *ngIf="sublot.OuvrageDuDevis && sublot.OuvrageDuDevis.length" class="btn">-->
 
-<!--                &lt;!&ndash;            <button *ngIf="hasOuvrages(sublot)" class="btn">&ndash;&gt;-->
-<!--                <mat-icon>expand_more</mat-icon>-->
-<!--                <span>Sous-lot N°: {{ sublot.id | number }}</span>-->
-<!--              </button>-->
-<!--              <span-->
-<!--                class="designation">{{ sublot.designation | uppercase }}</span>-->
-<!--              &lt;!&ndash;            <span> Prix du sous lot{{ sublot.prix | number }}</span>&ndash;&gt;-->
-<!--              <mat-icon [matMenuTriggerFor]="boutonSL">more_vert</mat-icon>-->
-<!--            </div>-->
-<!--          </div>-->
-
-
-<!--          <div *ngFor="let ouvrage of sublot.OuvrageDuDevis;" [hidden]="hiddenChildren.get(sublot.id)">-->
-<!--            <div class="ouvrage border" *ngIf="ouvrage && ouvrage.id && ouvrage.designation">-->
-<!--              <div class="ouvrage-header-description ">-->
-<!--                <div class="flex-column">-->
-<!--                  <p class="bold ">Id</p>-->
-<!--                  <p routerLink="/sousDetailPrix/{{ouvrage.id}}">{{ ouvrage.id | number }}</p>-->
-<!--                </div>-->
-<!--                <div class="flex-column" *ngIf="ouvrage.SousLotOuvrage && ouvrage.SousLotOuvrage.quantityOuvrage">-->
-<!--                  <mat-form-field [formGroup]="myFormGroup">-->
-<!--                    &lt;!&ndash;                  <p class="bold">Qte</p>&ndash;&gt;-->
-<!--                    <input type="number" formControlName="quantityOuvrage" matInput required-->
-<!--                           [placeholder]="ouvrage.SousLotOuvrage.quantityOuvrage.toString()"-->
-
-<!--                           (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lot, prixOuvrage)">-->
-<!--                  </mat-form-field>-->
-
-<!--                </div>-->
-<!--                <div class="flex-column">-->
-<!--                  <p class="bold">Désignation</p>-->
-<!--                  <p>{{ ouvrage.designation  }}</p>-->
-<!--                </div>-->
-<!--                <div class="flex-column">-->
-<!--                  <p class="bold">Bénéfice</p>-->
-<!--                  <p>{{ ouvrage.benefice  }}</p>-->
-<!--                </div>-->
-<!--                <div class="flex-column">-->
-<!--                  <p class="bold">Aléas</p>-->
-<!--                  <p>{{ ouvrage.aleas  }}</p>-->
-<!--                </div>-->
-<!--                <div class="flex-column">-->
-<!--                  <p class="bold">Unité</p>-->
-<!--                  <p>{{ ouvrage.unite  }}</p>-->
-<!--                </div>-->
-<!--                <div class="flex-column">-->
-<!--                  <p class="bold">U Ratio</p>-->
-<!--                  <p>{{ ouvrage.uRatio  }}</p>-->
-<!--                </div>-->
-<!--                <div class="flex-column">-->
-<!--                  <p class="bold">Ratio</p>-->
-<!--                  <p>{{ ouvrage.ratio  }}</p>-->
-<!--                </div>-->
-<!--                <mat-icon [matMenuTriggerFor]="boutonOuv">more_vert</mat-icon>-->
-<!--              </div>-->
-<!--              <div class="totaux-header">-->
-<!--                <div class="flex-column">-->
-<!--                  <div class="flex-row ">-->
-<!--                    <p class="totaux-header-designation ">Déboursé sec HT</p>-->
-<!--                    <p class="totaux-header-designation ">PU DS HT</p>-->
-<!--                  </div>-->
-<!--                  <div class="flex-row ">-->
-<!--                    <p class="totaux-header-result ">{{ ouvrage.SousLotOuvrage?.prixOuvrage }}</p>-->
-<!--                    <ng-container *ngFor="let item of prixOuvrage">-->
-<!--                      <p *ngIf="item.id === ouvrage.id"-->
-<!--                         class="totaux-header-result ">{{item.prix}}</p>-->
-<!--                    </ng-container>-->
-
-<!--                  </div>-->
-<!--                </div>-->
-
-<!--                <div class="flex-column">-->
-<!--                  <p class="totaux-header-designation ">Prix HT équilibre</p>-->
-<!--                  <p class="totaux-header-result">{{ouvrage.SousLotOuvrage?.prixEquiHT}} </p>-->
-<!--                  &lt;!&ndash;                <p *ngIf="ouvrage.SousLotOuvrage?.prixOuvrage" class="totaux-header-result ">{{this.prixEquilibreHT(ouvrage.SousLotOuvrage?.prixOuvrage)| number : '1.2-2'}}</p>&ndash;&gt;-->
-<!--                </div>-->
-
-<!--                <div class="flex-column">-->
-<!--                  <div class="flex-row">-->
-<!--                    <p class="totaux-header-designation ">Prix calculé HT</p>-->
-<!--                    <p class="totaux-header-designation ">PU calculé HT</p>-->
-<!--                  </div>-->
-<!--                  <div class="flex-row" *ngIf="ouvrage.SousLotOuvrage">-->
-
-<!--                    <p-->
-<!--                      class="totaux-header-result ">{{ouvrage.SousLotOuvrage.prixCalcHT | number : '1.2-2' }}</p>-->
-<!--                    <p-->
-<!--                      class="totaux-header-result ">{{ouvrage.SousLotOuvrage.prixUniCalcHT  | number : '1.2-2'}}-->
-<!--                      €</p>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--                <div class="flex-column">-->
-<!--                  <div class="flex-row">-->
-<!--                    <p class="totaux-header-designation ">PU vente HT</p>-->
-<!--                    <p class="totaux-header-designation ">Prix vente HT</p>-->
-<!--                  </div>-->
-<!--                  <div class="flex-row " *ngIf="ouvrage.SousLotOuvrage">-->
-
-<!--                    <p *ngIf="ouvrage.SousLotOuvrage"> {{ouvrage.SousLotOuvrage.prixUniVenteHT}}</p>-->
-
-<!--                    <mat-form-field [formGroup]="myFormGroup">-->
-<!--                      <input type="number" formControlName="quantityOuvrage" matInput required-->
-<!--                             (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">-->
-<!--                    </mat-form-field>-->
-
-<!--                    &lt;!&ndash;                  <input class="totaux-header-result " type="text"&ndash;&gt;-->
-<!--                    &lt;!&ndash;                         (ngModelChange)="this.onPrixUnitaireCalculeHtChange($event,ouvrage.SousLotOuvrage?.id)" [value]="ouvrage.SousLotOuvrage.prixUniArrondi">&ndash;&gt;-->
-<!--                    &lt;!&ndash;                  &lt;!&ndash;                         [value]="ouvrage.SousLotOuvrage.prixArrondi > 0 ? ouvrage.SousLotOuvrage.prixArrondi : this.sharedData.prixUnitaireCalculeHT(this.sharedData.prixCalculeHT(this.ouvrage.benefice, this.ouvrage.aleas, this.sharedData.prixEquilibreHT(ouvrage?.SousLotOuvrage.prixOuvrage)), ouvrage?.SousLotOuvrage.quantityOuvrage) | number : '1.2-2'">&ndash;&gt;&ndash;&gt;-->
-<!--                    <p-->
-<!--                      class="totaux-header-result ">{{ ouvrage.SousLotOuvrage.prixVenteHT}}-->
-<!--                    </p>-->
+      <!--                &lt;!&ndash;            <button *ngIf="hasOuvrages(sublot)" class="btn">&ndash;&gt;-->
+      <!--                <mat-icon>expand_more</mat-icon>-->
+      <!--                <span>Sous-lot N°: {{ sublot.id | number }}</span>-->
+      <!--              </button>-->
+      <!--              <span-->
+      <!--                class="designation">{{ sublot.designation | uppercase }}</span>-->
+      <!--              &lt;!&ndash;            <span> Prix du sous lot{{ sublot.prix | number }}</span>&ndash;&gt;-->
+      <!--              <mat-icon [matMenuTriggerFor]="boutonSL">more_vert</mat-icon>-->
+      <!--            </div>-->
+      <!--          </div>-->
 
 
-<!--                    &lt;!&ndash;                    <p class="totaux-header-result ">{{ (ouvrage.SousLotOuvrage?.quantityOuvrage || 0) * this.getPrix(ouvrage)}}&ndash;&gt;-->
-<!--                    &lt;!&ndash;                  </p>&ndash;&gt;-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--              <div>-->
-<!--              </div>-->
+      <!--          <div *ngFor="let ouvrage of sublot.OuvrageDuDevis;" [hidden]="hiddenChildren.get(sublot.id)">-->
+      <!--            <div class="ouvrage border" *ngIf="ouvrage && ouvrage.id && ouvrage.designation">-->
+      <!--              <div class="ouvrage-header-description ">-->
+      <!--                <div class="flex-column">-->
+      <!--                  <p class="bold ">Id</p>-->
+      <!--                  <p routerLink="/sousDetailPrix/{{ouvrage.id}}">{{ ouvrage.id | number }}</p>-->
+      <!--                </div>-->
+      <!--                <div class="flex-column" *ngIf="ouvrage.SousLotOuvrage && ouvrage.SousLotOuvrage.quantityOuvrage">-->
+      <!--                  <mat-form-field [formGroup]="myFormGroup">-->
+      <!--                    &lt;!&ndash;                  <p class="bold">Qte</p>&ndash;&gt;-->
+      <!--                    <input type="number" formControlName="quantityOuvrage" matInput required-->
+      <!--                           [placeholder]="ouvrage.SousLotOuvrage.quantityOuvrage.toString()"-->
 
-<!--            </div>-->
+      <!--                           (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lot, prixOuvrage)">-->
+      <!--                  </mat-form-field>-->
+
+      <!--                </div>-->
+      <!--                <div class="flex-column">-->
+      <!--                  <p class="bold">Désignation</p>-->
+      <!--                  <p>{{ ouvrage.designation  }}</p>-->
+      <!--                </div>-->
+      <!--                <div class="flex-column">-->
+      <!--                  <p class="bold">Bénéfice</p>-->
+      <!--                  <p>{{ ouvrage.benefice  }}</p>-->
+      <!--                </div>-->
+      <!--                <div class="flex-column">-->
+      <!--                  <p class="bold">Aléas</p>-->
+      <!--                  <p>{{ ouvrage.aleas  }}</p>-->
+      <!--                </div>-->
+      <!--                <div class="flex-column">-->
+      <!--                  <p class="bold">Unité</p>-->
+      <!--                  <p>{{ ouvrage.unite  }}</p>-->
+      <!--                </div>-->
+      <!--                <div class="flex-column">-->
+      <!--                  <p class="bold">U Ratio</p>-->
+      <!--                  <p>{{ ouvrage.uRatio  }}</p>-->
+      <!--                </div>-->
+      <!--                <div class="flex-column">-->
+      <!--                  <p class="bold">Ratio</p>-->
+      <!--                  <p>{{ ouvrage.ratio  }}</p>-->
+      <!--                </div>-->
+      <!--                <mat-icon [matMenuTriggerFor]="boutonOuv">more_vert</mat-icon>-->
+      <!--              </div>-->
+      <!--              <div class="totaux-header">-->
+      <!--                <div class="flex-column">-->
+      <!--                  <div class="flex-row ">-->
+      <!--                    <p class="totaux-header-designation ">Déboursé sec HT</p>-->
+      <!--                    <p class="totaux-header-designation ">PU DS HT</p>-->
+      <!--                  </div>-->
+      <!--                  <div class="flex-row ">-->
+      <!--                    <p class="totaux-header-result ">{{ ouvrage.SousLotOuvrage?.prixOuvrage }}</p>-->
+      <!--                    <ng-container *ngFor="let item of prixOuvrage">-->
+      <!--                      <p *ngIf="item.id === ouvrage.id"-->
+      <!--                         class="totaux-header-result ">{{item.prix}}</p>-->
+      <!--                    </ng-container>-->
+
+      <!--                  </div>-->
+      <!--                </div>-->
+
+      <!--                <div class="flex-column">-->
+      <!--                  <p class="totaux-header-designation ">Prix HT équilibre</p>-->
+      <!--                  <p class="totaux-header-result">{{ouvrage.SousLotOuvrage?.prixEquiHT}} </p>-->
+      <!--                  &lt;!&ndash;                <p *ngIf="ouvrage.SousLotOuvrage?.prixOuvrage" class="totaux-header-result ">{{this.prixEquilibreHT(ouvrage.SousLotOuvrage?.prixOuvrage)| number : '1.2-2'}}</p>&ndash;&gt;-->
+      <!--                </div>-->
+
+      <!--                <div class="flex-column">-->
+      <!--                  <div class="flex-row">-->
+      <!--                    <p class="totaux-header-designation ">Prix calculé HT</p>-->
+      <!--                    <p class="totaux-header-designation ">PU calculé HT</p>-->
+      <!--                  </div>-->
+      <!--                  <div class="flex-row" *ngIf="ouvrage.SousLotOuvrage">-->
+
+      <!--                    <p-->
+      <!--                      class="totaux-header-result ">{{ouvrage.SousLotOuvrage.prixCalcHT | number : '1.2-2' }}</p>-->
+      <!--                    <p-->
+      <!--                      class="totaux-header-result ">{{ouvrage.SousLotOuvrage.prixUniCalcHT  | number : '1.2-2'}}-->
+      <!--                      €</p>-->
+      <!--                  </div>-->
+      <!--                </div>-->
+      <!--                <div class="flex-column">-->
+      <!--                  <div class="flex-row">-->
+      <!--                    <p class="totaux-header-designation ">PU vente HT</p>-->
+      <!--                    <p class="totaux-header-designation ">Prix vente HT</p>-->
+      <!--                  </div>-->
+      <!--                  <div class="flex-row " *ngIf="ouvrage.SousLotOuvrage">-->
+
+      <!--                    <p *ngIf="ouvrage.SousLotOuvrage"> {{ouvrage.SousLotOuvrage.prixUniVenteHT}}</p>-->
+
+      <!--                    <mat-form-field [formGroup]="myFormGroup">-->
+      <!--                      <input type="number" formControlName="quantityOuvrage" matInput required-->
+      <!--                             (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">-->
+      <!--                    </mat-form-field>-->
+
+      <!--                    &lt;!&ndash;                  <input class="totaux-header-result " type="text"&ndash;&gt;-->
+      <!--                    &lt;!&ndash;                         (ngModelChange)="this.onPrixUnitaireCalculeHtChange($event,ouvrage.SousLotOuvrage?.id)" [value]="ouvrage.SousLotOuvrage.prixUniArrondi">&ndash;&gt;-->
+      <!--                    &lt;!&ndash;                  &lt;!&ndash;                         [value]="ouvrage.SousLotOuvrage.prixArrondi > 0 ? ouvrage.SousLotOuvrage.prixArrondi : this.sharedData.prixUnitaireCalculeHT(this.sharedData.prixCalculeHT(this.ouvrage.benefice, this.ouvrage.aleas, this.sharedData.prixEquilibreHT(ouvrage?.SousLotOuvrage.prixOuvrage)), ouvrage?.SousLotOuvrage.quantityOuvrage) | number : '1.2-2'">&ndash;&gt;&ndash;&gt;-->
+      <!--                    <p-->
+      <!--                      class="totaux-header-result ">{{ ouvrage.SousLotOuvrage.prixVenteHT}}-->
+      <!--                    </p>-->
 
 
-<!--            <mat-menu class="menuBoutonSl" #boutonOuv>-->
-<!--              <button mat-menu-item class="buttonSup" *ngIf="lot" (click)="deleteOuvrageDuDevis(ouvrage.id)">-->
-<!--                Effacer cet ouvrage-->
-<!--              </button>-->
-<!--            </mat-menu>-->
+      <!--                    &lt;!&ndash;                    <p class="totaux-header-result ">{{ (ouvrage.SousLotOuvrage?.quantityOuvrage || 0) * this.getPrix(ouvrage)}}&ndash;&gt;-->
+      <!--                    &lt;!&ndash;                  </p>&ndash;&gt;-->
+      <!--                  </div>-->
+      <!--                </div>-->
+      <!--              </div>-->
+      <!--              <div>-->
+      <!--              </div>-->
+
+      <!--            </div>-->
 
 
-<!--          </div>-->
-<!--          <mat-menu class="menuBoutonSl" #boutonSL>-->
-<!--            &lt;!&ndash;        <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">&ndash;&gt;-->
-<!--            <button (click)="openDialog(sublot.id)" mat-menu-item class="buttonImport">-->
-<!--              Importer un ouvrage-->
-<!--            </button>-->
-<!--            <button mat-menu-item class="buttonSup" *ngIf="lot" (click)="deleteSousLot(sublot.id)">-->
-<!--              Effacer ce sous-lot-->
-<!--            </button>-->
-<!--          </mat-menu>-->
+      <!--            <mat-menu class="menuBoutonSl" #boutonOuv>-->
+      <!--              <button mat-menu-item class="buttonSup" *ngIf="lot" (click)="deleteOuvrageDuDevis(ouvrage.id)">-->
+      <!--                Effacer cet ouvrage-->
+      <!--              </button>-->
+      <!--            </mat-menu>-->
 
-<!--        </div>-->
 
-<!--      </div>-->
+      <!--          </div>-->
+      <!--          <mat-menu class="menuBoutonSl" #boutonSL>-->
+      <!--            &lt;!&ndash;        <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">&ndash;&gt;-->
+      <!--            <button (click)="openDialog(sublot.id)" mat-menu-item class="buttonImport">-->
+      <!--              Importer un ouvrage-->
+      <!--            </button>-->
+      <!--            <button mat-menu-item class="buttonSup" *ngIf="lot" (click)="deleteSousLot(sublot.id)">-->
+      <!--              Effacer ce sous-lot-->
+      <!--            </button>-->
+      <!--          </mat-menu>-->
+
+      <!--        </div>-->
+
+      <!--      </div>-->
       <!--    </div>-->
 
     </mat-tab>

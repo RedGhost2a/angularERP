@@ -1,6 +1,6 @@
 .container-frais-chantier {
   background-color: #F0F4F8 !important;
-  height: 100vh;
+  //height: 100vh;
   display: flex;
   flex-direction: column;
   min-height:93vh ;
@@ -124,7 +124,7 @@
 
     }
 
-    #quantity-ouvrage-frias-de-chantier {
+    #quantity-ouvrage-frias-de-chantier, #quantity-ouvrage-frias {
       position: relative;
       bottom: 12px;
       width: 60px;
@@ -132,6 +132,11 @@
 
     }
   }
+}
+#prix-arrondi-devis, #prix-arrondi-frais-chantier{
+  position: relative;
+  bottom: 12px;
+  width: 100px;
 }
 .container-lot{
   display: flex;
@@ -331,6 +336,8 @@
 }
 
 .bigContainerParams {
+  background-color: #F0F4F8 ;
+  height: 90vh;
   display: flex;
   flex-direction: column;
 }
@@ -342,11 +349,13 @@
 }
 
 .containerParams {
+  background-color: #FFFFFF;
   display: flex;
   flex-direction: column;
 }
 
 .cardParams {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   width: 33%;
 }
 
