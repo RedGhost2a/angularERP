@@ -1,5 +1,8 @@
+import {Adresse} from "./adresse";
+
 export class Client {
-  id!: string;
+  Adresse!:Adresse;
+  id!: number;
   firstName!: string;
   lastName!: string;
   email!: string;

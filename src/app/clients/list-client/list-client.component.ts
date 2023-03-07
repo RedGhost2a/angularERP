@@ -4,6 +4,9 @@ import {ClientService} from "../../_service/client.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogConfirmSuppComponent} from "../../dialog-confirm-supp/dialog-confirm-supp.component";
+import {Cout} from "../../_models/cout";
+import {FormCoutComponent} from "../../form-cout/form-cout.component";
+import {EditComponent} from "../edit/edit.component";
 
 @Component({
   selector: 'app-list-client',
@@ -17,7 +20,7 @@ export class ListClientComponent implements OnInit {
   public listClient!: Client[];
   dataSource !: any
 
-  displayedColumns: string[] = ['lastname', 'firstname', 'adresse', "city", "Action"];
+  displayedColumns: string[] = ['lastname', 'firstname', 'adresse', "city", "boutons"];
   clickedRows = new Set<Client>();
   public values!: string;
 
@@ -62,6 +65,17 @@ export class ListClientComponent implements OnInit {
       }
     )
 
+  }
+  openDialogCreate(client:Client | null) {
+    console.log("data envoyer depuis list client", client)
+    this.dialog.open(EditComponent, {
+      data: client,
+      width: '70%',
+      height: '72%'
+    }).afterClosed().subscribe(async result => {
+      this.ngOnInit()
+
+    });
   }
 
   // onKey($event: KeyboardEvent) {

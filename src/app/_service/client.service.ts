@@ -29,7 +29,7 @@ export class ClientService {
 
   }
 
-  update(client: any, id: string): Observable<any> {
+  update(client: any, id: number): Observable<any> {
     return this.http.put(`${environment.apiUrl}/clients/${id}`, client)
   }
 
