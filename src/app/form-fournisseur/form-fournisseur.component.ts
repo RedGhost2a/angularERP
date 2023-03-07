@@ -20,7 +20,7 @@ export class FormFournisseurComponent implements OnInit {
   myFormGroup!: FormGroup;
   textButton: string = "Ajouter le fournisseur";
   titreForm: string = "Création d'un fournisseur";
-  textForm : string = "L'ajout d'un fournissseur permet de l'associer aux composants"
+  textForm : string = "L'ajout d'un fournissseur permet de l'associer aux composants."
   fournisseurs!:Fournisseur;
   initialData: Fournisseur;
   userId = this.userService.userValue.id;
@@ -68,7 +68,7 @@ export class FormFournisseurComponent implements OnInit {
 
   generateFormUpdate(): void {
     this.titreForm = "Modification d'un fournisseur "
-    this.textForm = "La modification de ce du fournisseur va impacter les composants qui lui sont associés dans la blibliothèque de prix. Les devis déjà existants ne seront pas modifiés."
+    this.textForm = "La modification du fournisseur va impacter les composants qui lui sont associés dans la blibliothèque de prix. Les devis déjà existants ne seront pas modifiés."
     this.textButton = "Modifier ce fournisseur"
     this.myFormGroup.patchValue(this.initialData)
   }

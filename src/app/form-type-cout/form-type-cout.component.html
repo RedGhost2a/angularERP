@@ -1,25 +1,77 @@
 
+<!--<ng-container [formGroup]="this.myFormGroup">-->
+<!--  <button routerLink="/listTypeCout" mat-raised-button color="accent">Retour</button>-->
+<!--  <div class="container">-->
+<!--    <h1> {{titreForm}}</h1>-->
+<!--    <div class="group1">-->
+<!--      <p>-->
+<!--        <mat-form-field appearance="legacy">-->
+<!--          <mat-label>Type</mat-label>-->
+<!--          <input formControlName="type" matInput placeholder="Ex: Fourniture">-->
+<!--        </mat-form-field>-->
+<!--      </p>-->
+<!--      <p>-->
+<!--        <mat-form-field appearance="legacy">-->
+<!--          <mat-label>Catégorie</mat-label>-->
+<!--          <input formControlName="categorie" matInput placeholder="Ex: Transport">-->
+<!--        </mat-form-field>-->
+<!--      </p>-->
+<!--    </div>-->
+
+
+<!--    <button   mat-raised-button (click)="createAndUpdate()" >{{textButton}}</button>-->
+<!--  </div>-->
+<!--</ng-container>-->
+
+<!--<ng-container [formGroup]="this.myFormGroup">-->
+<!--  <button routerLink="/listFournisseur" mat-raised-button color="accent">Retour</button>-->
+<!--  <div class="container">-->
+<!--    <h1> {{titreForm}}</h1>-->
+<!--    <div class="group1">-->
+<!--      <p>-->
+<!--        <mat-form-field appearance="legacy">-->
+<!--          <mat-label>Nom commercial</mat-label>-->
+<!--          <input formControlName="commercialName" matInput placeholder="Ex: GEDIMAT">-->
+<!--        </mat-form-field>-->
+<!--      </p>-->
+<!--      <p>-->
+<!--        <mat-form-field appearance="legacy">-->
+<!--          <mat-label>Remarque</mat-label>-->
+<!--          <input formControlName="remarque" matInput placeholder="Ex: Augmentation en Janvier">-->
+<!--        </mat-form-field>-->
+<!--      </p>-->
+<!--    </div>-->
+
+
+<!--    <button   mat-raised-button (click)="createAndUpdate();closeDialog()" >{{textButton}}</button>-->
+<!--  </div>-->
+<!--</ng-container>-->
 <ng-container [formGroup]="this.myFormGroup">
-  <button routerLink="/listTypeCout" mat-raised-button color="accent">Retour</button>
+
   <div class="container">
-    <h1> {{titreForm}}</h1>
-    <div class="group1">
-      <p>
-        <mat-form-field appearance="legacy">
-          <mat-label>Type</mat-label>
-          <input formControlName="type" matInput placeholder="Ex: Fourniture">
-        </mat-form-field>
-      </p>
-      <p>
-        <mat-form-field appearance="legacy">
-          <mat-label>Catégorie</mat-label>
-          <input formControlName="categorie" matInput placeholder="Ex: Transport">
-        </mat-form-field>
-      </p>
+    <h3>{{titreForm}}</h3>
+    <p>{{textForm}}</p>
+    <div class="inputs">
+
+              <mat-form-field appearance="legacy">
+                <mat-label>Type</mat-label>
+                <input formControlName="type" matInput placeholder="Ex: Fourniture">
+              </mat-form-field>
+              <mat-form-field appearance="legacy">
+                <mat-label>Catégorie</mat-label>
+                <input formControlName="categorie" matInput placeholder="Ex: Transport">
+              </mat-form-field>
+
     </div>
 
 
-    <button   mat-raised-button (click)="createAndUpdate()" >{{textButton}}</button>
+    <div class="buttons">
+
+      <button mat-stroked-button color="primary" routerLink="/listTypeCout">Retour</button>
+      <button mat-raised-button color="primary" (click)="createAndUpdate();closeDialog()">{{textButton}}</button>
+    </div>
   </div>
+
 </ng-container>
+
 

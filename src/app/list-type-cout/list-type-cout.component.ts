@@ -5,6 +5,9 @@ import {MatTableDataSource} from "@angular/material/table";
 import {UserService} from "../_service/user.service";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
 import {MatDialog} from "@angular/material/dialog";
+import {Cout} from "../_models/cout";
+import {FormFournisseurComponent} from "../form-fournisseur/form-fournisseur.component";
+import {FormTypeCoutComponent} from "../form-type-cout/form-type-cout.component";
 
 
 @Component({
@@ -39,9 +42,7 @@ export class ListTypeCoutComponent implements OnInit {
     })
   }
 
-  deleteTypeCoutById(id: number): void {
-    this.typeCoutService.deleteTypeCoutById(id).subscribe(() => this.ngOnInit())
-  }
+
 
   deleteItem(id: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
@@ -59,4 +60,19 @@ export class ListTypeCoutComponent implements OnInit {
       this.getAllTypeCouts(data.Entreprises[0].id)
     })
   }
+
+  openDialogCreate(typeCout:TypeCout | null) {
+    this.dialog.open(FormTypeCoutComponent, {
+      data: typeCout,
+      width: '70%',
+      height: '37%'
+    }).afterClosed().subscribe(async result => {
+      this.ngOnInit()
+
+    });
+  }
+
+
+
+
 }

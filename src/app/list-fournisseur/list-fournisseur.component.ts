@@ -48,10 +48,6 @@ export class ListFournisseurComponent implements OnInit {
     })
   }
 
-  deleteFournisseurById(id: number): void {
-    this.fournisseurService.deleteFournisseurById(id).subscribe(() => this.ngOnInit())
-  }
-
   deleteItem(id: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
 
@@ -63,9 +59,9 @@ export class ListFournisseurComponent implements OnInit {
     });
   }
 
-  openDialogCreate(cout:Cout | null) {
+  openDialogCreate(fournisseur:Fournisseur | null) {
     this.dialog.open(FormFournisseurComponent, {
-      data: cout,
+      data: fournisseur,
       width: '70%',
       height: '37%'
     }).afterClosed().subscribe(async result => {
