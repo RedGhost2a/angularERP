@@ -1,8 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {FournisseurService} from "../_service/fournisseur.service";
 import {ActivatedRoute} from "@angular/router";
 import {Fournisseur} from "../_models/fournisseur";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {DialogComponent} from "../dialogListOuvrage/dialog.component";
+import {Cout} from "../_models/cout";
+import {User} from "../_models/users";
+import {UserService} from "../_service/user.service";
 
 
 
@@ -15,15 +20,22 @@ export class FormFournisseurComponent implements OnInit {
   myFormGroup!: FormGroup;
   textButton: string = "Ajouter le fournisseur";
   titreForm: string = "Création d'un fournisseur";
+  textForm : string = "L'ajout d'un fournissseur permet de l'associer aux composants"
   fournisseurs!:Fournisseur;
+  initialData: Fournisseur;
+  userId = this.userService.userValue.id;
 
-  constructor(private formBuilder:FormBuilder,private fournisseurService: FournisseurService,
-              private route: ActivatedRoute) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Fournisseur, private formBuilder:FormBuilder,private fournisseurService: FournisseurService,
+              private route: ActivatedRoute, private dialogRef: MatDialogRef<DialogComponent>, private userService : UserService) {
+    this.initialData = data;
+  }
 
   ngOnInit(): void {
-
     this.createFormFournisseur()
-    this.generateFormUpdate()
+    this.getUserById()
+    if (this.initialData !== null)
+      this.generateFormUpdate();
+
   }
 
   createFormFournisseur():void{
@@ -31,45 +43,38 @@ export class FormFournisseurComponent implements OnInit {
       id: new FormControl(),
       commercialName: new FormControl(),
       remarque: new FormControl(),
+      EntrepriseId: new FormControl()
     });
    }
-  createAndUpdateFournisseur(): void {
-    this.route.params.subscribe(params => {
-      const fournisseurID = +params['id']
-      if (isNaN(fournisseurID)) {
-        this.fournisseurService.createFournisseur(this.myFormGroup.getRawValue()).subscribe(
-          (): void => {
-            alert('Nouveau fournisseur enregistrer')
-          }
-        );
-      } else {
-        this.fournisseurService.updateFournisseur(fournisseurID, this.myFormGroup.getRawValue())
-          .subscribe((data): void => {
-            alert('Fournisseur modifier')
-          });
-      }
+
+
+  getUserById(): void {
+    this.userService.getById(this.userId).subscribe(data => {
+      this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id);
     })
   }
 
 
-  generateFormUpdate(): void {
-    this.route.params.subscribe(params => {
-      const fournisseurID = +params['id']
-      if (!isNaN(fournisseurID)) {
-        this.textButton = 'Modifier le cout'
-        this.titreForm = 'Modification du cout'
-        this.fournisseurService.getFournisseurById(fournisseurID).subscribe(data => {
-          data = {
-            id: data.id,
-            commercialName: data.commercialName,
-            remarque: data.remarque,
-            EntrepriseId:data.EntrepriseId
-          }
-          this.myFormGroup.patchValue(data);
-        });
-      }
-    })
 
+
+  createAndUpdate(): void {
+    if (this.initialData === null) {
+      this.fournisseurService.createFournisseur(this.myFormGroup.getRawValue()).subscribe();
+    } else {
+      this.fournisseurService.updateFournisseur(this.initialData.id,this.myFormGroup.getRawValue()).subscribe();
+    }
+  }
+
+
+  generateFormUpdate(): void {
+    this.titreForm = "Modification d'un fournisseur "
+    this.textForm = "La modification de ce du fournisseur va impacter les composants qui lui sont associés dans la blibliothèque de prix. Les devis déjà existants ne seront pas modifiés."
+    this.textButton = "Modifier ce fournisseur"
+    this.myFormGroup.patchValue(this.initialData)
+  }
+  closeDialog() {
+    // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
+    this.dialogRef.close();
   }
 
 }

@@ -50,7 +50,6 @@ export class FormCoutComponent implements OnInit {
   //Determine si c'est l'ajout d'un nouveau cout ou la modification d'un cout existant au click
   createAndUpdate(): void {
     if (this.initialData === null) {
-      this.cout = this.myFormGroup.getRawValue()
       this.coutService.create(this.myFormGroup.getRawValue()).subscribe();
     } else {
       this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe();
@@ -64,8 +63,6 @@ export class FormCoutComponent implements OnInit {
       this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id),
         this.getAllTypeCouts(data.Entreprises[0].id)
       this.getAllFournisseur(data.Entreprises[0].id)
-
-
     })
   }
 

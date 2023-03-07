@@ -6,6 +6,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
 import {User} from "../_models/users";
 import {UserService} from "../_service/user.service";
+import {Cout} from "../_models/cout";
+import {FormFournisseurComponent} from "../form-fournisseur/form-fournisseur.component";
 
 
 @Component({
@@ -60,4 +62,16 @@ export class ListFournisseurComponent implements OnInit {
       }
     });
   }
+
+  openDialogCreate(cout:Cout | null) {
+    this.dialog.open(FormFournisseurComponent, {
+      data: cout,
+      width: '70%',
+      height: '37%'
+    }).afterClosed().subscribe(async result => {
+      this.ngOnInit()
+
+    });
+  }
+
 }
