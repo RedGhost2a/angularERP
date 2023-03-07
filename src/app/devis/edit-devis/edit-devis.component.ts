@@ -55,7 +55,6 @@ export class EditDevisComponent implements OnInit {
     this.getAllClient()
     this.getAllEntreprise()
     this.createFormDevis()
-
   }
   createFormDevis(): void {
     this.myFormGroup = new FormGroup({

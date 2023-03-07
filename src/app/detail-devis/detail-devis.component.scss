@@ -1,17 +1,28 @@
-.title{
-  margin-left: 20px;
+.big-container{
+  background-color: #F0F4F8;
+  height: 90vh;
 }
-
 .container{
   display: flex;
   justify-content: space-around;
   //border: solid #feff43;
 }
+
+.title{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  background-color: #FFFFFF;;
+  color: #334E68;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
 .example-card{
   //border: solid red ;
   margin-top:5% ;
   width: 40%;
-  height: 230px;
+  height: 300px;
 }
 .subContainer{
   //border: solid #64E6EF;

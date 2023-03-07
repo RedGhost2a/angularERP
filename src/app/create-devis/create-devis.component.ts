@@ -602,8 +602,8 @@ export class CreateDevisComponent implements OnInit {
 
   deleteLot(id: number): void {
     this.lotService.deleteByID(id).subscribe(() => {
-      this.getAllLots()
       this.success("Lot effacer!")
+      this.getAllLots()
     })
   }
 

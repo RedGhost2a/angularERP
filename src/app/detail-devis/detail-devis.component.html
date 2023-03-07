@@ -1,73 +1,85 @@
-<div class="container" *ngIf="devis">
-  <mat-card class="example-card">
-    <mat-card-title-group class="group">
-      <div class="bouton">
-        <mat-card-title class="title">Details du devis</mat-card-title>
-      </div>
-      <div class="subContainer">
-      <div class="group1">
-      <div class="detailList">
-        <div class="detail">
-          <mat-card-subtitle class="subTitle">N° du devis</mat-card-subtitle>
-          <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
-          <p>{{devis.id}}</p>
+<div class="big-container">
+
+
+  <div class="container-header">
+    <h3 class="title"> Détail du devis</h3>
+    <button mat-flat-button class="btn">
+      <mat-icon [routerLink]="'/'">arrow_back</mat-icon>
+    </button>
+  </div>
+
+
+  <div class="container" *ngIf="devis">
+    <mat-card class="example-card">
+      <mat-card-title-group class="group">
+        <div class="bouton">
+          <mat-card-title class="title">Details du devis</mat-card-title>
         </div>
-      </div>
-        <div class="detailList">
-          <div class="detail">
-            <mat-card-subtitle class="subTitle">Client</mat-card-subtitle>
-            <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
-            <p>{{client.firstName + ' ' + client.lastName}}</p>
+        <div class="subContainer">
+          <div class="group1">
+            <div class="detailList">
+              <div class="detail">
+                <mat-card-subtitle class="subTitle">N° du devis</mat-card-subtitle>
+                <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
+                <p>{{devis.id}}</p>
+              </div>
+            </div>
+            <div class="detailList">
+              <div class="detail">
+                <mat-card-subtitle class="subTitle">Client</mat-card-subtitle>
+                <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
+                <p>{{client.firstName + ' ' + client.lastName}}</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-        <div class="group2">
-          <div class="detailList">
-            <div class="detail">
-              <mat-card-subtitle class="subTitle">Montant HT</mat-card-subtitle>
-              <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
-              <p>A FAIRE</p>
-            </div>
-            <div class="detail">
-              <mat-card-subtitle class="subTitle">Réferent</mat-card-subtitle>
-              <p>{{user.firstName + ' ' + user.lastName}}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </mat-card-title-group>
-  </mat-card>
-
-
-  <mat-card class="example-card">
-    <mat-card-title-group class="group">
-      <div class="bouton">
-        <mat-card-title class="title">Etat du devis</mat-card-title>
-      </div>
-      <div class="subContainer2">
-        <div class="group3">
-          <div class="detailList2">
-
-            <div class="detail">
-              <mat-card-subtitle class="subTitle">Status du devis</mat-card-subtitle>
-              <p>{{devis.status}}</p>
-            </div>
-            <div class="detail">
-              <mat-card-subtitle class="subTitle">Date du devis</mat-card-subtitle>
-              <p>{{devis.createdAt | date:'shortDate'}}</p>
-            </div>
-            <div class="detail">
-              <mat-card-subtitle class="subTitle">Durée de validité</mat-card-subtitle>
-              <p>90 jours</p>
+          <div class="group2">
+            <div class="detailList">
+              <div class="detail">
+                <mat-card-subtitle class="subTitle">Montant HT</mat-card-subtitle>
+                <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
+                <p>A FAIRE</p>
+              </div>
+              <div class="detail">
+                <mat-card-subtitle class="subTitle">Réferent</mat-card-subtitle>
+                <p>{{user.firstName + ' ' + user.lastName}}</p>
+              </div>
             </div>
           </div>
         </div>
-        <div class="btnUpdate">
-          <button mat-raised-button (click)="createLOT(devis.id)">Modifier le devis</button>
-<!--          <button mat-raised-button routerLink="/devisCreate/{{devis.id}}">Modifier le devis</button>-->
-        </div>
-      </div>
-    </mat-card-title-group>
-  </mat-card>
+      </mat-card-title-group>
+    </mat-card>
 
+
+    <mat-card class="example-card">
+      <mat-card-title-group class="group">
+        <div class="bouton">
+          <mat-card-title class="title">Etat du devis</mat-card-title>
+        </div>
+        <div class="subContainer2">
+          <div class="group3">
+            <div class="detailList2">
+
+              <div class="detail">
+                <mat-card-subtitle class="subTitle">Status du devis</mat-card-subtitle>
+                <p>{{devis.status}}</p>
+              </div>
+              <div class="detail">
+                <mat-card-subtitle class="subTitle">Date du devis</mat-card-subtitle>
+                <p>{{devis.createdAt | date:'shortDate'}}</p>
+              </div>
+              <div class="detail">
+                <mat-card-subtitle class="subTitle">Durée de validité</mat-card-subtitle>
+                <p>90 jours</p>
+              </div>
+            </div>
+          </div>
+          <div class="btnUpdate">
+            <button  mat-raised-button color="primary" (click)="createLOT(devis.id)">Modifier le devis</button>
+            <!--          <button mat-raised-button routerLink="/devisCreate/{{devis.id}}">Modifier le devis</button>-->
+          </div>
+        </div>
+      </mat-card-title-group>
+    </mat-card>
+
+  </div>
 </div>
