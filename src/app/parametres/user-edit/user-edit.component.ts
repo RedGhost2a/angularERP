@@ -60,6 +60,7 @@ export class UserEditComponent implements OnInit {
     "iron-man.png",
     "thanos.png",
     "thor-avengers.png",
+    "BiopuraGTP.jpg"
 
   ]
 

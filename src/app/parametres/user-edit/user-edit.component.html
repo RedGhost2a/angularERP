@@ -6,9 +6,10 @@
     <mat-form-field class="input-group">
       <mat-label class="mat-label">Avatar</mat-label>
       <mat-select formControlName="avatarUrl">
-        <mat-option *ngFor="let avatar of getAvatars()" value='{{avatar}}' class="avatar-item">
+        <mat-option style="flex-direction: column" *ngFor="let avatar of getAvatars()" value='{{avatar}}'
+                    class="avatar-item">
 
-          <div style="text-align: center">
+          <div style="text-align: center; width: 49px">
             <img src="./assets/avatar/{{avatar}}" alt="Avatar">
 
           </div>

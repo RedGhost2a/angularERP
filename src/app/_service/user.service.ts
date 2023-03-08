@@ -60,7 +60,7 @@ export class UserService {
     // remove user from local storage and set current user to null
     localStorage.removeItem('user');
     this.userSubject.next(null!);
-    this.router.navigate(['/home']);
+    this.router.navigate(['']);
   }
 
   register(user: User): Observable<any> {

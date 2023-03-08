@@ -10,7 +10,7 @@
 
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">account_circle</mat-icon>
+      <mat-icon class="example-tab-icon">settings</mat-icon>
       Paramètres
     </ng-template>
     <h1>Options </h1>
@@ -30,7 +30,7 @@
 
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">account_circle</mat-icon>
+      <mat-icon class="example-tab-icon">business</mat-icon>
       Entreprises
     </ng-template>
     <h1>Liste des entreprises </h1>
@@ -45,7 +45,7 @@
 
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">account_circle</mat-icon>
+      <mat-icon class="example-tab-icon">sticky_note_2</mat-icon>
       Gestion des tickets
     </ng-template>
     <h1>Liste des tickets inter-entreprises</h1>
@@ -81,36 +81,12 @@
 
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">account_circle</mat-icon>
+      <mat-icon class="example-tab-icon">error</mat-icon>
       Gestion des erreurs
     </ng-template>
     <h1>Gestion des erreurs inter-entreprises</h1>
     <div class="container">
-      <!--      <div *ngFor="let log of this.errorEntries">-->
-      <!--        <div class="flex-row">-->
-      <!--          <p class="margin-right">Id:-->
-      <!--            <mat-label style="color: blue">{{ log?.id }}</mat-label>-->
 
-      <!--          </p>-->
-      <!--          <p class="margin-right">Level: <strong>{{ log?.level }}</strong></p>-->
-      <!--          <p class="margin-right">Type d'erreur: <strong>{{ log?.name }}</strong></p>-->
-      <!--          <p class="margin-right">Le: <strong>{{ log.createdAt | date }}</strong></p>-->
-      <!--          <p class="margin-right">Statut: <strong>{{ log?.status }}</strong></p>-->
-      <!--          <p class="margin-right">Message: <strong>{{ log?.statusText }}</strong></p>-->
-      <!--          <p class="margin-right" *ngIf="log?.level==='5'">Url: <a [href]="log?.url"><strong>{{ log?.url }}</strong></a>,-->
-      <!--          </p>-->
-      <!--          <p class="margin-right">Utilisateur: <strong>{{ log.UserId }}</strong></p>-->
-      <!--          <p class="margin-right">Durée: <strong>{{ log.duration }} ms</strong></p>-->
-      <!--          <p class="margin-right">-->
-      <!--            <mat-icon color="primary" *ngIf="log?.level==='6'" matTooltip="{{ log?.method }}">info</mat-icon>-->
-      <!--          </p>-->
-      <!--          <p class="margin-right">-->
-      <!--            <mat-icon color="primary" *ngIf="log?.level==='5'" matTooltip="{{ log?.message }}">info</mat-icon>-->
-      <!--          </p>-->
-
-      <!--        </div>-->
-
-      <!--      </div>-->
 
       <mat-form-field>
         <mat-label>Recherche d'une erreur</mat-label>

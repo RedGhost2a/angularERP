@@ -21,6 +21,14 @@
       <div class="row"></div>
 
     </div>
+
+    <button style="margin-left: 10px" *ngIf="userService.userValue"
+            (click)="openDialog()" mat-mini-fab
+
+            aria-label="Example icon button with a bookmark icon">
+
+      <mat-icon>message</mat-icon>
+    </button>
   </mat-toolbar-row>
 
 </mat-toolbar>
@@ -42,48 +50,10 @@
             <p class="wrapper_avatar_txt_email"> {{userService.userValue.email}}</p>
           </div>
         </div>
-        <div class="wrapper_avatar_button">
-          <button mat-button class="wrapper_avatar_button_item" (click)="userService.logout()">
-            <mat-icon color="warn">logout</mat-icon>
-            <span>Sortie</span>
-          </button>
-          <button mat-button class="wrapper_avatar_button_item" [routerLink]="['/mon_profile']">
-            <mat-icon>account_circle</mat-icon>
-            <span>Profil</span>
-          </button>
-        </div>
       </div>
-
-
       <div *ngIf="userService.userValue ">
-        <ul class="sidebar-nav" *ngIf="userService.userValue.role==='Admin'">
+        <ul class="sidebar-nav" *ngIf="userService.userValue.role==='User'">
           <li class="sidebar-nav-item" *ngFor="let data of navData">
-            <a href="" class="sidebar-nav-link"  [routerLink]="[data.routeLink]">
-              <fa-icon class="sidebar-link-icon" [icon]="data.icon"></fa-icon>
-              <div (click)="toggleSubnav(data)">
-                <span class="sidebar-link-text">{{data.label}}</span>
-                <fa-icon *ngIf="data.children" class="sidebar-nav-toggle" [icon]="caretDown"></fa-icon>
-              </div>
-            </a>
-            <ul class="sidebar-subnav" *ngIf="data.children && data.visible">
-              <li class="sidebar-subnav-item" *ngFor="let child of data.children">
-                <a href="" class="sidebar-subnav-item-link" [routerLink]="[child.routeLink]">
-                  <!--                  <fa-icon class="sidebar-link-icon" [icon]="child.icon"></fa-icon>-->
-                  <span class="sidebar-link-text">{{child.label}}</span>
-                </a>
-              </li>
-            </ul>
-
-          </li>
-        </ul>
-
-
-      </div>
-
-
-      <div *ngIf="userService.userValue">
-        <ul class="sidebar-nav light" *ngIf="userService.userValue.role === 'Super Admin'">
-          <li class="sidebar-nav-item" *ngFor="let data of navDataSuperAdmin">
             <a href="" class="sidebar-nav-link" [routerLink]="[data.routeLink]">
               <fa-icon class="sidebar-link-icon" [icon]="data.icon"></fa-icon>
               <div (click)="toggleSubnav(data)">
@@ -99,18 +69,102 @@
                 </a>
               </li>
             </ul>
-          </li>
-        </ul>
-        <div style="margin:0 20px" *ngIf="userService.userValue.id">
-          <button
-            (click)="openDialog()" mat-fab
-            color="primary"
-            aria-label="Bouton d'information et de notes">
-            <mat-icon>bookmark</mat-icon>
-          </button>
-          <span style="margin-left: 5px">Contact/Notes</span>
 
-        </div>
+          </li>
+
+          <div>
+            <button mat-button class="wrapper_avatar_button_item" [routerLink]="['/aide']"
+            >
+              <mat-icon color="primary">help</mat-icon>
+              <span>Aide</span>
+            </button>
+            <button mat-button class="wrapper_avatar_button_item"
+                    (click)="userService.logout()">
+              <mat-icon color="warn">logout</mat-icon>
+              <span>Sortie</span>
+            </button>
+
+          </div>
+        </ul>
+
+
+      </div>
+
+
+      <div *ngIf="userService.userValue ">
+        <ul class="sidebar-nav" *ngIf="userService.userValue.role==='Admin'">
+          <li class="sidebar-nav-item" *ngFor="let data of navData">
+            <a href="" class="sidebar-nav-link" [routerLink]="[data.routeLink]">
+              <fa-icon class="sidebar-link-icon" [icon]="data.icon"></fa-icon>
+              <div (click)="toggleSubnav(data)">
+                <span class="sidebar-link-text">{{data.label}}</span>
+                <fa-icon *ngIf="data.children" class="sidebar-nav-toggle" [icon]="caretDown"></fa-icon>
+              </div>
+            </a>
+            <ul class="sidebar-subnav" *ngIf="data.children && data.visible">
+              <li class="sidebar-subnav-item" *ngFor="let child of data.children">
+                <a href="" class="sidebar-subnav-item-link" [routerLink]="[child.routeLink]">
+                  <!--                  <fa-icon class="sidebar-link-icon" [icon]="child.icon"></fa-icon>-->
+                  <span class="sidebar-link-text">{{child.label}}</span>
+                </a>
+              </li>
+            </ul>
+
+          </li>
+
+          <div>
+            <button mat-button class="wrapper_avatar_button_item" [routerLink]="['/aide']"
+            >
+              <mat-icon color="primary">help</mat-icon>
+              <span>Aide</span>
+            </button>
+            <button mat-button class="wrapper_avatar_button_item"
+                    (click)="userService.logout()">
+              <mat-icon color="warn">logout</mat-icon>
+              <span>Sortie</span>
+            </button>
+
+          </div>
+        </ul>
+
+
+      </div>
+
+
+      <div *ngIf="userService.userValue ">
+        <ul class="sidebar-nav" *ngIf="userService.userValue.role==='Super Admin'">
+          <li class="sidebar-nav-item" *ngFor="let data of navDataSuperAdmin">
+            <a href="" class="sidebar-nav-link" [routerLink]="[data.routeLink]">
+              <fa-icon class="sidebar-link-icon" [icon]="data.icon"></fa-icon>
+              <div (click)="toggleSubnav(data)">
+                <span class="sidebar-link-text">{{data.label}}</span>
+                <fa-icon *ngIf="data.children" class="sidebar-nav-toggle" [icon]="caretDown"></fa-icon>
+              </div>
+            </a>
+            <ul class="sidebar-subnav" *ngIf="data.children && data.visible">
+              <li class="sidebar-subnav-item" *ngFor="let child of data.children">
+                <a href="" class="sidebar-subnav-item-link" [routerLink]="[child.routeLink]">
+                  <span class="sidebar-link-text">{{child.label}}</span>
+                </a>
+              </li>
+            </ul>
+
+          </li>
+
+          <div>
+            <button mat-button class="wrapper_avatar_button_item" [routerLink]="['/aide']"
+            >
+              <mat-icon color="primary">help</mat-icon>
+              <span>Aide</span>
+            </button>
+            <button mat-button class="wrapper_avatar_button_item"
+                    (click)="userService.logout()">
+              <mat-icon color="warn">logout</mat-icon>
+              <span>Sortie</span>
+            </button>
+
+          </div>
+        </ul>
 
 
       </div>

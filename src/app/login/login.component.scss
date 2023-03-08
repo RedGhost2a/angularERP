@@ -7,6 +7,26 @@
 
 }
 
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.logotype {
+  display: flex;
+  flex-direction: column;
+  line-height: 6px;
+  justify-content: space-between;
+  /* padding: 32px; */
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  font-family: 'Michroma';
+  font-size: 20px;
+
+  color: rgb(8, 31, 44);
+}
+
 .card-login {
   background-color: #FFFFFF;
   margin-top: 20%;
@@ -18,20 +38,24 @@
   align-items: center;
   color: #334E68;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  :nth-child(4){
+
+  :nth-child(4) {
     margin-top: 8%;
   }
+
   //justify-content: space-around;
-  h1{
+  h1 {
     margin-top: 4%;
     font-size: 2.9rem;
     font-weight: 550;
   }
-  h4{
+
+  h4 {
     margin-top: 4%;
     font-size: 1.6rem;
 
   }
+
   p {
     margin-top: 4%;
     text-align: center;

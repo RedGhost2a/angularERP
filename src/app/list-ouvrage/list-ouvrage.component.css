@@ -8,14 +8,12 @@
   align-items: center;
   justify-content: center;
   height: 70px;
-  background-color: #FFFFFF;
   color: #334E68;
   font-size: 1.2rem;
   font-weight: 500;
 }
 
 .header {
-  margin-top: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,6 +36,7 @@ th, td {
 
 .mat-row:hover {
   background-color: #EEF9FF;
+  cursor: pointer;
 }
 
 button {

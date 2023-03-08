@@ -16,6 +16,15 @@
           <mat-label>Unité</mat-label>
           <input formControlName="unite" matInput placeholder="Ex: M2">
         </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Unité</mat-label>
+          <select formControlName="unite" matNativeControl required>
+            <option value="m">Mètres</option>
+            <option value="m²">Mètres carrés</option>
+            <option value="m³">Mètres cubes</option>
+            <option value="Kg">Kilogrammes</option>
+          </select>
+        </mat-form-field>
       </p>
       <p>
         <mat-form-field appearance="legacy">
@@ -72,7 +81,8 @@
     </div>
 
 
-    <button mat-raised-button [routerLink]="['/listFournisseur']" (click)="createAndUpdateFournisseur()">{{textButton}}</button>
+    <button mat-raised-button [routerLink]="['/listFournisseur']"
+            (click)="createAndUpdateFournisseur()">{{textButton}}</button>
   </div>
 </ng-container>
 
@@ -97,7 +107,8 @@
     </div>
 
 
-    <button mat-raised-button [routerLink]="['/listTypeCout']" (click)="createAndUpdateTypeCout()">{{textButton}}</button>
+    <button mat-raised-button [routerLink]="['/listTypeCout']"
+            (click)="createAndUpdateTypeCout()">{{textButton}}</button>
   </div>
 </ng-container>
 
@@ -159,7 +170,7 @@
       <!--        </mat-form-field>-->
       <!--      </p>-->
     </div>
-    <button mat-raised-button  [routerLink]="['/listOuvrage']"(click)="createAndUpdateOuvrage()">{{textButton}}</button>
+    <button mat-raised-button [routerLink]="['/listOuvrage']" (click)="createAndUpdateOuvrage()">{{textButton}}</button>
     <!--    <button routerLink="/listOuvrage" mat-raised-button (click)="createAndUpdateOuvrage()">{{textButton}}</button>-->
   </div>
 

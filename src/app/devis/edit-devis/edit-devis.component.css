@@ -1,20 +1,27 @@
-.mat-form-field {
-  padding: 10px;
-}
-
 .container {
-  position: relative;
-  top: 20%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  color: #334E68;
+}
+.container h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.container p {
+  font-size: 1rem;
 }
 
-.form {
-  margin-top: 60px;
+.inputs {
+  display: flex;
+  justify-content: space-between;
+  color: #334E68;
+  margin-top: 2%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2%;
 }
 
 /*# sourceMappingURL=edit-devis.component.css.map */

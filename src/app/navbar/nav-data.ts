@@ -42,13 +42,13 @@ export const navbarData = [
       {
         routeLink: '/listOuvrage',
         icon: faBook,
-        label: "Bibliothèque d'ouvrages",
+        label: "Ouvrages",
         visible: true
       },
       {
         routeLink: '/listCout',
         icon: faBook,
-        label: "Bibliothèque de couts",
+        label: "Coûts",
         visible: true
       }
     ],

@@ -31,6 +31,7 @@ import {CreateDevisComponent} from "./create-devis/create-devis.component";
 import {SousDetailPrixComponent} from "./sous-detail-prix/sous-detail-prix.component";
 import {LogsComponent} from "./logs/logs.component";
 import {FormOuvrageComponent} from "./form-ouvrage/form-ouvrage.component";
+import {AideComponent} from "./aide/aide.component";
 
 const routes: Routes = [
   {
@@ -146,9 +147,10 @@ const routes: Routes = [
     data: {title: 'Administration',}
   },
   {path: 'login', component: LoginComponent},
+  {path: 'aide', component: AideComponent},
 
 
-//  {path: '**', redirectTo: ''}
+  // {path: '**', redirectTo: ''}
 
 
 ];

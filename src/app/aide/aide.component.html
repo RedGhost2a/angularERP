@@ -1,0 +1,72 @@
+<div class="container">
+  <h1 style="text-align: center">Aides</h1>
+
+  <mat-accordion>
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Installation de Tailscale
+        </mat-panel-title>
+
+      </mat-expansion-panel-header>
+      <h5 class="title">Qu'est ce que Tailscale?</h5>
+      <p>Tailscale est VPN qui est principalement un moyen de créer un réseau privé virtuel sur lequel peut se rejoindre
+        l’ensemble de vos appareils (smartphones, ordinateurs, tablettes…etc.) pour communiquer et partager des fichiers
+        au travers d’Internet en toute confidentialité, comme s’ils étaient sur un réseau local.
+      </p>
+      <p>Dans notre cas, il créera un "tunnel" de connexion securisé entre vos ordinateurs et le serveur ou
+        l'application d'études de prix est héberger.</p>
+      <h5 class="title">Instation Tailscale?</h5>
+      <p>Tailscale est disponible sur tout les principaux OS (systéme d'exploitation). Ce guide vous ménera pas à pas
+        depuis
+        l'instalation de cette application jusqu'à la connexion à votre application d'études de prix.
+      </p>
+      <ul>
+        <li>1)Demander à votre administrateur l'ajout de votre profil nécessaire pour sécuriser votre
+          connexion.
+        </li>
+        <li>2)Télécharger l'application <a href="https://tailscale.com/download/">ici.</a>
+          <p>* Dans le cas ou vous auriez fournit votre adresse mail à votre administrateur, vous recevrez également un
+            lien d'invitation dans votre boite mail.</p>
+        </li>
+        <li>3)Installer le logiciel sur le support qui vous servira à vous connecter à l'application GRAZIANI Etude de
+          prix.
+        </li>
+        <li>4)Connecter vous a l'application à l'aide de l'adresse mail que vous avez fourni à votre administrateur
+          web.
+          <p>*Pour vous connecter vous devrez recevoir une confirmation par votre administateur de l'ajout de votre
+            profil a Tailscale pour
+            valider votre support de connexion.</p>
+        </li>
+      </ul>
+
+
+    </mat-expansion-panel>
+    <mat-expansion-panel (opened)="panelOpenState = true"
+                         (closed)="panelOpenState = false">
+    </mat-expansion-panel>
+  </mat-accordion>
+
+
+  <mat-accordion>
+    <mat-expansion-panel hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Connexion au site d'études de prix
+        </mat-panel-title>
+
+      </mat-expansion-panel-header>
+      <p>Une fois l'installation Tailscale terminer. Ouvrez le logiciel, vous y verrez une adresse IP( ex:
+        100.85.96.112).
+      </p>
+      <p>Il vous suffira ensuite de copier cette IP qui correspond à l'adresse de votre site et de rajouter le port 800.
+        Vous aurez dans votre barre de votre navigateur une adresse comme suit: http://100.85.96.112:800/</p>
+      <p>Vous voila desormais connecter a votre application! </p>
+    </mat-expansion-panel>
+    <mat-expansion-panel (opened)="panelOpenState = true"
+                         (closed)="panelOpenState = false">
+    </mat-expansion-panel>
+  </mat-accordion>
+
+
+</div>

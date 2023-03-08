@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {OuvrageService} from "../_service/ouvrage.service";
-import {ActivatedRoute} from "@angular/router";
 import {User} from "../_models/users";
 import {UserService} from "../_service/user.service";
 import {MatDialogRef} from "@angular/material/dialog";
@@ -30,6 +29,7 @@ export class FormOuvrageComponent implements OnInit {
   createOuvrage(): void {
     this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe()
   }
+
   closeDialog() {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
     this.dialogRef.close();
@@ -41,10 +41,10 @@ export class FormOuvrageComponent implements OnInit {
       designation: new FormControl(),
       benefice: new FormControl({value: 10, disabled: false}),
       aleas: new FormControl({value: 5, disabled: false}),
-      unite: new FormControl(),
-      ratio: new FormControl(),
+      unite: new FormControl(''),
+      ratio: new FormControl(''),
       uRatio: new FormControl(),
-      EntrepriseId: new FormControl(),
+      EntrepriseId: new FormControl(''),
     });
   }
 
