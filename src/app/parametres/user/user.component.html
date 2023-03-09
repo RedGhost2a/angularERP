@@ -1,240 +1,237 @@
-<mat-tab-group mat-stretch-tabs>
-  <!--  <mat-tab>-->
-  <!--    <ng-template mat-tab-label>-->
-  <!--      <button mat-stroked-button>-->
-  <!--        <mat-icon [routerLink]="'/parametre/'">arrow_back</mat-icon>-->
-  <!--      </button>-->
-  <!--    </ng-template>-->
-  <!--  </mat-tab>-->
-
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">account_circle</mat-icon>
-      Mon compte
-    </ng-template>
-    <h1>Mon Profile</h1>
-    <div class="wrapper">
-
-      <div>
-        <mat-card-title>Infos</mat-card-title>
-        <mat-card class="user card">
-          <mat-card-header class="user_header" *ngIf="curentUser">
-            <mat-card-title>{{curentUser.title|uppercase}}</mat-card-title>
-            <mat-card-subtitle>{{user.firstName}} {{user.lastName}}</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content class="content">
-            <p>
-              E-mail: {{user.email}}
-            </p>
-            <p>
-              Rôle: {{user.role}}
-            </p>
-          </mat-card-content>
-        </mat-card>
-      </div>
+<div class="big-container">
 
 
-      <div>
-        <mat-card-title>Avatar</mat-card-title>
-        <mat-card class="avatar card">
-          <img class="images" src="./assets/avatar96px/{{user.avatarUrl}}" alt="Photo of a user">
-          <button class="btn" mat-stroked-button [routerLink]="['/users', user.id]">
-            <mat-icon>create</mat-icon>
-            MODIFIER
-          </button>
-        </mat-card>
-      </div>
-
-      <div>
-        <mat-card-title>Adresse</mat-card-title>
-        <mat-card class="user card">
-          <mat-card-content class="content" *ngIf="curentUser">
-            <p>
-              Adresse: {{curentUser.Adresse.adresses|uppercase}}
-            </p>
-            <p>
-              Code postale: {{curentUser.Adresse.zipcode|number}}
-            </p>
-            <p>
-              Ville: {{curentUser.Adresse.city|uppercase}}
-            </p>
-            <p>
-              Pays: {{curentUser.Adresse.country|uppercase}}
-            </p>
-          </mat-card-content>
-        </mat-card>
-      </div>
+  <h3 class="title">Mon Profile</h3>
+  <mat-tab-group mat-stretch-tabs>
 
 
-      <!--      <div>-->
-      <!--        <mat-card-title>Actions</mat-card-title>-->
-
-      <!--        <mat-card class="user">-->
-      <!--          <mat-card-actions>-->
-      <!--            <button class="btn" mat-stroked-button [routerLink]="['/users', user.id]">-->
-      <!--              <mat-icon>create</mat-icon>-->
-      <!--              MODIFIER-->
-      <!--            </button>-->
-      <!--          </mat-card-actions>-->
-      <!--        </mat-card>-->
-      <!--      </div>-->
-    </div>
-
-  </mat-tab>
-
-
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">inventory</mat-icon>
-      Mes Devis
-    </ng-template>
-    <div>
-      <h1>Liste des devis</h1>
-      <mat-card class="devis" *ngFor="let userDevis of devis.Devis">
-        <div>
-          <h1 style="width: 20%">{{userDevis.id|number}} </h1>
-        </div>
-        <mat-card-header class="devis_header">
-          <mat-card-title>{{userDevis.name|uppercase}}</mat-card-title>
-          <mat-card-subtitle> {{userDevis.status}}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content style="width: 50%">
-          <p class="devis-row">Intitulé:  {{userDevis.name|uppercase}}</p>
-          <p class="devis-row">Le: {{userDevis.createdAt |date}}</p>
-          <!--          <p class="devis-row">Le: {{userDevis.Client.firstName |date}}</p>-->
-        </mat-card-content>
-        <mat-icon class="icon" [routerLink]="['/devis', userDevis.id]">more_vert</mat-icon>
-      </mat-card>
-    </div>
-
-
-  </mat-tab>
-
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">description</mat-icon>
-      Mes commentaires
-    </ng-template>
-
-
-    <div>
-      <h1>Liste de mes commentaires</h1>
-      <mat-card class="devis" *ngFor="let note of this.notes;" [style.background-color]="getColor(note)">
-        <div>
-          <h1 style="width: 20%">{{note.id|number}} </h1>
-        </div>
-
-        <mat-card-header class="devis_header" style="width: 50%">
-          <mat-card-title>{{note.title|uppercase}}</mat-card-title>
-          <mat-card-subtitle> {{note.typeError}} {{note?.optionsTypeError}}</mat-card-subtitle>
-          <mat-card-subtitle>Le: {{note.createdAt |date}}</mat-card-subtitle>
-        </mat-card-header>
-
-        <mat-card-content style="width: 50%">
-          <p class="devis-row">Sujet:  {{note.text|uppercase}}</p>
-          <mat-card-subtitle style="color: blue" *ngIf="note.resolution">Problème résolu! <br> Vous pouvez supprimer
-          </mat-card-subtitle>
-        </mat-card-content>
-        <mat-icon class="icon" style="color: blue" *ngIf="note.resolution" (click)="deleteItem(note.id)">delete
-        </mat-icon>
-        <mat-icon class="icon" style="color: blue" *ngIf="note.typeError==='Je souhaite créer une note !'"
-                  (click)="deleteItem(note.id)">delete
-        </mat-icon>
-
-      </mat-card>
-
-
-    </div>
-
-
-    <mat-card class="post-it">
-      <mat-card-content *ngFor="let note of this.notes;">
-        <!-- Your content goes here -->
-        <ul *ngIf="note.typeError === 'Je souhaite créer une note !'">
-          <li>
-
-            {{note.title|uppercase}} {{note.text|uppercase}}
-          </li>
-
-        </ul>
-      </mat-card-content>
-    </mat-card>
-
-
-  </mat-tab>
-
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">apartment</mat-icon>
-      Mon entreprise
-    </ng-template>
-    <div>
-      <h1></h1>
-      <mat-card class="entreprise" *ngIf="userEntreprise">
-        <img style="    width: 300px;
-    height: 170px;" mat-card-md-image src="./assets/images/GrazianiGTP.jpg"
-             alt="Photo of a company">
-        <div>
-
-          <mat-card-title>{{userEntreprise.denomination|uppercase}}</mat-card-title>
-          <mat-card-subtitle>{{userEntreprise.formeJuridique}}</mat-card-subtitle>
-        </div>
-
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">account_circle</mat-icon>
+        Mon compte
+      </ng-template>
+      <div class="wrapper">
 
         <div>
           <mat-card-title>Infos</mat-card-title>
-          <p>
-            Capital: {{userEntreprise.capital}}
-          </p>
-          <p>
-            Naf Code: {{userEntreprise.nafCode}}
-          </p>
-          <p>
-            Rcs: {{userEntreprise.rcs}}
-          </p>
-          <p>
-            Siret: {{userEntreprise.siret}}
-          </p>
-          <p>
-            Tva: {{userEntreprise.tvaNumber}}
-          </p>
+          <mat-card class="user card">
+            <mat-card-header class="user_header" *ngIf="curentUser">
+              <mat-card-title>{{curentUser.title|uppercase}}</mat-card-title>
+              <mat-card-subtitle>{{user.firstName}} {{user.lastName}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content class="content">
+              <p>
+                E-mail: {{user.email}}
+              </p>
+              <p>
+                Rôle: {{user.role}}
+              </p>
+            </mat-card-content>
+          </mat-card>
         </div>
 
+
+        <div>
+          <mat-card-title>Avatar</mat-card-title>
+          <mat-card class="avatar card">
+            <img class="images" src="./assets/avatar96px/{{user.avatarUrl}}" alt="Photo of a user">
+            <button class="btn" mat-stroked-button [routerLink]="['/users', user.id]">
+              <mat-icon>create</mat-icon>
+              MODIFIER
+            </button>
+          </mat-card>
+        </div>
 
         <div>
           <mat-card-title>Adresse</mat-card-title>
-          <p>
-            Adresse: {{userEntreprise.Adresse.adresses|uppercase}}
-          </p>
-          <p>
-            Code postal: {{userEntreprise.Adresse.zipcode}}
-          </p>
-          <p>
-            Ville: {{userEntreprise.Adresse.city|uppercase}}
-          </p>
-          <p>
-            Pays: {{userEntreprise.Adresse.country|uppercase}}
-          </p>
-        </div>
-
-        <div>
-          <mat-card-title>Contact</mat-card-title>
-          <p>
-            E-mail: {{userEntreprise.email}}
-          </p>
-          <p>
-            Téléphone: {{userEntreprise.phoneNumber}}
-          </p>
+          <mat-card class="user card">
+            <mat-card-content class="content" *ngIf="curentUser">
+              <p>
+                Adresse: {{curentUser.Adresse.adresses|uppercase}}
+              </p>
+              <p>
+                Code postale: {{curentUser.Adresse.zipcode|number}}
+              </p>
+              <p>
+                Ville: {{curentUser.Adresse.city|uppercase}}
+              </p>
+              <p>
+                Pays: {{curentUser.Adresse.country|uppercase}}
+              </p>
+            </mat-card-content>
+          </mat-card>
         </div>
 
 
+        <!--      <div>-->
+        <!--        <mat-card-title>Actions</mat-card-title>-->
+
+        <!--        <mat-card class="user">-->
+        <!--          <mat-card-actions>-->
+        <!--            <button class="btn" mat-stroked-button [routerLink]="['/users', user.id]">-->
+        <!--              <mat-icon>create</mat-icon>-->
+        <!--              MODIFIER-->
+        <!--            </button>-->
+        <!--          </mat-card-actions>-->
+        <!--        </mat-card>-->
+        <!--      </div>-->
+      </div>
+
+    </mat-tab>
+
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">inventory</mat-icon>
+        Mes Devis
+      </ng-template>
+      <div>
+        <h1>Liste des devis</h1>
+        <mat-card class="devis" *ngFor="let userDevis of devis.Devis">
+          <div>
+            <h1 style="width: 20%">{{userDevis.id|number}} </h1>
+          </div>
+          <mat-card-header class="devis_header">
+            <mat-card-title>{{userDevis.name|uppercase}}</mat-card-title>
+            <mat-card-subtitle> {{userDevis.status}}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content style="width: 50%">
+            <p class="devis-row">Intitulé:  {{userDevis.name|uppercase}}</p>
+            <p class="devis-row">Le: {{userDevis.createdAt |date}}</p>
+            <!--          <p class="devis-row">Le: {{userDevis.Client.firstName |date}}</p>-->
+          </mat-card-content>
+          <mat-icon class="icon" [routerLink]="['/devis', userDevis.id]">more_vert</mat-icon>
+        </mat-card>
+      </div>
+
+
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">description</mat-icon>
+        Mes commentaires
+      </ng-template>
+
+
+      <div>
+        <h1>Liste de mes commentaires</h1>
+        <mat-card class="devis" *ngFor="let note of this.notes;" [style.background-color]="getColor(note)">
+          <div>
+            <h1 style="width: 20%">{{note.id|number}} </h1>
+          </div>
+
+          <mat-card-header class="devis_header" style="width: 50%">
+            <mat-card-title>{{note.title|uppercase}}</mat-card-title>
+            <mat-card-subtitle> {{note.typeError}} {{note?.optionsTypeError}}</mat-card-subtitle>
+            <mat-card-subtitle>Le: {{note.createdAt |date}}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content style="width: 50%">
+            <p class="devis-row">Sujet:  {{note.text|uppercase}}</p>
+            <mat-card-subtitle style="color: blue" *ngIf="note.resolution">Problème résolu! <br> Vous pouvez supprimer
+            </mat-card-subtitle>
+          </mat-card-content>
+          <mat-icon class="icon" style="color: blue" *ngIf="note.resolution" (click)="deleteItem(note.id)">delete
+          </mat-icon>
+          <mat-icon class="icon" style="color: blue" *ngIf="note.typeError==='Je souhaite créer une note !'"
+                    (click)="deleteItem(note.id)">delete
+          </mat-icon>
+
+        </mat-card>
+
+
+      </div>
+
+
+      <mat-card class="post-it">
+        <mat-card-content *ngFor="let note of this.notes;">
+          <!-- Your content goes here -->
+          <ul *ngIf="note.typeError === 'Je souhaite créer une note !'">
+            <li>
+
+              {{note.title|uppercase}} {{note.text|uppercase}}
+            </li>
+
+          </ul>
+        </mat-card-content>
       </mat-card>
-    </div>
-  </mat-tab>
 
 
-</mat-tab-group>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">apartment</mat-icon>
+        Mon entreprise
+      </ng-template>
+      <div>
+        <h1></h1>
+        <mat-card class="entreprise" *ngIf="userEntreprise">
+          <img style="    width: 300px;
+    height: 170px;" mat-card-md-image src="./assets/images/GrazianiGTP.jpg"
+               alt="Photo of a company">
+          <div>
+
+            <mat-card-title>{{userEntreprise.denomination|uppercase}}</mat-card-title>
+            <mat-card-subtitle>{{userEntreprise.formeJuridique}}</mat-card-subtitle>
+          </div>
 
 
+          <div>
+            <mat-card-title>Infos</mat-card-title>
+            <p>
+              Capital: {{userEntreprise.capital}}
+            </p>
+            <p>
+              Naf Code: {{userEntreprise.nafCode}}
+            </p>
+            <p>
+              Rcs: {{userEntreprise.rcs}}
+            </p>
+            <p>
+              Siret: {{userEntreprise.siret}}
+            </p>
+            <p>
+              Tva: {{userEntreprise.tvaNumber}}
+            </p>
+          </div>
 
+
+          <div>
+            <mat-card-title>Adresse</mat-card-title>
+            <p>
+              Adresse: {{userEntreprise.Adresse.adresses|uppercase}}
+            </p>
+            <p>
+              Code postal: {{userEntreprise.Adresse.zipcode}}
+            </p>
+            <p>
+              Ville: {{userEntreprise.Adresse.city|uppercase}}
+            </p>
+            <p>
+              Pays: {{userEntreprise.Adresse.country|uppercase}}
+            </p>
+          </div>
+
+          <div>
+            <mat-card-title>Contact</mat-card-title>
+            <p>
+              E-mail: {{userEntreprise.email}}
+            </p>
+            <p>
+              Téléphone: {{userEntreprise.phoneNumber}}
+            </p>
+          </div>
+
+
+        </mat-card>
+      </div>
+    </mat-tab>
+
+
+  </mat-tab-group>
+
+
+</div>
 

@@ -7,6 +7,9 @@
       <mat-form-field appearance="legacy">
         <mat-label>Nom</mat-label>
         <input formControlName="name" matInput placeholder="Ex: Devis toiture">
+        <mat-error *ngIf="this.myFormGroup.get('name')?.hasError('required')">
+          Vous devez choisir un nom.
+        </mat-error>
         <!--      <div *ngIf=" f['name'].invalid && f['name'].touched  " class="invalid-feedback">-->
         <!--        <div *ngIf="f['name'].errors?.['required']">L'intitulé du devis est requis !</div>-->
         <!--        <div *ngIf="f['name'].errors?.['minlength']">L'intitulé du devis doit faire 3 caractéres au min !</div>-->
@@ -19,6 +22,9 @@
           <mat-option [value]=+client.id
                       *ngFor="let client of listClient">{{client.firstName}} {{client.lastName}}</mat-option>
         </mat-select>
+        <mat-error *ngIf="this.myFormGroup.get('ClientId')?.hasError('required')">
+          Vous devez choisir un client.
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="legacy">
@@ -27,6 +33,9 @@
           <mat-option [value]=+entreprise.id
                       *ngFor="let entreprise of listEntreprise">{{entreprise.commercialName}}</mat-option>
         </mat-select>
+        <mat-error *ngIf="this.myFormGroup.get('EntrepriseId')?.hasError('required')">
+          Vous devez choisir une entreprise.
+        </mat-error>
       </mat-form-field>
 
 
@@ -35,14 +44,18 @@
         <select formControlName="status" matNativeControl required>
           <option value="Initialisation">Initialisation</option>
           <option value="Extraction">Bon pour extraction</option>
+          <option value="Facturation">Facturation</option>
           <option value="Cloturer">Cloturer</option>
         </select>
+        <mat-error *ngIf="this.myFormGroup.get('status')?.hasError('required')">
+          Vous devez choisir un status.
+        </mat-error>
       </mat-form-field>
-      </div>
-      <div class="buttons">
+    </div>
+    <div class="buttons">
 
-        <button mat-stroked-button color="primary" routerLink="/devis">Retour</button>
-        <button mat-raised-button color="primary" (click)="createDevis();closeDialog()">{{textButton}}</button>
+      <button mat-stroked-button color="primary" (click)="closeDialog()">Retour</button>
+      <button mat-raised-button color="primary" (click)="createDevis()">{{textButton}}</button>
     </div>
   </div>
 </ng-container>

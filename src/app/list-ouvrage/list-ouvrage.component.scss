@@ -1,7 +1,7 @@
 .big-container {
   background-color: #F0F4F8;
   //width: 100vw;
-  height: 100vh;
+  height: 100%;
 }
 
 .title {
@@ -29,6 +29,7 @@
     margin-right: 5.5%;
   }
 }
+
 .mat-header-cell {
   font-size: 0.9rem;
 }
@@ -37,13 +38,16 @@ th, td {
   color: #334E68;
   padding-right: 0px;
 }
-tr:first-child{
+
+tr:first-child {
 
 }
-.mat-row:hover{
-    background-color: #EEF9FF;
-    cursor: pointer;
+
+.mat-row:hover {
+  background-color: #EEF9FF;
+  cursor: pointer;
 }
+
 //tr:hover {
 //  :not(:first-child){
 //

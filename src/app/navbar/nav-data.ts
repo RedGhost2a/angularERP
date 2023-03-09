@@ -48,7 +48,7 @@ export const navbarData = [
       {
         routeLink: '/listCout',
         icon: faBook,
-        label: "Coûts",
+        label: "Composants",
         visible: true
       }
     ],

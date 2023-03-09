@@ -1,5 +1,5 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
 import {EntrepriseService} from "../../_service/entreprise.service";
@@ -21,7 +21,7 @@ export class EntrepriseEditComponent implements OnInit {
     this.myFormGroup = this.formBuilder.group({
       id: "",
       commercialName: "",
-      denomination: "",
+      denomination: ["", Validators.required],
       formeJuridique: "",
       capital: "",
       rcs: "",
@@ -49,19 +49,24 @@ export class EntrepriseEditComponent implements OnInit {
   createAndUpdate(): void {
 
     this.route.params.subscribe(params => {
+      this.myFormGroup.markAllAsTouched();
+      if (this.myFormGroup.invalid) {
+        // Form is invalid, show error message
+        this.toastr.error("Le formulaire est invalide.", "Erreur !");
+        return;
+      }
       const entrepriseID = +params['id']
       console.log(entrepriseID)
       if (isNaN(entrepriseID)) {
         this.entepriseService.register(this.myFormGroup.getRawValue()).subscribe(
           (): void => {
 
-            if (this.myFormGroup.valid) {
-              this.success("Nouvelle entreprise créer !")
-              this.router.navigate(['/entreprises']);
-            }
+            this.success("Nouvelle entreprise créer !")
+            this.router.navigate(['/admin']);
 
           }, error => {
-            this.warning("Complètes tout les champs !")
+            console.log(error)
+            this.warning("Complète tout les champs !")
 
           }
         )

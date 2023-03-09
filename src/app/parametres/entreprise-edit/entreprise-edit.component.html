@@ -12,6 +12,9 @@
         <mat-form-field>
           <mat-label> Dénomination</mat-label>
           <input matInput placeholder="Entrer la dénomination" formControlName="denomination">
+          <mat-error *ngIf="myFormGroup.get('denomination')?.hasError('required')">
+            Vous devez choisir une dénomination au minimum.
+          </mat-error>
         </mat-form-field>
         <mat-form-field>
           <mat-label> Forme Juridique / Capital</mat-label>

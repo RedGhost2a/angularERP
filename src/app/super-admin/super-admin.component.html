@@ -1,272 +1,269 @@
-<!--<div class="header">-->
+<div class="big-container">
 
-<!--  <button mat-flat-button>-->
-<!--    <mat-icon [routerLink]="'/'">arrow_back</mat-icon>-->
-<!--  </button>-->
-<!--</div>-->
-
-<mat-tab-group mat-stretch-tabs>
+  <h1 class="title">Options </h1>
+  <mat-tab-group mat-stretch-tabs>
 
 
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">settings</mat-icon>
-      Paramètres
-    </ng-template>
-    <h1>Options </h1>
-    <div class="wrapper">
-      <button mat-stroked-button [routerLink]="'/entreprises/new'">Ajouter une entreprise
-        <!--        <mat-icon>create</mat-icon>-->
-      </button>
-      <button mat-stroked-button [routerLink]="'/devis/'">Liste des devis
-        <!--        <mat-icon>list</mat-icon>-->
-      </button>
-      <button mat-stroked-button [routerLink]="'/users/new'">Ajouter un utilisateur
-        <!--        <mat-icon>create</mat-icon>-->
-      </button>
-    </div>
-  </mat-tab>
-
-
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">business</mat-icon>
-      Entreprises
-    </ng-template>
-    <h1>Liste des entreprises </h1>
-    <div class="wrapper">
-      <div *ngFor="let entreprise of listEntreprise index as i"
-           [routerLink]="['/admin/entreprise/'+ entreprise.id]">
-        <button mat-stroked-button>{{entreprise.commercialName|uppercase}}</button>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">settings</mat-icon>
+        Paramètres
+      </ng-template>
+      <div class="wrapper">
+        <button mat-stroked-button [routerLink]="'/entreprises/new'">Ajouter une entreprise
+          <!--        <mat-icon>create</mat-icon>-->
+        </button>
+        <button mat-stroked-button [routerLink]="'/devis/'">Liste des devis
+          <!--        <mat-icon>list</mat-icon>-->
+        </button>
+        <button mat-stroked-button [routerLink]="'/users/new'">Ajouter un utilisateur
+          <!--        <mat-icon>create</mat-icon>-->
+        </button>
       </div>
-    </div>
-  </mat-tab>
+    </mat-tab>
 
 
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">sticky_note_2</mat-icon>
-      Gestion des tickets
-    </ng-template>
-    <h1>Liste des tickets inter-entreprises</h1>
-    <mat-accordion>
-      <mat-expansion-panel *ngFor="let note of this.notes;" [expanded]="false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{note.id|number}}
-          </mat-panel-title>
-          <mat-panel-title>{{note.title|uppercase}}</mat-panel-title>
-          <mat-panel-description>{{note.typeError}} {{note?.optionsTypeError}}</mat-panel-description>
-          <mat-panel-description>Le: {{note.createdAt |date:'dd/MM/yyyy HH:mm:ss'}}</mat-panel-description>
-          <mat-panel-description *ngIf="note.errorLogs && note.errorLogs.length > 0" matBadge="!"
-                                 matBadgePosition="before"
-                                 matBadgeColor="accent" matBadgeOverlap="false">Log
-
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <mat-card-content>
-          <p class="devis-row">Sujet:  {{note.text|uppercase}}</p>
-          <div *ngFor="let log of note.errorLogs;">
-            <p class="devis-row">{{log.message}}</p>
-          </div>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-stroked-button color="danger" (click)="deleteItem(note.id)">Supprimer</button>
-          <mat-checkbox [(ngModel)]="note.resolution" (change)="onNoteResolutionChanged(note)">Résolu !</mat-checkbox>
-        </mat-card-actions>
-      </mat-expansion-panel>
-    </mat-accordion>
-
-  </mat-tab>
-
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">error</mat-icon>
-      Gestion des erreurs
-    </ng-template>
-    <h1>Gestion des erreurs inter-entreprises</h1>
-    <div class="container">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">business</mat-icon>
+        Entreprises
+      </ng-template>
+      <h3 class="title">Liste des entreprises </h3>
+      <div class="wrapper">
+        <div *ngFor="let entreprise of listEntreprise index as i"
+             [routerLink]="['/admin/entreprise/'+ entreprise.id]">
+          <button mat-stroked-button>{{entreprise.commercialName|uppercase}}</button>
+        </div>
+      </div>
+    </mat-tab>
 
 
-      <mat-form-field>
-        <mat-label>Recherche d'une erreur</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ge..." #input>
-      </mat-form-field>
-      <mat-paginator #paginator2 style="width: 100%" [pageSize]="10" [pageSizeOptions]="[5, 10, 20,100]"
-                     showFirstLastButtons
-                     aria-label="Selectionner page de logs">
-      </mat-paginator>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">sticky_note_2</mat-icon>
+        Gestion des tickets
+      </ng-template>
+      <h3 class="title">Liste des tickets inter-entreprises</h3>
+      
+      <mat-accordion>
+        <mat-expansion-panel *ngFor="let note of this.notes;" [expanded]="false">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{note.id|number}}
+            </mat-panel-title>
+            <mat-panel-title>{{note.title|uppercase}}</mat-panel-title>
+            <mat-panel-description>{{note.typeError}} {{note?.optionsTypeError}}</mat-panel-description>
+            <mat-panel-description>Le: {{note.createdAt |date:'dd/MM/yyyy HH:mm:ss'}}</mat-panel-description>
+            <mat-panel-description *ngIf="note.errorLogs && note.errorLogs.length > 0" matBadge="!"
+                                   matBadgePosition="before"
+                                   matBadgeColor="accent" matBadgeOverlap="false">Log
 
-      <table #table mat-table [dataSource]="dataSource2"
-             style="width: 100%;text-align: justify-all">
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-card-content>
+            <p class="devis-row">Sujet:  {{note.text|uppercase}}</p>
+            <div *ngFor="let log of note.errorLogs;">
+              <p class="devis-row">{{log.message}}</p>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-stroked-button color="danger" (click)="deleteItem(note.id)">Supprimer</button>
+            <mat-checkbox [(ngModel)]="note.resolution" (change)="onNoteResolutionChanged(note)">Résolu !</mat-checkbox>
+          </mat-card-actions>
+        </mat-expansion-panel>
+      </mat-accordion>
 
-        <ng-container matColumnDef="Id">
-          <th mat-header-cell *matHeaderCellDef> No.</th>
-          <td style="color: blue" mat-cell *matCellDef="let element"> {{element.id}} </td>
-        </ng-container>
+    </mat-tab>
 
-        <ng-container matColumnDef="Level">
-          <th mat-header-cell *matHeaderCellDef> Level</th>
-          <td mat-cell *matCellDef="let element"> {{element.level}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Type d'erreur">
-          <th mat-header-cell *matHeaderCellDef> Nom</th>
-          <td mat-cell [ngStyle]="{'color': methodColors[element.name]}"
-              *matCellDef="let element"> {{element.name}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Date">
-          <th mat-header-cell *matHeaderCellDef> Date</th>
-          <td mat-cell *matCellDef="let element"> {{element.createdAt | date:'dd/MM/yyyy HH:mm:ss'}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Statut">
-          <th mat-header-cell *matHeaderCellDef> Statut</th>
-          <td mat-cell *matCellDef="let element"> {{element.status}}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="Message">
-          <th mat-header-cell *matHeaderCellDef> Message</th>
-          <td mat-cell *matCellDef="let element"> {{element.statusText}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Url">
-          <th mat-header-cell *matHeaderCellDef> Url</th>
-          <td mat-cell *matCellDef="let element">
-            <span *ngIf="element.level === '5'"><a [href]="element?.url">{{ element.url }}</a></span>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Utilisateur">
-          <th mat-header-cell *matHeaderCellDef> User</th>
-          <td mat-cell
-              *matCellDef="let element">  {{element.UserId}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Durée">
-          <th mat-header-cell *matHeaderCellDef> Durée</th>
-          <td mat-cell [style.color]="getDurationColor(element.duration)"
-              *matCellDef="let element">  {{element.duration}} ms
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="Détails">
-          <th mat-header-cell *matHeaderCellDef> Détails</th>
-          <td mat-cell
-              *matCellDef="let element">
-            <mat-icon color="primary" *ngIf="element?.level==='6'" matTooltip="{{ element?.method }}">info</mat-icon>
-            <mat-icon color="primary" *ngIf="element?.level==='5'" matTooltip="{{ element?.message }}">info</mat-icon>
-          </td>
-        </ng-container>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">error</mat-icon>
+        Gestion des erreurs
+      </ng-template>
+      <h3 class="title">Gestion des erreurs inter-entreprises</h3>
+      <div class="container">
 
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
-      </table>
+        <mat-form-field>
+          <mat-label>Recherche d'une erreur</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ge..." #input>
+        </mat-form-field>
+        <mat-paginator #paginator2 style="width: 100%" [pageSize]="10" [pageSizeOptions]="[5, 10, 20,100]"
+                       showFirstLastButtons
+                       aria-label="Selectionner page de logs">
+        </mat-paginator>
 
-    </div>
-  </mat-tab>
+        <table #table mat-table [dataSource]="dataSource2"
+               style="width: 100%;text-align: justify-all">
 
+          <ng-container matColumnDef="Id">
+            <th mat-header-cell *matHeaderCellDef> No.</th>
+            <td style="color: blue" mat-cell *matCellDef="let element"> {{element.id}} </td>
+          </ng-container>
 
-  <mat-tab>
-    <ng-template mat-tab-label>
-      <mat-icon class="example-tab-icon">account_circle</mat-icon>
-      Logs
-    </ng-template>
-    <h1>Liste des logs inter-entreprise </h1>
-    <div class="container">
-      <!--      <div *ngFor="let log of this.logEntries">-->
-      <!--        <div class="flex-row ">-->
-      <!--          <p class="margin-right">Id:-->
-      <!--            <mat-label style="color: blue">{{log.id}}</mat-label>-->
-      <!--          </p>-->
-      <!--          <p class="margin-right">Level: <strong>{{log.level}}</strong></p>-->
-      <!--          <p class="margin-right">Type de requête:-->
-      <!--            <span [ngStyle]="{'color': methodColors[log.method]}"><strong>{{log.method}}</strong></span></p>-->
+          <ng-container matColumnDef="Level">
+            <th mat-header-cell *matHeaderCellDef> Level</th>
+            <td mat-cell *matCellDef="let element"> {{element.level}} </td>
+          </ng-container>
 
-      <!--          <p class="margin-right">Le: <strong>{{log.createdAt|date}}</strong></p>-->
-      <!--          <p class="margin-right">Url: <a [href]="log.url"><strong>{{log.url}}</strong></a></p>-->
-      <!--          <p class="margin-right">Utilisateur: <strong>{{log.UserId}}</strong></p>-->
-      <!--          <p class="margin-right">Statut: <strong>{{log.status}}</strong></p>-->
-      <!--          <p class="margin-right">Durée: <span-->
-      <!--            [style.color]="getDurationColor(log.duration)"><strong>{{log.duration}}</strong>-->
-      <!--            ms</span></p>-->
-      <!--          <p class="margin-right">-->
-      <!--            <mat-icon *ngIf="log.level==='6'" matTooltip="{{ log.method }}">info</mat-icon>-->
-      <!--          </p>-->
-      <!--          <p class="margin-right">-->
-      <!--            <mat-icon *ngIf="log.level==='5'" matTooltip="{{ log.message }}">info</mat-icon>-->
-      <!--          </p>-->
-      <!--        </div>-->
-      <!--      </div>-->
-      <mat-form-field>
-        <mat-label>Recherche d'un log</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. POST..." #input>
-      </mat-form-field>
-      <mat-paginator #paginator style="width: 100%" [pageSize]="10" [pageSizeOptions]="[5, 10, 20,100]"
-                     showFirstLastButtons
-                     aria-label="Séléctionner page de logs">
-      </mat-paginator>
+          <ng-container matColumnDef="Type d'erreur">
+            <th mat-header-cell *matHeaderCellDef> Nom</th>
+            <td mat-cell [ngStyle]="{'color': methodColors[element.name]}"
+                *matCellDef="let element"> {{element.name}} </td>
+          </ng-container>
 
-      <table #table matSort mat-table [dataSource]="dataSource"
-             style="width: 100%;text-align: justify-all">
+          <ng-container matColumnDef="Date">
+            <th mat-header-cell *matHeaderCellDef> Date</th>
+            <td mat-cell *matCellDef="let element"> {{element.createdAt | date:'dd/MM/yyyy HH:mm:ss'}} </td>
+          </ng-container>
 
+          <ng-container matColumnDef="Statut">
+            <th mat-header-cell *matHeaderCellDef> Statut</th>
+            <td mat-cell *matCellDef="let element"> {{element.status}}</td>
+          </ng-container>
 
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef> No.</th>
-          <td style="color: blue" mat-cell *matCellDef="let element"> {{element.id}} </td>
-        </ng-container>
+          <ng-container matColumnDef="Message">
+            <th mat-header-cell *matHeaderCellDef> Message</th>
+            <td mat-cell *matCellDef="let element"> {{element.statusText}} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="level">
-          <th mat-header-cell *matHeaderCellDef> Level</th>
-          <td mat-cell *matCellDef="let element"> {{element.level}} </td>
-        </ng-container>
+          <ng-container matColumnDef="Url">
+            <th mat-header-cell *matHeaderCellDef> Url</th>
+            <td mat-cell *matCellDef="let element">
+              <span *ngIf="element.level === '5'"><a [href]="element?.url">{{ element.url }}</a></span>
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="method">
-          <th mat-header-cell *matHeaderCellDef> Method</th>
-          <td mat-cell [ngStyle]="{'color': methodColors[element.method]}"
-              *matCellDef="let element"> {{element.method}} </td>
-        </ng-container>
+          <ng-container matColumnDef="Utilisateur">
+            <th mat-header-cell *matHeaderCellDef> User</th>
+            <td mat-cell
+                *matCellDef="let element">  {{element.UserId}} </td>
+          </ng-container>
 
-        <ng-container matColumnDef="createdAt">
-          <th mat-header-cell *matHeaderCellDef> Date</th>
-          <td mat-cell *matCellDef="let element"> {{element.createdAt | date:'dd/MM/yyyy HH:mm:ss'}} </td>
-        </ng-container>
+          <ng-container matColumnDef="Durée">
+            <th mat-header-cell *matHeaderCellDef> Durée</th>
+            <td mat-cell [style.color]="getDurationColor(element.duration)"
+                *matCellDef="let element">  {{element.duration}} ms
+            </td>
+          </ng-container>
 
-        <ng-container matColumnDef="url">
-          <th mat-header-cell *matHeaderCellDef> Url</th>
-          <td mat-cell *matCellDef="let element"><a [href]="element.url"> {{element.url}}</a></td>
-        </ng-container>
-
-        <ng-container matColumnDef="UserId">
-          <th mat-header-cell *matHeaderCellDef> Utilisateurs</th>
-          <td mat-cell *matCellDef="let element"> {{element.UserId}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="status">
-          <th mat-header-cell *matHeaderCellDef> Status</th>
-          <td style="color: green" mat-cell *matCellDef="let element"> {{element.status}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="duration">
-          <th mat-header-cell *matHeaderCellDef> Durée</th>
-          <td mat-cell [style.color]="getDurationColor(element.duration)"
-              *matCellDef="let element"> {{element.duration}}ms
-          </td>
-        </ng-container>
+          <ng-container matColumnDef="Détails">
+            <th mat-header-cell *matHeaderCellDef> Détails</th>
+            <td mat-cell
+                *matCellDef="let element">
+              <mat-icon color="primary" *ngIf="element?.level==='6'" matTooltip="{{ element?.method }}">info</mat-icon>
+              <mat-icon color="primary" *ngIf="element?.level==='5'" matTooltip="{{ element?.message }}">info</mat-icon>
+            </td>
+          </ng-container>
 
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+        </table>
+
+      </div>
+    </mat-tab>
 
 
-    </div>
-  </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">account_circle</mat-icon>
+        Logs
+      </ng-template>
+      <h3 class="title">Liste des logs inter-entreprise </h3>
+      <div class="container">
+        <!--      <div *ngFor="let log of this.logEntries">-->
+        <!--        <div class="flex-row ">-->
+        <!--          <p class="margin-right">Id:-->
+        <!--            <mat-label style="color: blue">{{log.id}}</mat-label>-->
+        <!--          </p>-->
+        <!--          <p class="margin-right">Level: <strong>{{log.level}}</strong></p>-->
+        <!--          <p class="margin-right">Type de requête:-->
+        <!--            <span [ngStyle]="{'color': methodColors[log.method]}"><strong>{{log.method}}</strong></span></p>-->
+
+        <!--          <p class="margin-right">Le: <strong>{{log.createdAt|date}}</strong></p>-->
+        <!--          <p class="margin-right">Url: <a [href]="log.url"><strong>{{log.url}}</strong></a></p>-->
+        <!--          <p class="margin-right">Utilisateur: <strong>{{log.UserId}}</strong></p>-->
+        <!--          <p class="margin-right">Statut: <strong>{{log.status}}</strong></p>-->
+        <!--          <p class="margin-right">Durée: <span-->
+        <!--            [style.color]="getDurationColor(log.duration)"><strong>{{log.duration}}</strong>-->
+        <!--            ms</span></p>-->
+        <!--          <p class="margin-right">-->
+        <!--            <mat-icon *ngIf="log.level==='6'" matTooltip="{{ log.method }}">info</mat-icon>-->
+        <!--          </p>-->
+        <!--          <p class="margin-right">-->
+        <!--            <mat-icon *ngIf="log.level==='5'" matTooltip="{{ log.message }}">info</mat-icon>-->
+        <!--          </p>-->
+        <!--        </div>-->
+        <!--      </div>-->
+        <mat-form-field>
+          <mat-label>Recherche d'un log</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. POST..." #input>
+        </mat-form-field>
+        <mat-paginator #paginator style="width: 100%" [pageSize]="10" [pageSizeOptions]="[5, 10, 20,100]"
+                       showFirstLastButtons
+                       aria-label="Séléctionner page de logs">
+        </mat-paginator>
+
+        <table #table matSort mat-table [dataSource]="dataSource"
+               style="width: 100%;text-align: justify-all">
 
 
-</mat-tab-group>
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> No.</th>
+            <td style="color: blue" mat-cell *matCellDef="let element"> {{element.id}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="level">
+            <th mat-header-cell *matHeaderCellDef> Level</th>
+            <td mat-cell *matCellDef="let element"> {{element.level}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="method">
+            <th mat-header-cell *matHeaderCellDef> Method</th>
+            <td mat-cell [ngStyle]="{'color': methodColors[element.method]}"
+                *matCellDef="let element"> {{element.method}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef> Date</th>
+            <td mat-cell *matCellDef="let element"> {{element.createdAt | date:'dd/MM/yyyy HH:mm:ss'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="url">
+            <th mat-header-cell *matHeaderCellDef> Url</th>
+            <td mat-cell *matCellDef="let element"><a [href]="element.url"> {{element.url}}</a></td>
+          </ng-container>
+
+          <ng-container matColumnDef="UserId">
+            <th mat-header-cell *matHeaderCellDef> Utilisateurs</th>
+            <td mat-cell *matCellDef="let element"> {{element.UserId}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status</th>
+            <td style="color: green" mat-cell *matCellDef="let element"> {{element.status}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="duration">
+            <th mat-header-cell *matHeaderCellDef> Durée</th>
+            <td mat-cell [style.color]="getDurationColor(element.duration)"
+                *matCellDef="let element"> {{element.duration}}ms
+            </td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+
+      </div>
+    </mat-tab>
+
+
+  </mat-tab-group>
+</div>
 
 
 

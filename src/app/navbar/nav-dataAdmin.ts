@@ -59,7 +59,7 @@ export const navbarDataAdmin = [
       },
       {
         routeLink: '/listCout',
-        label: "Couts",
+        label: "Composants",
         visible: true
       }
     ],

@@ -32,6 +32,7 @@ import {DevisExport} from "../_models/devisExport";
 //, AfterContentChecked
 @Injectable()
 export class CreateDevisComponent implements OnInit {
+  isFocused: boolean = false;
 
   lotFraisDeChantier!: Lot;
   form!: FormGroup;

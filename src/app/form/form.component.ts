@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CoutService} from "../_service/cout.service";
 import {ActivatedRoute} from '@angular/router';
 import {UserService} from "../_service/user.service"
@@ -36,7 +36,7 @@ export class FormComponent implements OnInit {
   isFournisseur: boolean = false;
   isTypeCout: boolean = false;
   isOuvrage: boolean = false;
-  entrepriseId!:number;
+  entrepriseId!: number;
 
   constructor(private formBuilder: FormBuilder, private coutService: CoutService,
               private route: ActivatedRoute, private userService: UserService,
@@ -123,7 +123,7 @@ export class FormComponent implements OnInit {
       this.entrepriseId = data.Entreprises[0].id
       this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id),
         this.getAllTypeCouts(data.Entreprises[0].id)
-        this.getAllFournisseur(data.Entreprises[0].id)
+      this.getAllFournisseur(data.Entreprises[0].id)
     })
   }
 
@@ -151,8 +151,8 @@ export class FormComponent implements OnInit {
   }
 
   //Recupere tous les fournisseurs pour implementer le select picker du template
-  getAllFournisseur(entrepriseID:number): void {
-    console.log("entrepriseID getAllFournisseur",entrepriseID)
+  getAllFournisseur(entrepriseID: number): void {
+    console.log("entrepriseID getAllFournisseur", entrepriseID)
     this.fournisseurService.getAllFournisseurs(entrepriseID).subscribe(data => {
       this.fournisseur = data;
       //this.typeCout = Array.from(this.typeCout.reduce((m, t) => m.set(t.type, t), new Map()).values());
@@ -216,13 +216,15 @@ export class FormComponent implements OnInit {
     this.titreForm = "Création d'un fournisseur"
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
-      commercialName: new FormControl(),
+      commercialName: new FormControl('', Validators.required),
       remarque: new FormControl(''),
-      EntrepriseId: new FormControl(""),
+      EntrepriseId: new FormControl(this.entrepriseId),
     });
   }
 
   createAndUpdateFournisseur(): void {
+    this.myFormGroup.markAllAsTouched();
+    console.log(this.entrepriseId)
     this.route.params.subscribe(params => {
       const fournisseurID = +params['id']
       if (isNaN(fournisseurID)) {
@@ -253,7 +255,7 @@ export class FormComponent implements OnInit {
             id: data.id,
             commercialName: data.commercialName,
             remarque: data.remarque,
-            EntrepriseId:data.EntrepriseId
+            EntrepriseId: data.EntrepriseId
           }
           this.myFormGroup.patchValue(data);
         });

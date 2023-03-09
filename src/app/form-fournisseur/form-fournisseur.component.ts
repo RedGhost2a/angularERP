@@ -1,14 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {FournisseurService} from "../_service/fournisseur.service";
 import {ActivatedRoute} from "@angular/router";
 import {Fournisseur} from "../_models/fournisseur";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
-import {Cout} from "../_models/cout";
-import {User} from "../_models/users";
 import {UserService} from "../_service/user.service";
-
+import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 
 
 @Component({
@@ -20,13 +18,18 @@ export class FormFournisseurComponent implements OnInit {
   myFormGroup!: FormGroup;
   textButton: string = "Ajouter le fournisseur";
   titreForm: string = "Création d'un fournisseur";
-  textForm : string = "L'ajout d'un fournissseur permet de l'associer aux composants."
-  fournisseurs!:Fournisseur;
+  textForm: string = "L'ajout d'un fournissseur permet de l'associer aux composants."
+  fournisseurs!: Fournisseur;
   initialData: Fournisseur;
   userId = this.userService.userValue.id;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Fournisseur, private formBuilder:FormBuilder,private fournisseurService: FournisseurService,
-              private route: ActivatedRoute, private dialogRef: MatDialogRef<DialogComponent>, private userService : UserService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Fournisseur,
+              private formBuilder: FormBuilder,
+              private fournisseurService: FournisseurService,
+              private route: ActivatedRoute,
+              private dialogRef: MatDialogRef<DialogComponent>,
+              private userService: UserService,
+              @Inject(TOASTR_TOKEN) private toastr: Toastr) {
     this.initialData = data;
   }
 
@@ -38,14 +41,15 @@ export class FormFournisseurComponent implements OnInit {
 
   }
 
-  createFormFournisseur():void{
+  createFormFournisseur(): void {
+
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
-      commercialName: new FormControl(),
-      remarque: new FormControl(),
-      EntrepriseId: new FormControl()
+      commercialName: new FormControl('', Validators.required),
+      remarque: new FormControl(''),
+      EntrepriseId: new FormControl('')
     });
-   }
+  }
 
 
   getUserById(): void {
@@ -55,13 +59,19 @@ export class FormFournisseurComponent implements OnInit {
   }
 
 
-
-
   createAndUpdate(): void {
+    this.myFormGroup.markAllAsTouched();
+    if (this.myFormGroup.invalid) {
+      // Form is invalid, show error message
+      this.toastr.error("Le formulaire est invalide.", "Erreur !");
+      return;
+    }
     if (this.initialData === null) {
-      this.fournisseurService.createFournisseur(this.myFormGroup.getRawValue()).subscribe();
+      this.fournisseurService.createFournisseur(this.myFormGroup.getRawValue()).subscribe(data => {
+        this.closeDialog()
+      });
     } else {
-      this.fournisseurService.updateFournisseur(this.initialData.id,this.myFormGroup.getRawValue()).subscribe();
+      this.fournisseurService.updateFournisseur(this.initialData.id, this.myFormGroup.getRawValue()).subscribe();
     }
   }
 
@@ -72,6 +82,7 @@ export class FormFournisseurComponent implements OnInit {
     this.textButton = "Modifier ce fournisseur"
     this.myFormGroup.patchValue(this.initialData)
   }
+
   closeDialog() {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
     this.dialogRef.close();

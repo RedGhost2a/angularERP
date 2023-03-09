@@ -70,12 +70,16 @@
         <mat-form-field appearance="legacy">
           <mat-label>Nom commercial</mat-label>
           <input formControlName="commercialName" matInput placeholder="Ex: GEDIMAT">
+          <mat-error *ngIf="this.myFormGroup.get('commercialName')?.hasError('required')">
+            Vous devez entrer un nom.
+          </mat-error>
         </mat-form-field>
       </p>
       <p>
         <mat-form-field appearance="legacy">
           <mat-label>Remarque</mat-label>
           <input formControlName="remarque" matInput placeholder="Ex: Augmentation en Janvier">
+
         </mat-form-field>
       </p>
     </div>

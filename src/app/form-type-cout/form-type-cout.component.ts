@@ -1,13 +1,12 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {TypeCout} from "../_models/type-cout";
 import {TypeCoutService} from "../_service/typeCout.service";
 import {ActivatedRoute} from "@angular/router";
 import {UserService} from "../_service/user.service";
-import {Cout} from "../_models/cout";
-import {Fournisseur} from "../_models/fournisseur";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
+import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 
 @Component({
   selector: 'app-form-type-cout',
@@ -18,14 +17,18 @@ export class FormTypeCoutComponent implements OnInit {
   myFormGroup!: FormGroup;
   textButton: string = "Ajouter un type de cout";
   titreForm: string = "Création d'un type de cout";
-  textForm : string = "L'ajout d'un type de cout permet de l'associer à un composant"
+  textForm: string = "L'ajout d'un type de cout permet de l'associer à un composant"
   initialData: TypeCout
-  typeCout!:TypeCout;
+  typeCout!: TypeCout;
   userId = this.userService.userValue.id;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: TypeCout, private dialogRef: MatDialogRef<DialogComponent>,
-              private formBuilder:FormBuilder,private typeCoutService: TypeCoutService,
-              private route: ActivatedRoute, private  userService: UserService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: TypeCout,
+              private dialogRef: MatDialogRef<DialogComponent>,
+              private formBuilder: FormBuilder,
+              private typeCoutService: TypeCoutService,
+              private route: ActivatedRoute,
+              private userService: UserService,
+              @Inject(TOASTR_TOKEN) private toastr: Toastr) {
     this.initialData = this.data;
   }
 
@@ -36,27 +39,38 @@ export class FormTypeCoutComponent implements OnInit {
       this.generateFormUpdate();
   }
 
-  createFormTypeCout():void{
+  createFormTypeCout(): void {
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
-      type: new FormControl(),
-      categorie: new FormControl(),
+      type: new FormControl("", Validators.required),
+      categorie: new FormControl("", Validators.required),
       EntrepriseId: new FormControl(),
     });
   }
+
   createAndUpdate(): void {
+    this.myFormGroup.markAllAsTouched();
+    if (this.myFormGroup.invalid) {
+      // Form is invalid, show error message
+      this.toastr.error("Le formulaire est invalide.", "Erreur !");
+      return;
+    }
+
     if (this.initialData === null) {
-      this.typeCoutService.createTypeCout(this.myFormGroup.getRawValue()).subscribe();
+      this.typeCoutService.createTypeCout(this.myFormGroup.getRawValue()).subscribe(data => {
+        this.closeDialog()
+
+      });
     } else {
       this.typeCoutService.updateTypeCout(this.initialData.id, this.myFormGroup.getRawValue()).subscribe();
     }
   }
+
   getUserById(): void {
     this.userService.getById(this.userId).subscribe(data => {
       this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id)
     })
   }
-
 
 
   generateFormUpdate(): void {
@@ -65,6 +79,7 @@ export class FormTypeCoutComponent implements OnInit {
     this.textButton = "Modifier ce type de composant"
     this.myFormGroup.patchValue(this.initialData)
   }
+
   closeDialog() {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
     this.dialogRef.close();

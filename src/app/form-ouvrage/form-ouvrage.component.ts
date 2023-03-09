@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {Component, Inject, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {OuvrageService} from "../_service/ouvrage.service";
 import {User} from "../_models/users";
 import {UserService} from "../_service/user.service";
 import {MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
+import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 
 @Component({
   selector: 'app-form-ouvrage',
@@ -15,8 +16,11 @@ export class FormOuvrageComponent implements OnInit {
   public myFormGroup!: FormGroup;
   private currentUser!: User;
 
-  constructor(private formBuilder: FormBuilder, private ouvrageService: OuvrageService, private userService: UserService,
-              private dialogRef: MatDialogRef<DialogComponent>) {
+  constructor(private formBuilder: FormBuilder,
+              private ouvrageService: OuvrageService,
+              private userService: UserService,
+              private dialogRef: MatDialogRef<DialogComponent>,
+              @Inject(TOASTR_TOKEN) private toastr: Toastr) {
   }
 
   ngOnInit(): void {
@@ -27,7 +31,15 @@ export class FormOuvrageComponent implements OnInit {
 
 
   createOuvrage(): void {
-    this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe()
+    this.myFormGroup.markAllAsTouched();
+    if (this.myFormGroup.invalid) {
+      // Form is invalid, show error message
+      this.toastr.error("Le formulaire est invalide.", "Erreur !");
+      return;
+    }
+    this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe(data => {
+      this.closeDialog()
+    })
   }
 
   closeDialog() {
@@ -38,13 +50,13 @@ export class FormOuvrageComponent implements OnInit {
 
   createFormOuvrage(): void {
     this.myFormGroup = new FormGroup({
-      designation: new FormControl(),
+      designation: new FormControl('', Validators.required),
       benefice: new FormControl({value: 10, disabled: false}),
       aleas: new FormControl({value: 5, disabled: false}),
-      unite: new FormControl(''),
-      ratio: new FormControl(''),
-      uRatio: new FormControl(),
-      EntrepriseId: new FormControl(''),
+      unite: new FormControl('', Validators.required),
+      ratio: new FormControl('', Validators.required),
+      uRatio: new FormControl('', Validators.required),
+      EntrepriseId: new FormControl('', Validators.required),
     });
   }
 

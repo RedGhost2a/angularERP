@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CoutService} from "../_service/cout.service";
 import {ActivatedRoute} from '@angular/router';
 import {UserService} from "../_service/user.service"
@@ -10,6 +10,7 @@ import {TypeCoutService} from "../_service/typeCout.service";
 import {Cout} from "../_models/cout";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
+import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 
 
 interface FournisseurCout {
@@ -26,16 +27,22 @@ export class FormCoutComponent implements OnInit {
   myFormGroup!: FormGroup;
   textButton: string = "Ajouter ce composant";
   titreForm: string = "Ajout d'un composant dans la blibliothèque de prix";
-  textForm : string = "L'ajout d'un composant permet de l'utiliser au sein de la bibliothèque de prix et dans la création de devis"
+  textForm: string = "L'ajout d'un composant permet de l'utiliser au sein de la bibliothèque de prix et dans la création de devis"
   typeCout !: TypeCout[];
   fournisseur!: Fournisseur[];
   userId = this.userService.userValue.id;
   initialData: Cout
   cout!: Cout
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Cout, private dialogRef: MatDialogRef<DialogComponent>, private formBuilder: FormBuilder, private coutService: CoutService,
-              private route: ActivatedRoute, private userService: UserService,
-              private fournisseurService: FournisseurService, private typeCoutService: TypeCoutService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Cout,
+              private dialogRef: MatDialogRef<DialogComponent>,
+              private formBuilder: FormBuilder,
+              private coutService: CoutService,
+              private route: ActivatedRoute,
+              private userService: UserService,
+              private fournisseurService: FournisseurService,
+              private typeCoutService: TypeCoutService,
+              @Inject(TOASTR_TOKEN) private toastr: Toastr) {
     this.initialData = this.data;
   }
 
@@ -49,8 +56,17 @@ export class FormCoutComponent implements OnInit {
 
   //Determine si c'est l'ajout d'un nouveau cout ou la modification d'un cout existant au click
   createAndUpdate(): void {
+    this.myFormGroup.markAllAsTouched();
+    if (this.myFormGroup.invalid) {
+      // Form is invalid, show error message
+      this.toastr.error("Le formulaire est invalide.", "Erreur !");
+      return;
+    }
+
     if (this.initialData === null) {
-      this.coutService.create(this.myFormGroup.getRawValue()).subscribe();
+      this.coutService.create(this.myFormGroup.getRawValue()).subscribe(data => {
+        this.closeDialog()
+      });
     } else {
       this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe();
     }
@@ -69,12 +85,12 @@ export class FormCoutComponent implements OnInit {
   createFormCout(): void {
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
-      designation: new FormControl(),
-      unite: new FormControl(),
-      prixUnitaire: new FormControl(),
+      designation: new FormControl("", Validators.required),
+      unite: new FormControl("", Validators.required),
+      prixUnitaire: new FormControl("", Validators.required),
       EntrepriseId: new FormControl(),
-      TypeCoutId: new FormControl(),
-      FournisseurId: new FormControl()
+      TypeCoutId: new FormControl("", Validators.required),
+      FournisseurId: new FormControl("", Validators.required)
     });
   }
 
@@ -104,6 +120,7 @@ export class FormCoutComponent implements OnInit {
     this.textButton = "Modifier ce composant"
     this.myFormGroup.patchValue(this.initialData)
   }
+
   closeDialog() {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
     this.dialogRef.close();
