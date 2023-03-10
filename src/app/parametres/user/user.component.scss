@@ -1,11 +1,5 @@
-* {
-  color: #000000;
 
-}
 
-body {
-  min-height: 100%;
-}
 
 .user {
   //width: 180px;
@@ -28,11 +22,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 70px;
+  height: 60px;
   background-color: #FFFFFF;;
-  color: #334E68;
+  color: rgb(8, 31, 44);
   font-size: 1.2rem;
   font-weight: 500;
+  font-family: Michroma;
+  border-top: 10px solid #0c5593;
 }
 
 .wrapper {

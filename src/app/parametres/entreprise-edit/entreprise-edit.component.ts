@@ -28,12 +28,12 @@ export class EntrepriseEditComponent implements OnInit {
       siret: "",
       nafCode: "",
       tvaNumber: "",
-      adresses: "",
+      adresses: ["", Validators.required],
       zipcode: "",
-      city: "",
+      city: ["", Validators.required],
       country: "",
       email: "",
-      phoneNumber: "",
+      phoneNumber: ["", Validators.required],
     })
 
   }

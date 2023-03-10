@@ -4,7 +4,7 @@
       <mat-icon class="example-tab-icon">business</mat-icon>
       Liste des clients
     </ng-template>
-    <h1>Clients de {{ entreprise.commercialName }}</h1>
+    <h1>Clients de {{ entreprise.denomination }}</h1>
 
     <mat-accordion>
       <mat-expansion-panel *ngFor="let cl of client| unique:'Client.id'" [expanded]="false">
@@ -43,7 +43,7 @@
       <mat-icon class="example-tab-icon">inventory</mat-icon>
       Liste des devis
     </ng-template>
-    <h1>Devis de {{ entreprise.commercialName }}</h1>
+    <h1>Devis de {{ entreprise.denomination }}</h1>
 
     <mat-accordion>
       <mat-expansion-panel *ngFor="let devis of devisAll" [expanded]="false">
@@ -75,7 +75,7 @@
       <mat-icon class="example-tab-icon">groups</mat-icon>
       Liste des utilisateurs
     </ng-template>
-    <h1>Utilisateurs {{ entreprise.commercialName }}</h1>
+    <h1>Utilisateurs {{ entreprise.denomination }}</h1>
     <mat-accordion>
       <mat-expansion-panel *ngFor="let user of userAll" [expanded]="false">
         <mat-expansion-panel-header>

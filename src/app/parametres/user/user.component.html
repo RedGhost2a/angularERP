@@ -14,7 +14,7 @@
 
         <div>
           <mat-card-title>Infos</mat-card-title>
-          <mat-card class="user card">
+          <mat-card class="user card avatar">
             <mat-card-header class="user_header" *ngIf="curentUser">
               <mat-card-title>{{curentUser.title|uppercase}}</mat-card-title>
               <mat-card-subtitle>{{user.firstName}} {{user.lastName}}</mat-card-subtitle>
@@ -27,6 +27,7 @@
                 Rôle: {{user.role}}
               </p>
             </mat-card-content>
+            <mat-card-subtitle>Profil crée le : {{user.createdAt|date:"dd/mm/yy HH:MM"}}</mat-card-subtitle>
           </mat-card>
         </div>
 
@@ -39,26 +40,6 @@
               <mat-icon>create</mat-icon>
               MODIFIER
             </button>
-          </mat-card>
-        </div>
-
-        <div>
-          <mat-card-title>Adresse</mat-card-title>
-          <mat-card class="user card">
-            <mat-card-content class="content" *ngIf="curentUser">
-              <p>
-                Adresse: {{curentUser.Adresse.adresses|uppercase}}
-              </p>
-              <p>
-                Code postale: {{curentUser.Adresse.zipcode|number}}
-              </p>
-              <p>
-                Ville: {{curentUser.Adresse.city|uppercase}}
-              </p>
-              <p>
-                Pays: {{curentUser.Adresse.country|uppercase}}
-              </p>
-            </mat-card-content>
           </mat-card>
         </div>
 
@@ -76,6 +57,7 @@
         <!--        </mat-card>-->
         <!--      </div>-->
       </div>
+
 
     </mat-tab>
 

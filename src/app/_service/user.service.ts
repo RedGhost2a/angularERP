@@ -59,6 +59,7 @@ export class UserService {
     console.log("logout")
     // remove user from local storage and set current user to null
     localStorage.removeItem('user');
+    localStorage.removeItem('coef');
     this.userSubject.next(null!);
     this.router.navigate(['']);
   }

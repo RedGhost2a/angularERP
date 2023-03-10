@@ -1,6 +1,6 @@
 <div class="big-container">
 
-  <h1 class="title">Options </h1>
+  <h1 class="title">Administration </h1>
   <mat-tab-group mat-stretch-tabs>
 
 
@@ -9,14 +9,16 @@
         <mat-icon class="example-tab-icon">settings</mat-icon>
         Paramètres
       </ng-template>
+      <h3 class="bold">Options d'administration</h3>
       <div class="wrapper">
-        <button mat-stroked-button [routerLink]="'/entreprises/new'">Ajouter une entreprise
+
+        <button mat-flat-button color="primary" [routerLink]="'/entreprises/new'">Ajouter une entreprise
           <!--        <mat-icon>create</mat-icon>-->
         </button>
-        <button mat-stroked-button [routerLink]="'/devis/'">Liste des devis
+        <button mat-flat-button color="primary" [routerLink]="'/devis/'">Liste des devis
           <!--        <mat-icon>list</mat-icon>-->
         </button>
-        <button mat-stroked-button [routerLink]="'/users/new'">Ajouter un utilisateur
+        <button mat-flat-button color="primary" [routerLink]="'/users/new'">Ajouter un utilisateur
           <!--        <mat-icon>create</mat-icon>-->
         </button>
       </div>
@@ -28,11 +30,11 @@
         <mat-icon class="example-tab-icon">business</mat-icon>
         Entreprises
       </ng-template>
-      <h3 class="title">Liste des entreprises </h3>
+      <h3 class="bold">Liste des entreprises </h3>
       <div class="wrapper">
         <div *ngFor="let entreprise of listEntreprise index as i"
              [routerLink]="['/admin/entreprise/'+ entreprise.id]">
-          <button mat-stroked-button>{{entreprise.commercialName|uppercase}}</button>
+          <button mat-stroked-button>{{entreprise.denomination|uppercase}}</button>
         </div>
       </div>
     </mat-tab>
@@ -43,8 +45,8 @@
         <mat-icon class="example-tab-icon">sticky_note_2</mat-icon>
         Gestion des tickets
       </ng-template>
-      <h3 class="title">Liste des tickets inter-entreprises</h3>
-      
+      <h3 class="bold">Liste des tickets inter-entreprises</h3>
+
       <mat-accordion>
         <mat-expansion-panel *ngFor="let note of this.notes;" [expanded]="false">
           <mat-expansion-panel-header>
@@ -80,7 +82,7 @@
         <mat-icon class="example-tab-icon">error</mat-icon>
         Gestion des erreurs
       </ng-template>
-      <h3 class="title">Gestion des erreurs inter-entreprises</h3>
+      <h3 class="bold">Gestion des erreurs inter-entreprises</h3>
       <div class="container">
 
 
@@ -170,7 +172,7 @@
         <mat-icon class="example-tab-icon">account_circle</mat-icon>
         Logs
       </ng-template>
-      <h3 class="title">Liste des logs inter-entreprise </h3>
+      <h3 class="bold">Liste des logs inter-entreprise </h3>
       <div class="container">
         <!--      <div *ngFor="let log of this.logEntries">-->
         <!--        <div class="flex-row ">-->
