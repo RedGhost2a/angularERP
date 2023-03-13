@@ -68,19 +68,18 @@ export class FormCoutComponent implements OnInit {
       this.toastr.error("Le formulaire est invalide.", "Erreur !");
       return;
     }
-
     if (this.initialData === null) {
-      this.coutService.create(this.myFormGroup.getRawValue()).subscribe(() =>{
-        this.closeDialog()
-      });
-    } if(this.regexCout.test(window.location.pathname)) {
       this.coutService.create(this.myFormGroup.getRawValue()).subscribe(data => {
         this.closeDialog()
       });
-    } else {
-      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe();
+    } if(this.regexCout.test(window.location.pathname)) {
+      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(()=>{
+        this.closeDialog()
+      });
     }if(this.regexSousDetail.test(window.location.pathname)){
-      this.coutService.updateCoutDuDevis(this.myFormGroup.getRawValue(), this.initialData.id).subscribe()
+      this.coutService.updateCoutDuDevis(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(()=>{
+        this.closeDialog()
+      })
     }
   }
 
@@ -101,8 +100,8 @@ export class FormCoutComponent implements OnInit {
       unite: new FormControl("", Validators.required),
       prixUnitaire: new FormControl("", Validators.required),
       EntrepriseId: new FormControl(),
-      TypeCoutId: new FormControl("", Validators.required),
-      FournisseurId: new FormControl("", Validators.required)
+      TypeCoutId: new FormControl(""),
+      FournisseurId: new FormControl("")
     });
   }
 
