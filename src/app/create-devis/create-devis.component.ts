@@ -551,7 +551,8 @@ export class CreateDevisComponent implements OnInit {
   getAllOuvrageFraisDeChantier(id: number) {
     // console.log("console log id get all ouvrage", id)
     // this.ouvrageService.getAll(id).subscribe(data => {
-    this.ouvrageService.getAllFraisDeChantier(id).subscribe(data => {
+    // this.ouvrageService.getAllFraisDeChantier(id).subscribe(data => {
+    this.ouvrageService.getAll(id).subscribe(data => {
       this.listOuvrageFraisDeChantier = data;
       // console.log('ouvrage frais de chantier', data)
     })
