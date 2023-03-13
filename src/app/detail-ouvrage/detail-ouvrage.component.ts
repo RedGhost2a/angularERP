@@ -50,7 +50,7 @@ export class DetailOuvrageComponent implements OnInit {
       data.prix = this.prix
     }
     this.formOuvrage = new FormGroup({
-      designation: new FormControl(data.designation),
+      designation: new FormControl({value: data.designation, disabled: true}),
       benefice: new FormControl(data.benefice),
       aleas: new FormControl(data.aleas),
       unite: new FormControl(data.unite),

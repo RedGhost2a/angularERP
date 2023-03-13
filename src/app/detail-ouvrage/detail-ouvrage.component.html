@@ -19,7 +19,7 @@
         <!--        </div>-->
         <mat-form-field appearance="legacy" style="width: 400px">
           <mat-label style="font-size: 1.1rem">Désignation</mat-label>
-          <input (blur)="updateOuvrageOnChange()" formControlName="designation" matInput>
+          <input formControlName="designation" matInput [disabled]="true">
         </mat-form-field>
         <!--        <div class="detail">-->
         <!--          <mat-card-subtitle class="subTitle">Bénéfices</mat-card-subtitle>-->
