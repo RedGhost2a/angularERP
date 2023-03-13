@@ -42,7 +42,7 @@
       <div class="wrapper" *ngIf="userService.userValue.id">
         <div class="wrapper_avatar">
           <a>
-            <img class="wrapper_avatar_icon"
+            <img class="wrapper_avatar_icon" *ngIf="userService.userValue.avatarUrl"
                  src='./assets/avatar/{{userService.userValue.avatarUrl}}' alt="avatar of user"/>
           </a>
           <div class="wrapper_avatar_txt">
