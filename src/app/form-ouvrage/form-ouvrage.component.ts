@@ -37,6 +37,7 @@ export class FormOuvrageComponent implements OnInit {
 
 
   createOuvrage(): void {
+    console.log(this.myFormGroup.getRawValue())
     this.myFormGroup.markAllAsTouched();
     if (this.myFormGroup.invalid) {
       // Form is invalid, show error message
@@ -72,6 +73,7 @@ export class FormOuvrageComponent implements OnInit {
       }
       this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe()
     })
+
   }
 
   closeDialog() {
@@ -91,6 +93,10 @@ export class FormOuvrageComponent implements OnInit {
       prix: new FormControl(0),
       EntrepriseId: new FormControl('', Validators.required),
     });
+  }
+  setValueURatio(){
+    const unite = this.myFormGroup.get('unite')?.value
+    this.myFormGroup.controls['uRatio'].setValue(`${unite}/h`)
   }
 
   getUserById(): void {

@@ -29,7 +29,7 @@
       </mat-form-field>
       <mat-form-field appearance="legacy">
         <mat-label>Unité</mat-label>
-        <select formControlName="unite" matNativeControl required>
+        <select formControlName="unite" matNativeControl required (blur)="setValueURatio()">
           <option value="F">Forfait</option>
           <option value="m">Mètres</option>
           <option value="m²">Mètres carrés</option>
@@ -37,7 +37,7 @@
           <option value="Kg">Kilogrammes</option>
           <option value="Tn">Tonnes</option>
         </select>
-        <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
+        <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')" >
           Vous devez entrer une unité.
         </mat-error>
       </mat-form-field>
@@ -51,8 +51,9 @@
 
       <mat-form-field appearance="legacy">
         <mat-label>U/Ratio</mat-label>
-        <input type="text" formControlName="uRatio" matInput placeholder="Ex: m3/h  "
-               value=" {{myFormGroup.controls['unite'].getRawValue()}}/h">
+        <input type="text" formControlName="uRatio" matInput placeholder="Ex: m3/h  ">
+<!--               value=" {{ myFormGroup.controls['unite'].getRawValue().toString()}}/h"-->
+
         <mat-error *ngIf="this.myFormGroup.get('uRatio')?.hasError('required')">
           Vous devez entrer un U/ratio.
         </mat-error>
