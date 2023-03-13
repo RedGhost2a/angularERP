@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {OuvrageService} from "../_service/ouvrage.service";
-import {ActivatedRoute} from "@angular/router";
 import {User} from "../_models/users";
 import {UserService} from "../_service/user.service";
-import {MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
+import {SousLotOuvrage} from "../_models/sousLotOuvrage";
 
 @Component({
   selector: 'app-form-ouvrage',
@@ -15,20 +15,50 @@ import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 export class FormOuvrageComponent implements OnInit {
   public myFormGroup!: FormGroup;
   private currentUser!: User;
+  initialData: number
+  sousLotOuvrageDuDevis !: SousLotOuvrage;
 
-  constructor(private formBuilder: FormBuilder, private ouvrageService: OuvrageService, private userService: UserService,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: number,private formBuilder: FormBuilder, private ouvrageService: OuvrageService, private userService: UserService,
               private dialogRef: MatDialogRef<DialogComponent>) {
+  this.initialData = this.data
   }
+
 
   ngOnInit(): void {
     this.getUserById()
     this.createFormOuvrage()
+
 
   }
 
 
   createOuvrage(): void {
     this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe()
+    if(this.initialData !== null){
+      console.log("dans le if ", this.initialData)
+      this.createOuvrageDuDevis();
+    }
+  }
+  createOuvrageDuDevis(): void {
+    this.ouvrageService.createOuvrageDuDevis(this.myFormGroup.getRawValue()).subscribe( response =>{
+      console.log("response ouvrage cout du devis ", response)
+      this.sousLotOuvrageDuDevis = {
+        SousLotId: this.initialData,
+        OuvrageDuDeviId: response.OuvrageDuDevis?.id,
+        prixOuvrage: 0,
+        prixUniVenteHT: 0,
+        prixVenteHT: 0,
+        quantityOuvrage: 0,
+        prixUniHT: 0,
+        prixEquiHT: 0,
+        prixUniEquiHT: 0,
+        beneficeInEuro: 0,
+        aleasInEuro: 0,
+        prixCalcHT: 0,
+        prixUniCalcHT: 0
+      }
+      this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe()
+    })
   }
   closeDialog() {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
@@ -44,6 +74,7 @@ export class FormOuvrageComponent implements OnInit {
       unite: new FormControl(),
       ratio: new FormControl(),
       uRatio: new FormControl(),
+      prix: new FormControl(0),
       EntrepriseId: new FormControl(),
     });
   }

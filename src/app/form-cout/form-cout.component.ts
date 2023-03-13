@@ -30,10 +30,13 @@ export class FormCoutComponent implements OnInit {
   typeCout !: TypeCout[];
   fournisseur!: Fournisseur[];
   userId = this.userService.userValue.id;
-  initialData: Cout
+  initialData: any
   cout!: Cout
+  regexSousDetail = new RegExp(`^/sousDetailPrix`)
+  regexCout = new RegExp(`^/cout`)
+  isCout : boolean = true;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Cout, private dialogRef: MatDialogRef<DialogComponent>, private formBuilder: FormBuilder, private coutService: CoutService,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogComponent>, private formBuilder: FormBuilder, private coutService: CoutService,
               private route: ActivatedRoute, private userService: UserService,
               private fournisseurService: FournisseurService, private typeCoutService: TypeCoutService) {
     this.initialData = this.data;
@@ -43,16 +46,22 @@ export class FormCoutComponent implements OnInit {
   ngOnInit(): void {
     this.createFormCout();
     this.getUserById();
-    if (this.initialData !== null)
+    console.log(window.location.pathname)
+    if(this.regexSousDetail.test(window.location.pathname))
+      this.isCout = false;
+    if (this.initialData !== null )
       this.generateFormUpdate();
+
   }
 
   //Determine si c'est l'ajout d'un nouveau cout ou la modification d'un cout existant au click
   createAndUpdate(): void {
     if (this.initialData === null) {
       this.coutService.create(this.myFormGroup.getRawValue()).subscribe();
-    } else {
+    } if(this.regexCout.test(window.location.pathname)) {
       this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe();
+    }if(this.regexSousDetail.test(window.location.pathname)){
+      this.coutService.updateCoutDuDevis(this.myFormGroup.getRawValue(), this.initialData.id).subscribe()
     }
   }
 
@@ -103,6 +112,7 @@ export class FormCoutComponent implements OnInit {
     this.textForm = "La modification de ce composant va impacter les ouvrages de la bibliothèque de prix associés. Les devis déjà existants ne seront pas modifiés."
     this.textButton = "Modifier ce composant"
     this.myFormGroup.patchValue(this.initialData)
+    console.log(this.initialData)
   }
   closeDialog() {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage

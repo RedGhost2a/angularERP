@@ -15,6 +15,10 @@ import {TypeCout} from "../_models/type-cout";
 import {FournisseurService} from "../_service/fournisseur.service";
 import {TypeCoutService} from "../_service/typeCout.service";
 import {DialogFormCoutComponent} from "../dialog-form-cout/dialog-form-cout.component";
+import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
+import {OuvrageCoutService} from "../_service/ouvrageCout.service";
+import {FormCoutComponent} from "../form-cout/form-cout.component";
+import {CoutDuDevis} from "../_models/cout-du-devis";
 
 @Component({
   selector: 'app-sous-detail-prix',
@@ -28,7 +32,7 @@ export class SousDetailPrixComponent implements OnInit {
     , "categorie", "designation", "unite", "uRatio", "ratio", "efficience", "quantite", "prixUnitaireHT",
     "DSTotal", "PUHTEquilibre", "prixHTEquilibre",
     "PUHTCalcule",
-    "prixHTCalcule"];
+    "prixHTCalcule", "boutons"];
   coefEqui: number = 35.79;
 
   totalDBS = {
@@ -43,7 +47,7 @@ export class SousDetailPrixComponent implements OnInit {
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute,
               public dataShared: DataSharingService, private coutService: CoutService, private userService: UserService,
               public dialog: MatDialog, private sousLotOuvrageService: SousLotOuvrageService,private fournisseurService : FournisseurService,
-              private typeCoutService : TypeCoutService
+              private typeCoutService : TypeCoutService, private ouvrageCoutService : OuvrageCoutService
   ) {
   }
 
@@ -52,8 +56,14 @@ export class SousDetailPrixComponent implements OnInit {
     this.route.params.subscribe(async params => {
       this.ouvrageID = +params['id'];
       await this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe(async data => {
+        console.log("this currentOuvrage ", data)
         this.currentOuvrage = data;
         this.dataShared.ouvrage = data;
+        // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = 10;
+        console.log(this.currentOuvrage)
+        if(this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage ){
+          // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = this.currentOuvrage.prix
+        }
         if (data.SousLots) {
           this.currentOuvrage.SousLotOuvrage = data.SousLots[0].SousLotOuvrage
         }
@@ -71,7 +81,9 @@ export class SousDetailPrixComponent implements OnInit {
         this.prixUnitaireEquilibreHTCout()
         this.prixCalculeHTCout()
         this.prixUnitaireCalculeHTCout()
-        console.log("fin ngOninit")
+        this.prixVenteHT()
+
+        console.log("ngOninit", data)
 
       })
     })
@@ -89,6 +101,7 @@ export class SousDetailPrixComponent implements OnInit {
       }
     )
   }
+
 
   getAllCout(entrepriseID: number): void {
     this.coutService.getAll(entrepriseID).subscribe(
@@ -114,6 +127,11 @@ export class SousDetailPrixComponent implements OnInit {
    async prixUnitaireHT() {
     if (this.currentOuvrage.SousLotOuvrage !== undefined) {
        await this.dataShared.prixUnitaireHT(this.currentOuvrage.SousLotOuvrage)
+    }
+  }
+  prixVenteHT(){
+    if (this.currentOuvrage.SousLotOuvrage !== undefined) {
+    this.dataShared.prixVenteHT(this.currentOuvrage.SousLotOuvrage)
     }
   }
 
@@ -177,10 +195,13 @@ export class SousDetailPrixComponent implements OnInit {
       if (this.currentOuvrage.SousLotOuvrage?.id){
         this.sousLotOuvrageService.updatedPrice(this.currentOuvrage.SousLotOuvrage.id, this.totalDBS).subscribe((res)=>{
           console.log("response",res)
-
-
         })
       }
+    }
+    if(this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage && !this.currentOuvrage.CoutDuDevis?.length){
+      this.totalDBS.prixOuvrage = this.currentOuvrage.prix * this.currentOuvrage.SousLotOuvrage.quantityOuvrage
+      this.dataShared.SetPrixOuvrage(this.totalDBS, this.currentOuvrage.SousLotOuvrage)
+
     }
   }
 
@@ -245,6 +266,31 @@ export class SousDetailPrixComponent implements OnInit {
     }).afterClosed().subscribe(async result => {
         this.ngOnInit()
 
+    });
+  }
+
+  openDialogUpdateCout(coutDuDevis: CoutDuDevis) {
+    this.dialog.open(FormCoutComponent, {
+      data: coutDuDevis,
+      width: '55%',
+      height: '60%'
+    }).afterClosed().subscribe(async result => {
+      this.ngOnInit()
+
+    });
+  }
+
+
+
+  deleteItem(coutDuDeviId: number) {
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Appeler la fonction de suppression ici
+        this.coutService.deleteCoutDuDevisByID(coutDuDeviId).subscribe(() => this.ngOnInit())
+
+        // this.ouvrageCoutService.deleteCoutAndOuvrageDuDevis(coutDuDeviId, this.currentOuvrage.id).subscribe(() => this.ngOnInit())
+      }
     });
   }
 

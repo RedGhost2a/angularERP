@@ -7,6 +7,7 @@ export class Devis {
   EntrepriseId!: number;
   createdAt?: Date;
   Client!: Client;
+
   fraisGeneraux!:number;
   coutTotal !:number;
   debourseSecTotal !:number;

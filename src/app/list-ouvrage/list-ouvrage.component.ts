@@ -34,22 +34,26 @@ export class ListOuvrageComponent implements OnInit {
     })
 
   }
+
   applyFilter(event: Event) {
     console.log(event)
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  getAll(entrepriseId:number): void {
+  getAll(entrepriseId: number): void {
     this.ouvrageService.getAll(entrepriseId).subscribe(data => {
       this.listOuvrage = data;
+      console.log(data)
       this.dataSource = new MatTableDataSource(this.listOuvrage);
-      data.forEach((ouvrage : Ouvrage) =>{
-        ouvrage.prix = 0 ;
-        ouvrage.Couts?.forEach((cout:Cout)=>{
-          if(cout.OuvrageCout?.ratio)
-          ouvrage.prix += cout.prixUnitaire * cout.OuvrageCout?.ratio
-        })
+      data.forEach((ouvrage: Ouvrage) => {
+        if (!ouvrage.prix) {
+          ouvrage.prix = 0;
+          ouvrage.Couts?.forEach((cout: Cout) => {
+            if (cout.OuvrageCout?.ratio)
+              ouvrage.prix += cout.prixUnitaire * cout.OuvrageCout?.ratio
+          })
+        }
       })
     })
   }
@@ -69,7 +73,7 @@ export class ListOuvrageComponent implements OnInit {
   }
 
 
-  openDialogCreate(ouvrage:Ouvrage | null) {
+  openDialogCreate(ouvrage: Ouvrage | null) {
     this.dialog.open(FormOuvrageComponent, {
       data: ouvrage,
       width: '70%',

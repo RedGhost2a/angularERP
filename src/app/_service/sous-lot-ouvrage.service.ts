@@ -9,6 +9,7 @@ import {environment} from '../../environments/environment';
 const baseUrl = `${environment.apiUrl}/sousLotsOuvrages`;
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -29,5 +30,10 @@ export class SousLotOuvrageService {
   getSommeSousLot(id: number): Observable<number> {
     return this.http.get<number>(`${baseUrl}/sum/${id}`)
   }
+
+  createSousLotOuvrage(data : any): Observable<any> {
+    return this.http.post(`${baseUrl}/new`, data)
+  }
+
 
 }

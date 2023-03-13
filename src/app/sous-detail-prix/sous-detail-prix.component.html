@@ -1,3 +1,5 @@
+<div class="testcontainer">
+
 <div class="container">
 
 <h1>{{currentOuvrage.designation}}</h1>
@@ -130,6 +132,29 @@
     </mat-card-content>
   </mat-card>
 
+  <mat-card class="cardParams">
+    <mat-card-header>
+      <mat-card-title>Prix Calculé</mat-card-title>
+    </mat-card-header>
+    <hr>
+    <mat-card-content>
+      <div class="containerParams">
+        <div class="paramsSub">
+          <mat-card-subtitle>Prix de vente HT</mat-card-subtitle>
+          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
+            <p>{{this.currentOuvrage.SousLotOuvrage?.prixVenteHT}}</p>
+          </div>
+          <mat-card-subtitle>Prix de vente Uni </mat-card-subtitle>
+          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
+            <p>{{this.currentOuvrage.SousLotOuvrage?.prixUniVenteHT}}</p>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+
+
 </div>
 <div class="btnSousDetails">
   <button  mat-raised-button color="primary" (click)="openDialogImport(this.currentOuvrage.id)">
@@ -207,10 +232,28 @@
       <th mat-header-cell *matHeaderCellDef>Prix HT calculé</th>
       <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixCalcHT | number : '1.2-2'}} €</td>
     </ng-container>
+    <ng-container matColumnDef="boutons" *ngIf="this.currentOuvrage.SousLots !== undefined">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let coutDuDevis"> <span class="designation-ouvrage-frais-chantier">
+                  <mat-icon [matMenuTriggerFor]="boutonOuv">more_vert</mat-icon>
+                <mat-menu class="menuBoutonSl" #boutonOuv>
+                  <button mat-button color="primary" (click)="openDialogUpdateCout(coutDuDevis)">
+                    Modifier le composant
+                  </button>
+                  <button mat-button color="warn" (click)="deleteItem(coutDuDevis.id)">
+                    Effacer le composant
+                  </button>
+                </mat-menu>
+
+                  </span>
+      </td>
+    </ng-container>
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"  ></tr>
 <!--    <tr mat-header-row *matHeaderRowDef="columnsToDisplay" style="font-weight: normal;font-style: oblique" ></tr>-->
     <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay" ></tr>
   </table>
+</div>
+
 </div>
 
 </div>

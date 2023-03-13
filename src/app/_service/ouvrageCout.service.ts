@@ -55,4 +55,8 @@ export class OuvrageCoutService {
     return this.http.post(`${baseUrl}DuDevis/new`, data)
   }
 
+  deleteCoutAndOuvrageDuDevis(CoutDuDeviId: number,OuvrageDuDeviId:number ):Observable<any>{
+    return this.http.delete(`${baseUrl}DuDevis/${CoutDuDeviId}/${OuvrageDuDeviId}`)
+  }
+
 }

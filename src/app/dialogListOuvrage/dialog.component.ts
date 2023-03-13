@@ -1,11 +1,20 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {animate, state, style, transition, trigger} from "@angular/animations";
+import {Cout} from "../_models/cout";
 
 
 @Component({
   selector: 'app-dialogListOuvrage',
   templateUrl: './dialog.component.html',
-  styleUrls: ['./dialog.component.scss']
+  styleUrls: ['./dialog.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class DialogComponent implements OnInit {
 
@@ -13,6 +22,16 @@ export class DialogComponent implements OnInit {
   selectedOuvrageIds: number[] = [];
   dataSource: any[] = [];
   initialData!: any[]; // Déclarez la variable initialData comme étant un tableau de type any
+  columnsToDisplay = [
+    "checkBox",
+    "designation",
+    "benefice",
+    "aleas", "unite", "ratio", "uRatio", "prixUnitaire",
+  ];
+  expandedElement: any ;
+
+
+
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogComponent>) {
     this.initialData = this.data;
@@ -20,8 +39,25 @@ export class DialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  }
+    console.log(this.initialData)
+    this.dataSource = this.initialData
+    this.setPriceOuvrage()
 
+  }
+  expandedRows: { [key: number]: boolean } = {};
+
+  expand(element: any) {
+    this.expandedRows[element] = !this.expandedRows[element]
+  }
+  setPriceOuvrage(){
+    this.initialData.forEach(ouvrage=>{
+      if(ouvrage.prix === 0){
+        ouvrage.Couts.forEach((cout : any) => {
+          ouvrage.prix += cout.prixUnitaire * cout.OuvrageCout.ratio
+        })
+      }
+    })
+  }
   onSelectionChange(id: number, isChecked: boolean) {
     if (isChecked) {
       // Ajouter l'id au tableau si la checkbox est cochée

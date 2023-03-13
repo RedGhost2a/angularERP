@@ -8,6 +8,7 @@ import {CoutDuDevis} from "../_models/cout-du-devis";
 import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 import {CoutService} from "../_service/cout.service";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
+import {Cout} from "../_models/cout";
 
 @Component({
   selector: 'app-dialog-form-cout',
@@ -18,6 +19,7 @@ export class DialogFormCoutComponent implements OnInit {
   myFormGroup!: FormGroup;
   initialData!: any[];
   coutDuDevis!:CoutDuDevis
+  cout!: Cout;
   constructor(private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogComponent>,
               private ouvrageService: OuvrageService, private dataSharingService : DataSharingService, private coutService : CoutService,
               private ouvrageCoutService : OuvrageCoutService)
@@ -53,7 +55,13 @@ export class DialogFormCoutComponent implements OnInit {
     this.coutDuDevis.remarque !== null ? this.myFormGroup.getRawValue().FournisseurId[1] : ""
     this.coutDuDevis.type = this.myFormGroup.getRawValue().TypeCoutId[0]
     this.coutDuDevis.categorie = this.myFormGroup.getRawValue().TypeCoutId[1]
-    console.log(this.myFormGroup.getRawValue())
+    // console.log(this.myFormGroup.getRawValue())
+    this.cout = this.myFormGroup.getRawValue();
+    console.log("cout",this.cout)
+    this.cout.FournisseurId = this.myFormGroup.getRawValue().FournisseurId[2]
+    this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[2]
+    this.coutService.create(this.cout).subscribe()
+
     this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe(responseCout => {
         const ouvrageCout: OuvrageCoutDuDevis = {
           OuvrageDuDeviId: this.dataSharingService.ouvrage.id,
@@ -64,10 +72,6 @@ export class DialogFormCoutComponent implements OnInit {
         this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCout).subscribe()
       }
     )
-    // console.log(this.coutDuDevis)
-    // this.coutDuDevis.fournisseur =
-    // console.log(this.myFormGroup.getRawValue())
-
   }
 
   closeDialog() {

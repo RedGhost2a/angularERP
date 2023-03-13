@@ -81,9 +81,13 @@ export class DialogListCoutComponent implements OnInit {
       this.coutService.getById(element).subscribe(cout => {
         console.log("cout checked", cout)
         if (cout.Fournisseur && cout.TypeCout) {
+          console.log('addcout ouvragedu devis')
           this.coutDuDevis = cout;
+          // console.log('this cout du devis ', this.coutDuDevis)
           this.coutDuDevis.fournisseur = cout.Fournisseur.commercialName
-          this.coutDuDevis.remarque = cout.Fournisseur.remarque !== null ? cout.Fournisseurs[0].remarque : ""
+          // console.log('this cout du devis ', this.coutDuDevis)
+          this.coutDuDevis.remarque = cout.Fournisseur.remarque !== null ? cout.Fournisseur.remarque : ""
+          console.log('this cout du devis ', this.coutDuDevis)
           //donne comme valeur undefined a l'id sinon le coutDuDevis sera creer avec l'id du Cout
           this.coutDuDevis.id = undefined
           this.coutDuDevis.type = cout.TypeCout.type
@@ -97,6 +101,7 @@ export class DialogListCoutComponent implements OnInit {
                 ratio: 1,
                 uRatio:uRatio,
               }
+              console.log("this ouvrage cout ", ouvrageCout)
               this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCout).subscribe()
             }
           )

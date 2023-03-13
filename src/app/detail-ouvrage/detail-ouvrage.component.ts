@@ -24,6 +24,7 @@ export class DetailOuvrageComponent implements OnInit {
   ouvrageID!: number
   // cout!:Cout[];
   listCout!: Cout[]
+  prix !: number;
   @Output() deleteCout: EventEmitter<any> = new EventEmitter()
   columnsToDisplay = ["designation", "benefice", "aleas", "unite", "ratio", "uRatio", "prixUnitaire", "boutons"];
   myFormGroup!: FormGroup;
@@ -44,6 +45,10 @@ export class DetailOuvrageComponent implements OnInit {
   }
 
   formGroupOuvrage(data: any): void {
+    console.log("datat",data)
+    if(data.prix === 0 || data.Couts?.length){
+      data.prix = this.prix
+    }
     this.formOuvrage = new FormGroup({
       designation: new FormControl(data.designation),
       benefice: new FormControl(data.benefice),
@@ -71,7 +76,9 @@ export class DetailOuvrageComponent implements OnInit {
         //   if(cout.OuvrageCout)
         this.uRatioUpdate(this.ouvrage)
         // })
-        this.getPriceOuvrage()
+        if(this.ouvrage.prix === 0 || this.ouvrage.Couts?.length) {
+          this.getPriceOuvrage()
+        }
         this.formGroupOuvrage(data)
         this.formRatioOuvrageCout()
         this.getAllCout(data.EntrepriseId)
@@ -91,12 +98,17 @@ export class DetailOuvrageComponent implements OnInit {
   }
 
   getPriceOuvrage(): void {
-    this.ouvrage.prix = 0;
+    // this.ouvrage.prix = 0;
+    this.prix = 0;
     this.ouvrage.Couts?.forEach(cout => {
       if(cout.OuvrageCout?.ratio)
-      this.ouvrage.prix += cout.prixUnitaire * cout.OuvrageCout?.ratio;
+      // this.ouvrage.prix += cout.prixUnitaire * cout.OuvrageCout?.ratio;
+      this.prix += cout.prixUnitaire * cout.OuvrageCout?.ratio;
     })
+    // this.ouvrage.prix = prix;
     console.log('PRIX DE L OUVRAGE', this.ouvrage.prix)
+    // this.ngOnInit()
+
   }
 
 
@@ -131,7 +143,8 @@ export class DetailOuvrageComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Appeler la fonction de suppression ici
-        this.coutService.deleteByID(id).subscribe(() => this.ngOnInit())
+        this.ouvrageCoutService.deleteByID(id, this.ouvrage.id).subscribe(() => this.ngOnInit())
+
       }
     });
   }

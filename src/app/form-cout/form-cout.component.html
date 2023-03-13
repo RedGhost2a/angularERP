@@ -17,7 +17,7 @@
       <mat-label>Prix Unitaire</mat-label>
       <input formControlName="prixUnitaire" matInput placeholder="Ex: 9,2">
     </mat-form-field>
-    <mat-form-field appearance="legacy">
+    <mat-form-field appearance="legacy" *ngIf="isCout">
       <mat-label>Type et catégorie du cout</mat-label>
       <mat-select formControlName="TypeCoutId">
         <mat-option *ngFor="let item of typeCout" [value]="item.id">
@@ -26,7 +26,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field appearance="legacy" style="width: 130px">
+    <mat-form-field appearance="legacy" style="width: 130px" *ngIf="isCout">
       <mat-label>Fournisseur</mat-label>
       <mat-select formControlName="FournisseurId">
         <mat-option *ngFor="let item of fournisseur" [value]="item.id">

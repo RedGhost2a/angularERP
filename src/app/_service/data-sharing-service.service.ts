@@ -30,8 +30,8 @@ export class DataSharingService {
   }
 
   async prixUnitaireHT(sousLotOuvrage: SousLotOuvrage) {
-    console.log("prix unitaire", sousLotOuvrage.prixOuvrage, sousLotOuvrage.quantityOuvrage)
     sousLotOuvrage.prixUniHT = sousLotOuvrage.prixOuvrage / sousLotOuvrage.quantityOuvrage
+    console.log("prix unitaire", sousLotOuvrage.prixUniHT, sousLotOuvrage.id)
   }
 
   async prixEquilibreHT(sousLotOuvrage: SousLotOuvrage) {
@@ -60,5 +60,10 @@ export class DataSharingService {
   async prixUnitaireCalculeHT(sousLotOuvrage: SousLotOuvrage) {
     sousLotOuvrage.prixUniCalcHT = sousLotOuvrage.prixCalcHT / sousLotOuvrage.quantityOuvrage
   }
+  async prixVenteHT(sousLotOuvrage : SousLotOuvrage){
+    sousLotOuvrage.prixVenteHT = sousLotOuvrage.prixUniVenteHT * sousLotOuvrage.quantityOuvrage
+  }
+
+
 
 }

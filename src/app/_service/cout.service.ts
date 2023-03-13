@@ -40,6 +40,9 @@ export class CoutService {
   deleteByID(id: number): Observable<Cout> {
     return this.http.delete<Cout>(`${environment.apiUrl}/couts/${id}`)
   }
+  deleteCoutDuDevisByID(id: number): Observable<CoutDuDevis> {
+    return this.http.delete<CoutDuDevis>(`${environment.apiUrl}/coutsDuDevis/${id}`)
+  }
 
   getLast(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/couts/lastCout`)
@@ -53,6 +56,9 @@ export class CoutService {
   createOuvrageCoutDuDevis(ouvrageId: any, coutDuDevis: CoutDuDevis): Observable<any> {
     console.log('data cout service ', coutDuDevis)
     return this.http.post(`${environment.apiUrl}/coutsDuDevis/test/${ouvrageId}`, coutDuDevis)
+  }
+  updateCoutDuDevis(data: Cout, id: number): Observable<CoutDuDevis> {
+    return this.http.put<CoutDuDevis>(`${environment.apiUrl}/coutsDuDevis/${id}`, data)
   }
 
 

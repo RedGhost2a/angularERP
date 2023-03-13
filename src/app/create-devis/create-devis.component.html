@@ -366,10 +366,15 @@
               <!--            </div>-->
               <!--          </div>-->
               <mat-menu class="menuBoutonSl" #boutonSL>
-                <button (click)="openDialogFraisDeChantier(sublot.id);currentSousLotId = sublot.id" mat-button
+                <button (click)="openDialog(sublot.id);currentSousLotId = sublot.id" mat-button
                         color="primary">
                   <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
                   Importer un ouvrage
+                </button>
+                <button (click)="openDialogCreate(sublot.id);currentSousLotId = sublot.id" mat-button
+                        color="primary">
+                  <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
+                  Creer un ouvrage
                 </button>
                 <button mat-button color="warn" *ngIf="lotFraisDeChantier"
                         (click)="deleteSousLot(sublot.id)">
@@ -420,19 +425,29 @@
                     <span class="designation-ouvrage-frais-chantier">Ratio</span>
                     <span class="designation-ouvrage-frais-chantier">{{ouvrage.ratio}}</span>
                   </div>
+
+
+
+
                   <div class="detail-ouvrage-frais-chantier">
                     <span class="designation-ouvrage-frais-chantier">Total DS HT</span>
                     <span
                       class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixOuvrage | number: '1.2-2'}}
                       €</span>
+
                   </div>
-                  <div class="detail-ouvrage-frais-chantier">
+                  <div class="detail-ouvrage-frais-chantier" *ngIf="ouvrage.CoutDuDevis">
                     <span class="designation-ouvrage-frais-chantier">PU DS HT </span>
 
-
-                    <span
+                    <span *ngIf="ouvrage.CoutDuDevis.length >= 1"
                       class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniHT | number: '1.2-2'}}
+                      €
+                    </span>
+                    <span *ngIf="ouvrage.CoutDuDevis.length === 0"
+                      class="designation-ouvrage-frais-chantier">{{ouvrage.prix | number: '1.2-2'}}
                       €</span>
+
+
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
                     <span class="designation-ouvrage-frais-chantier">Prix Equilibre HT</span>

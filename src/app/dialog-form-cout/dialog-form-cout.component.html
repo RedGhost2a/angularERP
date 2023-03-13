@@ -49,7 +49,7 @@
         <mat-form-field appearance="legacy">
           <mat-label>Type et catégorie du cout</mat-label>
           <mat-select formControlName="TypeCoutId">
-            <mat-option *ngFor="let item of initialData[0]"[value]="[item.type, item.categorie]" >
+            <mat-option *ngFor="let item of initialData[0]"[value]="[item.type, item.categorie, item.id]" >
               {{item.type}} {{item.categorie}} {{item.id}}
             </mat-option>
           </mat-select>
@@ -59,7 +59,7 @@
           <mat-label>Fournisseur</mat-label>
           <mat-select formControlName="FournisseurId">
             <!--                  <mat-select formControlName="Fournisseurs">-->
-            <mat-option *ngFor="let item of initialData[1]" [value]="[item.commercialName, item.remarque]">
+            <mat-option *ngFor="let item of initialData[1]" [value]="[item.commercialName, item.remarque, item.id]">
               {{item.commercialName}} {{item.id}}
             </mat-option>
           </mat-select>
