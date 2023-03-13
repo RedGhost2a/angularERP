@@ -1,4 +1,3 @@
-
 <!--<ng-container [formGroup]="this.myFormGroup">-->
 <!--  <button routerLink="/listTypeCout" mat-raised-button color="accent">Retour</button>-->
 <!--  <div class="container">-->
@@ -53,22 +52,28 @@
     <p>{{textForm}}</p>
     <div class="inputs">
 
-              <mat-form-field appearance="legacy">
-                <mat-label>Type</mat-label>
-                <input formControlName="type" matInput placeholder="Ex: Fourniture">
-              </mat-form-field>
-              <mat-form-field appearance="legacy">
-                <mat-label>Catégorie</mat-label>
-                <input formControlName="categorie" matInput placeholder="Ex: Transport">
-              </mat-form-field>
+      <mat-form-field appearance="legacy">
+        <mat-label>Type</mat-label>
+        <input formControlName="type" matInput placeholder="Ex: Fourniture">
+        <mat-error *ngIf="this.myFormGroup.get('type')?.hasError('required')">
+          Vous devez entrer un type.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="legacy">
+        <mat-label>Catégorie</mat-label>
+        <input formControlName="categorie" matInput placeholder="Ex: Transport">
+        <mat-error *ngIf="this.myFormGroup.get('categorie')?.hasError('required')">
+          Vous devez entrer une catégorie.
+        </mat-error>
+      </mat-form-field>
 
     </div>
 
 
     <div class="buttons">
 
-      <button mat-stroked-button color="primary" routerLink="/listTypeCout">Retour</button>
-      <button mat-raised-button color="primary" (click)="createAndUpdate();closeDialog()">{{textButton}}</button>
+      <button mat-stroked-button color="primary" (click)="closeDialog()">Retour</button>
+      <button mat-raised-button color="primary" (click)="createAndUpdate()">{{textButton}}</button>
     </div>
   </div>
 

@@ -5,67 +5,79 @@
     </div>
     <form class="form" [formGroup]="myFormGroup">
       <div class="form-row">
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label> Nom commerciale</mat-label>
           <input matInput placeholder="Entrer la dénomination commerciale" formControlName="commercialName">
         </mat-form-field>
-        <mat-form-field appearance="outline" color="primary">
+        <mat-form-field>
           <mat-label> Dénomination</mat-label>
           <input matInput placeholder="Entrer la dénomination" formControlName="denomination">
+          <mat-error *ngIf="myFormGroup.get('denomination')?.hasError('required')">
+            Vous devez choisir une dénomination au minimum.
+          </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label> Forme Juridique / Capital</mat-label>
           <input matInput placeholder="Entrer la forme juridique" formControlName="formeJuridique">
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label> Capital</mat-label>
           <input matInput placeholder="Entrer le capital" formControlName="capital">
         </mat-form-field>
       </div>
       <div class="form-row">
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label> RCS</mat-label>
           <input matInput placeholder="Entrer le RCS" formControlName="rcs">
         </mat-form-field>
-        <mat-form-field appearance="outline" style="width:50vw">
+        <mat-form-field style="width:50vw">
           <mat-label>Siret</mat-label>
           <input matInput placeholder="1234 Main St" formControlName="siret">
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label>Code NAF</mat-label>
           <input matInput formControlName="nafCode">
         </mat-form-field>
-        <mat-form-field appearance="outline" style="width:50vw">
+        <mat-form-field style="width:50vw">
           <mat-label>Numéro TVA</mat-label>
           <input matInput formControlName="tvaNumber">
         </mat-form-field>
       </div>
       <div class="form-row">
-        <mat-form-field appearance="outline" style="width:50vw">
+        <mat-form-field style="width:50vw">
           <mat-label>Adresse</mat-label>
           <input matInput formControlName="adresses">
+          <mat-error *ngIf="myFormGroup.get('adresses')?.hasError('required')">
+            Vous devez inscrire une adresse.
+          </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label>Code postal</mat-label>
           <input matInput formControlName="zipcode">
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label>Ville</mat-label>
           <input matInput formControlName="city">
+          <mat-error *ngIf="myFormGroup.get('city')?.hasError('required')">
+            Vous devez choisir une ville.
+          </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label>Pays</mat-label>
           <input matInput formControlName="country">
         </mat-form-field>
       </div>
       <div class="form-row">
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label>Email</mat-label>
           <input matInput formControlName="email">
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field>
           <mat-label>Numéro de téléphone</mat-label>
           <input matInput formControlName="phoneNumber">
+          <mat-error *ngIf="myFormGroup.get('phoneNumber')?.hasError('required')">
+            Vous devez mettre un numéro de téléphone.
+          </mat-error>
         </mat-form-field>
 
       </div>

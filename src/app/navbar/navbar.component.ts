@@ -60,7 +60,8 @@ export class NavbarComponent {
 
   openDialog() {
     const dialogRef = this.dialog.open(DialogNotesComponent, {
-      width: '250px'
+      width: '250px',
+      disableClose: true,
     });
 
     dialogRef.afterClosed().subscribe(result => {

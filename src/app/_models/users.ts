@@ -10,11 +10,12 @@ export class User {
   email!: string;
   password!: string;
   avatarUrl: any;
+  createdAt!: Date;
   EntrepriseId!: number;
   AdresseId?: number;
   token!: string;
-  Adresse!: Adresse
-  Entreprises!: Entreprise
+  Adresse!: Adresse;
+  Entreprises!: Entreprise;
 
 
 }

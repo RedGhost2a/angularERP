@@ -1,5 +1,5 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../_service/user.service";
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
@@ -31,14 +31,14 @@ export class UserEditComponent implements OnInit {
               private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr, private entrepriseService: EntrepriseService, public dialog: MatDialog) {
 
     this.userForm = new FormGroup({
-      'email': new FormControl(''),
-      'password': new FormControl(''),
-      'title': new FormControl(''),
-      'firstName': new FormControl(''),
-      'lastName': new FormControl(''),
-      'role': new FormControl(''),
+      'email': new FormControl('', [Validators.required, Validators.email]),
+      'password': new FormControl('', Validators.required),
+      'title': new FormControl('', Validators.required),
+      'firstName': new FormControl('', Validators.required),
+      'lastName': new FormControl('', Validators.required),
+      'role': new FormControl('', Validators.required),
       'avatarUrl': new FormControl(this.selectedAvatar),
-      'EntrepriseId': new FormControl('')
+      'EntrepriseId': new FormControl('', Validators.required)
     });
 
   }
@@ -60,6 +60,7 @@ export class UserEditComponent implements OnInit {
     "iron-man.png",
     "thanos.png",
     "thor-avengers.png",
+    "BiopuraGTP.jpg"
 
   ]
 
@@ -72,12 +73,17 @@ export class UserEditComponent implements OnInit {
   }
 
   createAndUpdate(): void {
+    this.userForm.markAllAsTouched();
+
     this.route.params.subscribe(params => {
       const userID = +params['id']
-      console.log(userID)
       if (isNaN(userID)) {
+        if (this.userForm.invalid) {
+          // Form is invalid, show error message
+          this.toastr.error("Le formulaire est invalide.", "Erreur !");
+          return;
+        }
         const userData = this.userForm.getRawValue();
-        // userData.avatarUrl = this.fileName;
         this.userService.register(userData).subscribe(
           (): void => {
             console.log(this.userForm.getRawValue())

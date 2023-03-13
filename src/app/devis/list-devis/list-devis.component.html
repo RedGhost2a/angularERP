@@ -3,9 +3,9 @@
 
   <div class="container-header">
     <h3 class="title"> Liste des devis</h3>
-    <button mat-flat-button class="btn">
-      <mat-icon [routerLink]="'/'">arrow_back</mat-icon>
-    </button>
+    <!--    <button mat-flat-button class="btn">-->
+    <!--      <mat-icon [routerLink]="'/'">arrow_back</mat-icon>-->
+    <!--    </button>-->
     <div class="header">
       <mat-form-field>
         <mat-label>Recherche d'un devis</mat-label>
@@ -39,7 +39,8 @@
 
       <ng-container matColumnDef="dateDevis">
         <th mat-header-cell *matHeaderCellDef> Date du devis</th>
-        <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.createdAt | date:'dd/MM/YYYY'}}</td>
+        <td routerLink="/devisDetail/{{devis.id}}" mat-cell
+            *matCellDef="let devis">{{devis.createdAt | date:'dd/MM/YYYY'}}</td>
       </ng-container>
 
       <ng-container matColumnDef="client">
@@ -53,7 +54,8 @@
       </ng-container>
       <ng-container matColumnDef="referent">
         <th mat-header-cell *matHeaderCellDef>Referent</th>
-        <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.Users[0].firstName}}<br>{{devis.Users[0].lastName}}</td>
+        <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.Users[0].firstName}}
+          <br>{{devis.Users[0].lastName}}</td>
       </ng-container>
 
 
@@ -72,11 +74,11 @@
         </td>
       </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row
           (click)="clickedRows.add(row)"
           [class.demo-row-is-clicked]="clickedRows.has(row)"
-          *matRowDef="let row; columns: displayedColumns;"  >
+          *matRowDef="let row; columns: displayedColumns;">
       </tr>
 
     </table>

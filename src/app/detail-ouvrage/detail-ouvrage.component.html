@@ -6,7 +6,7 @@
     <button mat-flat-button class="btn">
       <mat-icon routerLink="/listOuvrage">keyboard_arrow_left</mat-icon>
     </button>
-    <p>Ouvrage : {{ouvrage.designation}}</p>
+    <h1 style="font-weight: 500">Ouvrage : {{ouvrage.designation}}</h1>
   </div>
 
   <mat-card class="example-card" [formGroup]="formOuvrage">
@@ -235,11 +235,11 @@
 
 
   <ng-template #otherContent>
-      <mat-card class="card-no-cout" >
-        <mat-card-title-group class="group">
-            <mat-card-title >Aucun composant dans cet ouvrage</mat-card-title>
-        </mat-card-title-group>
-      </mat-card>
+    <mat-card class="card-no-cout">
+      <mat-card-title-group class="group">
+        <mat-card-title>Aucun composant dans cet ouvrage</mat-card-title>
+      </mat-card-title-group>
+    </mat-card>
 
   </ng-template>
 

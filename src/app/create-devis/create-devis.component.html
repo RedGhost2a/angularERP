@@ -213,9 +213,9 @@
                                                    (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">
                                           </mat-form-field>
                     </span>
-<!--                  <span-->
-<!--                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixVenteHT | number: '1.2-2'}}€-->
-<!--                  </span>-->
+                  <!--                  <span-->
+                  <!--                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixVenteHT | number: '1.2-2'}}€-->
+                  <!--                  </span>-->
                 </div>
                 <div>
                   <span class="designation-ouvrage-frais-chantier">
@@ -333,8 +333,9 @@
           <div class="lot-frais-chantier">
             <button class="btn" *ngIf="lot.SousLots && lot.SousLots.length"
                     (click)="setExpandedLotId(lot.id)">
-              <mat-icon>expand_more</mat-icon>
-              <span class="designation-sous-lot-frais-chantier">{{ lot.id | number }}</span>
+
+              <span class="designation-sous-lot-frais-chantier"><mat-icon>expand_more</mat-icon>
+                {{ lot.id | number }}</span>
             </button>
 
             <span class="designation-lot-frais-chantier">{{ lot.designation | titlecase }}</span>
@@ -361,7 +362,7 @@
               </button>
               <span
                 class="designation-sous-lot-frais-chantier">{{ sublot.designation | uppercase }}</span>
-              <span class="designation-sous-lot-frais-chantier"> {{ sublot.prix | number }} €</span>
+              <!--              <span class="designation-sous-lot-frais-chantier"> {{ sublot.prix | number }} €</span>-->
               <mat-icon [matMenuTriggerFor]="boutonSL">more_vert</mat-icon>
               <!--            </div>-->
               <!--          </div>-->

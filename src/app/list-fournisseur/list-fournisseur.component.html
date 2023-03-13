@@ -1,25 +1,25 @@
 <div class="big-container">
-
   <div class="container-header">
-      <h3 class="title"> Liste des fournisseurs</h3>
-      <button mat-flat-button class="btn">
-        <mat-icon [routerLink]="'/'">arrow_back</mat-icon>
-      </button>
+    <h3 class="title"> Liste des fournisseurs</h3>
+    <!--    <button mat-flat-button class="btn">-->
+    <!--      <mat-icon [routerLink]="'/'">arrow_back</mat-icon>-->
+    <!--    </button>-->
 
     <div class="header">
       <mat-form-field>
-        <mat-label>Recherche d'un fournisseur</mat-label>
+        <mat-label>Recherche d'un fournisseurs</mat-label>
         <div>
 
         </div>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ge..." #input>
       </mat-form-field>
 
-      <div>
-        <button (click)="openDialogCreate(null)" mat-raised-button color="primary">Ajouter un fournisseur</button>
-      </div>
+      <button (click)="openDialogCreate(null)" mat-raised-button color="primary">Ajouter un fournisseur</button>
+
     </div>
   </div>
+
+
   <div class="container">
 
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -56,6 +56,6 @@
       <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
     </table>
   </div>
+
+
 </div>
-
-

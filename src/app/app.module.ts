@@ -82,6 +82,7 @@ import {CustomBodyForNGXLoggerService} from "./_service/customBodyForNGXLogger.s
 import {MatBadgeModule} from "@angular/material/badge";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {environment} from "../environments/environment";
+import { AideComponent } from './aide/aide.component';
 
 
 const appRoutes: Routes = [];
@@ -132,6 +133,7 @@ declare const toastr: Toastr;
     DialogListCoutComponent,
     DialogFormCoutComponent,
     LogsComponent,
+    AideComponent,
 
 
   ],

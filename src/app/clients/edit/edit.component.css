@@ -1,24 +1,40 @@
-.mat-form-field {
-  padding: 10px;
-  text-align: center;
+.container {
+  display: flex;
+  flex-direction: column;
+  color: #334E68;
+}
+.container h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.container p {
+  margin-top: 2%;
+  font-size: 1rem;
 }
 
-mat-label {
-  color: #000000;
+#input-denomination {
+  width: 300px;
 }
 
-.form-group {
-  color: #000000;
-  text-align: center;
-  margin: auto;
-  padding: 3rem;
-  margin-top: 50px;
-  text-align: center;
-  color: #000;
+#input-categorie {
+  width: 100px;
 }
 
-.form {
-  margin-top: 60px;
+.inputs {
+  margin-bottom: 2%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3%;
 }
 
 /*# sourceMappingURL=edit.component.css.map */

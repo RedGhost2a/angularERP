@@ -5,6 +5,25 @@
   height: 100vh;
 }
 
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.logotype {
+  display: flex;
+  flex-direction: column;
+  line-height: 6px;
+  justify-content: space-between;
+  /* padding: 32px; */
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  font-family: "Michroma";
+  font-size: 20px;
+  color: rgb(8, 31, 44);
+}
+
 .card-login {
   background-color: #FFFFFF;
   margin-top: 20%;

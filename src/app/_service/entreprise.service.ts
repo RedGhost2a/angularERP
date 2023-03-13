@@ -34,7 +34,7 @@ export class EntrepriseService {
   }
 
   getClientByEntreprise(id: any): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/entreprises//admin/entreprise/client/${id}`)
+    return this.http.get(`${environment.apiUrl}/entreprises/admin/entreprise/client/${id}`)
   }
 
   deleteByID(id: any): Observable<any> {

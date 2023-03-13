@@ -24,6 +24,7 @@
 .wrapper {
   display: flex;
   flex-direction: column;
+  margin-top: 10px;
 }
 .wrapper_avatar {
   display: flex;
@@ -55,6 +56,7 @@
 }
 .wrapper_avatar_button_item {
   width: 50%;
+  font-family: Michroma;
 }
 
 .li {

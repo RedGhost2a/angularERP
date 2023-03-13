@@ -1,10 +1,5 @@
-* {
-  color: #000000;
 
-}
-body{
-min-height: 100%;
-}
+
 
 .user {
   //width: 180px;
@@ -18,8 +13,22 @@ min-height: 100%;
   }
 }
 
-.note {
+.big-container {
+  background-color: #F0F4F8;
+  height: 100%;
+}
 
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  background-color: #FFFFFF;;
+  color: rgb(8, 31, 44);
+  font-size: 1.2rem;
+  font-weight: 500;
+  font-family: Michroma;
+  border-top: 10px solid #0c5593;
 }
 
 .wrapper {
@@ -121,10 +130,13 @@ min-height: 100%;
   padding: 20px;
   display: inline-block;
   position: fixed;
-  top: 170px;
+  top: 280px;
   right: 40px;
 }
 
+.example-tab-icon {
+  color: #334E68;
+}
 
 //.mat-card-header {
 //  display: flex;

@@ -9,7 +9,7 @@ import {
   faHome,
   faList,
   faUser,
-  faUsers,
+  faUsers
 } from "@fortawesome/free-solid-svg-icons";
 
 
@@ -48,7 +48,7 @@ export const navbarDataAdmin = [
     label: 'Clients'
   },
   {
-    routeLink: 'blibli',
+    routeLink: 'bibli',
     icon: faBook,
     label: 'Bibliothèque',
     children: [
@@ -59,7 +59,7 @@ export const navbarDataAdmin = [
       },
       {
         routeLink: '/listCout',
-        label: "Couts",
+        label: "Composants",
         visible: true
       }
     ],
