@@ -1,9 +1,10 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {EntrepriseService} from "../_service/entreprise.service";
 import {Entreprise} from "../_models/entreprise";
 import {SuperAdminService} from "../_service/superAdmin.service";
 import {User} from "../_models/users";
 import {NotesService} from "../_service/notes.service";
+import {ImportExcelService} from "../_service/importExcel.service";
 import {Notes} from "../_models/notes";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
 import {MatDialog} from "@angular/material/dialog";
@@ -13,6 +14,13 @@ import {Log} from "../_models/log";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatTableDataSource} from "@angular/material/table";
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {DialogImportExcelComponent} from "../dialog-import-excel/dialog-import-excel.component";
+import {CoutService} from "../_service/cout.service";
+import {UserService} from "../_service/user.service";
+import {TypeCoutService} from "../_service/typeCout.service";
+import {FournisseurService} from "../_service/fournisseur.service";
+import {ImportExcel} from "../_models/importExcel";
+import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 
 
 @Component({
@@ -52,13 +60,24 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
   dataSource !: MatTableDataSource<Log>;
   dataSource2 !: MatTableDataSource<Log>;
   public notesForm: FormGroup;
+  file: File | undefined;
+  data: any[] = [];
+  importForm!: FormGroup;
+  importedFiles!: ImportExcel[];
+
 
   constructor(private entrepriseService: EntrepriseService,
               private superAdminService: SuperAdminService,
               private notesService: NotesService,
               private dialog: MatDialog,
               private logService: LogsService,
-              private formBuilder: FormBuilder
+              private formBuilder: FormBuilder,
+              private importExcelService: ImportExcelService,
+              private coutService: CoutService,
+              private userService: UserService,
+              private typeCoutService: TypeCoutService,
+              private fournisseurService: FournisseurService,
+              @Inject(TOASTR_TOKEN) private toastr: Toastr,
   ) {
     this.dataSource = new MatTableDataSource<Log>();
     this.dataSource2 = new MatTableDataSource<Log>();
@@ -75,6 +94,11 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
 
     })
 
+    this.importForm = this.formBuilder.group({
+      title: '',
+      data: ""
+    })
+
   }
 
   ngAfterViewInit() {
@@ -87,8 +111,16 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
     this.getAllNotes()
     this.getLogs()
     this.getNotesAndLogsByTimestamp()
+    // this.uploadData()
+    this.getAllImportExcel()
+
   }
 
+  getAllImportExcel() {
+    this.importExcelService.getAll().subscribe(data => {
+      this.importedFiles = data;
+    });
+  }
 
   getAll(): void {
     this.entrepriseService.getAll().subscribe((data: any) => {
@@ -215,4 +247,84 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
   }
 
 
+  openImportDialog(): void {
+    const dialogRef = this.dialog.open(DialogImportExcelComponent, {
+      width: '500px',
+      // data: { form: this.importForm }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  async uploadData(): Promise<void> {
+    const file = this.importedFiles.find(f => f.checked);
+    if (!file) {
+      this.toastr.error('Erreur', 'Aucun fichier séléctionner')
+      return
+    }
+    if (file) {
+      this.importExcelService.getById(file.id).subscribe(async data => {
+        // console.log(data)
+        for (let i = 1; i < data.data.data.length; i++) {
+          const ligne = data.data.data[i];
+          // console.log(ligne)
+          try {
+            this.fournisseurService.getFournisseurIdByName(ligne[5]).subscribe(fournisseurId => {
+              const fournId: number = fournisseurId
+              // console.log(fournisseurId)
+              try {
+                this.typeCoutService.getTypeCoutIdByLabel(ligne[0]).subscribe(typeCout => {
+                  const typeId: number = typeCout
+                  // console.log(typeCout)
+                  try {
+                    this.userService.getById(this.userService.userValue.id).subscribe(data => {
+                      const userId = data.id;
+                      // console.log(userId);
+
+                      const cout = {
+                        id: 0,
+                        TypeCoutId: typeId,
+                        designation: ligne[1],
+                        EntrepriseId: data.Entreprises[0].id,
+                        prixUnitaire: ligne[3],
+                        unite: ligne[4],
+                        FournisseurId: fournId
+                      };
+
+                      console.log(cout)
+
+                      this.coutService.create(cout).subscribe(
+                        () => {
+                          this.toastr.success('Parfait', 'Ajout a la bibliothèque réussie')
+                        },
+                        (error) => {
+                          this.toastr.error('Attention', 'Une erreur est survenue')
+                        }
+                      );
+
+                    });
+                  } catch (error) {
+                    this.toastr.error('Attention', 'Une erreur est survenue')
+
+                    console.error(error);
+                  }
+                });
+              } catch (error) {
+                this.toastr.error('Attention', 'Une erreur est survenue')
+                console.error(error);
+              }
+
+            })
+          } catch (error) {
+            this.toastr.error('Attention', 'Une erreur est survenue')
+
+            console.error(error);
+          }
+
+        }
+      })
+    }
+  }
 }

@@ -4,18 +4,20 @@
     <!--  <ng-container>-->
     <h3>{{titreForm}}</h3>
     <p>{{textForm}}</p>
+    <blockquote style="font-size: 10px; font-style: italic">Les champs marqués d'une astérisque * sont obligatoires.
+    </blockquote>
 
     <!--    <form class="form" [formGroup]="myFormGroup">-->
     <div class="inputs">
       <div class="input">
-      <mat-form-field appearance="legacy" id="input-denomination">
-        <mat-label>Dénomination</mat-label>
-        <input type="text" matInput placeholder="Entrer la dénomination commerciale" formControlName="denomination">
-      </mat-form-field>
-<!--        <div *ngIf=" f['denomination'].invalid && f['denomination'].touched  " class="invalid-feedback">-->
-<!--          <div *ngIf="f['denomination'].errors?.['required']">La dénomination est requise !</div>-->
-<!--          <div *ngIf="f['denomination'].errors?.['minlength']">La dénomination doit faire 3 caractéres au min !</div>-->
-<!--        </div>-->
+        <mat-form-field appearance="legacy" id="input-denomination">
+          <mat-label>Dénomination</mat-label>
+          <input type="text" matInput placeholder="Entrer la dénomination commerciale" formControlName="denomination">
+          <mat-error *ngIf="this.myFormGroup.get('denomination')?.hasError('required')">
+            Vous devez choisir une dénomination.
+          </mat-error>
+        </mat-form-field>
+
       </div>
 
       <mat-form-field appearance="legacy" id="input-categorie">
@@ -44,88 +46,94 @@
     </div>
     <h4>Adresse du siège social</h4>
     <div class="inputs" formGroupName="Adresse">
-<!--      <div formGroupName="Adresse">-->
-        <mat-form-field appearance="legacy">
-          <mat-label>Adresse</mat-label>
-          <input type="text" matInput placeholder="Avenue de la Grande Armée" formControlName="adresses"
-                 style="width: 70px">
-        </mat-form-field>
+      <!--      <div formGroupName="Adresse">-->
+      <mat-form-field appearance="legacy">
+        <mat-label>Adresse</mat-label>
+        <input type="text" matInput placeholder="Avenue de la Grande Armée" formControlName="adresses"
+               style="width: 70px">
+        <mat-error *ngIf="this.myFormGroup.get('Adresse.adresses')?.hasError('required')">
+          Vous devez inscrire une adresses.
+        </mat-error>
+      </mat-form-field>
 
       <div class="input">
         <mat-form-field appearance="legacy">
           <mat-label>Code postal</mat-label>
           <input type="number" matInput placeholder=" Ex. 20167" formControlName="zipcode">
-
+          <!--          <mat-error *ngIf="this.myFormGroup.get('Adresse.zipcode')?.hasError('required')">-->
+          <!--            Vous devez inscrire un code postal.-->
+          <!--          </mat-error>-->
         </mat-form-field>
-<!--                    <div *ngIf=" f['zipcode'].invalid && f['zipcode'].touched  " class="invalid-feedback">-->
-<!--                      <div *ngIf="f['zipcode'].errors?.['required']">Le code postal est requis !</div>-->
-<!--                      <div *ngIf="f['zipcode'].errors?.['pattern']">Le code postal doit faire 5 caractéres!</div>-->
-<!--                    </div>-->
+
       </div>
 
-        <mat-form-field appearance="legacy">
-          <mat-label>Ville</mat-label>
-          <input type="text" matInput placeholder="Ajaccio" formControlName="city">
-        </mat-form-field>
+      <mat-form-field appearance="legacy">
+        <mat-label>Ville</mat-label>
+        <input type="text" matInput placeholder="Ajaccio" formControlName="city">
+        <mat-error *ngIf="this.myFormGroup.get('city')?.hasError('required')">
+          Vous devez inscrire une ville.
+        </mat-error>
+
+      </mat-form-field>
 
 
-        <mat-form-field appearance="legacy">
-          <mat-label>Pays</mat-label>
-          <input type="text" matInput placeholder=" France" formControlName="country">
-        </mat-form-field>
-      </div>
-      <h4>Contact</h4>
+      <mat-form-field appearance="legacy">
+        <mat-label>Pays</mat-label>
+        <input type="text" matInput placeholder=" France" formControlName="country">
+      </mat-form-field>
+    </div>
+    <h4>Contact</h4>
 
-      <div class="inputs">
-        <div class="input">
+    <div class="inputs">
+      <div class="input">
         <mat-form-field appearance="legacy" color="primary">
           <mat-label>Nom</mat-label>
           <input type="text" matInput placeholder="Entrer le nom" formControlName="firstName">
         </mat-form-field>
-<!--          <div *ngIf=" f.Adresse['firstName'].invalid && f['firstName'].touched  " class="invalid-feedback">-->
-<!--            <div *ngIf="f.Adresse['firstName'].errors?.['required']">Le nom est requis !</div>-->
-<!--            <div *ngIf="f.Adresse['firstName'].errors?.['minlength']">Le nom doit faire 3 caractéres au min !</div>-->
-<!--          </div>-->
-        </div>
+        <!--          <div *ngIf=" f.Adresse['firstName'].invalid && f['firstName'].touched  " class="invalid-feedback">-->
+        <!--            <div *ngIf="f.Adresse['firstName'].errors?.['required']">Le nom est requis !</div>-->
+        <!--            <div *ngIf="f.Adresse['firstName'].errors?.['minlength']">Le nom doit faire 3 caractéres au min !</div>-->
+        <!--          </div>-->
+      </div>
 
-        <div class="input">
+      <div class="input">
         <mat-form-field appearance="legacy">
           <mat-label>Prénom</mat-label>
           <input type="text" matInput placeholder="Entrer le prénom" formControlName="lastName">
         </mat-form-field>
-<!--          <div *ngIf=" f['lastName'].invalid && f['lastName'].touched  " class="invalid-feedback">-->
-<!--            <div *ngIf="f['lastName'].errors?.['required']">Le prénom est requis !</div>-->
-<!--            <div *ngIf="f['lastName'].errors?.['minlength']">Le prénom doit faire 3 caractéres au min !</div>-->
-<!--          </div>-->
-        </div>
+        <!--          <div *ngIf=" f['lastName'].invalid && f['lastName'].touched  " class="invalid-feedback">-->
+        <!--            <div *ngIf="f['lastName'].errors?.['required']">Le prénom est requis !</div>-->
+        <!--            <div *ngIf="f['lastName'].errors?.['minlength']">Le prénom doit faire 3 caractéres au min !</div>-->
+        <!--          </div>-->
+      </div>
 
-        <div class="input">
-      <mat-form-field appearance="legacy">
-        <mat-label>Email</mat-label>
-        <input type="email" matInput formControlName="email">
-      </mat-form-field>
-<!--        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">-->
-<!--          <div *ngIf="f['email'].errors['required']">Le mail est requis !</div>-->
-<!--        </div>-->
-        </div>
+      <div class="input">
+        <mat-form-field appearance="legacy">
+          <mat-label>Email</mat-label>
+          <input type="email" matInput formControlName="email">
+        </mat-form-field>
+        <!--        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">-->
+        <!--          <div *ngIf="f['email'].errors['required']">Le mail est requis !</div>-->
+        <!--        </div>-->
+      </div>
 
-        <div class="input">
-      <mat-form-field appearance="legacy">
-        <mat-label>Numéro de téléphone</mat-label>
-        <input type="number" matInput formControlName="phonenumber">
+      <div class="input">
+        <mat-form-field appearance="legacy">
+          <mat-label>Numéro de téléphone</mat-label>
+          <input type="number" matInput formControlName="phonenumber">
 
-      </mat-form-field>
-<!--        <div *ngIf=" f['phonenumber'].invalid && f['phonenumber'].touched  " class="invalid-feedback">-->
-<!--          <div *ngIf="f['phonenumber'].errors?.['required']">Le téléphone est requis !</div>-->
-<!--          <div *ngIf="f['phonenumber'].errors?.['pattern']">Le téléphone doit etre comme suit : 01 23 45 67 89!</div>-->
-<!--        </div>-->
-        </div>
+        </mat-form-field>
+        <!--        <div *ngIf=" f['phonenumber'].invalid && f['phonenumber'].touched  " class="invalid-feedback">-->
+        <!--          <div *ngIf="f['phonenumber'].errors?.['required']">Le téléphone est requis !</div>-->
+        <!--          <div *ngIf="f['phonenumber'].errors?.['pattern']">Le téléphone doit etre comme suit : 01 23 45 67 89!</div>-->
+        <!--        </div>-->
+      </div>
     </div>
 
 
     <div class="buttons">
-      <button mat-stroked-button color="primary" routerLink="/listCout">Retour</button>
-      <button mat-raised-button color="primary" (click)="createAndUpdate();closeDialog()">{{textButton}}</button>
+      <button mat-stroked-button color="primary" (click)="closeDialog()">Retour</button>
+      <button mat-raised-button color="primary" (click)="createAndUpdate()">{{textButton}}</button>
     </div>
   </div>
 </ng-container>

@@ -27,7 +27,7 @@ export class FormCoutComponent implements OnInit {
   myFormGroup!: FormGroup;
   textButton: string = "Ajouter ce composant";
   titreForm: string = "Ajout d'un composant dans la blibliothèque de prix";
-  textForm : string = "L'ajout d'un composant permet de l'utiliser au sein de la bibliothèque de prix et dans la création de devis"
+  textForm: string = "L'ajout d'un composant permet de l'utiliser au sein de la bibliothèque de prix et dans la création de devis"
   typeCout !: TypeCout[];
   fournisseur!: Fournisseur[];
   userId = this.userService.userValue.id;
@@ -35,7 +35,9 @@ export class FormCoutComponent implements OnInit {
   cout!: Cout
   regexSousDetail = new RegExp(`^/sousDetailPrix`)
   regexCout = new RegExp(`^/listCout`)
-  isCout : boolean = true;
+  isCout: boolean = true;
+  categories: any[] = [];
+
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Cout,
               private dialogRef: MatDialogRef<DialogComponent>,
@@ -51,17 +53,20 @@ export class FormCoutComponent implements OnInit {
 
 
   ngOnInit(): void {
+
     this.createFormCout();
     this.getUserById();
     console.log(window.location.pathname)
-    if(this.regexSousDetail.test(window.location.pathname))
+    if (this.regexSousDetail.test(window.location.pathname))
       this.isCout = false;
-    if (this.initialData !== null )
+    if (this.initialData !== null)
       this.generateFormUpdate();
   }
 
   //Determine si c'est l'ajout d'un nouveau cout ou la modification d'un cout existant au click
   createAndUpdate(): void {
+    console.log(this.myFormGroup.getRawValue())
+
     this.myFormGroup.markAllAsTouched();
     if (this.myFormGroup.invalid) {
       // Form is invalid, show error message
@@ -72,12 +77,14 @@ export class FormCoutComponent implements OnInit {
       this.coutService.create(this.myFormGroup.getRawValue()).subscribe(data => {
         this.closeDialog()
       });
-    } if(this.regexCout.test(window.location.pathname)) {
-      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(()=>{
+    }
+    if (this.regexCout.test(window.location.pathname)) {
+      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(() => {
         this.closeDialog()
       });
-    }if(this.regexSousDetail.test(window.location.pathname)){
-      this.coutService.updateCoutDuDevis(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(()=>{
+    }
+    if (this.regexSousDetail.test(window.location.pathname)) {
+      this.coutService.updateCoutDuDevis(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(() => {
         this.closeDialog()
       })
     }
@@ -110,10 +117,20 @@ export class FormCoutComponent implements OnInit {
   getAllTypeCouts(entrepriseID: number): void {
     this.typeCoutService.getAllTypeCouts(entrepriseID).subscribe(data => {
         this.typeCout = data;
+        console.log(this.typeCout)
 
       }
     )
   }
+
+  getCategorieByType(type: string): void {
+    this.typeCoutService.getCategorieByType(type).subscribe(data => {
+      this.categories = data;
+
+      console.log(this.categories);
+    });
+  }
+
 
   //Recupere tous les fournisseurs pour implementer le select picker du template
   getAllFournisseur(entrepriseId: number): void {
@@ -131,6 +148,7 @@ export class FormCoutComponent implements OnInit {
     this.textButton = "Modifier ce composant"
     this.myFormGroup.patchValue(this.initialData)
   }
+
   closeDialog() {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
     this.dialogRef.close();

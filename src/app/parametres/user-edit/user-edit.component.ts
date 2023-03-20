@@ -73,8 +73,8 @@ export class UserEditComponent implements OnInit {
   }
 
   createAndUpdate(): void {
+    console.log(this.userForm.getRawValue())
     this.userForm.markAllAsTouched();
-
     this.route.params.subscribe(params => {
       const userID = +params['id']
       if (isNaN(userID)) {
@@ -135,22 +135,18 @@ export class UserEditComponent implements OnInit {
       const userID = +params['id']
       if (!isNaN(userID)) {
         this.textButton = "Modification d'un  utilisateur"
-
         this.userService.getById(userID).subscribe(data => {
           // Assuming res has a structure like:
           data = {
             email: data.email,
-            // password: data.password,
+            password: data.password,
             title: data.title,
             firstName: data.firstName,
             lastName: data.lastName,
             role: data.role,
             avatarUrl: data.avatarUrl,
             EntrepriseId: data.EntrepriseId,
-
-
           }
-
           this.userForm.patchValue(data);
         });
       } else {
@@ -164,12 +160,8 @@ export class UserEditComponent implements OnInit {
           password: [],
           avatarUrl: [],
           EntrepriseId: [],
-          // Entreprise: {}
-
         });
-
       }
     })
   }
-
 }

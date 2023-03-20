@@ -13,10 +13,12 @@
   align-items: center;
   justify-content: center;
   height: 70px;
-  background-color: #FFFFFF;
-  color: #334E68;
   font-size: 1.2rem;
   font-weight: 500;
+  background-color: #FFFFFF;
+  color: rgb(8, 31, 44);
+  font-family: Michroma;
+  border-top: 10px solid #0c5593;
 }
 
 .example-card {

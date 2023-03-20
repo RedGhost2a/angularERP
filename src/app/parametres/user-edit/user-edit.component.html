@@ -39,7 +39,6 @@
     </mat-form-field>
     <mat-form-field class="input-group">
       <mat-label class="mat-label">Role</mat-label>
-
       <mat-select formControlName="role">
         <mat-option value="Admin">Super Admin</mat-option>
         <mat-option value="Admin">Admin</mat-option>
@@ -50,19 +49,22 @@
       </mat-error>
     </mat-form-field>
     <mat-form-field class="input-group">
-      <mat-label class="mat-label">Entreprise</mat-label>
-      <mat-select formControlName="EntrepriseId">
+      <mat-label class="mat-label">Entreprises</mat-label>
+      <mat-select formControlName="EntrepriseId" multiple>
         <mat-option [value]=+entreprise.id
-                    *ngFor="let entreprise of listEntreprise">{{entreprise.commercialName}}</mat-option>
+                    *ngFor="let entreprise of listEntreprise">{{ entreprise.denomination }}</mat-option>
+
       </mat-select>
+
       <mat-error *ngIf="userForm.get('EntrepriseId')?.hasError('required')">
-        Vous devez choisir une entreprise.
+        Vous devez choisir au moins une entreprise.
       </mat-error>
     </mat-form-field>
 
+
     <mat-form-field class="input-group">
       <mat-label class="mat-label">Email</mat-label>
-      <input matInput placeholder="1234 Main St" formControlName="email">
+      <input matInput placeholder="toto@test.com" formControlName="email">
       <mat-error *ngIf="userForm.get('email')?.hasError('required')">
         Vous devez entrer une adresse e-mail.
       </mat-error>
@@ -72,7 +74,7 @@
     </mat-form-field>
     <mat-form-field class="input-group">
       <mat-label class="mat-label">Password</mat-label>
-      <input matInput formControlName="password">
+      <input type="password" matInput formControlName="password" autocomplete="current-password">
       <mat-error *ngIf="userForm.get('password')?.hasError('required')">
         Vous devez définir un mot de passe.
       </mat-error>

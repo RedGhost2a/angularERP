@@ -30,9 +30,11 @@
 //}
 .container {
   display: flex;
+
   flex-direction: column;
   color: #334E68;
   //margin-top: 3%;
+  overflow: hidden;
 
   h3 {
     font-size: 1.2rem;

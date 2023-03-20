@@ -23,6 +23,10 @@ export class FournisseurService {
     })
   }
 
+  getFournisseurIdByName(commercialName: string): Observable<any> {
+    return this.http.get<any>(`${baseUrl}/name/${commercialName}`);
+  }
+
   deleteFournisseurById(id: number): Observable<Fournisseur> {
     return this.http.delete<Fournisseur>(`${baseUrl}/${id}`)
   }

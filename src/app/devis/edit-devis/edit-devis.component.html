@@ -31,7 +31,7 @@
         <mat-label>Entreprise</mat-label>
         <mat-select formControlName="EntrepriseId">
           <mat-option [value]=+entreprise.id
-                      *ngFor="let entreprise of listEntreprise">{{entreprise.commercialName}}</mat-option>
+                      *ngFor="let entreprise of curentUserEntreprise">{{entreprise.denomination}}</mat-option>
         </mat-select>
         <mat-error *ngIf="this.myFormGroup.get('EntrepriseId')?.hasError('required')">
           Vous devez choisir une entreprise.
@@ -41,7 +41,8 @@
 
       <mat-form-field appearance="legacy">
         <mat-label>Status</mat-label>
-        <select formControlName="status" matNativeControl required>
+        <select formControlName="status" matNativeControl value="Initialisation">
+
           <option value="Initialisation">Initialisation</option>
           <option value="Extraction">Bon pour extraction</option>
           <option value="Facturation">Facturation</option>

@@ -2,11 +2,14 @@
   margin-left: 30px;
 }
 
+.cout-in-ouvrage {
+  display: flex;
+  flex-direction: column;
+}
+
 .container {
   display: flex;
   flex-direction: column;
-  margin-left: 50px;
-  margin-top: 30px;
 }
 .container .accordion {
   margin-top: 10px;
@@ -44,6 +47,12 @@
   width: 100px;
 }
 
+.subContainer {
+  margin-top: 3%;
+  margin-right: 3%;
+  margin-left: 3%;
+}
+
 .mat-form-field {
   display: flex;
   align-items: center;
@@ -58,6 +67,102 @@
   justify-content: space-between;
   align-content: center;
   align-items: center;
+}
+
+.table-ouvrage {
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+table {
+  width: 100%;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+  background: #efefef;
+}
+
+.example-element-row td {
+  border-bottom-width: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.example-element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.cout-designation {
+  display: flex;
+  justify-content: space-around;
+}
+
+.cout-detail-header {
+  font-weight: 300;
+}
+
+.header-cout {
+  display: flex;
+  justify-content: center;
+}
+.header-cout .title-header-cout {
+  font-size: 1.2rem;
+}
+
+.cout-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+.example-element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.example-element-description {
+  padding: 16px;
+}
+
+.example-element-description-attribution {
+  opacity: 0.5;
+}
+
+.divButton {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #FFFFFF;
+  width: 100%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  margin-top: 1.5%;
+}
+.divButton .btnBack {
+  margin-left: 2%;
+}
+.divButton .button {
+  margin-right: 2%;
 }
 
 /*# sourceMappingURL=dialog.component.css.map */

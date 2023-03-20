@@ -26,6 +26,16 @@ export class TypeCoutService {
     return this.http.get<TypeCout>(`${baseUrl}/${id}`)
   }
 
+  getCategorieByType(type: string): Observable<string[]> {
+    return this.http.get<string[]>(`${baseUrl}/type/${type}`);
+  }
+
+
+  getTypeCoutIdByLabel(categorie: string): Observable<any> {
+    return this.http.get<any>(`${baseUrl}/categorie/${categorie}`);
+  }
+
+
   deleteTypeCoutById(id: number): Observable<TypeCout> {
     return this.http.delete<TypeCout>(`${baseUrl}/${id}`)
   }

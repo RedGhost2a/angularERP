@@ -1,0 +1,33 @@
+<div class="flex-column">
+  <h3>Import de vos données</h3>
+  <form [formGroup]="importForm" class="flex-column-item">
+    <mat-form-field appearance="standard">
+      <mat-label>Titre</mat-label>
+      <input matInput formControlName="title" required>
+      <mat-error *ngIf="importForm.get('title')?.hasError('required')">
+        Le titre est obligatoire
+      </mat-error>
+    </mat-form-field>
+    <mat-card-actions>
+      <div>
+        <label class="custom-file-upload">
+          <mat-icon style="    height: 20px;
+    width: 25px;">cloud_upload
+          </mat-icon>
+          <input formControlName="data" type="file" id="fileInput"
+                 accept=".*/*">
+        </label>
+        <span style="margin-left: 5px;color: #2e6da4">Séléctionner le fichier</span>
+      </div>
+
+
+      <button style="width: 100%" mat-flat-button color="primary" [disabled]="importForm.invalid"
+              (click)="onFileSelected()">
+        Import
+      </button>
+    </mat-card-actions>
+
+  </form>
+</div>
+
+

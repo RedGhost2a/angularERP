@@ -10,9 +10,11 @@ export class Devis {
   createdAt?: Date;
   client!: Client;
   adresse!: Adresse;
+  ClientId!: number;
   user!: User;
   fraisGeneraux!: number;
   coutTotal !: number;
+  UserId!: number;
   debourseSecTotal !: number;
   totalDepense !: number;
   moyenneBenefice !: number;

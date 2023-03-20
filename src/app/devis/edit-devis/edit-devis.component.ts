@@ -32,11 +32,18 @@ export class EditDevisComponent implements OnInit {
   titreForm = "Création d'un devis";
   textForm = "Afin de créer un devis, veuillez renseigner les champs suivants.";
   textButton = "Créer ce devis";
+  curentUserEntreprise!: any[];
+  userEntreprise!: any[];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Devis, private dialogRef: MatDialogRef<DialogComponent>,
-              private formBuilder: FormBuilder, private devisService: DevisService,
-              private clientService: ClientService, private entrepriseService: EntrepriseService,
-              @Inject(TOASTR_TOKEN) private toastr: Toastr, private router: Router, private userService: UserService,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Devis,
+              private dialogRef: MatDialogRef<DialogComponent>,
+              private formBuilder: FormBuilder,
+              private devisService: DevisService,
+              private clientService: ClientService,
+              private entrepriseService: EntrepriseService,
+              @Inject(TOASTR_TOKEN) private toastr: Toastr,
+              private router: Router,
+              private userService: UserService,
               private route: ActivatedRoute) {
     this.initialData = data;
     // this.myFormGroup = this.formBuilder.group({
@@ -54,13 +61,14 @@ export class EditDevisComponent implements OnInit {
     this.getAllClient()
     this.getAllEntreprise()
     this.createFormDevis()
+    this.getEnterpriseByUser()
   }
 
   createFormDevis(): void {
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
       name: new FormControl("", Validators.required),
-      status: new FormControl("", Validators.required),
+      status: new FormControl("Initialisation", Validators.required),
       ClientId: new FormControl("", Validators.required),
       EntrepriseId: new FormControl("", Validators.required),
       UserId: new FormControl(this.userId),
@@ -119,5 +127,14 @@ export class EditDevisComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  getEnterpriseByUser(): any {
+    const currentUser = this.userService.userValue.id;
+    this.userService.getById(currentUser).subscribe(value => {
+      this.curentUserEntreprise = value.Entreprises
+      console.log(this.curentUserEntreprise)
 
+
+    })
+
+  }
 }

@@ -45,6 +45,10 @@ export class DevisService {
     return this.http.get(`${environment.apiUrl}/devis/byUser/${id}`)
   }
 
+  getDevisByEnterprise(id: any): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/devis/byEntreprise/${id}`)
+  }
+
   create(data: any): Observable<any> {
     return this.http.post(`${environment.apiUrl}/devis/new`, data)
   }

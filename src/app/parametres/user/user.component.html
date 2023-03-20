@@ -16,7 +16,7 @@
           <mat-card-title>Infos</mat-card-title>
           <mat-card class="user card avatar">
             <mat-card-header class="user_header" *ngIf="curentUser">
-              <mat-card-title>{{curentUser.title|uppercase}}</mat-card-title>
+              <mat-card-title>{{user.title|uppercase}}</mat-card-title>
               <mat-card-subtitle>{{user.firstName}} {{user.lastName}}</mat-card-subtitle>
             </mat-card-header>
             <mat-card-content class="content">
@@ -67,9 +67,9 @@
         <mat-icon class="example-tab-icon">inventory</mat-icon>
         Mes Devis
       </ng-template>
-      <div>
+      <div *ngIf="this.devis">
         <h1>Liste des devis</h1>
-        <mat-card class="devis" *ngFor="let userDevis of devis.Devis">
+        <mat-card class="devis" *ngFor="let userDevis of this.devis">
           <div>
             <h1 style="width: 20%">{{userDevis.id|number}} </h1>
           </div>
@@ -82,7 +82,21 @@
             <p class="devis-row">Le: {{userDevis.createdAt |date}}</p>
             <!--          <p class="devis-row">Le: {{userDevis.Client.firstName |date}}</p>-->
           </mat-card-content>
-          <mat-icon class="icon" [routerLink]="['/devis', userDevis.id]">more_vert</mat-icon>
+          <mat-icon [matMenuTriggerFor]="bouton" class="icon">more_vert</mat-icon>
+          <mat-menu class="menuBoutonSl" #bouton>
+
+            <button mat-button color="accent" [routerLink]="['/devisCreate', userDevis.id]">
+              Modifier ce devis
+            </button>
+            <br>
+            <button mat-button color="primary" [routerLink]="['/devisDetail', userDevis.id]">
+              Voir ce devis
+            </button>
+            <br>
+
+
+          </mat-menu>
+
         </mat-card>
       </div>
 
@@ -96,7 +110,7 @@
       </ng-template>
 
 
-      <div>
+      <div *ngIf="this.notes">
         <h1>Liste de mes commentaires</h1>
         <mat-card class="devis" *ngFor="let note of this.notes;" [style.background-color]="getColor(note)">
           <div>
@@ -127,9 +141,9 @@
 
 
       <mat-card class="post-it">
-        <mat-card-content *ngFor="let note of this.notes;">
+        <mat-card-content *ngFor="let note of this.notes;let i = index">
           <!-- Your content goes here -->
-          <ul *ngIf="note.typeError === 'Je souhaite créer une note !'">
+          <ul *ngIf="note.typeError === 'Je souhaite créer une note !'&& i<7">
             <li>
 
               {{note.title|uppercase}} {{note.text|uppercase}}
@@ -147,35 +161,35 @@
         <mat-icon class="example-tab-icon">apartment</mat-icon>
         Mon entreprise
       </ng-template>
-      <div>
+      <div *ngFor="let entreprise of userEntreprise">
         <h1></h1>
-        <mat-card class="entreprise" *ngIf="userEntreprise">
+        <mat-card class="entreprise">
           <img style="    width: 300px;
     height: 170px;" mat-card-md-image src="./assets/images/GrazianiGTP.jpg"
                alt="Photo of a company">
           <div>
 
-            <mat-card-title>{{userEntreprise.denomination|uppercase}}</mat-card-title>
-            <mat-card-subtitle>{{userEntreprise.formeJuridique}}</mat-card-subtitle>
+            <mat-card-title>{{entreprise.denomination|uppercase}}</mat-card-title>
+            <mat-card-subtitle>{{entreprise.formeJuridique}}</mat-card-subtitle>
           </div>
 
 
           <div>
             <mat-card-title>Infos</mat-card-title>
             <p>
-              Capital: {{userEntreprise.capital}}
+              Capital: {{entreprise.capital}}
             </p>
             <p>
-              Naf Code: {{userEntreprise.nafCode}}
+              Naf Code: {{entreprise.nafCode}}
             </p>
             <p>
-              Rcs: {{userEntreprise.rcs}}
+              Rcs: {{entreprise.rcs}}
             </p>
             <p>
-              Siret: {{userEntreprise.siret}}
+              Siret: {{entreprise.siret}}
             </p>
             <p>
-              Tva: {{userEntreprise.tvaNumber}}
+              Tva: {{entreprise.tvaNumber}}
             </p>
           </div>
 
@@ -183,26 +197,26 @@
           <div>
             <mat-card-title>Adresse</mat-card-title>
             <p>
-              Adresse: {{userEntreprise.Adresse.adresses|uppercase}}
+              Adresse: {{entreprise.Adresse.adresses|uppercase}}
             </p>
             <p>
-              Code postal: {{userEntreprise.Adresse.zipcode}}
+              Code postal: {{entreprise.Adresse.zipcode}}
             </p>
             <p>
-              Ville: {{userEntreprise.Adresse.city|uppercase}}
+              Ville: {{entreprise.Adresse.city|uppercase}}
             </p>
             <p>
-              Pays: {{userEntreprise.Adresse.country|uppercase}}
+              Pays: {{entreprise.Adresse.country|uppercase}}
             </p>
           </div>
 
           <div>
             <mat-card-title>Contact</mat-card-title>
             <p>
-              E-mail: {{userEntreprise.email}}
+              E-mail: {{entreprise.email}}
             </p>
             <p>
-              Téléphone: {{userEntreprise.phoneNumber}}
+              Téléphone: {{entreprise.phoneNumber}}
             </p>
           </div>
 

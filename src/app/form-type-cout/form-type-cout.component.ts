@@ -7,6 +7,7 @@ import {UserService} from "../_service/user.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
+import {map, Observable, startWith} from "rxjs";
 
 @Component({
   selector: 'app-form-type-cout',
@@ -21,6 +22,10 @@ export class FormTypeCoutComponent implements OnInit {
   initialData: TypeCout
   typeCout!: TypeCout;
   userId = this.userService.userValue.id;
+  options: string [] = []
+  // Déclare une propriété pour stocker les options filtrées
+  filteredOptions!: Observable<string[]>;
+
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: TypeCout,
               private dialogRef: MatDialogRef<DialogComponent>,
@@ -37,6 +42,12 @@ export class FormTypeCoutComponent implements OnInit {
     this.getUserById();
     if (this.initialData !== null)
       this.generateFormUpdate();
+    this.filteredOptions = this.myFormGroup.get('type')!.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this.filterOptions(value))
+      );
+
   }
 
   createFormTypeCout(): void {
@@ -68,6 +79,7 @@ export class FormTypeCoutComponent implements OnInit {
 
   getUserById(): void {
     this.userService.getById(this.userId).subscribe(data => {
+      this.getAllTypeCouts(data.Entreprises[0].id)
       this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id)
     })
   }
@@ -79,6 +91,31 @@ export class FormTypeCoutComponent implements OnInit {
     this.textButton = "Modifier ce type de composant"
     this.myFormGroup.patchValue(this.initialData)
   }
+
+  //Recupere tous les type de couts pour implementer le select picker du template
+  getAllTypeCouts(entrepriseID: number): void {
+    this.typeCoutService.getAllTypeCouts(entrepriseID).subscribe(data => {
+        this.options = data.map(option => option.type);
+        // Filtrer les doublons dans le tableau options
+        this.options = this.options.filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        });
+        console.log(this.options)
+      }
+    )
+  }
+
+  //  méthode pour filtrer les options en fonction de la valeur saisie par l'utilisateur
+  filterOptions(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0).slice(0, 10);
+  }
+
+  // Affiche la valeur sélectionnée dans linput
+  displayFn(option: string): string {
+    return option ? option : '';
+  }
+
 
   closeDialog() {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage

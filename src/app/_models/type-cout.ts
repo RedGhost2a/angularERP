@@ -1,6 +1,6 @@
 export class TypeCout {
-  id!:number;
+  id!: number;
   type!: string;
   categorie!: string;
-  EntrepriseId!:number;
+  EntrepriseId!: number;
 }

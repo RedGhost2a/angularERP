@@ -3,9 +3,9 @@
 
   <div class="container-header">
     <h3 class="title"> Détail du devis</h3>
-    <button mat-flat-button class="btn">
-      <mat-icon [routerLink]="'/'">arrow_back</mat-icon>
-    </button>
+    <!--    <button mat-flat-button class="btn">-->
+    <!--      <mat-icon [routerLink]="'/'">arrow_back</mat-icon>-->
+    <!--    </button>-->
   </div>
 
 
@@ -28,7 +28,7 @@
               <div class="detail">
                 <mat-card-subtitle class="subTitle">Client</mat-card-subtitle>
                 <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
-                <p>{{client.firstName + ' ' + client.lastName}}</p>
+                <p>{{client.denomination}}</p>
               </div>
             </div>
           </div>
@@ -60,21 +60,32 @@
             <div class="detailList2">
 
               <div class="detail">
-                <mat-card-subtitle class="subTitle">Status du devis</mat-card-subtitle>
-                <p>{{devis.status}}</p>
+                <mat-card-subtitle class="subTitle">Statut</mat-card-subtitle>
+                <mat-form-field appearance="legacy" style="width: 90px">
+                  <mat-select [(ngModel)]="selectedStatus"
+                              (ngModelChange)="updateStatusDevis()">
+                    <mat-option *ngFor="let status of detailStatus" [value]="status">{{status}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="detail" style="color: green">
+                <mat-card-subtitle id="devisDebutDate" class="subTitle">Date du devis
+                </mat-card-subtitle>
+                <p>{{devis.createdAt |date:'dd/MM/yyyy '}}</p>
+              </div>
+              <div class="detail" style="color: red">
+                <mat-card-subtitle class="subTitle">Date fin du devis</mat-card-subtitle>
+                <p>{{this.jourFinDevis}}</p>
               </div>
               <div class="detail">
-                <mat-card-subtitle class="subTitle">Date du devis</mat-card-subtitle>
-                <p>{{devis.createdAt | date:'shortDate'}}</p>
+                <mat-card-subtitle class="subTitle">Durée validité</mat-card-subtitle>
+                <p>{{this.jourRestant}} jours</p>
               </div>
-              <div class="detail">
-                <mat-card-subtitle class="subTitle">Durée de validité</mat-card-subtitle>
-                <p>90 jours</p>
-              </div>
+
             </div>
           </div>
           <div class="btnUpdate">
-            <button  mat-raised-button color="primary" (click)="createLOT(devis.id)">Modifier le devis</button>
+            <button mat-raised-button color="primary" (click)="createLOT(devis.id)">Modifier le devis</button>
             <!--          <button mat-raised-button routerLink="/devisCreate/{{devis.id}}">Modifier le devis</button>-->
           </div>
         </div>

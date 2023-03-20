@@ -18,7 +18,7 @@ export class UserComponent implements OnInit {
   user!: User;
   devis!: any;
   notes!: Notes[];
-  userEntreprise!: Entreprise;
+  userEntreprise!: Entreprise[];
   curentUser !: any;
 
 
@@ -42,25 +42,26 @@ export class UserComponent implements OnInit {
   }
 
   getCurrentUser(): any {
-    const curentUser = this.user.id;
-    this.accountService.getById(curentUser).subscribe(value => {
-      this.curentUser = value
-      // console.log(curentUser)
-      console.log(this.curentUser)
-      this.entrepriseService.getById(this.curentUser.Entreprises[0].UserEntreprise.EntrepriseId).subscribe(data => {
-        this.userEntreprise = data
-        console.log(this.userEntreprise)
-        // return this.userEntreprise
-      })
-
-    })
-
+    const currentUser = this.user.id;
+    this.accountService.getById(currentUser).subscribe(value => {
+      this.curentUser = value;
+      const entreprises: Entreprise[] = []; // tableau pour stocker les entreprises
+      for (let i = 0; i < this.curentUser.Entreprises.length; i++) {
+        this.entrepriseService.getById(this.curentUser.Entreprises[i].UserEntreprise.EntrepriseId).subscribe(data => {
+          entreprises.push(data); // ajouter chaque entreprise récupérée à la fin du tableau
+          if (entreprises.length === this.curentUser.Entreprises.length) {
+            this.userEntreprise = entreprises; // affecter le tableau à la variable une fois toutes les entreprises récupérées
+          }
+        });
+      }
+    });
   }
+
 
   getDevisByUser(id: any): void {
     this.devis = this.devisService.getDevisByUser(id).subscribe(data => {
-      this.devis = data
-      // console.log(this.devis)
+      this.devis = data.Devis
+      console.log(this.devis)
 
     });
   }

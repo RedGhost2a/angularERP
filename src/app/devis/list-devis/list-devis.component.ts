@@ -4,9 +4,8 @@ import {Devis} from "../../_models/devis";
 import {Client} from "../../_models/client";
 import {DialogConfirmSuppComponent} from "../../dialog-confirm-supp/dialog-confirm-supp.component";
 import {MatDialog} from "@angular/material/dialog";
-import {Cout} from "../../_models/cout";
-import {FormCoutComponent} from "../../form-cout/form-cout.component";
 import {EditDevisComponent} from "../edit-devis/edit-devis.component";
+import {UserService} from "../../_service/user.service";
 
 @Component({
   selector: 'app-list-devis',
@@ -17,19 +16,25 @@ export class ListDevisComponent implements OnInit {
   @Input() devis!: Devis;
   @Output() deleteDevis: EventEmitter<any> = new EventEmitter()
 
-  displayedColumns: string[] = ['nDevis', 'nomDevis', 'dateDevis','client','status','referent', "boutons"];
+  displayedColumns: string[] = ['nDevis', 'nomDevis', 'dateDevis', 'client', 'status', 'referent', "boutons"];
   // displayedColumns: string[] = ['Devis n°', 'Nom', 'Client', "Status", "Action"];
   clickedRows = new Set<Client>();
   dataSource!: any;
 
 
   listDevis !: Devis[];
+  entrepriseID !: number;
+  allDevis!: Devis[];
 
-  constructor(private devisService: DevisService, private dialog: MatDialog) {
+  constructor(private devisService: DevisService,
+              private dialog: MatDialog,
+              public userService: UserService) {
   }
 
   ngOnInit(): void {
-    this.getAll()
+
+    this.getAllDevisForAdmin()
+    this.getDevisByEnterprise()
   }
 
   delete(id: any): void {
@@ -46,17 +51,30 @@ export class ListDevisComponent implements OnInit {
       }
     });
   }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  getAll(): void {
-    this.devisService.getAll().subscribe(data => {
-      this.listDevis = data
-      console.log(this.listDevis)
-    })
+  getDevisByEnterprise(): void {
+    this.userService.getById(this.userService.userValue.id).subscribe(data => {
+      this.entrepriseID = data.Entreprises[0].id
+      console.log(this.entrepriseID)
 
+      this.devisService.getDevisByEnterprise(this.entrepriseID).subscribe(data => {
+        // console.log(data)
+        this.listDevis = data.Devis
+        console.log(this.listDevis)
+      })
+    })
+  }
+
+  getAllDevisForAdmin() {
+    this.devisService.getAll().subscribe(data => {
+      this.allDevis = data
+      console.log(this.allDevis)
+    })
   }
 
   openDialogCreate() {

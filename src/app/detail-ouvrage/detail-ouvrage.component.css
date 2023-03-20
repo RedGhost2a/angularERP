@@ -4,7 +4,6 @@
 
 .container {
   background-color: #F0F4F8;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   color: #334E68;
@@ -87,6 +86,10 @@ table {
   margin-top: 1%;
   margin-left: auto;
   margin-right: auto;
+}
+
+.div-button :first-child {
+  margin-right: 30px;
 }
 
 /*# sourceMappingURL=detail-ouvrage.component.css.map */

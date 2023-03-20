@@ -50,19 +50,20 @@ export class SuperAdminListComponent implements OnInit {
       this.entreprise = data;
       this.userAll = this.entreprise.Users;
       this.devisAll = this.entreprise.Devis;
-      console.log(this.entreprise);
-      console.log(this.devisAll);
+      // console.log(this.entreprise);
+      // console.log(this.devisAll);
     });
   }
 
   getClientByEntreprise(id: number) {
     this.entrepriseService.getClientByEntreprise(id).subscribe((data) => {
       this.client = data.Devis;
-      console.log(this.client);
       this.client = this.client.filter(
         (item: any, index: any, array: string | any[]) =>
           array.indexOf(item) === index
       );
+
+      console.log(this.client);
       return this.client;
     });
   }
@@ -81,7 +82,7 @@ export class SuperAdminListComponent implements OnInit {
       const id = +data["id"];
       this.getById(id);
       this.getClientByEntreprise(id);
-      console.log(this.client);
+      // console.log(this.client);
     });
   }
 }

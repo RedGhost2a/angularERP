@@ -27,14 +27,26 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="legacy" *ngIf="isCout">
-        <mat-label>Type et catégorie du cout</mat-label>
-        <mat-select formControlName="TypeCoutId">
-          <mat-option *ngFor="let item of typeCout" [value]="item.id">
-            {{item.type}} {{item.categorie}} {{item.id}}
+        <mat-label>Type du composant</mat-label>
+        <mat-select (selectionChange)="getCategorieByType($event.value)">
+          <mat-option *ngFor="let item of typeCout |unique:'type'" [value]="item.type">
+            {{item.type}}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="this.myFormGroup.get('TypeCoutId')?.hasError('required')">
           Vous devez entrer un type.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="legacy" *ngIf="isCout">
+        <mat-label>Catégorie du composant</mat-label>
+        <mat-select formControlName="TypeCoutId">
+          <mat-option *ngFor="let item of categories" [value]="item.id">
+            {{item.categorie}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="this.myFormGroup.get('CategorieCout')?.hasError('required')">
+          Vous devez entrer une categorie.
         </mat-error>
       </mat-form-field>
 

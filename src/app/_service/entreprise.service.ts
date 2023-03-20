@@ -14,7 +14,8 @@ export class EntrepriseService {
               private http: HttpClient) {
   }
 
-  register(entreprise: Entreprise): Observable<any> {
+  register(entreprise: any): Observable<any> {
+    console.log(entreprise)
     console.log("entreprise",entreprise)
     return this.http.post(`${environment.apiUrl}/entreprises/new`, entreprise);
   }
@@ -41,5 +42,6 @@ export class EntrepriseService {
   deleteByID(id: any): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/entreprises/${id}`)
   }
+
 
 }

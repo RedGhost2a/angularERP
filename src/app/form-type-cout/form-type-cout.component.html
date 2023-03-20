@@ -54,11 +54,18 @@
 
       <mat-form-field appearance="legacy">
         <mat-label>Type</mat-label>
-        <input formControlName="type" matInput placeholder="Ex: Fourniture">
+        <input formControlName="type" matInput [matAutocomplete]="auto" placeholder="Ex: Fourniture">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
         <mat-error *ngIf="this.myFormGroup.get('type')?.hasError('required')">
           Vous devez entrer un type.
         </mat-error>
       </mat-form-field>
+
+
       <mat-form-field appearance="legacy">
         <mat-label>Catégorie</mat-label>
         <input formControlName="categorie" matInput placeholder="Ex: Transport">

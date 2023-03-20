@@ -49,6 +49,16 @@
   align-items: center;
 }
 
+.wrapper-bis {
+  display: flex;
+  flex-direction: row;
+  /* padding: 10px; */
+  justify-content: space-evenly;
+  /* height: 100vh; */
+  align-content: center;
+  align-items: center;
+}
+
 .devis {
   width: 800px;
   display: flex;
@@ -64,6 +74,20 @@
 .devis_header {
   margin-top: 5px;
   font-size: large;
+}
+
+.btn {
+  margin-top: 5px;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 33%;
+  margin: 10px;
+  flex-wrap: wrap;
+  align-content: stretch;
 }
 
 .flex-row {

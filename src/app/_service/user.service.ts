@@ -45,7 +45,9 @@ export class UserService {
         let string = JSON.stringify(user)
         let encryptUser = this.storageService.encrypt(string)
         localStorage.setItem('user', encryptUser);
+        localStorage.setItem('coef', String(1));
         this.userSubject.next(user);
+
 
         let crypt = this.storageService.encrypt('blalblabla')
         let decrypt = this.storageService.decrypt(crypt)

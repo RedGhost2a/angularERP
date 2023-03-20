@@ -23,7 +23,9 @@
 
   <div class="container">
 
-    <table mat-table [dataSource]="listDevis">
+    <table mat-table
+           [dataSource]="userService.userValue.role === 'Super Admin' ? allDevis : listDevis">
+      <!-- table content -->
 
       <!-- Name Column -->
       <ng-container matColumnDef="nDevis">
@@ -55,7 +57,7 @@
       <ng-container matColumnDef="referent">
         <th mat-header-cell *matHeaderCellDef>Referent</th>
         <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.Users[0].firstName}}
-          <br>{{devis.Users[0].lastName}}</td>
+          {{devis.Users[0].lastName}}</td>
       </ng-container>
 
 
