@@ -12,6 +12,11 @@ import {FormCoutComponent} from "../form-cout/form-cout.component";
 import {CoutService} from "../_service/cout.service";
 import {DialogListCoutComponent} from "../dialog-list-cout/dialog-list-cout.component";
 import {OuvrageAddCoutComponent} from "../ouvrage-add-cout/ouvrage-add-cout.component";
+import {DialogFormCoutComponent} from "../dialog-form-cout/dialog-form-cout.component";
+import {Fournisseur} from "../_models/fournisseur";
+import {TypeCout} from "../_models/type-cout";
+import {TypeCoutService} from "../_service/typeCout.service";
+import {FournisseurService} from "../_service/fournisseur.service";
 
 @Component({
   selector: 'app-detail-ouvrage',
@@ -29,11 +34,14 @@ export class DetailOuvrageComponent implements OnInit {
   columnsToDisplay = ["designation", "benefice", "aleas", "unite", "ratio", "uRatio", "prixUnitaire", "boutons"];
   myFormGroup!: FormGroup;
   formOuvrage!: FormGroup;
+  listFournisseur !: Fournisseur[]
+  listTypeCout !: TypeCout []
   columnsToDisplayCout = ["type", "categorie", "designation", "ratio", "uRatio", "unite", "prixUnitaire", "fournisseur", "boutons"];
 
 
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute, private coutService: CoutService,
-              private ouvrageCoutService: OuvrageCoutService, private dialog: MatDialog) {
+              private ouvrageCoutService: OuvrageCoutService, private dialog: MatDialog, private typeCoutService : TypeCoutService,
+              private fournisseurService : FournisseurService) {
   }
 
   ngOnInit(): void {
@@ -82,6 +90,8 @@ export class DetailOuvrageComponent implements OnInit {
         this.formGroupOuvrage(data)
         this.formRatioOuvrageCout()
         this.getAllCout(data.EntrepriseId)
+        this.getAllTypeCouts(data.EntrepriseId)
+        this.getAllFournisseurs(data.EntrepriseId)
         // this.ouvrage.fournisseur = data.Couts[0].Fournisseurs[0].commercialName
         // console.log("FOURNISSEUR",this.ouvrage.fournisseur)
       })
@@ -161,6 +171,16 @@ export class DetailOuvrageComponent implements OnInit {
 
     });
   }
+  openDialogCreateCout() {
+    this.dialog.open(DialogFormCoutComponent, {
+      data: [ this.listTypeCout, this.listFournisseur, this.ouvrage],
+      width: '55%',
+      height: '60%'
+    }).afterClosed().subscribe(async result => {
+      this.ngOnInit()
+
+    });
+  }
 
   openDialogImport() {
     this.dialog.open(OuvrageAddCoutComponent, {
@@ -183,5 +203,18 @@ export class DetailOuvrageComponent implements OnInit {
       }
     )
   }
+  getAllFournisseurs(entrepriseID:number):void {
+    this.fournisseurService.getAllFournisseurs(entrepriseID).subscribe(fournisseurs =>{
+      console.log("liste des fournisseurs: ", fournisseurs)
+      this.listFournisseur = fournisseurs;
+    })
+  }
+  getAllTypeCouts(entrepriseID: number):void {
+    this.typeCoutService.getAllTypeCouts(entrepriseID).subscribe(typeCouts =>{
+      console.log("liste des type de couts : ", typeCouts)
+      this.listTypeCout = typeCouts;
+    })
+  }
+
 
 }

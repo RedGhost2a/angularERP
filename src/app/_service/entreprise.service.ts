@@ -15,6 +15,7 @@ export class EntrepriseService {
   }
 
   register(entreprise: Entreprise): Observable<any> {
+    console.log("entreprise",entreprise)
     return this.http.post(`${environment.apiUrl}/entreprises/new`, entreprise);
   }
 

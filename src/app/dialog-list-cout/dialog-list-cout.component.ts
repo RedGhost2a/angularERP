@@ -9,6 +9,7 @@ import {DataSharingService} from "../_service/data-sharing-service.service";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 import {SousLotOuvrageService} from "../_service/sous-lot-ouvrage.service";
+import {OuvrageCout} from "../_models/ouvrageCout";
 
 @Component({
   selector: 'app-dialog-list-cout',
@@ -27,10 +28,11 @@ export class DialogListCoutComponent implements OnInit {
 
   initialData!: any[]; // Déclarez la variable initialData comme étant un tableau de type any
   coutDuDevis !: CoutDuDevis
+  isChecked: boolean = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogComponent>, private ouvrageService: OuvrageService,
               private coutService: CoutService, private dataSharingService: DataSharingService, private ouvrageCoutService: OuvrageCoutService,
-              private sousLotOuvrageService : SousLotOuvrageService) {
+              private sousLotOuvrageService: SousLotOuvrageService) {
     this.initialData = this.data;
 
   }
@@ -39,6 +41,14 @@ export class DialogListCoutComponent implements OnInit {
     console.log("ouvrage ", this.dataSharingService.ouvrage)
   }
 
+  checked() {
+    // if(this.isChecked){
+    //   this.isChecked = false
+    // }else{
+    //   this.isChecked = true
+    // }
+    console.log(this.isChecked)
+  }
 
 
   closeDialog() {
@@ -99,14 +109,23 @@ export class DialogListCoutComponent implements OnInit {
                 OuvrageDuDeviId: this.dataSharingService.ouvrage.id,
                 CoutDuDeviId: responseCout?.id,
                 ratio: 1,
-                uRatio:uRatio,
+                uRatio: uRatio,
               }
               console.log("this ouvrage cout ", ouvrageCout)
               this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCout).subscribe()
             }
           )
-        }
 
+        }
+        if (this.isChecked === false) {
+          const ouvrageCout: OuvrageCout = {
+            OuvrageId: 0,
+            CoutId: element,
+            ratio: 1,
+            uRatio: `${cout.unite}/${this.dataSharingService.ouvrage.unite}`,
+          }
+          this.ouvrageCoutService.createOuvrageCoutByDesignation(this.dataSharingService.ouvrage.id, ouvrageCout).subscribe()
+        }
       })
     })
 

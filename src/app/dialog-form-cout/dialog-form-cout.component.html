@@ -66,9 +66,14 @@
         </mat-form-field>
       </div>
     </div>
+  <div *ngIf="isInDevis">
+    <mat-checkbox class="example-margin" (change)="checked()" [(ngModel)]="isChecked">Ajouter ce composant uniquement dans cet ouvrage et non dans la bibliotheque</mat-checkbox>
+<!--    <span>Ajouter ce composant uniquement dans cet ouvrage et non dans la bibliotheque</span>-->
+  </div>
 
     <div class="containerButton">
 <!--      <div class="buttons">-->
+
         <button mat-stroked-button color="primary"> Retour</button>
         <button mat-raised-button color="primary" (click)="createCoutDuDevis(); closeDialog()"> Ajouter ce composant</button>
 

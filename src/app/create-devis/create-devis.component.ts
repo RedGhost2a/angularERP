@@ -179,13 +179,11 @@ export class CreateDevisComponent implements OnInit {
   }
 
   coefEquilibre(): void {
+    console.log("this.devis.coutTotal", this.devis.coutTotal)
+    console.log("this.devis.debourseSecTotal", this.devis.debourseSecTotal)
     if (this.lotFraisDeChantier.prix) {
       this.devis.coeffEquilibre = this.devis.coutTotal / this.devis.debourseSecTotal
       localStorage.setItem("coef", this.devis.coeffEquilibre.toString())
-      // this.sousDetailPrixService.coefEqui = this.devis.coutTotal / this.devis.debourseSecTotal
-      // this.sharedData.coefEqui = this.devis.coutTotal / this.devis.debourseSecTotal
-      // return this.coutTotal() / this.prixDevis
-
     }
     // return 0
   }
@@ -259,6 +257,7 @@ export class CreateDevisComponent implements OnInit {
 
       })
     })
+    console.log("this.devis", this.devis)
   }
 
   allCalculOuvrageFraisDeChantier(): void {
@@ -630,9 +629,11 @@ export class CreateDevisComponent implements OnInit {
     this.dialog.open(FormOuvrageComponent, {
       data: sousLotId,
       width: '90%',
-      height: '70%'
+      height: '40%'
     }).afterClosed().subscribe(result => {
       this.getAllLots()
+      this.getLotFraisDeChantier() ;
+
 
     });
   }

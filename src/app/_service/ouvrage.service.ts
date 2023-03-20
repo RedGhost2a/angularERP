@@ -50,6 +50,9 @@ export class OuvrageService {
   update(data: any, id: any): Observable<any> {
     return this.http.put(`${baseUrl}/${id}`, data)
   }
+  updateOuvrageDuDevis(data: any, id: any): Observable<any> {
+    return this.http.put(`${baseUrl}DuDevis/${id}`, data)
+  }
 
   deleteByID(id: any): Observable<any> {
     console.log(`${baseUrl}/${id}`)
