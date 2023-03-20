@@ -647,7 +647,7 @@ export class CreateDevisComponent implements OnInit {
       data: this.listOuvrageFraisDeChantier,
       // data: this.listOuvrage,
       width: '90%',
-      height: '35%'
+      height: '70%'
     }).afterClosed().subscribe(result => {
       if (result) {
         this.selectedOuvrageIds = result.selectedOuvrageIds;
@@ -674,7 +674,6 @@ export class CreateDevisComponent implements OnInit {
           //recupere l'id de l'ouvrageDuDevis qui viens d'etre creer, et
           // data.OuvrageDuDeviId = response.OuvrageDuDevis?.id
           //boucle sur tous les couts qui appartiennent au ouvrage
-
           data.Couts.forEach((cout: any) => {
             //creer un coutDuDevis avec les données du cout
 
@@ -703,6 +702,9 @@ export class CreateDevisComponent implements OnInit {
             })
 
           })
+          if(prixOuvrage === 0){
+            prixOuvrage = data.prix
+          }
           //creer le model de sousLotOuvrageDuDevis
           this.sousLotOuvrageDuDevis = {
             SousLotId: sousLotId,

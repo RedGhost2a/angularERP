@@ -51,7 +51,9 @@ export class DialogComponent implements OnInit {
   }
   setPriceOuvrage(){
     this.initialData.forEach(ouvrage=>{
-      if(ouvrage.prix === 0){
+      // if(ouvrage.prix === 0){
+        if(ouvrage.Couts?.length >= 1){
+          ouvrage.prix = 0;
         ouvrage.Couts.forEach((cout : any) => {
           ouvrage.prix += cout.prixUnitaire * cout.OuvrageCout.ratio
         })

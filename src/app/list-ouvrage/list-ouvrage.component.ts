@@ -47,13 +47,15 @@ export class ListOuvrageComponent implements OnInit {
       console.log(data)
       this.dataSource = new MatTableDataSource(this.listOuvrage);
       data.forEach((ouvrage: Ouvrage) => {
-        if (!ouvrage.prix) {
-          ouvrage.prix = 0;
-          ouvrage.Couts?.forEach((cout: Cout) => {
-            if (cout.OuvrageCout?.ratio)
-              ouvrage.prix += cout.prixUnitaire * cout.OuvrageCout?.ratio
-          })
-        }
+        // if (!ouvrage.prix) {
+        if (ouvrage.Couts)
+          if (ouvrage.Couts?.length >= 1) {
+            ouvrage.prix = 0;
+            ouvrage.Couts?.forEach((cout: Cout) => {
+              if (cout.OuvrageCout?.ratio)
+                ouvrage.prix += cout.prixUnitaire * cout.OuvrageCout?.ratio
+            })
+          }
       })
     })
   }
