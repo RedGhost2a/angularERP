@@ -80,6 +80,8 @@ export class DetailDevisComponent implements OnInit {
   }
 
   createLOT(devisId: number): void {
+    this.devis.coeffEquilibre = 1;
+    localStorage.setItem("coef", this.devis.coeffEquilibre.toString())
     this.lot.devisId = devisId;
     this.lot.designation = `Frais de chantier ${this.lot.devisId}`
     console.log("console lot detail devis", this.lot)

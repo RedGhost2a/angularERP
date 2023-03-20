@@ -181,7 +181,7 @@ export class CreateDevisComponent implements OnInit {
   coefEquilibre(): void {
     console.log("this.devis.coutTotal", this.devis.coutTotal)
     console.log("this.devis.debourseSecTotal", this.devis.debourseSecTotal)
-    if (this.lotFraisDeChantier.prix) {
+    if (this.lotFraisDeChantier.prix !== 0 && this.testLots[0].prix !== 0 && this.testLots[0].prix!== NaN ) {
       this.devis.coeffEquilibre = this.devis.coutTotal / this.devis.debourseSecTotal
       localStorage.setItem("coef", this.devis.coeffEquilibre.toString())
     }
@@ -591,15 +591,15 @@ export class CreateDevisComponent implements OnInit {
 
   deleteOuvrageDuDevis(id: number): void {
     this.ouvrageService.deleteOuvrageDuDevisByID(id).subscribe(() => {
-      this.getAllLots()
       this.success("Ouvrage effacer!")
+      this.getAllLots()
     })
   }
 
   deleteSousLot(id: number): void {
     this.sousLotService.deleteByID(id).subscribe(() => {
-      this.getAllLots()
       this.success("sous-lot effacer!")
+      this.getAllLots()
 
     });
   }
