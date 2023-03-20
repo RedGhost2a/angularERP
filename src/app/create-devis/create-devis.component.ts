@@ -427,7 +427,9 @@ export class CreateDevisComponent implements OnInit {
       .filter(ouvrage => ouvrage)
       .map(ouvrage => ({
         id: ouvrage?.id,
-        prix: ouvrage?.CoutDuDevis && ouvrage.CoutDuDevis.reduce((acc, ct) => acc + ct.prixUnitaire, 0)
+        prix: ouvrage?.CoutDuDevis && ouvrage.CoutDuDevis.length > 0
+          ? ouvrage.CoutDuDevis.reduce((acc, ct) => acc + ct.prixUnitaire * (ct.OuvrageCoutDuDevis?.ratio || 1), 0)
+          : ouvrage?.prix
       }));
 
     // console.log("tableau de prix des ouvrage", this.prixOuvrageFraisDeChantier)

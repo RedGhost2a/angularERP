@@ -78,7 +78,7 @@ export class FormOuvrageComponent implements OnInit {
         prixOuvrage: 0,
         prixUniVenteHT: 0,
         prixVenteHT: 0,
-        quantityOuvrage: 0,
+        quantityOuvrage: 1,
         prixUniHT: 0,
         prixEquiHT: 0,
         prixUniEquiHT: 0,
@@ -87,7 +87,10 @@ export class FormOuvrageComponent implements OnInit {
         prixCalcHT: 0,
         prixUniCalcHT: 0
       }
-      this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe(()=>{
+      console.log("sous lot ouvrage du devis", this.sousLotOuvrageDuDevis)
+
+      this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe((data)=>{
+        console.log("console",data)
         this.closeDialog()
       })
     })

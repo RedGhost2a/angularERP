@@ -43,6 +43,7 @@ export class OuvrageService {
   //   return this.http.post(`${baseUrl}/sousLot`, data);
   // }
   createSousLotOuvrageForDevis(data: SousLotOuvrage): Observable<any> {
+    console.log("data ", data)
     return this.http.post(`${environment.apiUrl}/ouvragesDuDevis/sousLot/`, data);
   }
 
