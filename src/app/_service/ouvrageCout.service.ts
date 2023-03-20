@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {OuvrageCout} from "../_models/ouvrageCout";
 import {environment} from '../../environments/environment';
+import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 
 const baseUrl = `${environment.apiUrl}/ouvragesCouts`;
 
@@ -46,13 +47,16 @@ export class OuvrageCoutService {
     return this.http.put<OuvrageCout>(`${baseUrl}/${coutId}/${ouvrageId}`, ouvrageCout)
   }
 
-  updateOuvrageCoutDuDevis(coutId: number, ouvrageId: number, ouvrageCout: OuvrageCout): Observable<OuvrageCout> {
-    return this.http.put<OuvrageCout>(`${baseUrl}DuDevis/${coutId}/${ouvrageId}`, ouvrageCout)
+  updateOuvrageCoutDuDevis(coutDuDeviId: number, ouvrageDuDeviId: number, ouvrageCoutDuDevis: OuvrageCoutDuDevis): Observable<OuvrageCoutDuDevis> {
+    return this.http.put<OuvrageCoutDuDevis>(`${baseUrl}DuDevis/${coutDuDeviId}/${ouvrageDuDeviId}`, ouvrageCoutDuDevis)
   }
 
   //A voir pour remplacer la fonction updateOuvrageCoutDuDevis dans le component createdevis.ts
   createOuvrageCoutDuDevis(data: any): Observable<any> {
     return this.http.post(`${baseUrl}DuDevis/new`, data)
+  }
+  createOuvrageCoutByDesignation(ouvrageDuDevisId:number, data:any):Observable<any>{
+    return this.http.post(`${baseUrl}/sousDetail/new/${ouvrageDuDevisId}`, data)
   }
 
   deleteCoutAndOuvrageDuDevis(CoutDuDeviId: number,OuvrageDuDeviId:number ):Observable<any>{
