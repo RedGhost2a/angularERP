@@ -69,6 +69,7 @@ export class CreateDevisComponent implements OnInit {
   coefEqui!: number;
   fraisDeChantier = new Devis()
   devisExport: DevisExport[] = []
+  testDevisExport = new DevisExport()
   // fraisDeChantier = new Devis()
 
 
@@ -257,7 +258,11 @@ export class CreateDevisComponent implements OnInit {
 
       })
     })
-    console.log("this.devis", this.devis)
+
+    this.testDevisExport.debourseSecTotal = this.devis.debourseSecTotal
+
+    // console.log("this.devis", this.devis)
+    console.log("testDevis",this.testDevisExport)
   }
 
   allCalculOuvrageFraisDeChantier(): void {
@@ -297,15 +302,22 @@ export class CreateDevisComponent implements OnInit {
       })
 
     })
-    this.devisExport.push({"coutTotal": this.devis.coutTotal})
+    this.testDevisExport.coutTotal = this.devis.coutTotal
 
+    // this.devisExport.push({"coutTotal": this.devis.coutTotal})
+
+  }
+  test(){
+    // console.log("testDevis", this.testDevisExport)
+    console.log("this.testDevisExport", this.testDevisExport)
   }
 
   getDevisExport() {
     this.devisService.getById(this.devisId).subscribe(value => {
-      console.log(value)
+      console.log("value",value)
+      this.testDevisExport.Lots = value.Lots;
 
-      console.log(this.devisExport)
+      console.log("this.testDevisExport",this.testDevisExport)
     })
   }
 
