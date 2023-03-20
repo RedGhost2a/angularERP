@@ -65,6 +65,10 @@
       </mat-form-field>
 
     </div>
+    <div *ngIf="!isOuvrage">
+      <mat-checkbox class="example-margin" (change)="checked()" [(ngModel)]="isChecked">Ajouter cet ouvrage uniquement dans ce devis et non dans la bibliotheque</mat-checkbox>
+<!--      <span>Ajouter cet ouvrage uniquement dans ce devis et non dans la bibliotheque</span>-->
+    </div>
 
 
     <div class="buttons">

@@ -19,6 +19,10 @@ export class FormOuvrageComponent implements OnInit {
   private currentUser!: User;
   initialData: number
   sousLotOuvrageDuDevis !: SousLotOuvrage;
+  isChecked : boolean = false;
+  regexSousDetail = new RegExp(`^/devisCreate`)
+  regexOuvrage = new RegExp(`^/listOuvrage`)
+  isOuvrage :boolean = true;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: number,
               private formBuilder: FormBuilder,
@@ -32,7 +36,8 @@ export class FormOuvrageComponent implements OnInit {
   ngOnInit(): void {
     this.getUserById()
     this.createFormOuvrage()
-
+    if(this.regexSousDetail.test(window.location.pathname))
+      this.isOuvrage = false;
   }
 
 
@@ -44,13 +49,24 @@ export class FormOuvrageComponent implements OnInit {
       this.toastr.error("Le formulaire est invalide.", "Erreur !");
       return;
     }
+    if(this.regexOuvrage.test(window.location.pathname)){
     this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe(data => {
       this.closeDialog()
     })
+    }
     if(this.initialData !== null){
+      if(this.isChecked === false){
+        this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe(data => {
+          this.closeDialog()
+        })
+      }
       console.log("dans le if ", this.initialData)
       this.createOuvrageDuDevis();
     }
+  }
+  checked(){
+    this.isChecked = !this.isChecked;
+    console.log(this.isChecked)
   }
 
   createOuvrageDuDevis(): void {
@@ -71,7 +87,9 @@ export class FormOuvrageComponent implements OnInit {
         prixCalcHT: 0,
         prixUniCalcHT: 0
       }
-      this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe()
+      this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe(()=>{
+        this.closeDialog()
+      })
     })
 
   }

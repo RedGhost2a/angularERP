@@ -34,7 +34,7 @@ export class FormCoutComponent implements OnInit {
   initialData: any
   cout!: Cout
   regexSousDetail = new RegExp(`^/sousDetailPrix`)
-  regexCout = new RegExp(`^/cout`)
+  regexCout = new RegExp(`^/listCout`)
   isCout : boolean = true;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Cout,
