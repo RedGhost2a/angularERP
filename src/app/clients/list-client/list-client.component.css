@@ -16,6 +16,27 @@
   border-top: 10px solid #0c5593;
 }
 
+table {
+  width: 100%;
+}
+
+.example-element-diagram {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+tr.example-detail-row {
+  height: 0;
+}
+
+.example-element-detail {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 .header {
   margin-top: 20px;
   display: flex;

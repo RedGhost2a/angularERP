@@ -1,4 +1,5 @@
 import {Adresse} from "./adresse";
+import {Devis} from "./devis";
 
 export class Client {
   Adresse!: Adresse;
@@ -16,4 +17,5 @@ export class Client {
   // city!: string;
   // country!: string;
   adresse!: Adresse;
+  Devis!:Devis;
 }
