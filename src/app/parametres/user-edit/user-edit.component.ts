@@ -23,9 +23,7 @@ export class UserEditComponent implements OnInit {
   disabled = false;
   listEntreprise: any[] = [];
   avatarUrl: any;
-  avatarBlob!: any;
-  fileName!: string;
-  fileType!: string;
+  role: string = ''
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, private alerteService: AlertService,
               private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr, private entrepriseService: EntrepriseService, public dialog: MatDialog) {
@@ -122,9 +120,7 @@ export class UserEditComponent implements OnInit {
   getEntrepriseForUser() {
     this.entrepriseService.getAll().subscribe((data: any) => {
       this.listEntreprise = data
-      console.log(this.listEntreprise)
-
-
+      // console.log(this.listEntreprise)
     })
 
   }
@@ -136,6 +132,7 @@ export class UserEditComponent implements OnInit {
       if (!isNaN(userID)) {
         this.textButton = "Modification d'un  utilisateur"
         this.userService.getById(userID).subscribe(data => {
+          this.role = data['role']
           // Assuming res has a structure like:
           data = {
             email: data.email,

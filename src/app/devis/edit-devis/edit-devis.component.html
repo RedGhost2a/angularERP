@@ -19,9 +19,11 @@
       <mat-form-field appearance="legacy">
         <mat-label>Client</mat-label>
         <mat-select formControlName="ClientId">
-          <mat-option [value]=+client.id
-                      *ngFor="let client of listClient">{{client.firstName}} {{client.lastName}}</mat-option>
+          <mat-option [value]=+client.id *ngFor="let client of listClient">
+            {{ client.firstName && client.lastName ? client.firstName + ' ' + client.lastName : client.denomination }}
+          </mat-option>
         </mat-select>
+
         <mat-error *ngIf="this.myFormGroup.get('ClientId')?.hasError('required')">
           Vous devez choisir un client.
         </mat-error>
@@ -39,19 +41,28 @@
       </mat-form-field>
 
 
+<!--      <mat-form-field appearance="legacy">-->
+<!--        <mat-label>Status</mat-label>-->
+<!--        <select formControlName="status" matNativeControl value="Initialisation" [disabled]="true" >-->
+
+<!--          <option value="Initialisation">Initialisation</option>-->
+<!--&lt;!&ndash;          <option value="Extraction">Bon pour extraction</option>&ndash;&gt;-->
+<!--&lt;!&ndash;          <option value="Facturation">Facturation</option>&ndash;&gt;-->
+<!--&lt;!&ndash;          <option value="Cloturer">Cloturer</option>&ndash;&gt;-->
+<!--        </select>-->
+<!--        <mat-error *ngIf="this.myFormGroup.get('status')?.hasError('required')">-->
+<!--          Vous devez choisir un status.-->
+<!--        </mat-error>-->
+<!--      </mat-form-field>-->
+
       <mat-form-field appearance="legacy">
         <mat-label>Status</mat-label>
-        <select formControlName="status" matNativeControl value="Initialisation">
-
-          <option value="Initialisation">Initialisation</option>
-          <option value="Extraction">Bon pour extraction</option>
-          <option value="Facturation">Facturation</option>
-          <option value="Cloturer">Cloturer</option>
-        </select>
+        <input formControlName="status" matInput  [disabled]="true" >
         <mat-error *ngIf="this.myFormGroup.get('status')?.hasError('required')">
           Vous devez choisir un status.
         </mat-error>
       </mat-form-field>
+
     </div>
     <div class="buttons">
 

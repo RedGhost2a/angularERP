@@ -37,7 +37,7 @@
         Vous devez entrer un prénom.
       </mat-error>
     </mat-form-field>
-    <mat-form-field class="input-group">
+    <mat-form-field class="input-group" *ngIf="this.role==='Super Admin'">
       <mat-label class="mat-label">Role</mat-label>
       <mat-select formControlName="role">
         <mat-option value="Admin">Super Admin</mat-option>
