@@ -80,7 +80,6 @@ export class DialogNotesComponent implements OnInit {
         console.log(data)
       });
 
-    } else {
     }
 
 

@@ -4,4 +4,14 @@
   align-items: center;
 }
 
-/*# sourceMappingURL=dialogListOuvrage-notes.component.css.map */
+.btn {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  align-content: center;
+}
+
+/*# sourceMappingURL=dialog-notes.component.css.map */
