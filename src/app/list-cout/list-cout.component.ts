@@ -31,8 +31,16 @@ export class ListCoutComponent implements OnInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const searchText = filter.trim().toLowerCase();
+      const type = data.TypeCout.type.toLowerCase();
+      const designation = data.designation.toLowerCase();
+      const valuesToSearch = [type, designation];
+      return valuesToSearch.some(value => value.includes(searchText));
+    };
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
 
 
   getAllCouts(entrepriseId: number): void {
