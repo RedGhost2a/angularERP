@@ -24,6 +24,7 @@ export class UserEditComponent implements OnInit {
   listEntreprise: any[] = [];
   avatarUrl: any;
   role: string = ''
+  entrepriseDenomination!: string;
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, private alerteService: AlertService,
               private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr, private entrepriseService: EntrepriseService, public dialog: MatDialog) {
@@ -132,6 +133,9 @@ export class UserEditComponent implements OnInit {
       if (!isNaN(userID)) {
         this.textButton = "Modification d'un  utilisateur"
         this.userService.getById(userID).subscribe(data => {
+          this.entrepriseDenomination=data.Entreprises[0].denomination,
+
+          console.log(this.entrepriseDenomination)
           this.role = data['role']
           // Assuming res has a structure like:
           data = {
@@ -142,22 +146,12 @@ export class UserEditComponent implements OnInit {
             lastName: data.lastName,
             role: data.role,
             avatarUrl: data.avatarUrl,
-            EntrepriseId: data.EntrepriseId,
+            EntrepriseId: data.Entreprises[0].id,
           }
           this.userForm.patchValue(data);
         });
       } else {
         this.textButton = "Création d'un utilisateur"
-        this.formBuilder.group({
-          title: [],
-          firstName: [],
-          lastName: [],
-          role: [],
-          email: [],
-          password: [],
-          avatarUrl: [],
-          EntrepriseId: [],
-        });
       }
     })
   }

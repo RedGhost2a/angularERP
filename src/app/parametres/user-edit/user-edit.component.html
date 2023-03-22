@@ -7,7 +7,9 @@
       <mat-label class="mat-label">Avatar</mat-label>
       <mat-select formControlName="avatarUrl">
         <mat-option style="flex-direction: column" *ngFor="let avatar of getAvatars()" value='{{avatar}}'
-                    class="avatar-item">
+                    class="avatar-item">{{avatar.substring(0, avatar.lastIndexOf('.'))}}
+
+
 
           <div style="text-align: center; width: 49px">
             <img src="./assets/avatar/{{avatar}}" alt="Avatar">
@@ -50,12 +52,13 @@
     </mat-form-field>
     <mat-form-field class="input-group">
       <mat-label class="mat-label">Entreprises</mat-label>
-      <mat-select formControlName="EntrepriseId" multiple>
+      <mat-select formControlName="EntrepriseId" multiple >
         <mat-option [value]=+entreprise.id
-                    *ngFor="let entreprise of listEntreprise">{{ entreprise.denomination }}</mat-option>
+                    *ngFor="let entreprise of listEntreprise">{{ entreprise.denomination }}
+
+      </mat-option>
 
       </mat-select>
-
       <mat-error *ngIf="userForm.get('EntrepriseId')?.hasError('required')">
         Vous devez choisir au moins une entreprise.
       </mat-error>
