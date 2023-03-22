@@ -22,7 +22,7 @@ import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 import {Devis} from "../_models/devis";
 import {DevisExport} from "../_models/devisExport";
 import {FormOuvrageComponent} from "../form-ouvrage/form-ouvrage.component";
-
+import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
 // import {Json2CsvTransform} from "json2csv";
 
 @Component({
@@ -94,7 +94,7 @@ export class CreateDevisComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    transformVirguletoPoint()
     // this.sousDetailPrixService.setCoefEqui(this.coutTotal() / this.prixDevis)
     this.route.params.subscribe(params => {
       this.devis.id = +params['id'];

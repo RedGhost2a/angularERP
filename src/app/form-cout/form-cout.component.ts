@@ -11,6 +11,7 @@ import {Cout} from "../_models/cout";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
+import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
 
 
 interface FournisseurCout {
@@ -53,8 +54,8 @@ export class FormCoutComponent implements OnInit {
 
 
   ngOnInit(): void {
-
     this.createFormCout();
+    transformVirguletoPoint()
     this.getUserById();
     console.log(window.location.pathname)
     if (this.regexSousDetail.test(window.location.pathname))
