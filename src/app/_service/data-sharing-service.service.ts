@@ -63,6 +63,11 @@ export class DataSharingService {
   async prixVenteHT(sousLotOuvrage : SousLotOuvrage){
     sousLotOuvrage.prixVenteHT = sousLotOuvrage.prixUniVenteHT * sousLotOuvrage.quantityOuvrage
   }
+  async prixUniVente(sousLotOuvrage:SousLotOuvrage){
+    sousLotOuvrage.prixUniVenteHT = sousLotOuvrage.prixUniCalcHT
+    if(sousLotOuvrage.prixUniVenteHT === 0 && sousLotOuvrage.prixUniVenteHT !== sousLotOuvrage.prixUniCalcHT){
+    }
+  }
 
 
 

@@ -32,7 +32,6 @@ export class ListOuvrageComponent implements OnInit {
       console.log("user by id ", data)
       this.getAll(data.Entreprises[0].id)
     })
-
   }
 
   applyFilter(event: Event) {
