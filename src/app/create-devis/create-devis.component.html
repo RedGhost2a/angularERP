@@ -211,14 +211,28 @@
                     class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixCalcHT | number: '1.2-2'}}
                     €</span>
                 </div>
+<!--                <div class="detail-ouvrage-frais-chantier">-->
+<!--                  <span class="designation-ouvrage-frais-chantier">PU Vente HT</span>-->
+<!--                  <span-->
+<!--                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniVenteHT | number: '1.2-2'}}-->
+<!--                    €</span>-->
+<!--                </div>-->
+<!--                <div class="detail-ouvrage-frais-chantier">-->
+<!--                  <span class="designation-ouvrage-frais-chantier">Prix Vente HT</span>-->
+<!--                  <span-->
+<!--                    class="designation-ouvrage-frais-chantier">-->
+<!--                      <mat-form-field [formGroup]="myFormGroup" id="prix-arrondi-frais-chantier">-->
+<!--                                            <input type="number" formControlName="quantityOuvrage" matInput required-->
+<!--                                                   [placeholder]="ouvrage.SousLotOuvrage.prixUniVenteHT.toString()"-->
+<!--                                                   (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">-->
+<!--                                          </mat-form-field>-->
+<!--                    </span>-->
+<!--                  &lt;!&ndash;                  <span&ndash;&gt;-->
+<!--                  &lt;!&ndash;                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixVenteHT | number: '1.2-2'}}€&ndash;&gt;-->
+<!--                  &lt;!&ndash;                  </span>&ndash;&gt;-->
+<!--                </div>-->
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier">PU Vente HT</span>
-                  <span
-                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniVenteHT | number: '1.2-2'}}
-                    €</span>
-                </div>
-                <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier">Prix Vente HT</span>
+                  <span class="designation-ouvrage-frais-chantier">PU Vente HT </span>
                   <span
                     class="designation-ouvrage-frais-chantier">
                       <mat-form-field [formGroup]="myFormGroup" id="prix-arrondi-frais-chantier">
@@ -227,9 +241,15 @@
                                                    (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">
                                           </mat-form-field>
                     </span>
-                  <!--                  <span-->
-                  <!--                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixVenteHT | number: '1.2-2'}}€-->
-                  <!--                  </span>-->
+                  <!--                    <span-->
+                  <!--                      class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniVenteHT | number: '1.2-2'}}-->
+                  <!--                      €</span>-->
+                </div>
+                <div class="detail-ouvrage-frais-chantier">
+                  <span class="designation-ouvrage-frais-chantier">Prix Vente HT</span>
+                  <span
+                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixVenteHT | number: '1.2-2'}}
+                    €</span>
                 </div>
                 <div>
                   <span class="designation-ouvrage-frais-chantier">
@@ -262,7 +282,6 @@
               afficher dans votre devis.
             </p>
           </div>
-          <button (click)="test()"></button>
           <!--        <div class="cards">-->
 
 
@@ -479,7 +498,7 @@
                       €</span>
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier">PU Vente HT</span>
+                    <span class="designation-ouvrage-frais-chantier">PU Vente HT </span>
                     <span
                       class="designation-ouvrage-frais-chantier">
                       <mat-form-field [formGroup]="myFormGroup" id="prix-arrondi-devis">
