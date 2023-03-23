@@ -36,7 +36,8 @@ export class ListCoutComponent implements OnInit {
       const searchText = filter.trim().toLowerCase();
       const type = data.TypeCout.type.toLowerCase();
       const designation = data.designation.toLowerCase();
-      const valuesToSearch = [type, designation];
+      const categories = data.TypeCout.categorie.toLowerCase();
+      const valuesToSearch = [type, designation,categories];
       return valuesToSearch.some(value => value.includes(searchText));
     };
   }

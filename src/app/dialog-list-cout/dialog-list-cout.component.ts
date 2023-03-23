@@ -70,7 +70,8 @@ export class DialogListCoutComponent implements OnInit {
       const type = data.TypeCout.type.toLowerCase();
       // console.log(type)
       const designation = data.designation.toLowerCase();
-      const valuesToSearch = [type, designation];
+      const categories = data.TypeCout.categorie.toLowerCase();
+      const valuesToSearch = [type, designation,categories];
       return valuesToSearch.some(value => value.includes(searchText));
     };
     this.dataSource.filter = filterValue.trim().toLowerCase();
