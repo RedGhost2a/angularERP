@@ -11,6 +11,8 @@ import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {Cout} from "../_models/cout";
 import {OuvrageCout} from "../_models/ouvrageCout";
 import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
+import {TypeCoutService} from "../_service/typeCout.service";
+import {TypeCout} from "../_models/type-cout";
 
 @Component({
   selector: 'app-dialog-form-cout',
@@ -25,16 +27,26 @@ export class DialogFormCoutComponent implements OnInit {
   isChecked: boolean = false;
   isInDevis: boolean = true;
   regexDetailOuvrage = new RegExp(`^/ouvrageDetail`)
+  categories: any[] = [];
+  typeCout !: TypeCout[];
+  isCout: boolean = true;
+
+
 
 
   constructor(private formBuilder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogComponent>,
-              private ouvrageService: OuvrageService, private dataSharingService: DataSharingService, private coutService: CoutService,
-              private ouvrageCoutService: OuvrageCoutService) {
+              private ouvrageService: OuvrageService,
+              public dataSharingService: DataSharingService,
+              private coutService: CoutService,
+              private ouvrageCoutService: OuvrageCoutService,
+              private typeCoutService: TypeCoutService,
+  ) {
     this.initialData = this.data;
     transformVirguletoPoint()
   }
 
   ngOnInit(): void {
+    this.getAllTypeCouts(this.dataSharingService.entrepriseId)
     console.log(this.data[2])
     if (this.regexDetailOuvrage.test(window.location.pathname)) {
       this.isInDevis = false;
@@ -107,6 +119,7 @@ export class DialogFormCoutComponent implements OnInit {
       this.cout = this.myFormGroup.getRawValue();
       this.cout.FournisseurId = this.myFormGroup.getRawValue().FournisseurId[2]
       this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[2]
+
       this.coutService.create(this.cout).subscribe((res: any) => {
         const ouvrageCout: OuvrageCout = {
           OuvrageId: this.data[2].id,
@@ -121,8 +134,29 @@ export class DialogFormCoutComponent implements OnInit {
 
   }
 
+  //Recupere tous les type de couts pour implementer le select picker du template
+  getAllTypeCouts(entrepriseID: number): void {
+    this.typeCoutService.getAllTypeCouts(entrepriseID).subscribe(data => {
+        this.typeCout = data;
+        console.log(this.typeCout)
+
+      }
+    )
+  }
+  getCategorieByType(type: string): void {
+    this.typeCoutService.getCategorieByType(type).subscribe(data => {
+      this.categories = data;
+
+      console.log(this.categories);
+    });
+  }
   closeDialog() {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
     this.dialogRef.close();
+  }
+
+  setValueURatio(){
+    const unite = this.myFormGroup.get('unite')?.value
+    this.myFormGroup.controls['uRatio'].setValue(`${unite}/h`)
   }
 }

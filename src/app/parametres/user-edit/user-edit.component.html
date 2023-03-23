@@ -83,6 +83,14 @@
       </mat-error>
     </mat-form-field>
 
+    <mat-form-field class="input-group">
+      <mat-label class="mat-label">Confirmation password</mat-label>
+      <input type="password" matInput formControlName="passwordConfirm" >
+      <mat-error *ngIf="userForm.get('passwordConfirm')?.hasError('required')">
+        Les mots de passe ne correspondent pas.
+      </mat-error>
+    </mat-form-field>
+
 
   </form>
   <button class="button" color="primary" mat-flat-button (click)="createAndUpdate()"

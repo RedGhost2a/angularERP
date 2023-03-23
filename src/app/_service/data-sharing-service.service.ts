@@ -14,8 +14,14 @@ export class DataSharingService {
   coefEqui!: number
   ouvrage!: Ouvrage
   entrepriseId!: number;
-
-
+  options = [
+    { value: 'F', label: 'Forfait' },
+    { value: 'm', label: 'Mètres' },
+    { value: 'm²', label: 'Mètres carrés' },
+    { value: 'm³', label: 'Mètres cubes' },
+    { value: 'Kg', label: 'Kilogrammes' },
+    { value: 'Tn', label: 'Tonnes' }
+  ];
   constructor(private sousDetailPrixService: SousDetailPrixService,
               private sousLotOuvrageService: SousLotOuvrageService) {
     this.lotId = 0;
@@ -68,6 +74,8 @@ export class DataSharingService {
     if(sousLotOuvrage.prixUniVenteHT === 0 && sousLotOuvrage.prixUniVenteHT !== sousLotOuvrage.prixUniCalcHT){
     }
   }
+
+
 
 
 

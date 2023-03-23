@@ -12,6 +12,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
+import {DataSharingService} from "../_service/data-sharing-service.service";
 
 
 interface FournisseurCout {
@@ -48,6 +49,7 @@ export class FormCoutComponent implements OnInit {
               private userService: UserService,
               private fournisseurService: FournisseurService,
               private typeCoutService: TypeCoutService,
+              public datasharingService: DataSharingService,
               @Inject(TOASTR_TOKEN) private toastr: Toastr) {
     this.initialData = this.data;
   }
@@ -149,6 +151,8 @@ export class FormCoutComponent implements OnInit {
     this.textButton = "Modifier ce composant"
     this.myFormGroup.patchValue(this.initialData)
   }
+
+
 
   closeDialog() {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage

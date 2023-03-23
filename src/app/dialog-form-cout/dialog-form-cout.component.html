@@ -16,7 +16,13 @@
 
         <mat-form-field appearance="legacy">
           <mat-label>Unité</mat-label>
-          <input formControlName="unite" matInput placeholder="Ex: M2">
+          <select  formControlName="unite" matNativeControl required (blur)="setValueURatio()">
+            <option *ngFor="let option of this.dataSharingService.options" [value]="option.value">{{ option.label }}</option>
+          </select>
+
+          <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
+            Vous devez entrer une unité.
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="legacy">
@@ -54,6 +60,29 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+<!--        <mat-form-field appearance="legacy">-->
+<!--          <mat-label>Type du composant</mat-label>-->
+<!--          <mat-select (selectionChange)="getCategorieByType($event.value)">-->
+<!--            <mat-option *ngFor="let item of typeCout |unique:'type'" [value]="item.type">-->
+<!--              {{item.type}}-->
+<!--            </mat-option>-->
+<!--          </mat-select>-->
+<!--          <mat-error *ngIf="this.myFormGroup.get('TypeCoutId')?.hasError('required')">-->
+<!--            Vous devez entrer un type.-->
+<!--          </mat-error>-->
+<!--        </mat-form-field>-->
+
+<!--        <mat-form-field appearance="legacy" >-->
+<!--          <mat-label>Catégorie du composant</mat-label>-->
+<!--          <mat-select formControlName="TypeCoutId">-->
+<!--            <mat-option *ngFor="let item of categories" [value]="item.id">-->
+<!--              {{item.categorie}}-->
+<!--            </mat-option>-->
+<!--          </mat-select>-->
+<!--          <mat-error *ngIf="this.myFormGroup.get('CategorieCout')?.hasError('required')">-->
+<!--            Vous devez entrer une categorie.-->
+<!--          </mat-error>-->
+<!--        </mat-form-field>-->
 
         <mat-form-field appearance="legacy">
           <mat-label>Fournisseur</mat-label>

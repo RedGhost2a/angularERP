@@ -15,12 +15,12 @@
       <mat-label>Recherche d'un composant</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="Ex. cim..." #input>
     </mat-form-field>
-    <mat-form-field appearance="legacy">
-      <mat-label>Recherche d'un type</mat-label>
-      <mat-select (selectionChange)="filterByType($event)" >
-        <mat-option  *ngFor="let type of listCout" [value]="type?.TypeCout?.type">{{type?.TypeCout?.type}}</mat-option>
-      </mat-select>
-    </mat-form-field>
+<!--    <mat-form-field appearance="legacy">-->
+<!--      <mat-label>Recherche d'un type</mat-label>-->
+<!--      <mat-select (selectionChange)="filterByType($event)" >-->
+<!--        <mat-option  *ngFor="let type of listCout" [value]="type?.TypeCout?.type">{{type?.TypeCout?.type}}</mat-option>-->
+<!--      </mat-select>-->
+<!--    </mat-form-field>-->
     <div>
       <button (click)="openDialogCreate(null)" mat-raised-button color="primary">Ajouter un composant</button>
       <!--      <button routerLink="/cout" mat-raised-button color="primary">Ajouter un composant</button>-->

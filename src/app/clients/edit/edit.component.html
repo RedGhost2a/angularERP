@@ -70,7 +70,7 @@
       <mat-form-field appearance="legacy">
         <mat-label>Ville</mat-label>
         <input type="text" matInput placeholder="Ajaccio" formControlName="city">
-        <mat-error *ngIf="this.myFormGroup.get('city')?.hasError('required')">
+        <mat-error *ngIf="this.myFormGroup.get('Adresse.city')?.hasError('required')">
           Vous devez inscrire une ville.
         </mat-error>
 

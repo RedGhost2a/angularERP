@@ -12,9 +12,12 @@
           Vous devez entrer une designation.
         </mat-error>
       </mat-form-field>
-      <mat-form-field appearance="legacy" id="input-unite" style="width: 80px">
+      <mat-form-field appearance="legacy">
         <mat-label>Unité</mat-label>
-        <input formControlName="unite" matInput placeholder="Ex: M2">
+        <select  formControlName="unite" matNativeControl required >
+          <option *ngFor="let option of this.datasharingService.options" [value]="option.value">{{ option.label }}</option>
+        </select>
+
         <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
           Vous devez entrer une unité.
         </mat-error>
