@@ -8,6 +8,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {SousLotOuvrage} from "../_models/sousLotOuvrage";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
+import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint";
 
 @Component({
   selector: 'app-form-ouvrage',
@@ -31,6 +32,7 @@ export class FormOuvrageComponent implements OnInit {
               private dialogRef: MatDialogRef<DialogComponent>,
               @Inject(TOASTR_TOKEN) private toastr: Toastr) {
     this.initialData = this.data
+    transformVirguletoPoint()
   }
 
   ngOnInit(): void {

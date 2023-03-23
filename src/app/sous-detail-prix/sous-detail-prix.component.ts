@@ -21,6 +21,7 @@ import {FormCoutComponent} from "../form-cout/form-cout.component";
 import {CoutDuDevis} from "../_models/cout-du-devis";
 import {FormControl, FormGroup} from "@angular/forms";
 import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
+import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint";
 
 @Component({
   selector: 'app-sous-detail-prix',
@@ -57,6 +58,8 @@ export class SousDetailPrixComponent implements OnInit {
               public dialog: MatDialog, private sousLotOuvrageService: SousLotOuvrageService,private fournisseurService : FournisseurService,
               private typeCoutService : TypeCoutService, private ouvrageCoutService : OuvrageCoutService
   ) {
+    transformVirguletoPoint()
+
   }
 
   ngOnInit(): void {

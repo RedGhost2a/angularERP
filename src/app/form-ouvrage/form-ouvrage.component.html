@@ -15,14 +15,14 @@
       </mat-form-field>
       <mat-form-field appearance="legacy" id="input-unite" style="width: 80px">
         <mat-label>Bénéfice</mat-label>
-        <input formControlName="benefice" matInput placeholder="Ex: 10%">
+        <input type="number" formControlName="benefice" matInput placeholder="Ex: 10%">
         <mat-error *ngIf="this.myFormGroup.get('benefice')?.hasError('required')">
           Vous devez entrer un bénéfice.
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="legacy" style="width: 100px">
         <mat-label>Aléas</mat-label>
-        <input formControlName="aleas" matInput placeholder="Ex: 5%">
+        <input type="number" formControlName="aleas" matInput placeholder="Ex: 5%">
         <mat-error *ngIf="this.myFormGroup.get('aleas')?.hasError('required')">
           Vous devez entrer un aléas.
         </mat-error>
@@ -43,7 +43,7 @@
       </mat-form-field>
       <mat-form-field appearance="legacy" style="width: 100px">
         <mat-label>Ratio</mat-label>
-        <input formControlName="ratio" matInput placeholder="Ex: 0.7">
+        <input type="number" formControlName="ratio" matInput placeholder="Ex: 0.7">
         <mat-error *ngIf="this.myFormGroup.get('ratio')?.hasError('required')">
           Vous devez entrer un ratio.
         </mat-error>
@@ -61,7 +61,7 @@
       </mat-form-field>
       <mat-form-field appearance="legacy" style="width: 100px">
         <mat-label>Prix</mat-label>
-        <input formControlName="prix" matInput placeholder="Ex: 9,2">
+        <input type="number" formControlName="prix" matInput placeholder="Ex: 9,2">
       </mat-form-field>
 
     </div>
