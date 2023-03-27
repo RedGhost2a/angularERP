@@ -68,7 +68,7 @@ export class EditDevisComponent implements OnInit {
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
       name: new FormControl("", Validators.required),
-      status: new FormControl("Initialisation", Validators.required),
+      status: new FormControl({ value: 'Initialisation', disabled: true }, Validators.required),
       ClientId: new FormControl("", Validators.required),
       EntrepriseId: new FormControl("", Validators.required),
       UserId: new FormControl(this.userId),

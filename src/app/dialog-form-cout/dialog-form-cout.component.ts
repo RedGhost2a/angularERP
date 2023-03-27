@@ -10,6 +10,7 @@ import {CoutService} from "../_service/cout.service";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {Cout} from "../_models/cout";
 import {OuvrageCout} from "../_models/ouvrageCout";
+import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
 
 @Component({
   selector: 'app-dialog-form-cout',
@@ -30,6 +31,7 @@ export class DialogFormCoutComponent implements OnInit {
               private ouvrageService: OuvrageService, private dataSharingService: DataSharingService, private coutService: CoutService,
               private ouvrageCoutService: OuvrageCoutService) {
     this.initialData = this.data;
+    transformVirguletoPoint()
   }
 
   ngOnInit(): void {
@@ -55,6 +57,7 @@ export class DialogFormCoutComponent implements OnInit {
       uRatio: new FormControl(""),
       efficience: new FormControl("")
     });
+
   }
 
   checked() {

@@ -7,8 +7,6 @@ import {AlertService} from "../../_service/alert.service";
 import {ThemePalette} from "@angular/material/core";
 import {EntrepriseService} from "../../_service/entreprise.service";
 import {MatDialog} from '@angular/material/dialog';
-import {da} from "date-fns/locale";
-import {Entreprise} from "../../_models/entreprise";
 
 
 @Component({
@@ -18,69 +16,30 @@ import {Entreprise} from "../../_models/entreprise";
 })
 export class UserEditComponent implements OnInit {
   @Input() updateUser!: UserEditComponent
-  userForm!: FormGroup;
+  userForm: FormGroup;
   textButton!: string;
   color: ThemePalette = 'accent';
   checked = true;
   disabled = false;
   listEntreprise: any[] = [];
   avatarUrl: any;
-  avatarBlob!: any;
-  fileName!: string;
-  fileType!: string;
+  role: string = ''
+  entrepriseDenomination!: string;
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, private alerteService: AlertService,
               private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr, private entrepriseService: EntrepriseService, public dialog: MatDialog) {
 
+    this.userForm = new FormGroup({
+      'email': new FormControl('', [Validators.required, Validators.email]),
+      'password': new FormControl('', Validators.required),
+      'title': new FormControl('', Validators.required),
+      'firstName': new FormControl('', Validators.required),
+      'lastName': new FormControl('', Validators.required),
+      'role': new FormControl('', Validators.required),
+      'avatarUrl': new FormControl(this.selectedAvatar),
+      'EntrepriseId': new FormControl('', Validators.required)
+    });
 
-
-  }
-
-
-  ngOnInit(): void {
-    this.createFormUser()
-    this.getEntrepriseForUser();
-    this.route.params.subscribe(params => {
-      const userID = +params['id']
-      if (!isNaN(userID)) {
-        this.textButton = "Modification d'un  utilisateur"
-        this.userService.getById(userID).subscribe(data => {
-          console.log("data ", data)
-
-          // Assuming res has a structure like:
-          // data = {
-          //   email: data.email,
-          //   password: data.password,
-          //   title: data.title,
-          //   firstName: data.firstName,
-          //   lastName: data.lastName,
-          //   role: data.role,
-          //   avatarUrl: data.avatarUrl,
-          // }
-          this.userForm.patchValue(data);
-            const entrepriseUser : any = []
-          data.Entreprises.forEach((entreprise : Entreprise) =>{
-            entrepriseUser.push(entreprise.id)
-          })
-          this.userForm.controls["EntrepriseId"].setValue(entrepriseUser)
-
-
-          console.log(this.userForm.getRawValue())
-        });
-      } else {
-        this.textButton = "Création d'un utilisateur"
-        // this.formBuilder.group({
-        //   title: [],
-        //   firstName: [],
-        //   lastName: [],
-        //   role: [],
-        //   email: [],
-        //   password: [],
-        //   avatarUrl: [],
-        //   EntrepriseId: [],
-        // });
-      }
-    })
   }
 
   success(message: string): void {
@@ -110,18 +69,6 @@ export class UserEditComponent implements OnInit {
   getAvatars(): string[] {
     // console.log(this.avatars)
     return this.avatars;
-  }
-  createFormUser(){
-    this.userForm = new FormGroup({
-      'email': new FormControl('', [Validators.required, Validators.email]),
-      'password': new FormControl('', Validators.required),
-      'title': new FormControl('', Validators.required),
-      'firstName': new FormControl('', Validators.required),
-      'lastName': new FormControl('', Validators.required),
-      'role': new FormControl('', Validators.required),
-      'avatarUrl': new FormControl(this.selectedAvatar),
-      'EntrepriseId': new FormControl( Validators.required)
-    });
   }
 
   createAndUpdate(): void {
@@ -174,10 +121,38 @@ export class UserEditComponent implements OnInit {
   getEntrepriseForUser() {
     this.entrepriseService.getAll().subscribe((data: any) => {
       this.listEntreprise = data
-      console.log(this.listEntreprise)
+      // console.log(this.listEntreprise)
     })
 
   }
 
+  ngOnInit(): void {
+    this.getEntrepriseForUser();
+    this.route.params.subscribe(params => {
+      const userID = +params['id']
+      if (!isNaN(userID)) {
+        this.textButton = "Modification d'un  utilisateur"
+        this.userService.getById(userID).subscribe(data => {
+          this.entrepriseDenomination=data.Entreprises[0].denomination,
 
+          console.log(this.entrepriseDenomination)
+          this.role = data['role']
+          // Assuming res has a structure like:
+          data = {
+            email: data.email,
+            password: data.password,
+            title: data.title,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            role: data.role,
+            avatarUrl: data.avatarUrl,
+            EntrepriseId: data.Entreprises[0].id,
+          }
+          this.userForm.patchValue(data);
+        });
+      } else {
+        this.textButton = "Création d'un utilisateur"
+      }
+    })
+  }
 }

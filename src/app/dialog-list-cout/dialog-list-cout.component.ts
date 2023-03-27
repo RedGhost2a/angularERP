@@ -10,6 +10,7 @@ import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 import {SousLotOuvrageService} from "../_service/sous-lot-ouvrage.service";
 import {OuvrageCout} from "../_models/ouvrageCout";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-dialog-list-cout',
@@ -29,16 +30,22 @@ export class DialogListCoutComponent implements OnInit {
   initialData!: any[]; // Déclarez la variable initialData comme étant un tableau de type any
   coutDuDevis !: CoutDuDevis
   isChecked: boolean = false;
+  dataSource!: any;
+
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogComponent>, private ouvrageService: OuvrageService,
               private coutService: CoutService, private dataSharingService: DataSharingService, private ouvrageCoutService: OuvrageCoutService,
               private sousLotOuvrageService: SousLotOuvrageService) {
     this.initialData = this.data;
+    this.dataSource = new MatTableDataSource(this.initialData);
+
 
   }
 
   ngOnInit(): void {
     console.log("ouvrage ", this.dataSharingService.ouvrage)
+     // this.dataSource = new MatTableDataSource(this.data);
+    // console.log(this.initialData)
   }
 
   checked() {
@@ -57,24 +64,18 @@ export class DialogListCoutComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
-    // Récupérez la valeur du filtre (la valeur de l'input de recherche)
     const filterValue = (event.target as HTMLInputElement).value;
-
-    // Si la valeur du filtre est vide, affectez la valeur initiale de data à la propriété data
-    if (filterValue.trim() === '') {
-      this.data = this.initialData;
-    } else {
-      // Sinon, copiez le tableau initialData dans une variable filteredData
-      let filteredData = [...this.initialData];
-
-      // Utilisez la méthode filter
-      filteredData = filteredData.filter(obj => obj.designation.toLowerCase().includes(filterValue.trim().toLowerCase()));
-
-      // Affectez la valeur de filteredData à la propriété data
-      this.data = filteredData;
-    }
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const searchText = filter.trim().toLowerCase();
+      const type = data.TypeCout.type.toLowerCase();
+      // console.log(type)
+      const designation = data.designation.toLowerCase();
+      const valuesToSearch = [type, designation];
+      return valuesToSearch.some(value => value.includes(searchText));
+    };
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    console.log(this.dataSource.filter)
   }
-
   onCheck(idCout: number): void {
     if (this.selectedCoutIds.indexOf(idCout) !== -1) {
       this.selectedCoutIds.forEach((element, index) => {

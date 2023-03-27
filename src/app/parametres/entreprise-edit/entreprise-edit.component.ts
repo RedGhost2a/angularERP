@@ -53,19 +53,19 @@ export class EntrepriseEditComponent implements OnInit {
       rcs: new FormControl('', ),
       siret: new FormControl('', ),
       nafCode: new FormControl(""),
-      tvaNumber: new FormControl(""),
+      phoneNumber:new FormControl('', [Validators.required]),
       Adresse: new FormGroup({
         adresses: new FormControl('', [Validators.required]),
-        city: new FormControl('', ),
+        city: new FormControl('',[Validators.required] ),
         country: new FormControl('', ),
         zipcode: new FormControl('', ),
       })
     });
   }
 
-  warning(message: string): void {
-    this.toastr.warning(message, "Attention");
-  }
+  // warning(message: string): void {
+  //   this.toastr.warning(message, "Attention");
+  // }
 
   createAndUpdate(): void {
 
@@ -73,7 +73,8 @@ export class EntrepriseEditComponent implements OnInit {
       this.myFormGroup.markAllAsTouched();
       if (this.myFormGroup.invalid) {
         // Form is invalid, show error message
-        this.toastr.error("Le formulaire est invalide.", "Erreur !");
+
+        this.toastr.error("Attention","Le formulaire est invalide.");
         return;
       }
       const entrepriseID = +params['id']
@@ -82,26 +83,23 @@ export class EntrepriseEditComponent implements OnInit {
         console.log("formulaire entreprise,",this.myFormGroup.getRawValue())
         this.entepriseService.register(this.myFormGroup.getRawValue()).subscribe(
           (): void => {
-
-            this.success("Nouvelle entreprise créer !")
+            this.toastr.success("Succes","Nouvelle entreprise créer !")
             this.router.navigate(['/admin']);
-
           }, error => {
             console.log(error)
-            this.warning("Complète tout les champs !")
-
+            this.toastr.warning("Attention","Complète tout les champs !")
           }
         )
       } else {
         this.entepriseService.update(this.myFormGroup.getRawValue(), String(entrepriseID))
           .subscribe((): void => {
-            this.success(" Données modifier avec succès !")
+            this.toastr.success("Succes"," Données modifier avec succès !")
 
             alert('Update!');
             if (this.myFormGroup.status === 'VALID') this.router.navigate(['/entreprises']);
 
           }, error => {
-            this.warning("Complète tout les champs !")
+            this.toastr.warning("Attention","Complète tout les champs !")
 
           });
       }

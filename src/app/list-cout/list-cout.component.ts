@@ -15,10 +15,12 @@ import {User} from "../_models/users";
   styleUrls: ['./list-cout.component.scss']
 })
 export class ListCoutComponent implements OnInit {
-  @Input() listCout!: Cout[]
+  @Input() listCout!: Cout[];
   columnsToDisplay = ["type", "categorie", "designation", "unite", "prixUnitaire", "fournisseur", "boutons"];
   currentUser !:User ;
   dataSource!: any;
+  selectedType!:any;
+
 
   constructor(private coutService: CoutService, private userService: UserService, private dialog: MatDialog) {
 
@@ -29,10 +31,29 @@ export class ListCoutComponent implements OnInit {
     this.getUserEntreprise();
   }
 
+  private getFilterPredicate(): (data: any, filter: string) => boolean {
+    return (data: any, filter: string) => {
+      const searchText = filter.trim().toLowerCase();
+      const type = data.TypeCout.type.toLowerCase();
+      const designation = data.designation.toLowerCase();
+      const valuesToSearch = [type, designation];
+      return valuesToSearch.some(value => value.includes(searchText));
+    };
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filterPredicate = this.getFilterPredicate();
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  filterByType(event: any) {
+    const selectedType = event.value;
+    this.dataSource.filterPredicate = this.getFilterPredicate();
+    this.dataSource.filter = selectedType.trim().toLowerCase();
+  }
+
+
 
 
   getAllCouts(entrepriseId: number): void {

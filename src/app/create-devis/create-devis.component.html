@@ -149,7 +149,7 @@
                 <div class="detail-ouvrage-frais-chantier">
                   <span class="designation-ouvrage-frais-chantier">Qte</span>
                   <mat-form-field appearance="legacy" [formGroup]="myFormGroup" id="quantity-ouvrage-frias-de-chantier">
-                    <input formControlName="quantityOuvrage" matInput required
+                    <input type="number"  formControlName="quantityOuvrage" matInput required
                            [placeholder]="ouvrage.SousLotOuvrage.quantityOuvrage.toString()"
                            (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lotFraisDeChantier, prixOuvrageFraisDeChantier)">
 <!--                    (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lot, prixOuvrage)">-->
@@ -431,7 +431,7 @@
                   <div class="detail-ouvrage-frais-chantier">
                     <span class="designation-ouvrage-frais-chantier">Qte</span>
                     <mat-form-field appearance="legacy" [formGroup]="myFormGroup" id="quantity-ouvrage-frias">
-                      <input formControlName="quantityOuvrage" matInput required
+                      <input type="number"  formControlName="quantityOuvrage" matInput required
                              [placeholder]="ouvrage.SousLotOuvrage.quantityOuvrage.toString()"
                              (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lot, prixOuvrage)">
 <!--                             (keyup.enter)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lot, prixOuvrage)">-->

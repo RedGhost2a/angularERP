@@ -2,13 +2,13 @@
   <div class="subContainer">
     <h1>Ajout d'un ou plusieurs composant a l'ouvrage</h1>
     <p>Veuillez sélectionner un ou plusieurs composant à associer à l'ouvrage.</p>
-    <mat-form-field appearance="legacy">
-      <mat-label>Rechercher un cout</mat-label>
-      <input matInput placeholder="Ex: Ciment">
+    <mat-form-field>
+      <mat-label>Recherche d'un composant</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Ex. cim..." #input>
     </mat-form-field>
   </div>
   <div class="tableCout">
-    <table mat-table [dataSource]="initialData">
+    <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="checkBox">
         <th mat-header-cell *matHeaderCellDef>  </th>
         <td mat-cell *matCellDef="let cout">

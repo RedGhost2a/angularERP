@@ -47,8 +47,8 @@
         <mat-form-field style="width:50vw">
           <mat-label>Adresse</mat-label>
           <input matInput formControlName="adresses">
-          <mat-error *ngIf="myFormGroup.get('adresses')?.hasError('required')">
-            Vous devez inscrire une adresse.
+          <mat-error *ngIf="myFormGroup.get('Adresse.adresses')?.hasError('required')">
+            Vous devez renseignez une adresse.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
@@ -58,7 +58,7 @@
         <mat-form-field>
           <mat-label>Ville</mat-label>
           <input matInput formControlName="city">
-          <mat-error *ngIf="myFormGroup.get('city')?.hasError('required')">
+          <mat-error *ngIf="myFormGroup.get('Adresse.city')?.hasError('required')">
             Vous devez choisir une ville.
           </mat-error>
         </mat-form-field>

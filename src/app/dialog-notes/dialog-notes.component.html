@@ -39,8 +39,11 @@
     </mat-form-field>
 
     <mat-error *ngIf="errorMessage">{{errorMessage}}</mat-error>
+<div class="btn">
+  <button  mat-raised-button color="primary" (click)="saveNote()">Valider</button>
+  <button  mat-raised-button color="warn"(click)="this.dialogRef.close()" >Fermer</button>
+</div>
 
-    <button mat-raised-button color="primary" (click)="saveNote()">Enregistrer</button>
   </form>
 
 </div>
