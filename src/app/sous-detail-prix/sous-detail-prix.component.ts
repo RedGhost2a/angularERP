@@ -339,10 +339,11 @@ export class SousDetailPrixComponent implements OnInit {
     }).afterClosed().subscribe(async result => {
       if (result) {
         console.log("result ? list cout: ", result)
+        this.ngOnInit()
       } else {
         console.log("afterClose else")
       }
-        this.ngOnInit()
+      console.log("console")
 
     });
   }

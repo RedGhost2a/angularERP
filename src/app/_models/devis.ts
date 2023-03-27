@@ -1,14 +1,16 @@
 import {Client} from "./client";
 import {Adresse} from "./adresse";
 import {User} from "./users";
+import {Entreprise} from "./entreprise";
 
 export class Devis {
   id!: number;
   name!: string;
   status!: string;
   EntrepriseId!: number;
+  Entreprise?:Entreprise;
   createdAt?: Date;
-  client!: Client;
+  Client!: Client;
   adresse!: Adresse;
   ClientId!: number;
   user!: User;

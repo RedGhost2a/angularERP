@@ -3,8 +3,8 @@ export class SousLotOuvrage {
   OuvrageDuDeviId!: number;
   SousLotId!: number;
   quantityOuvrage!: number;
-  prixUniHT!:number;
   prixOuvrage!: number;
+  prixUniHT!:number;
   prixUniVenteHT!: number;
   prixVenteHT!:number;
   prixEquiHT!:number;

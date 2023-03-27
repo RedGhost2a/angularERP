@@ -45,6 +45,10 @@ export class FormOuvrageComponent implements OnInit {
 
   createOuvrage(): void {
     console.log(this.myFormGroup.getRawValue())
+    if(this.myFormGroup.controls['prix'].value ===''){
+      this.myFormGroup.controls['prix'].setValue(0);
+    }
+    console.log("value du form",this.myFormGroup.getRawValue())
     this.myFormGroup.markAllAsTouched();
     if (this.myFormGroup.invalid) {
       // Form is invalid, show error message
@@ -72,12 +76,14 @@ export class FormOuvrageComponent implements OnInit {
   }
 
   createOuvrageDuDevis(): void {
+    console.log(this.myFormGroup.controls['prix'].value)
     this.ouvrageService.createOuvrageDuDevis(this.myFormGroup.getRawValue()).subscribe( response =>{
       console.log("response ouvrage cout du devis ", response)
+      // const prixOuvrage =
       this.sousLotOuvrageDuDevis = {
         SousLotId: this.initialData,
         OuvrageDuDeviId: response.OuvrageDuDevis?.id,
-        prixOuvrage: 0,
+        prixOuvrage: response.prix,
         prixUniVenteHT: 0,
         prixVenteHT: 0,
         quantityOuvrage: 1,

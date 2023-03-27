@@ -85,7 +85,7 @@ export class DetailDevisComponent implements OnInit {
     this.lot.devisId = devisId;
     this.lot.designation = `Frais de chantier ${this.lot.devisId}`
     console.log("console lot detail devis", this.lot)
-    this.lotService.create(this.lot)
+    this.lotService.createLotFraisDeChantier(this.lot)
       .subscribe((response: any) => {
         this.toastr.success('Succes', "Nouveau lot en vue !")
         this.router.navigate([`/devisCreate/${devisId}`]);

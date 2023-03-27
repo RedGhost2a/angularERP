@@ -21,6 +21,10 @@ export class LotService {
     console.log('console log create lot service : ', data)
     return this.http.post(`${baseUrl}/new`, data);
   }
+  createLotFraisDeChantier(data:any):Observable<any> {
+    console.log('console log create lot service : ', data)
+    return this.http.post(`${baseUrl}/newFraisDeChantier`, data);
+  }
 
   update(lot: Lot, id: any): Observable<any> {
     return this.http.put(`${baseUrl}/update`, lot)
