@@ -40,7 +40,7 @@
     <mat-form-field class="input-group">
       <mat-label class="mat-label">Role</mat-label>
       <mat-select formControlName="role">
-        <mat-option value="Admin">Super Admin</mat-option>
+        <mat-option value="Super Admin">Super Admin</mat-option>
         <mat-option value="Admin">Admin</mat-option>
         <mat-option value="User">User</mat-option>
       </mat-select>
@@ -51,8 +51,8 @@
     <mat-form-field class="input-group">
       <mat-label class="mat-label">Entreprises</mat-label>
       <mat-select formControlName="EntrepriseId" multiple>
-        <mat-option [value]=+entreprise.id
-                    *ngFor="let entreprise of listEntreprise">{{ entreprise.denomination }}</mat-option>
+        <mat-option
+                    *ngFor="let entreprise of listEntreprise" [value]=entreprise.id>{{ entreprise.denomination }}</mat-option>
 
       </mat-select>
 

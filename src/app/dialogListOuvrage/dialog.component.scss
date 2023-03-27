@@ -5,11 +5,13 @@
   display: flex;
   flex-direction: column;
 }
+.test .mat-dialog-container {
+  padding: 0 !important;
+}
 
 .container {
   display: flex;
   flex-direction: column;
-
   .accordion {
     margin-top: 10px;
   }

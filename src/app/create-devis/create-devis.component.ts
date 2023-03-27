@@ -22,6 +22,11 @@ import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 import {Devis} from "../_models/devis";
 import {DevisExport} from "../_models/devisExport";
 import {FormOuvrageComponent} from "../form-ouvrage/form-ouvrage.component";
+import {text} from "@fortawesome/fontawesome-svg-core";
+import {OuvrageDuDevis} from "../_models/ouvrage-du-devis";
+import {da} from "date-fns/locale";
+import {Client} from "../_models/client";
+import {Entreprise} from "../_models/entreprise";
 
 // import {Json2CsvTransform} from "json2csv";
 
@@ -33,7 +38,6 @@ import {FormOuvrageComponent} from "../form-ouvrage/form-ouvrage.component";
 //, AfterContentChecked
 @Injectable()
 export class CreateDevisComponent implements OnInit {
-  isFocused: boolean = false;
 
   lotFraisDeChantier!: Lot;
   form!: FormGroup;
@@ -54,7 +58,6 @@ export class CreateDevisComponent implements OnInit {
   myFormGroup!: FormGroup;
   myFormGroupPrix!: FormGroup;
   sommeLot: { prixLot: any; idLot: any }[] = [];
-  prixDevis: number = 0;
   coutDuDevis!: CoutDuDevis;
   sousLotOuvrageDuDevis!: SousLotOuvrage
   resultBeneficeLots!: number;
@@ -62,15 +65,18 @@ export class CreateDevisComponent implements OnInit {
   resultBeneficeFraisDeChantier!: number;
   resultAleasFraisDeChantier!: number;
   dataLoad: boolean = false;
-  prixUnitaireCalculeHt: number = 0;
-  prixVenteHt!: number;
-  prixEquilibre!: number;
   prixEquilibres: number[] = [];
   coefEqui!: number;
   fraisDeChantier = new Devis()
-  devisExport: DevisExport[] = []
-  testDevisExport = new DevisExport()
-  // fraisDeChantier = new Devis()
+  devisExport = new DevisExport()
+  fraisDeChantierExport = new DevisExport()
+  client !: Client
+  entreprise !: Entreprise
+  setting = {
+    element: {
+      dynamicDownload: null as unknown as HTMLElement,
+    },
+  };
 
 
 //TODO ON NE PEUT METTRE QUE UN SEUL ET MEME OUVRAGE PAR SOUS_LOT; //
@@ -100,6 +106,7 @@ export class CreateDevisComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.devis.id = +params['id'];
       this.devisId = +params['id']
+      this.sharedData.deviId = this.devisId;
       this.form = new FormGroup({
         designation: new FormControl("", [Validators.required, Validators.minLength(3)]),
         devisId: new FormControl(this.devisId)
@@ -116,78 +123,45 @@ export class CreateDevisComponent implements OnInit {
     this.getDevisExport()
 
 
-    // quantityCout(quantityOuvrage: number, sousLot: SousLot): void {
-    //   console.log("quantityCout")
-    //   if (quantityOuvrage) {
-    //     console.log("quantityCout dans le premier IF")
-    //     sousLot.OuvrageDuDevis.forEach(sousLot => {
-    //       sousLot.CoutDuDevis?.forEach(coutDuDevis => {
-    //         if (coutDuDevis.OuvrageCoutDuDevis && coutDuDevis.OuvrageCoutDuDevis.ratio !== undefined) {
-    //           console.log("cout du devis", coutDuDevis)
-    //           console.log("RATIO OUVRAGECOUTDUDEVIS", coutDuDevis.OuvrageCoutDuDevis.ratio)
-    //           coutDuDevis.quantite = coutDuDevis.OuvrageCoutDuDevis.ratio * quantityOuvrage
-    //         }
-    //       })
-    //     })
-    //
-    //   }
   }
 
   fraisGeneraux(): void {
     if (this.lotFraisDeChantier.prix !== undefined) {
       this.devis.fraisGeneraux = (this.lotFraisDeChantier.prix + this.devis.debourseSecTotal) * 0.2
-      // return (this.lotFraisDeChantier.prix + this.prixDevis) * 0.2
       this.coutTotal();
       this.totalDepense()
     }
-    // return 0
   }
 
   moyenneBenefice(): void {
     this.devis.moyenneBenefice = (this.resultBeneficeFraisDeChantier + this.resultBeneficeLots) / 2
-    // return (this.resultBeneficeFraisDeChantier + this.resultBeneficeLots) / 2
   }
 
   moyenneAleas(): void {
-    // return (this.resultAleasLots + this.resultAleasFraisDeChantier) / 2
     this.devis.moyenneAleas = (this.resultAleasLots + this.resultAleasFraisDeChantier) / 2
   }
 
   totalDepense(): void {
-    // if (this.fraisGeneraux() !== 0) {
     this.devis.totalDepense = this.devis.fraisGeneraux + this.devis.debourseSecTotal
-    // return this.fraisGeneraux() + this.prixDevis
   }
-
-  // return 0
-  // }
 
   moyenneBeneficeAleasTotal(): void {
     this.devis.moyenneBeneficeAleas = this.devis.moyenneAleas + this.devis.moyenneBenefice
-    // const beneficeTotal = this.resultBeneficeFraisDeChantier + this.resultBeneficeLots
-    // const aleasTotal = this.resultAleasLots + this.resultAleasFraisDeChantier
-    // return (beneficeTotal + aleasTotal) / 2
   }
 
 
   coutTotal(): void {
-    // <p>cout total total debourses sec + frais de chantier + frais generaux</p>
     if (this.lotFraisDeChantier.prix !== undefined) {
       this.devis.coutTotal = this.lotFraisDeChantier.prix + this.devis.debourseSecTotal + this.devis.fraisGeneraux
-      // return this.lotFraisDeChantier.prix + this.prixDevis + this.fraisGeneraux()
       this.coefEquilibre()
     }
-    // return 0
   }
 
   coefEquilibre(): void {
-    console.log("this.devis.coutTotal", this.devis.coutTotal)
-    console.log("this.devis.debourseSecTotal", this.devis.debourseSecTotal)
-    if (this.lotFraisDeChantier.prix !== 0 && this.testLots[0].prix !== 0 && this.testLots[0].prix!== NaN ) {
+    if (this.lotFraisDeChantier.prix !== 0 && this.testLots[0].prix !== 0 && this.testLots[0].prix !== NaN) {
       this.devis.coeffEquilibre = this.devis.coutTotal / this.devis.debourseSecTotal
       localStorage.setItem("coef", this.devis.coeffEquilibre.toString())
     }
-    // return 0
   }
 
 
@@ -209,7 +183,6 @@ export class CreateDevisComponent implements OnInit {
         idLot: lot.id,
         prixLot: lot.prix
       }))
-    // this.prixDevis = this.sommeLot.reduce(function (acc, obj) {
     this.devis.debourseSecTotal = this.sommeLot.reduce(function (acc, obj) {
       return acc + obj.prixLot;
     }, 0);
@@ -231,14 +204,13 @@ export class CreateDevisComponent implements OnInit {
       lot.SousLots.forEach(sousLot => {
         sousLot.OuvrageDuDevis.forEach(async ouvrageDuDevis => {
           if (ouvrageDuDevis.SousLotOuvrage) {
-            // ouvrageDuDevis.SousLotOuvrage.prixUniArrondi = 0;
             await this.sharedData.prixEquilibreHT(ouvrageDuDevis.SousLotOuvrage)
             await this.sharedData.prixUnitaireHT(ouvrageDuDevis.SousLotOuvrage)
             await this.sharedData.prixCalculeHT(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.benefice, ouvrageDuDevis.aleas)
             await this.sharedData.prixUnitaireCalculeHT(ouvrageDuDevis.SousLotOuvrage)
             await this.sharedData.beneficePercentToEuro(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.benefice)
             await this.sharedData.aleasPercentToEuro(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.aleas)
-
+            // await this.sharedData.prixUniVente(ouvrageDuDevis.SousLotOuvrage)
             // await this.sharedData.prixUniVente(ouvrageDuDevis.SousLotOuvrage)
 
             await this.sharedData.prixVenteHT(ouvrageDuDevis.SousLotOuvrage)
@@ -266,12 +238,82 @@ export class CreateDevisComponent implements OnInit {
       })
     })
 
-    this.testDevisExport.debourseSecTotal = this.devis.debourseSecTotal
+    //this.testDevisExport.debourseSecTotal = this.devis.debourseSecTotal
 
     // console.log("this.devis", this.devis)
-    console.log("testDevis",this.testDevisExport)
+    //console.log("testDevis",this.testDevisExport)
   }
 
+  calculDevisWithPrixChange() {
+    this.devis.prixEquiHT = 0;
+    this.devis.beneficeInEuro = 0;
+    this.devis.aleasInEuro = 0;
+    this.devis.prixCalcHT = 0;
+    this.devis.beneficeAleasTotal = 0;
+    this.devis.prixVenteHT = 0;
+
+    this.testLots.forEach(lot => {
+      lot.SousLots.forEach(sousLot => {
+        sousLot.OuvrageDuDevis.forEach(async ouvrageDuDevis => {
+          if (ouvrageDuDevis.SousLotOuvrage) {
+            await this.sharedData.prixEquilibreHT(ouvrageDuDevis.SousLotOuvrage)
+            await this.sharedData.prixUnitaireHT(ouvrageDuDevis.SousLotOuvrage)
+            await this.sharedData.prixCalculeHT(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.benefice, ouvrageDuDevis.aleas)
+            await this.sharedData.prixUnitaireCalculeHT(ouvrageDuDevis.SousLotOuvrage)
+            await this.sharedData.beneficePercentToEuro(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.benefice)
+            await this.sharedData.aleasPercentToEuro(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.aleas)
+
+            await this.testAsync(ouvrageDuDevis)
+
+
+            this.devis.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixVenteHT
+            this.devis.prixEquiHT += ouvrageDuDevis.SousLotOuvrage.prixEquiHT
+            this.devis.beneficeInEuro += ouvrageDuDevis.SousLotOuvrage.beneficeInEuro
+            this.devis.aleasInEuro += ouvrageDuDevis.SousLotOuvrage.aleasInEuro
+            this.devis.prixCalcHT += ouvrageDuDevis.SousLotOuvrage.prixCalcHT
+            this.devis.beneficeAleasTotal = this.devis.prixVenteHT - this.devis.prixEquiHT
+          }
+
+        })
+
+      })
+    })
+
+  }
+
+  calculFraisDeChantierWithPrixChange(){
+    this.fraisDeChantier.prixEquiHT = 0;
+    this.fraisDeChantier.beneficeInEuro = 0;
+    this.fraisDeChantier.aleasInEuro = 0;
+    this.fraisDeChantier.prixCalcHT = 0;
+    this.fraisDeChantier.prixVenteHT = 0;
+    this.fraisDeChantier.beneficeAleasTotal = 0;
+
+    this.lotFraisDeChantier.SousLots.forEach(sousLot => {
+      sousLot.OuvrageDuDevis.forEach(async ouvrageDuDevis => {
+        if (ouvrageDuDevis.SousLotOuvrage) {
+          // ouvrageDuDevis.SousLotOuvrage.prixUniArrondi = 0;
+          await this.sharedData.prixEquilibreHT(ouvrageDuDevis.SousLotOuvrage)
+          await this.sharedData.prixUnitaireHT(ouvrageDuDevis.SousLotOuvrage)
+          await this.sharedData.prixCalculeHT(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.benefice, ouvrageDuDevis.aleas)
+          await this.sharedData.prixUnitaireCalculeHT(ouvrageDuDevis.SousLotOuvrage)
+          await this.sharedData.beneficePercentToEuro(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.benefice)
+          await this.sharedData.aleasPercentToEuro(ouvrageDuDevis.SousLotOuvrage, ouvrageDuDevis.aleas)
+
+
+          await this.testAsync(ouvrageDuDevis)
+          this.fraisDeChantier.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixVenteHT
+          this.fraisDeChantier.prixEquiHT += ouvrageDuDevis.SousLotOuvrage.prixEquiHT
+          this.fraisDeChantier.beneficeInEuro += ouvrageDuDevis.SousLotOuvrage.beneficeInEuro
+          this.fraisDeChantier.aleasInEuro += ouvrageDuDevis.SousLotOuvrage.aleasInEuro
+          this.fraisDeChantier.prixCalcHT += ouvrageDuDevis.SousLotOuvrage.prixCalcHT
+          this.fraisDeChantier.beneficeAleasTotal = this.fraisDeChantier.prixVenteHT - this.fraisDeChantier.prixEquiHT
+        }
+
+      })
+
+    })
+  }
   allCalculOuvrageFraisDeChantier(): void {
     this.fraisDeChantier.prixEquiHT = 0;
     this.fraisDeChantier.beneficeInEuro = 0;
@@ -296,7 +338,6 @@ export class CreateDevisComponent implements OnInit {
           await this.sharedData.prixVenteHT(ouvrageDuDevis.SousLotOuvrage)
 
 
-
           await this.testAsync(ouvrageDuDevis)
 
           // console.log("prix unitaire arrondi ", ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT)
@@ -314,22 +355,23 @@ export class CreateDevisComponent implements OnInit {
       })
 
     })
-    this.testDevisExport.coutTotal = this.devis.coutTotal
+    //this.testDevisExport.coutTotal = this.devis.coutTotal
 
     // this.devisExport.push({"coutTotal": this.devis.coutTotal})
 
   }
-  test(){
+
+  test() {
     // console.log("testDevis", this.testDevisExport)
-    console.log("this.testDevisExport", this.testDevisExport)
+    //console.log("this.testDevisExport", this.testDevisExport)
   }
 
   getDevisExport() {
     this.devisService.getById(this.devisId).subscribe(value => {
-      console.log("value",value)
-      this.testDevisExport.Lots = value.Lots;
+      console.log("value", value)
+      //this.testDevisExport.Lots = value.Lots;
 
-      console.log("this.testDevisExport",this.testDevisExport)
+      //console.log("this.testDevisExport",this.testDevisExport)
     })
   }
 
@@ -384,7 +426,7 @@ export class CreateDevisComponent implements OnInit {
     // this.prixUnitaireCalculeHt = event;
     sousLotOuvrage.prixUniVenteHT = event
     sousLotOuvrage.prixVenteHT = event * sousLotOuvrage.quantityOuvrage
-    console.log("prix de vente HT",sousLotOuvrage.prixVenteHT)
+    console.log("prix de vente HT", sousLotOuvrage.prixVenteHT)
     const prixArrondiSousLotOuvrage = {
       prixUniVenteHT: event
     }
@@ -399,8 +441,10 @@ export class CreateDevisComponent implements OnInit {
           console.error(error);
         }
       );
-    this.allCalculOuvrage()
-    this.allCalculOuvrageFraisDeChantier()
+    this.calculDevisWithPrixChange()
+    this.calculFraisDeChantierWithPrixChange()
+    // this.allCalculOuvrage()
+    // this.allCalculOuvrageFraisDeChantier()
   }
 
 //quand la valeur de l'input quantity change
@@ -489,6 +533,14 @@ export class CreateDevisComponent implements OnInit {
     // this.prixDevis = 0;
     this.devisService.getByIdExceptFrais(this.devisId).subscribe(data => {
       console.log("data get all lot ", data)
+      this.devisExport.client = {
+        denomination: data.Client.denomination,
+        adresses: data.Client.Adresse.adresses,
+        ville: data.Client.Adresse.city
+      }
+      this.devisExport.entreprise = {
+        denomination: data.Entreprise.denomination
+      };
 
       let nombreOuvrage = 0
       this.resultBeneficeLots = 0;
@@ -497,7 +549,6 @@ export class CreateDevisComponent implements OnInit {
       this.testLots.forEach(lot => {
         lot.SousLots.forEach(sousLot => {
           sousLot.prix = 0;
-          this.prixVenteHt = 0
           this.getSommeSousLot(sousLot, lot)
           sousLot.OuvrageDuDevis.forEach(ouvrage => {
             nombreOuvrage++;
@@ -637,14 +688,13 @@ export class CreateDevisComponent implements OnInit {
       this.getLotFraisDeChantier()
 
 
-
     });
   }
 
 
   openDialog(sousLotId: number) {
     this.dialog.open(DialogComponent, {
-      panelClass: "test",
+      panelClass: 'test',
       data: this.listOuvrage,
       width: '90%',
       height: '70%'
@@ -672,7 +722,7 @@ export class CreateDevisComponent implements OnInit {
       height: '40%'
     }).afterClosed().subscribe(result => {
       this.getAllLots()
-      this.getLotFraisDeChantier() ;
+      this.getLotFraisDeChantier();
 
 
     });
@@ -739,7 +789,7 @@ export class CreateDevisComponent implements OnInit {
             })
 
           })
-          if(prixOuvrage === 0){
+          if (prixOuvrage === 0) {
             prixOuvrage = data.prix
           }
           //creer le model de sousLotOuvrageDuDevis
@@ -807,33 +857,99 @@ export class CreateDevisComponent implements OnInit {
     }
   }
 
-  // sommePrixArrondi(sousLotOuvrage : SousLotOuvrage):void{
-  //   sousLotOuvrage.prixArrondi = sousLotOuvrage.prixUniArrondi * sousLotOuvrage.quantityOuvrage
-  // }
 
-  // getPrix(ouvrage: Ouvrage) {
-  //   if (!ouvrage.SousLotOuvrage) {
-  //     return 0;
-  //   }
-  //   let arrondi = ouvrage.SousLotOuvrage.prixArrondi > 0 ? ouvrage.SousLotOuvrage.prixArrondi : this.sharedData.prixUnitaireCalculeHt;
-  //
-  //   return arrondi;
-  // }
+  private dyanmicDownloadByHtmlTag(arg: { fileName: string; text: string }) {
+    if (!this.setting.element.dynamicDownload) {
+      this.setting.element.dynamicDownload = document.createElement('a');
+    }
+    const element = this.setting.element.dynamicDownload;
+    const fileType = 'text/plain';
+    element.setAttribute(
+      'href',
+      `data:${fileType};charset=utf-8,${encodeURIComponent(arg.text)}`
+    );
+    element.setAttribute('download', arg.fileName);
 
-  public totalArray: number[] = [];
-
-  // updateTotalArray(ouvrage: Ouvrage) {
-  //   let prix = (ouvrage.SousLotOuvrage?.quantityOuvrage || 0) * this.getPrix(ouvrage)
-  //   if (prix && !this.totalArray.includes(prix)) {
-  //     this.totalArray.push(prix);
-  //   }
-  //   return prix
-  // }
-
-  calculateTotal() {
-    return this.totalArray.reduce((a, b) => a + b, 0);
+    var event = new MouseEvent('click');
+    element.dispatchEvent(event);
   }
+
+  async formatDevisForExport() {
+    this.testLots.forEach((lot: Lot, indexLot: number) => {
+      this.devisExport.lot.push({
+        designation: lot.designation,
+        prix: 0,
+        sousLot: []
+      })
+      lot.SousLots.forEach((sousLot: SousLot, indexSousLot: number) => {
+        const nouveauSousLot = {
+          designation: sousLot.designation,
+          prix: 0,
+          ouvrage: []
+        }
+        this.devisExport.lot[indexLot + 1].sousLot.push(nouveauSousLot)
+        sousLot.OuvrageDuDevis.forEach((ouvrage: any) => {
+          const nouveauOuvrage = {
+            designation: ouvrage.designation,
+            unite: ouvrage.unite,
+            quantite: ouvrage.SousLotOuvrage.quantityOuvrage,
+            prixUnitaire: ouvrage.SousLotOuvrage.prixUniVenteHT,
+            totalHT: ouvrage.SousLotOuvrage.prixVenteHT
+          }
+          this.devisExport.lot[indexLot + 1].sousLot[indexSousLot].prix += nouveauOuvrage.totalHT
+          this.devisExport.lot[indexLot + 1].sousLot[indexSousLot].ouvrage.push(nouveauOuvrage)
+          // }
+        })
+        this.devisExport.lot[indexLot + 1].prix += this.devisExport.lot[indexLot + 1].sousLot[indexSousLot].prix
+      })
+    })
+    console.log("devis export", this.devisExport)
+  }
+
+  async formatFraisDeChantierForExport() {
+    this.devisExport.lot = []
+    this.devisExport.lot.push({
+      designation: this.lotFraisDeChantier.designation,
+      prix: 0,
+      sousLot: []
+    })
+    this.lotFraisDeChantier.SousLots.forEach((sousLot: SousLot, indexSousLot: number) => {
+      console.log(sousLot)
+      const nouveauSousLot = {
+        designation: sousLot.designation,
+        prix: 0,
+        ouvrage: []
+      }
+      this.devisExport.lot[0].sousLot.push(nouveauSousLot)
+      sousLot.OuvrageDuDevis.forEach((ouvrage: any) => {
+        const nouveauOuvrage = {
+          designation: ouvrage.designation,
+          unite: ouvrage.unite,
+          quantite: ouvrage.SousLotOuvrage.quantityOuvrage,
+          prixUnitaire: ouvrage.SousLotOuvrage.prixUniVenteHT,
+          totalHT: ouvrage.SousLotOuvrage.prixVenteHT
+        }
+        this.devisExport.lot[0].sousLot[indexSousLot].prix += nouveauOuvrage.totalHT
+        this.devisExport.lot[0].sousLot[indexSousLot].ouvrage.push(nouveauOuvrage)
+      })
+      this.devisExport.lot[0].prix += this.devisExport.lot[0].sousLot[indexSousLot].prix
+    })
+  }
+
+  async dynamicDownloadTxt() {
+    await this.formatFraisDeChantierForExport()
+    await this.formatDevisForExport()
+    this.dyanmicDownloadByHtmlTag({
+      fileName: 'My Report',
+      text: JSON.stringify(this.devisExport),
+    });
+
+  }
+
+
 }
+
+
 
 
 

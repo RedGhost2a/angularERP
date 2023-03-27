@@ -135,6 +135,7 @@ export class EntrepriseEditComponent implements OnInit {
           }
 
           this.myFormGroup.patchValue(data);
+          console.log("data :  ",data)
         });
       } else {
         this.textButton = 'Créer une nouvelle entreprise'

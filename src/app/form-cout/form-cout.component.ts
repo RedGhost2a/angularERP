@@ -37,6 +37,7 @@ export class FormCoutComponent implements OnInit {
   regexCout = new RegExp(`^/listCout`)
   isCout: boolean = true;
   categories: any[] = [];
+  types!:String;
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Cout,
@@ -107,6 +108,7 @@ export class FormCoutComponent implements OnInit {
       unite: new FormControl("", Validators.required),
       prixUnitaire: new FormControl("", Validators.required),
       EntrepriseId: new FormControl(),
+      type : new FormControl(),
       TypeCoutId: new FormControl(""),
       FournisseurId: new FormControl("")
     });
@@ -146,7 +148,10 @@ export class FormCoutComponent implements OnInit {
     this.titreForm = "Modification d'un composant de la bibliothèque de prix"
     this.textForm = "La modification de ce composant va impacter les ouvrages de la bibliothèque de prix associés. Les devis déjà existants ne seront pas modifiés."
     this.textButton = "Modifier ce composant"
+    console.log(this.initialData)
     this.myFormGroup.patchValue(this.initialData)
+    this.getCategorieByType(this.initialData.TypeCout.type)
+    this.myFormGroup.controls["type"].setValue(this.initialData.TypeCout.type)
   }
 
   closeDialog() {

@@ -42,9 +42,14 @@ body {
   margin: 0 0 0 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
 .test .mat-dialog-container {
   padding: 0;
 }
+//.mat-dialog-container {
+//  padding: 0 !important;
+//  background-color: #0c5593;
+//}
 .testcontainer{
   height: calc(100vh - 64px);
 }

@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {Cout} from "../_models/cout";
@@ -8,6 +8,7 @@ import {Cout} from "../_models/cout";
   selector: 'app-dialogListOuvrage',
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss'],
+  // encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({height: '0px', minHeight: '0'})),

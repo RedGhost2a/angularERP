@@ -28,9 +28,10 @@
       </mat-form-field>
       <mat-form-field appearance="legacy" *ngIf="isCout">
         <mat-label>Type du composant</mat-label>
-        <mat-select (selectionChange)="getCategorieByType($event.value)">
+        <mat-select  formControlName="type" (selectionChange)="getCategorieByType($event.value)">
           <mat-option *ngFor="let item of typeCout |unique:'type'" [value]="item.type">
             {{item.type}}
+<!--            {{types}}-->
           </mat-option>
         </mat-select>
         <mat-error *ngIf="this.myFormGroup.get('TypeCoutId')?.hasError('required')">

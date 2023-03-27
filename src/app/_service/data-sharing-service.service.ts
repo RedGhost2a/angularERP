@@ -14,6 +14,7 @@ export class DataSharingService {
   coefEqui!: number
   ouvrage!: Ouvrage
   entrepriseId!: number;
+  deviId!:number;
 
 
   constructor(private sousDetailPrixService: SousDetailPrixService,
@@ -61,12 +62,18 @@ export class DataSharingService {
     sousLotOuvrage.prixUniCalcHT = sousLotOuvrage.prixCalcHT / sousLotOuvrage.quantityOuvrage
   }
   async prixVenteHT(sousLotOuvrage : SousLotOuvrage){
-    sousLotOuvrage.prixVenteHT = sousLotOuvrage.prixUniVenteHT * sousLotOuvrage.quantityOuvrage
+    console.log("prix de vente ?",sousLotOuvrage.prixUniVenteHT)
+    // if(sousLotOuvrage.prixUniVenteHT === 0 ){
+      sousLotOuvrage.prixUniVenteHT = sousLotOuvrage.prixUniCalcHT
+      sousLotOuvrage.prixVenteHT = sousLotOuvrage.prixCalcHT
+    // }else{
+    // sousLotOuvrage.prixVenteHT = sousLotOuvrage.prixUniVenteHT * sousLotOuvrage.quantityOuvrage
+    // }
   }
   async prixUniVente(sousLotOuvrage:SousLotOuvrage){
     sousLotOuvrage.prixUniVenteHT = sousLotOuvrage.prixUniCalcHT
-    if(sousLotOuvrage.prixUniVenteHT === 0 && sousLotOuvrage.prixUniVenteHT !== sousLotOuvrage.prixUniCalcHT){
-    }
+    // if(sousLotOuvrage.prixUniVenteHT === 0 && sousLotOuvrage.prixUniVenteHT !== sousLotOuvrage.prixUniCalcHT){
+    // }
   }
 
 
