@@ -59,6 +59,10 @@
         <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.Users[0].firstName}}
           {{devis.Users[0].lastName}}</td>
       </ng-container>
+      <ng-container matColumnDef="prixVenteHT">
+        <th mat-header-cell *matHeaderCellDef>Montant HT</th>
+        <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.prixVenteHT | number: '1.2-2'}} €</td>
+      </ng-container>
 
 
       <ng-container matColumnDef="boutons">
