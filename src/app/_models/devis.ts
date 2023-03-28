@@ -29,4 +29,5 @@ export class Devis {
   prixCalcHT!: number;
   prixVenteHT!: number;
   beneficeAleasTotal!: number;
+  beneficeAleasTotalPercent!: number;
 }

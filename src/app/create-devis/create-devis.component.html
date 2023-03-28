@@ -26,11 +26,11 @@
               <div>
                 <mat-card-subtitle>Débousé sec HT</mat-card-subtitle>
                 <div>
-                  <p>{{this.lotFraisDeChantier.prix | number : '1.2-2'}} €</p>
+                  <p>{{!this.lotFraisDeChantier.prix ? 0 : this.lotFraisDeChantier.prix| number : '1.2-2'}} €</p>
                 </div>
                 <mat-card-subtitle>Prix Equilibre HT</mat-card-subtitle>
                 <div>
-                  <p>{{this.fraisDeChantier.prixEquiHT | number: '1.2-2'}} €</p>
+                  <p>{{!this.fraisDeChantier.prixEquiHT ? 0 : this.fraisDeChantier.prixEquiHT| number: '1.2-2'}} €</p>
                 </div>
               </div>
             </mat-card-content>
@@ -41,11 +41,11 @@
               <div>
                 <mat-card-subtitle>Bénéfice</mat-card-subtitle>
                 <div>
-                  <p>{{this.fraisDeChantier.beneficeInEuro | number : '1.2-2'}} € </p>
+                  <p>{{!this.fraisDeChantier.beneficeInEuro ? 0: this.fraisDeChantier.beneficeInEuro | number : '1.2-2'}} € </p>
                 </div>
                 <mat-card-subtitle>Aléas</mat-card-subtitle>
                 <div>
-                  <p>{{this.fraisDeChantier.aleasInEuro | number: '1.2-2'}} €</p>
+                  <p>{{!this.fraisDeChantier.aleasInEuro ? 0 : this.fraisDeChantier.aleasInEuro | number: '1.2-2'}} €</p>
                 </div>
               </div>
             </mat-card-content>
@@ -57,11 +57,11 @@
               <div>
                 <mat-card-subtitle>Prix Calculé</mat-card-subtitle>
                 <div>
-                  <p>{{this.fraisDeChantier.prixCalcHT | number : '1.2-2'}} € </p>
+                  <p>{{!this.fraisDeChantier.prixCalcHT ? 0 : this.fraisDeChantier.prixCalcHT | number : '1.2-2'}} € </p>
                 </div>
                 <mat-card-subtitle>Prix de Vente</mat-card-subtitle>
                 <div>
-                  <p>{{this.fraisDeChantier.prixVenteHT | number: '1.2-2'}} €</p>
+                  <p>{{!this.fraisDeChantier.prixVenteHT ? 0 : this.fraisDeChantier.prixVenteHT | number: '1.2-2'}} €</p>
                 </div>
               </div>
             </mat-card-content>
@@ -73,11 +73,11 @@
               <div>
                 <mat-card-subtitle>Bénéfice & Aléas en %</mat-card-subtitle>
                 <div>
-                  <p>A FAIRE ! ! ! !</p>
+                  <p>{{!this.fraisDeChantier.beneficeAleasTotalPercent ? 0 : this.fraisDeChantier.beneficeAleasTotalPercent | number: '1.2-2'}} %</p>
                 </div>
                 <mat-card-subtitle>Bénéfice & Aléas en €</mat-card-subtitle>
                 <div>
-                  <p>{{this.fraisDeChantier.beneficeAleasTotal| number: '1.2-2'}} €</p>
+                  <p>{{!this.fraisDeChantier.beneficeAleasTotal ? 0 : this.fraisDeChantier.beneficeAleasTotal| number: '1.2-2'}} €</p>
                 </div>
               </div>
             </mat-card-content>
@@ -292,11 +292,11 @@
               <div>
                 <mat-card-subtitle>Débousé sec HT</mat-card-subtitle>
                 <div>
-                  <p>{{this.devis.debourseSecTotal | number : '1.2-2'}} €</p>
+                  <p>{{!this.devis.debourseSecTotal ? 0 : this.devis.debourseSecTotal | number : '1.2-2'}} €</p>
                 </div>
                 <mat-card-subtitle>Prix Equilibre HT</mat-card-subtitle>
                 <div>
-                  <p>{{this.devis.prixEquiHT | number: '1.2-2'}} €</p>
+                  <p>{{!this.devis.prixEquiHT ? 0 : this.devis.prixEquiHT | number: '1.2-2'}} €</p>
                 </div>
               </div>
             </mat-card-content>
@@ -307,11 +307,11 @@
               <div>
                 <mat-card-subtitle>Bénéfice</mat-card-subtitle>
                 <div>
-                  <p>{{this.devis.beneficeInEuro | number : '1.2-2'}} € </p>
+                  <p>{{!this.devis.beneficeInEuro ? 0 : this.devis.beneficeInEuro  | number : '1.2-2'}} € </p>
                 </div>
                 <mat-card-subtitle>Aléas</mat-card-subtitle>
                 <div>
-                  <p>{{this.devis.aleasInEuro | number: '1.2-2'}} €</p>
+                  <p>{{!this.devis.aleasInEuro ? 0 : this.devis.aleasInEuro | number: '1.2-2'}} €</p>
                 </div>
               </div>
             </mat-card-content>
@@ -323,11 +323,11 @@
               <div>
                 <mat-card-subtitle>Prix Calculé</mat-card-subtitle>
                 <div>
-                  <p>{{this.devis.prixCalcHT | number : '1.2-2'}} € </p>
+                  <p>{{!this.devis.prixCalcHT ? 0 : this.devis.prixCalcHT  | number : '1.2-2'}} € </p>
                 </div>
                 <mat-card-subtitle>Prix de Vente</mat-card-subtitle>
                 <div>
-                  <p>{{this.devis.prixVenteHT | number: '1.2-2'}} €</p>
+                  <p>{{!this.devis.prixVenteHT ? 0 : this.devis.prixVenteHT | number: '1.2-2'}} €</p>
                 </div>
               </div>
             </mat-card-content>
@@ -339,11 +339,11 @@
               <div>
                 <mat-card-subtitle>Bénéfice & Aléas en %</mat-card-subtitle>
                 <div>
-                  <p>A FAIRE ! ! ! !</p>
+                  <p>{{!this.devis.beneficeAleasTotalPercent ? 0 : this.devis.beneficeAleasTotalPercent | number: '1.2-2'}} %</p>
                 </div>
                 <mat-card-subtitle>Bénéfice & Aléas en €</mat-card-subtitle>
                 <div>
-                  <p>{{this.devis.beneficeAleasTotal| number: '1.2-2'}} €</p>
+                  <p>{{!this.devis.beneficeAleasTotal ? 0 : this.devis.beneficeAleasTotal | number: '1.2-2'}} €</p>
                 </div>
               </div>
             </mat-card-content>
@@ -544,240 +544,6 @@
 
       </div>
 
-
-      <!--      <h3>Total : {{this.devis.debourseSecTotal}} €</h3>-->
-      <!--      <div class="totaux-header">-->
-      <!--        <div class="flex-column">-->
-      <!--          <div class="flex-row">-->
-      <!--            <p class="totaux-header-designation">Total déboursé sec </p>-->
-      <!--            <p class="totaux-header-result">{{this.devis.debourseSecTotal | number: '1.2-2'}}  €</p>-->
-      <!--          </div>-->
-      <!--          <p class="subtotaux-header">Déboursé sec</p>-->
-      <!--        </div>-->
-
-
-      <!--        <div class="flex-column">-->
-      <!--          <p class="totaux-header-designation">Prix d'equilibre</p>-->
-      <!--          &lt;!&ndash;        <p class="totaux-header-result">{{this.sommePrixEquilibre()| number: '1.2-2'}} €</p>&ndash;&gt;-->
-      <!--          <p class="totaux-header-result">{{this.devis.prixEquiHT | number: '1.2-2'}} €</p>-->
-      <!--          <p class="subtotaux-header">Equilibre</p>-->
-
-      <!--        </div>-->
-
-      <!--        <div class="flex-column">-->
-      <!--          <div class="flex-row">-->
-      <!--            <p class="totaux-header-designation">Bénefice total calculé </p>-->
-      <!--            <p class="totaux-header-result">{{this.devis.beneficeInEuro}}</p>-->
-      <!--          </div>-->
-
-      <!--          <div class="flex-row">-->
-      <!--            <p class="totaux-header-designation">Aléas total calculé </p>-->
-      <!--            <p class="totaux-header-result">{{this.devis.aleasInEuro}}</p>-->
-      <!--          </div>-->
-
-      <!--          <div class="flex-row">-->
-      <!--            <p class="totaux-header-designation">Prix calculé HT </p>-->
-      <!--            <p class="totaux-header-result">{{this.devis.prixCalcHT}}</p>-->
-      <!--          </div>-->
-      <!--          <p class="subtotaux-header">Calculé</p>-->
-
-      <!--        </div>-->
-
-      <!--        <div class="flex-column">-->
-      <!--          <div class="flex-row">-->
-      <!--            <p class="totaux-header-designation">B&A total</p>-->
-      <!--            <p class="totaux-header-result">{{this.devis.beneficeAleasTotal}}</p>-->
-
-      <!--          </div>-->
-
-      <!--          <div class="flex-row">-->
-      <!--            <p class="totaux-header-designation">Total prix de vente HT </p>-->
-      <!--            &lt;!&ndash;          <p class="totaux-header-result">{{coutTotal()| number : '1.2-2'}} €</p>&ndash;&gt;-->
-      <!--            <p class="totaux-header-result">{{devis.prixVenteHT}} €</p>-->
-      <!--            &lt;!&ndash;          <p class="totaux-header-result">{{calculateTotal() }} €</p>&ndash;&gt;-->
-      <!--          </div>-->
-      <!--          <p class="subtotaux-header">Vente</p>-->
-
-      <!--        </div>-->
-
-      <!--      </div>-->
-
-      <!--      <div *ngFor="let lot of testLots">-->
-      <!--        <div class="lot" *ngIf="lot">-->
-      <!--          <button class="btn" *ngIf="lot.SousLots && lot.SousLots.length"-->
-      <!--                  (click)="setExpandedLotId(lot.id)">-->
-      <!--            <mat-icon>expand_more</mat-icon>-->
-      <!--            <span>Lot N°: {{ lot.id | number }}</span>-->
-      <!--          </button>-->
-      <!--          <span class="designation">{{ lot.designation | titlecase }}</span>-->
-      <!--          &lt;!&ndash;        <span class="designation"> prix du lot{{ lot.prix }}</span>&ndash;&gt;-->
-      <!--          <mat-icon [matMenuTriggerFor]="boutonLOT">more_vert</mat-icon>-->
-      <!--        </div>-->
-      <!--        <mat-menu class="menuBoutonSl" #boutonLOT>-->
-      <!--          <button mat-flat-button *ngIf="lot" (click)="curentLotId = lot.id;isLot = true;showForm = !showForm">Créer un-->
-      <!--            &lt;!&ndash;        <button mat-flat-button *ngIf="lot" (click)="handleLotClick(lot.id); currentLot = lot;toggleForm()">Créer un&ndash;&gt;-->
-      <!--            sous-lot-->
-      <!--          </button>-->
-      <!--          <button mat-menu-item class="buttonSup" *ngIf="lot"-->
-      <!--                  (click)="deleteLot(lot.id)">-->
-      <!--            &lt;!&ndash;                (click)="handleLotClick(lot.id); currentLot = lot;deleteLot(lot.id)">&ndash;&gt;-->
-      <!--            Effacer ce lot-->
-      <!--          </button>-->
-      <!--        </mat-menu>-->
-
-      <!--        <div *ngFor="let sublot of lot.SousLots" [hidden]="expandedLotId !== lot.id">-->
-      <!--          &lt;!&ndash;        <div *ngIf="sublot.LotSousLot && sublot.LotSousLot.LotId === lot.id">&ndash;&gt;-->
-      <!--          <div class="sousLot">-->
-      <!--            <div class="sous-lot-headers">-->
-      <!--              <button *ngIf="sublot.OuvrageDuDevis && sublot.OuvrageDuDevis.length" class="btn">-->
-
-      <!--                &lt;!&ndash;            <button *ngIf="hasOuvrages(sublot)" class="btn">&ndash;&gt;-->
-      <!--                <mat-icon>expand_more</mat-icon>-->
-      <!--                <span>Sous-lot N°: {{ sublot.id | number }}</span>-->
-      <!--              </button>-->
-      <!--              <span-->
-      <!--                class="designation">{{ sublot.designation | uppercase }}</span>-->
-      <!--              &lt;!&ndash;            <span> Prix du sous lot{{ sublot.prix | number }}</span>&ndash;&gt;-->
-      <!--              <mat-icon [matMenuTriggerFor]="boutonSL">more_vert</mat-icon>-->
-      <!--            </div>-->
-      <!--          </div>-->
-
-
-      <!--          <div *ngFor="let ouvrage of sublot.OuvrageDuDevis;" [hidden]="hiddenChildren.get(sublot.id)">-->
-      <!--            <div class="ouvrage border" *ngIf="ouvrage && ouvrage.id && ouvrage.designation">-->
-      <!--              <div class="ouvrage-header-description ">-->
-      <!--                <div class="flex-column">-->
-      <!--                  <p class="bold ">Id</p>-->
-      <!--                  <p routerLink="/sousDetailPrix/{{ouvrage.id}}">{{ ouvrage.id | number }}</p>-->
-      <!--                </div>-->
-      <!--                <div class="flex-column" *ngIf="ouvrage.SousLotOuvrage && ouvrage.SousLotOuvrage.quantityOuvrage">-->
-      <!--                  <mat-form-field [formGroup]="myFormGroup">-->
-      <!--                    &lt;!&ndash;                  <p class="bold">Qte</p>&ndash;&gt;-->
-      <!--                    <input type="number" formControlName="quantityOuvrage" matInput required-->
-      <!--                           [placeholder]="ouvrage.SousLotOuvrage.quantityOuvrage.toString()"-->
-
-      <!--                           (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lot, prixOuvrage)">-->
-      <!--                  </mat-form-field>-->
-
-      <!--                </div>-->
-      <!--                <div class="flex-column">-->
-      <!--                  <p class="bold">Désignation</p>-->
-      <!--                  <p>{{ ouvrage.designation  }}</p>-->
-      <!--                </div>-->
-      <!--                <div class="flex-column">-->
-      <!--                  <p class="bold">Bénéfice</p>-->
-      <!--                  <p>{{ ouvrage.benefice  }}</p>-->
-      <!--                </div>-->
-      <!--                <div class="flex-column">-->
-      <!--                  <p class="bold">Aléas</p>-->
-      <!--                  <p>{{ ouvrage.aleas  }}</p>-->
-      <!--                </div>-->
-      <!--                <div class="flex-column">-->
-      <!--                  <p class="bold">Unité</p>-->
-      <!--                  <p>{{ ouvrage.unite  }}</p>-->
-      <!--                </div>-->
-      <!--                <div class="flex-column">-->
-      <!--                  <p class="bold">U Ratio</p>-->
-      <!--                  <p>{{ ouvrage.uRatio  }}</p>-->
-      <!--                </div>-->
-      <!--                <div class="flex-column">-->
-      <!--                  <p class="bold">Ratio</p>-->
-      <!--                  <p>{{ ouvrage.ratio  }}</p>-->
-      <!--                </div>-->
-      <!--                <mat-icon [matMenuTriggerFor]="boutonOuv">more_vert</mat-icon>-->
-      <!--              </div>-->
-      <!--              <div class="totaux-header">-->
-      <!--                <div class="flex-column">-->
-      <!--                  <div class="flex-row ">-->
-      <!--                    <p class="totaux-header-designation ">Déboursé sec HT</p>-->
-      <!--                    <p class="totaux-header-designation ">PU DS HT</p>-->
-      <!--                  </div>-->
-      <!--                  <div class="flex-row ">-->
-      <!--                    <p class="totaux-header-result ">{{ ouvrage.SousLotOuvrage?.prixOuvrage }}</p>-->
-      <!--                    <ng-container *ngFor="let item of prixOuvrage">-->
-      <!--                      <p *ngIf="item.id === ouvrage.id"-->
-      <!--                         class="totaux-header-result ">{{item.prix}}</p>-->
-      <!--                    </ng-container>-->
-
-      <!--                  </div>-->
-      <!--                </div>-->
-
-      <!--                <div class="flex-column">-->
-      <!--                  <p class="totaux-header-designation ">Prix HT équilibre</p>-->
-      <!--                  <p class="totaux-header-result">{{ouvrage.SousLotOuvrage?.prixEquiHT}} </p>-->
-      <!--                  &lt;!&ndash;                <p *ngIf="ouvrage.SousLotOuvrage?.prixOuvrage" class="totaux-header-result ">{{this.prixEquilibreHT(ouvrage.SousLotOuvrage?.prixOuvrage)| number : '1.2-2'}}</p>&ndash;&gt;-->
-      <!--                </div>-->
-
-      <!--                <div class="flex-column">-->
-      <!--                  <div class="flex-row">-->
-      <!--                    <p class="totaux-header-designation ">Prix calculé HT</p>-->
-      <!--                    <p class="totaux-header-designation ">PU calculé HT</p>-->
-      <!--                  </div>-->
-      <!--                  <div class="flex-row" *ngIf="ouvrage.SousLotOuvrage">-->
-
-      <!--                    <p-->
-      <!--                      class="totaux-header-result ">{{ouvrage.SousLotOuvrage.prixCalcHT | number : '1.2-2' }}</p>-->
-      <!--                    <p-->
-      <!--                      class="totaux-header-result ">{{ouvrage.SousLotOuvrage.prixUniCalcHT  | number : '1.2-2'}}-->
-      <!--                      €</p>-->
-      <!--                  </div>-->
-      <!--                </div>-->
-      <!--                <div class="flex-column">-->
-      <!--                  <div class="flex-row">-->
-      <!--                    <p class="totaux-header-designation ">PU vente HT</p>-->
-      <!--                    <p class="totaux-header-designation ">Prix vente HT</p>-->
-      <!--                  </div>-->
-      <!--                  <div class="flex-row " *ngIf="ouvrage.SousLotOuvrage">-->
-
-      <!--                    <p *ngIf="ouvrage.SousLotOuvrage"> {{ouvrage.SousLotOuvrage.prixUniVenteHT}}</p>-->
-
-      <!--                    <mat-form-field [formGroup]="myFormGroup">-->
-      <!--                      <input type="number" formControlName="quantityOuvrage" matInput required-->
-      <!--                             (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">-->
-      <!--                    </mat-form-field>-->
-
-      <!--                    &lt;!&ndash;                  <input class="totaux-header-result " type="text"&ndash;&gt;-->
-      <!--                    &lt;!&ndash;                         (ngModelChange)="this.onPrixUnitaireCalculeHtChange($event,ouvrage.SousLotOuvrage?.id)" [value]="ouvrage.SousLotOuvrage.prixUniArrondi">&ndash;&gt;-->
-      <!--                    &lt;!&ndash;                  &lt;!&ndash;                         [value]="ouvrage.SousLotOuvrage.prixArrondi > 0 ? ouvrage.SousLotOuvrage.prixArrondi : this.sharedData.prixUnitaireCalculeHT(this.sharedData.prixCalculeHT(this.ouvrage.benefice, this.ouvrage.aleas, this.sharedData.prixEquilibreHT(ouvrage?.SousLotOuvrage.prixOuvrage)), ouvrage?.SousLotOuvrage.quantityOuvrage) | number : '1.2-2'">&ndash;&gt;&ndash;&gt;-->
-      <!--                    <p-->
-      <!--                      class="totaux-header-result ">{{ ouvrage.SousLotOuvrage.prixVenteHT}}-->
-      <!--                    </p>-->
-
-
-      <!--                    &lt;!&ndash;                    <p class="totaux-header-result ">{{ (ouvrage.SousLotOuvrage?.quantityOuvrage || 0) * this.getPrix(ouvrage)}}&ndash;&gt;-->
-      <!--                    &lt;!&ndash;                  </p>&ndash;&gt;-->
-      <!--                  </div>-->
-      <!--                </div>-->
-      <!--              </div>-->
-      <!--              <div>-->
-      <!--              </div>-->
-
-      <!--            </div>-->
-
-
-      <!--            <mat-menu class="menuBoutonSl" #boutonOuv>-->
-      <!--              <button mat-menu-item class="buttonSup" *ngIf="lot" (click)="deleteOuvrageDuDevis(ouvrage.id)">-->
-      <!--                Effacer cet ouvrage-->
-      <!--              </button>-->
-      <!--            </mat-menu>-->
-
-
-      <!--          </div>-->
-      <!--          <mat-menu class="menuBoutonSl" #boutonSL>-->
-      <!--            &lt;!&ndash;        <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">&ndash;&gt;-->
-      <!--            <button (click)="openDialog(sublot.id)" mat-menu-item class="buttonImport">-->
-      <!--              Importer un ouvrage-->
-      <!--            </button>-->
-      <!--            <button mat-menu-item class="buttonSup" *ngIf="lot" (click)="deleteSousLot(sublot.id)">-->
-      <!--              Effacer ce sous-lot-->
-      <!--            </button>-->
-      <!--          </mat-menu>-->
-
-      <!--        </div>-->
-
-      <!--      </div>-->
-      <!--    </div>-->
-
     </mat-tab>
 
 
@@ -788,7 +554,6 @@
             <mat-card-header>
               <mat-card-title>Frais de chantier</mat-card-title>
 
-              <!--        <mat-card-subtitle>Start</mat-card-subtitle>-->
             </mat-card-header>
             <hr>
             <mat-card-content>
@@ -796,22 +561,22 @@
                 <div class="paramsSub">
                   <div class="itemsParams">
                     <mat-card-subtitle>Bénéfice</mat-card-subtitle>
-                    <p>{{this.resultBeneficeFraisDeChantier | number : '1.2-2'}} %</p>
+                    <p>{{!this.resultBeneficeFraisDeChantier ? 0 : this.resultBeneficeFraisDeChantier | number : '1.2-2'}} %</p>
                   </div>
                   <div class="itemsParams">
                     <mat-card-subtitle>Aléas</mat-card-subtitle>
-                    <p>{{this.resultAleasFraisDeChantier | number : '1.2-2'}} %</p>
+                    <p>{{!this.resultAleasFraisDeChantier ? 0 : this.resultAleasFraisDeChantier | number : '1.2-2'}} %</p>
                   </div>
                 </div>
                 <div class="paramsSub">
                   <div class="itemsParams">
                     <mat-card-subtitle>Total</mat-card-subtitle>
-                    <p>{{this.lotFraisDeChantier.prix | number : '1.2-2'}} €</p>
+                    <p>{{!this.lotFraisDeChantier.prix ? 0 : this.lotFraisDeChantier.prix | number : '1.2-2'}} €</p>
                   </div>
                   <div class="itemsParams">
                     <mat-card-subtitle>Bénéfice & Aléas</mat-card-subtitle>
-                    <p>{{this.resultAleasFraisDeChantier + this.resultBeneficeFraisDeChantier  | number : '1.2-2'}}
-                      %</p>
+                    <p *ngIf="!this.resultAleasFraisDeChantier || !this.resultBeneficeFraisDeChantier; else other ">0 %</p>
+                    <ng-template #other>{{this.resultAleasFraisDeChantier + this.resultBeneficeFraisDeChantier  | number : '1.2-2'}} %</ng-template>
                   </div>
                 </div>
 
@@ -829,21 +594,23 @@
                 <div class="paramsSub">
                   <div class="itemsParams">
                     <mat-card-subtitle>Bénéfice</mat-card-subtitle>
-                    <p>{{this.resultBeneficeLots | number : '1.2-2'}} %</p>
+                    <p>{{!this.resultBeneficeLots ? 0 : this.resultBeneficeLots | number : '1.2-2'}} %</p>
                   </div>
                   <div class="itemsParams">
                     <mat-card-subtitle>Aléas</mat-card-subtitle>
-                    <p>{{this.resultAleasLots | number : '1.2-2'}} %</p>
+                    <p>{{!this.resultAleasLots ? 0 : this.resultAleasLots | number : '1.2-2'}} %</p>
                   </div>
                 </div>
                 <div class="paramsSub">
                   <div class="itemsParams">
                     <mat-card-subtitle>Total</mat-card-subtitle>
-                    <p>{{this.devis.debourseSecTotal | number : '1.2-2'}} €</p>
+                    <p>{{!this.devis.debourseSecTotal ? 0 : this.devis.debourseSecTotal | number : '1.2-2'}} €</p>
                   </div>
                   <div class="itemsParams">
                     <mat-card-subtitle>Bénéfice & Aléas</mat-card-subtitle>
-                    <p>{{this.resultAleasLots + this.resultBeneficeLots  | number : '1.2-2'}} %</p>
+                    <p *ngIf="!this.resultAleasLots || !this.resultBeneficeLots; else other">0 %</p>
+                    <ng-template #other>{{this.resultAleasLots + this.resultBeneficeLots  | number : '1.2-2'}} %</ng-template>
+
                   </div>
                 </div>
 
@@ -863,25 +630,25 @@
                 <div class="paramsSub">
                   <div class="itemsParams">
                     <mat-card-subtitle>Total Dépense</mat-card-subtitle>
-                    <p>{{this.devis.totalDepense | number : '1.2-2'}} €</p>
+                    <p>{{!this.devis.totalDepense ? 0 : this.devis.totalDepense | number : '1.2-2'}} €</p>
                   </div>
                   <div class="itemsParams">
                     <mat-card-subtitle>Cout Total</mat-card-subtitle>
-                    <p>{{this.devis.coutTotal | number : '1.2-2'}} €</p>
+                    <p>{{!this.devis.coutTotal ? 0 : this.devis.coutTotal | number : '1.2-2'}} €</p>
                   </div>
                 </div>
                 <div class="paramsSub">
                   <div class="itemsParams">
                     <mat-card-subtitle>Bénefice</mat-card-subtitle>
-                    <p>{{this.devis.moyenneBenefice | number : '1.2-2'}} %</p>
+                    <p>{{!this.devis.moyenneBenefice ? 0 : this.devis.moyenneBenefice | number : '1.2-2'}} %</p>
                   </div>
                   <div class="itemsParams">
                     <mat-card-subtitle>Aléas</mat-card-subtitle>
-                    <p>{{this.devis.moyenneAleas | number : '1.2-2' }} %</p>
+                    <p>{{!this.devis.moyenneAleas ? 0 : this.devis.moyenneAleas | number : '1.2-2' }} %</p>
                   </div>
                   <div class="itemsParams">
                     <mat-card-subtitle>Bénéfice & Aléas</mat-card-subtitle>
-                    <p>{{this.devis.moyenneBeneficeAleas | number : '1.2-2'}} %</p>
+                    <p>{{!this.devis.moyenneBeneficeAleas ? 0 : this.devis.moyenneBeneficeAleas  | number : '1.2-2'}} %</p>
                   </div>
 
                 </div>
@@ -889,11 +656,11 @@
                 <div class="paramsSub">
                   <div class="itemsParams">
                     <mat-card-subtitle>Frais généraux</mat-card-subtitle>
-                    <p>{{this.devis.fraisGeneraux | number : '1.2-2'}} €</p>
+                    <p>{{!this.devis.fraisGeneraux ? 0 : this.devis.fraisGeneraux | number : '1.2-2'}} €</p>
                   </div>
                   <div class="itemsParams">
                     <mat-card-subtitle>Coéfficient d'équilibre</mat-card-subtitle>
-                    <p>{{this.devis.coeffEquilibre | number : '1.2-2'}}</p>
+                    <p>{{!this.devis.coeffEquilibre ? 0 : this.devis.coeffEquilibre  | number : '1.2-2'}}</p>
                   </div>
 
                 </div>

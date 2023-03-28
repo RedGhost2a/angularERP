@@ -7,6 +7,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {EditDevisComponent} from "../edit-devis/edit-devis.component";
 import {UserService} from "../../_service/user.service";
 import {MatTableDataSource} from "@angular/material/table";
+import {da} from "date-fns/locale";
 
 @Component({
   selector: 'app-list-devis',
@@ -17,7 +18,7 @@ export class ListDevisComponent implements OnInit {
   @Input() devis!: Devis;
   @Output() deleteDevis: EventEmitter<any> = new EventEmitter()
 
-  displayedColumns: string[] = ['nDevis', 'nomDevis', 'dateDevis', 'client', 'status', 'referent', "boutons"];
+  displayedColumns: string[] = ['nDevis', 'nomDevis', 'dateDevis', 'client', 'status', 'referent','prixVenteHT', 'boutons'];
   // displayedColumns: string[] = ['Devis n°', 'Nom', 'Client', "Status", "Action"];
   clickedRows = new Set<Client>();
 
@@ -62,10 +63,12 @@ export class ListDevisComponent implements OnInit {
     if (this.userService.userValue.role === 'Super Admin'){
       this.devisService.getAll().subscribe(data => {
         this.dataSource.data = data;
+        console.log(data)
       })
     }else
     {
       this.userService.getById(this.userService.userValue.id).subscribe(data => {
+        console.log(data)
         this.entrepriseID = data.Entreprises[0].id
         this.devisService.getDevisByEnterprise(this.entrepriseID).subscribe(data => {
           this.dataSource.data = data.Devis;

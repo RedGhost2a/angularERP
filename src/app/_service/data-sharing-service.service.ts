@@ -72,8 +72,7 @@ export class DataSharingService {
   async prixVenteHT(sousLotOuvrage : SousLotOuvrage){
     console.log("prix de vente ?",sousLotOuvrage.prixUniVenteHT)
     // if(sousLotOuvrage.prixUniVenteHT === 0 ){
-      sousLotOuvrage.prixUniVenteHT = sousLotOuvrage.prixUniCalcHT
-      sousLotOuvrage.prixVenteHT = sousLotOuvrage.prixCalcHT
+    //   sousLotOuvrage.prixVenteHT = sousLotOuvrage.prixUniVenteHT * sousLotOuvrage.quantityOuvrage
     // }else{
     // sousLotOuvrage.prixVenteHT = sousLotOuvrage.prixUniVenteHT * sousLotOuvrage.quantityOuvrage
     // }
