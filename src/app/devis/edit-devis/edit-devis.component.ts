@@ -72,6 +72,21 @@ export class EditDevisComponent implements OnInit {
       ClientId: new FormControl("", Validators.required),
       EntrepriseId: new FormControl("", Validators.required),
       UserId: new FormControl(this.userId),
+      percentFraisGeneraux: new FormControl(20),
+      fraisGeneraux: new FormControl(0),
+      coutTotal: new FormControl(0),
+      debourseSecTotal: new FormControl(0),
+      totalDepense: new FormControl(0),
+      moyenneBenefice: new FormControl(0),
+      moyenneAleas: new FormControl(0),
+      moyenneBeneficeAleas: new FormControl(0),
+      coeffEquilibre: new FormControl(0),
+      prixEquiHT: new FormControl(0),
+      beneficeInEuro: new FormControl(0),
+      aleasInEuro: new FormControl(0),
+      prixCalcHT: new FormControl(0),
+      prixVenteHT: new FormControl(0),
+      beneficeAleasTotal: new FormControl(0),
     });
   }
 

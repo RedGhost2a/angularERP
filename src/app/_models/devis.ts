@@ -14,6 +14,8 @@ export class Devis {
   adresse!: Adresse;
   ClientId!: number;
   user!: User;
+  percentFraisGeneraux!:number;
+
   fraisGeneraux!: number;
   coutTotal !: number;
   UserId!: number;

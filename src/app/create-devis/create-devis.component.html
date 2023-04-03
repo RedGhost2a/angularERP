@@ -4,7 +4,7 @@
 
 <ng-template #content>
 
-  <mat-tab-group animationDuration="0ms" class="onglet">
+  <mat-tab-group animationDuration="0ms" class="onglet" [selectedIndex]="selectedIndex">
 
     <mat-tab label="Frais de chantier" *ngIf="lotFraisDeChantier !== undefined">
 
@@ -99,6 +99,12 @@
           <mat-icon [matMenuTriggerFor]="boutonLOT">more_vert</mat-icon>
           <mat-menu class="menuBoutonSl" #boutonLOT>
             <button mat-button color="primary" *ngIf="lotFraisDeChantier"
+                    (click)="openDialogLot(lotFraisDeChantier)">
+              Modifier ce lot
+            </button>
+            <br>
+
+            <button mat-button color="primary" *ngIf="lotFraisDeChantier"
                     (click)="showForm = !showForm; isLot = true; curentLotId= lotFraisDeChantier.id">
               Créer un sous-lot
             </button>
@@ -121,11 +127,17 @@
             <!--            </div>-->
             <!--          </div>-->
             <mat-menu class="menuBoutonSl" #boutonSL>
+              <button (click)="openDialogSousLot(sublot);" mat-button
+                      color="primary">
+                <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
+                Modifier ce sous-lot
+              </button>
               <button (click)="openDialogFraisDeChantier(sublot.id);currentSousLotId = sublot.id" mat-button
                       color="primary">
                 <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
                 Importer un ouvrage
               </button>
+
               <button (click)="openDialogCreate(sublot.id);currentSousLotId = sublot.id" mat-button
                       color="primary">
                 <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
@@ -139,7 +151,7 @@
             </mat-menu>
           </div>
           <div class="container-ouvrage-frais-chantier" *ngFor="let ouvrage of sublot.OuvrageDuDevis"
-               [hidden]="hiddenChildren.get(sublot.id)">
+               [hidden]="hiddenChildren.get(sublot.id)" >
             <div>
               <div class="ouvrage-frais-chantier" *ngIf="ouvrage.SousLotOuvrage">
                 <div class="detail-ouvrage-frais-chantier">
@@ -158,7 +170,7 @@
                 </div>
 
 
-                <div class="detail-ouvrage-frais-chantier">
+                <div class="detail-ouvrage-frais-chantier"  id="designation-ouvrage">
                   <span class="designation-ouvrage-frais-chantier">Désignation</span>
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.designation}}</span>
                 </div>
@@ -379,9 +391,16 @@
             <mat-icon [matMenuTriggerFor]="boutonLOT">more_vert</mat-icon>
             <mat-menu class="menuBoutonSl" #boutonLOT>
               <button mat-button color="primary" *ngIf="lotFraisDeChantier"
+                      (click)="openDialogLot(lot)">
+                Modifier ce lot
+              </button>
+              <br>
+
+              <button mat-button color="primary" *ngIf="lotFraisDeChantier"
                       (click)="showForm = !showForm; isLot = true; curentLotId= lot.id">
                 Créer un sous-lot
               </button>
+
               <button mat-menu-item class="buttonSup" *ngIf="lot"
                       (click)="deleteLot(lot.id)">
                 Effacer ce lot
@@ -403,21 +422,29 @@
               <!--            </div>-->
               <!--          </div>-->
               <mat-menu class="menuBoutonSl" #boutonSL>
+                <button (click)="openDialogSousLot(sublot);" mat-button
+                        color="primary">
+                  <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
+                  Modifier ce sous-lot
+                </button>
                 <button (click)="openDialog(sublot.id);currentSousLotId = sublot.id" mat-button
                         color="primary">
                   <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
                   Importer un ouvrage
                 </button>
+
                 <button (click)="openDialogCreate(sublot.id);currentSousLotId = sublot.id" mat-button
                         color="primary">
                   <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
                   Creer un ouvrage
                 </button>
+
                 <button mat-button color="warn" *ngIf="lotFraisDeChantier"
                         (click)="deleteSousLot(sublot.id)">
                   <!--                  (click)="handleSousLotClick(sublot.id); currentLot = lot; deleteSousLot(sublot.id)">-->
                   Effacer ce sous-lot
                 </button>
+
               </mat-menu>
             </div>
             <div class="container-ouvrage-frais-chantier" *ngFor="let ouvrage of sublot.OuvrageDuDevis"
@@ -655,7 +682,10 @@
 
                 <div class="paramsSub">
                   <div class="itemsParams">
-                    <mat-card-subtitle>Frais généraux</mat-card-subtitle>
+
+                    <mat-card-subtitle>Frais généraux (<mat-form-field  appearance="legacy" id="input-fraisGeneraux">
+                      <input (blur)="this.updateFraisGeneraux($event)" formControlName="percentFraisGeneraux"   type="number" matInput [placeholder]="this.myFormFraisGeneraux.get('percentFraisGeneraux')?.value" >
+                    </mat-form-field>) %</mat-card-subtitle>
                     <p>{{!this.devis.fraisGeneraux ? 0 : this.devis.fraisGeneraux | number : '1.2-2'}} €</p>
                   </div>
                   <div class="itemsParams">

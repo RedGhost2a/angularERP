@@ -23,6 +23,7 @@ export class FormOuvrageComponent implements OnInit {
   regexSousDetail = new RegExp(`^/devisCreate`)
   regexOuvrage = new RegExp(`^/listOuvrage`)
   isOuvrage :boolean = true;
+  titleModal:string = "Ajout d'un ouvrage dans la bibliothèque de prix";
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: number,
               private formBuilder: FormBuilder,
@@ -38,6 +39,7 @@ export class FormOuvrageComponent implements OnInit {
     this.createFormOuvrage()
     if(this.regexSousDetail.test(window.location.pathname))
       this.isOuvrage = false;
+    this.titleModal = "Ajout d'un ouvrage"
   }
 
 

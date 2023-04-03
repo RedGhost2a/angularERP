@@ -47,17 +47,21 @@
     <h4>Adresse du siège social</h4>
     <div class="inputs" formGroupName="Adresse">
       <!--      <div formGroupName="Adresse">-->
-      <mat-form-field appearance="legacy">
+      <mat-form-field appearance="legacy" id="input-adresse">
         <mat-label>Adresse</mat-label>
-        <input type="text" matInput placeholder="Avenue de la Grande Armée" formControlName="adresses"
-               style="width: 70px">
+<!--        <input type="text" matInput placeholder="Avenue de la Grande Armée" formControlName="adresses">-->
+        <textarea formControlName="adresses" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
         <mat-error *ngIf="this.myFormGroup.get('Adresse.adresses')?.hasError('required')">
           Vous devez inscrire une adresses.
         </mat-error>
       </mat-form-field>
 
       <div class="input">
-        <mat-form-field appearance="legacy">
+        <mat-form-field appearance="legacy" id="input-zipCode">
           <mat-label>Code postal</mat-label>
           <input type="number" matInput placeholder=" Ex. 20167" formControlName="zipcode">
           <!--          <mat-error *ngIf="this.myFormGroup.get('Adresse.zipcode')?.hasError('required')">-->
