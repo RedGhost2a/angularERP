@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {OuvrageService} from "../_service/ouvrage.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {DataSharingService} from "../_service/data-sharing-service.service";
 import {Ouvrage} from "../_models/ouvrage";
 import {DialogListCoutComponent} from "../dialog-list-cout/dialog-list-cout.component";
@@ -56,7 +56,7 @@ export class SousDetailPrixComponent implements OnInit {
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute,
               public dataShared: DataSharingService, private coutService: CoutService, private userService: UserService,
               public dialog: MatDialog, private sousLotOuvrageService: SousLotOuvrageService,private fournisseurService : FournisseurService,
-              private typeCoutService : TypeCoutService, private ouvrageCoutService : OuvrageCoutService
+              private typeCoutService : TypeCoutService, private ouvrageCoutService : OuvrageCoutService, private router : Router
   ) {
     transformVirguletoPoint()
 
@@ -329,6 +329,7 @@ export class SousDetailPrixComponent implements OnInit {
       })
     }
   }
+
 
   openDialogImport(ouvragDuDevisId: number) {
     this.dialog.open(DialogListCoutComponent, {

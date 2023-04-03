@@ -95,7 +95,8 @@
     .ouvrage-frais-chantier {
       display: flex;
       justify-content: space-around;
-      height: 5rem;
+      min-height: 5rem;
+      //max-height: 10rem;
       //border: solid red;
       border: solid 0.5px #E4EBF3;
 
@@ -368,6 +369,13 @@
   width: min-content;
   margin: 5px;
   padding: 5px;
+}
+#input-fraisGeneraux{
+  width: 40px;
+}
+#designation-ouvrage{
+  width: 400px;
+
 }
 
 .container {

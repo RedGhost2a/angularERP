@@ -3,7 +3,7 @@
 <div class="container">
 
 <h1>{{currentOuvrage.designation}}</h1>
-  <button class="btn-back" mat-stroked-button color="primary" routerLink="/devisCreate/{{this.dataShared.deviId}}">Retour au devis</button>
+  <button class="btn-back" mat-stroked-button color="primary"  routerLink="/devisCreate/{{this.dataShared.deviId}}" [queryParams]="{ tab: 1 }">Retour au devis</button>
 
   <div class="containerCards">
 

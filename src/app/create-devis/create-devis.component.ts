@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, Inject, Injectable, OnInit, OnDestroy} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LotService} from "../_service/lot.service"
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Event, NavigationExtras, Router} from "@angular/router";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {SousLotService} from "../_service/sous-lot.service";
 import {DevisService} from "../_service/devis.service";
@@ -28,6 +28,9 @@ import {OuvrageDuDevis} from "../_models/ouvrage-du-devis";
 import {da} from "date-fns/locale";
 import {Client} from "../_models/client";
 import {Entreprise} from "../_models/entreprise";
+import {DialogLotComponent} from "../dialog-lot/dialog-lot.component";
+import {DialogSouslotComponent} from "../dialog-souslot/dialog-souslot.component";
+import {Log} from "../_models/log";
 
 // import {Json2CsvTransform} from "json2csv";
 
@@ -59,6 +62,7 @@ export class CreateDevisComponent implements OnInit {
   prixOuvrageFraisDeChantier: { prix: any; id: any }[] = [];
   myFormGroup!: FormGroup;
   myFormGroupPrix!: FormGroup;
+  myFormFraisGeneraux!: FormGroup;
   sommeLot: { prixLot: any; idLot: any }[] = [];
   prixDevis: number = 0;
   coutDuDevis!: CoutDuDevis;
@@ -81,8 +85,9 @@ export class CreateDevisComponent implements OnInit {
   setting = {
     element: {
       dynamicDownload: null as unknown as HTMLElement,
-    },
+    }
   };
+  selectedIndex = 0;
 
 
 //TODO ON NE PEUT METTRE QUE UN SEUL ET MEME OUVRAGE PAR SOUS_LOT; //
@@ -104,15 +109,26 @@ export class CreateDevisComponent implements OnInit {
               private changeDetector: ChangeDetectorRef,
   ) {
     this.expandedLotId = undefined;
+
   }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      const tabIndex = +params['tab'];
+      this.selectedIndex = isNaN(tabIndex) ? 0 : tabIndex;
+    });
+    console.log('url',this.router.url)
     transformVirguletoPoint()
     // this.sousDetailPrixService.setCoefEqui(this.coutTotal() / this.prixDevis)
     this.route.params.subscribe(params => {
       this.devis.id = +params['id'];
       this.devisId = +params['id']
       this.sharedData.deviId = this.devisId;
+      this.devisService.getById(this.devisId).subscribe(data => {
+          this.devis.percentFraisGeneraux = data.percentFraisGeneraux;
+    this.formFraisGeneraux()
+        }
+      )
       this.form = new FormGroup({
         designation: new FormControl("", [Validators.required, Validators.minLength(3)]),
         devisId: new FormControl(this.devisId)
@@ -145,6 +161,13 @@ export class CreateDevisComponent implements OnInit {
     //
     //   }
   }
+  navigateToTab(tabIndex: number) {
+    const navigationExtras: NavigationExtras = {
+      queryParams: { tab: tabIndex },
+      queryParamsHandling: 'merge'
+    };
+    this.router.navigate(['/your-page'], navigationExtras);
+  }
 
   ngOnDestroy() {
     let devisBDD: Devis
@@ -161,12 +184,23 @@ export class CreateDevisComponent implements OnInit {
 
   fraisGeneraux(): void {
     if (this.lotFraisDeChantier.prix !== undefined) {
-      this.devis.fraisGeneraux = (this.lotFraisDeChantier.prix + this.devis.debourseSecTotal) * 0.2
-      // return (this.lotFraisDeChantier.prix + this.prixDevis) * 0.2
+      this.devis.fraisGeneraux = (this.lotFraisDeChantier.prix + this.devis.debourseSecTotal) * (this.myFormFraisGeneraux.get('percentFraisGeneraux')?.value / 100)
+      // this.devis.fraisGeneraux = (this.lotFraisDeChantier.prix + this.devis.debourseSecTotal) * 0.2
       this.coutTotal();
       this.totalDepense()
     }
     // return 0
+  }
+
+  updateFraisGeneraux(event: any) {
+    console.log(event.target.value)
+    if (event.target.value !== '') {
+      this.myFormFraisGeneraux.setValue({percentFraisGeneraux: event.target.value})
+      this.devisService.update(this.myFormFraisGeneraux.getRawValue(), this.devisId).subscribe()
+      console.log(this.myFormFraisGeneraux.getRawValue())
+      // this.myFormFraisGeneraux.setValue({fraisGeneraux:event})
+      this.fraisGeneraux()
+    }
   }
 
   moyenneBenefice(): void {
@@ -201,6 +235,7 @@ export class CreateDevisComponent implements OnInit {
     if (this.lotFraisDeChantier.prix !== undefined) {
       this.devis.coutTotal = this.lotFraisDeChantier.prix + this.devis.debourseSecTotal + this.devis.fraisGeneraux
       // return this.lotFraisDeChantier.prix + this.prixDevis + this.fraisGeneraux()
+      console.log("cout total debourse fonction",this.devis.fraisGeneraux)
       this.coefEquilibre()
     }
     // return 0
@@ -210,7 +245,11 @@ export class CreateDevisComponent implements OnInit {
     console.log("this.devis.coutTotal", this.devis.coutTotal)
     console.log("this.devis.debourseSecTotal", this.devis.debourseSecTotal)
     if (this.lotFraisDeChantier.prix !== 0 && this.testLots[0].prix !== 0 && this.testLots[0].prix !== NaN) {
+      console.log("cout total debouser",this.devis.coutTotal)
+      console.log("debouser",this.devis.debourseSecTotal)
       this.devis.coeffEquilibre = this.devis.coutTotal / this.devis.debourseSecTotal
+
+      console.log("debouser ", this.devis.coeffEquilibre)
       localStorage.setItem("coef", this.devis.coeffEquilibre.toString())
     }
     // return 0
@@ -220,6 +259,13 @@ export class CreateDevisComponent implements OnInit {
   formQuantityOuvrage(): void {
     this.myFormGroup = new FormGroup({
       quantityOuvrage: new FormControl(),
+    });
+  }
+
+  formFraisGeneraux(): void {
+    console.log("fonction frais generaux devis ? ", this.devis.percentFraisGeneraux)
+    this.myFormFraisGeneraux = new FormGroup({
+      percentFraisGeneraux: new FormControl(this.devis.percentFraisGeneraux),
     });
   }
 
@@ -571,6 +617,13 @@ export class CreateDevisComponent implements OnInit {
     console.log("tableau de prix des ouvrage", this.prixOuvrage)
   }
 
+  updateSousLots(sousLot: SousLot, id: number) {
+    this.sousLotService.update(sousLot, id).subscribe(() => {
+      this.getAllLots()
+      this.getLotFraisDeChantier()
+    })
+  }
+
 
   //recuperation de tous les lots du devis SAUF les lot "Frais de chantier" pour l'onglet DEVIS;
   getAllLots() {
@@ -618,23 +671,6 @@ export class CreateDevisComponent implements OnInit {
       // this.dataLoad = true
     })
   }
-
-  prixEquilibreHT(prixOuvrage: any): number {
-    this.coefEqui = this.sousDetailPrixService.coefEqui;
-    const prix = prixOuvrage * this.coefEqui;
-    if (prix && !this.prixEquilibres.includes(prix)) {
-      this.prixEquilibres.push(prix);
-      // console.log(this.prixEquilibres)
-    }
-    return prix;
-  }
-
-  sommePrixEquilibre(): number {
-    return this.prixEquilibres.reduce((a, b) => a + b, 0);
-  }
-
-  //recuperation du lot generer automatiquement a la creation du devis, avec comme designation
-  //"Frais de chantier"
 
   getLotFraisDeChantier(): void {
     this.devisService.getLotFraisDeChantier(this.devisId).subscribe(data => {
@@ -765,6 +801,8 @@ export class CreateDevisComponent implements OnInit {
       width: '90%',
       height: '40%'
     }).afterClosed().subscribe(result => {
+      // this.allCalculOuvrageFraisDeChantier()
+      // this.allCalculOuvrage()
       this.getAllLots()
       this.getLotFraisDeChantier();
 
@@ -901,9 +939,6 @@ export class CreateDevisComponent implements OnInit {
     }
   }
 
-  // sommePrixArrondi(sousLotOuvrage : SousLotOuvrage):void{
-  //   sousLotOuvrage.prixArrondi = sousLotOuvrage.prixUniArrondi * sousLotOuvrage.quantityOuvrage
-  // }
 
   private dyanmicDownloadByHtmlTag(arg: { fileName: string; text: string }) {
     if (!this.setting.element.dynamicDownload) {
@@ -991,6 +1026,28 @@ export class CreateDevisComponent implements OnInit {
       text: JSON.stringify(this.devisExport),
     });
 
+  }
+
+  openDialogLot(lot: Lot) {
+    this.dialog.open(DialogLotComponent, {
+      data: lot,
+      width: '90%',
+      height: '30%'
+    }).afterClosed().subscribe(result => {
+      this.getAllLots()
+      this.getLotFraisDeChantier()
+    });
+  }
+
+  openDialogSousLot(sousLot: SousLot) {
+    this.dialog.open(DialogSouslotComponent, {
+      data: sousLot,
+      width: '90%',
+      height: '30%'
+    }).afterClosed().subscribe(result => {
+      this.getAllLots()
+      this.getLotFraisDeChantier()
+    });
   }
 
 

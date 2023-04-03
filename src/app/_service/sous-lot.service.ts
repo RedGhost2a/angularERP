@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Lot} from "../_models/lot";
 import {environment} from '../../environments/environment';
+import {SousLot} from "../_models/sous-lot";
 
 const baseUrl = `${environment.apiUrl}/sousLots`;
 
@@ -26,8 +27,8 @@ export class SousLotService {
     return this.http.post(`${baseUrl}/new/${id}`, data);
   }
 
-  update(lot: Lot, id: any): Observable<any> {
-    return this.http.put(`${baseUrl}/update/${id}`, lot)
+  update(sousLot: SousLot, id: any): Observable<any> {
+    return this.http.put(`${baseUrl}/${id}`, sousLot)
   }
 
   deleteByID(id: any): Observable<any> {

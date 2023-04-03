@@ -1,0 +1,32 @@
+<div class="container">
+  <ng-container [formGroup]="this.myFormGroup">
+    <!--  <button routerLink="/listCout" mat-raised-button color="accent">Retour</button>-->
+    <div class="textModal">
+      <h2> Modification du sous-lot </h2>
+    </div>
+
+    <div class="form">
+
+      <div class="group">
+        <mat-form-field appearance="legacy">
+          <mat-label>Désignation</mat-label>
+          <input formControlName="designation" matInput >
+        </mat-form-field>
+
+
+      </div>
+
+      <div class="containerButton">
+        <!--      <div class="buttons">-->
+
+        <button mat-stroked-button color="primary"> Retour</button>
+        <button mat-raised-button color="primary" (click)="updateSousLots(); closeDialog()">Modifier le sous-lot</button>
+
+        <!--    <button mat-raised-button [routerLink]="['/listCout']" (click)="createAndUpdateCout()">{{textButton}}</button>-->
+        <!--      </div>-->
+      </div>
+
+    </div>
+
+  </ng-container>
+</div>

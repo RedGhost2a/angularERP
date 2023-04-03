@@ -2,6 +2,7 @@ import {Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {Cout} from "../_models/cout";
+import {MatTableDataSource} from "@angular/material/table";
 
 
 @Component({
@@ -21,7 +22,7 @@ export class DialogComponent implements OnInit {
 
   panelOpenState = false;
   selectedOuvrageIds: number[] = [];
-  dataSource: any[] = [];
+  dataSource!: any;
   initialData!: any[]; // Déclarez la variable initialData comme étant un tableau de type any
   columnsToDisplay = [
     "checkBox",
@@ -41,7 +42,8 @@ export class DialogComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.initialData)
-    this.dataSource = this.initialData
+    this.dataSource = new MatTableDataSource(this.initialData)
+    // this.dataSource = this.initialData
     this.setPriceOuvrage()
 
   }
@@ -82,22 +84,26 @@ export class DialogComponent implements OnInit {
   }
 
   applyFilter(event: Event) {
-    // Récupérez la valeur du filtre (la valeur de l'input de recherche)
+    console.log(event.target)
+
     const filterValue = (event.target as HTMLInputElement).value;
-
-    // Si la valeur du filtre est vide, affectez la valeur initiale de data à la propriété data
-    if (filterValue.trim() === '') {
-      this.data = this.initialData;
-    } else {
-      // Sinon, copiez le tableau initialData dans une variable filteredData
-      let filteredData = [...this.initialData];
-
-      // Utilisez la méthode filter
-      filteredData = filteredData.filter(obj => obj.designation.toLowerCase().includes(filterValue.trim().toLowerCase()));
-
-      // Affectez la valeur de filteredData à la propriété data
-      this.data = filteredData;
-    }
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    // // Récupérez la valeur du filtre (la valeur de l'input de recherche)
+    // const filterValue = (event.target as HTMLInputElement).value;
+    //
+    // // Si la valeur du filtre est vide, affectez la valeur initiale de data à la propriété data
+    // if (filterValue.trim() === '') {
+    //   this.data = this.initialData;
+    // } else {
+    //   // Sinon, copiez le tableau initialData dans une variable filteredData
+    //   let filteredData = [...this.initialData];
+    //
+    //   // Utilisez la méthode filter
+    //   filteredData = filteredData.filter(obj => obj.designation.toLowerCase().includes(filterValue.trim().toLowerCase()));
+    //
+    //   // Affectez la valeur de filteredData à la propriété data
+    //   this.data = filteredData;
+    // }
   }
 
 
