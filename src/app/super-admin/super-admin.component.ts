@@ -257,31 +257,30 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
       console.log('The dialog was closed');
     });
   }
-
   async uploadData(): Promise<void> {
     const file = this.importedFiles.find(f => f.checked);
     if (!file) {
-      this.toastr.error('Erreur', 'Aucun fichier séléctionner')
-      return
+      this.toastr.error('Erreur', 'Aucun fichier sélectionné');
+      return;
     }
     if (file) {
       this.importExcelService.getById(file.id).subscribe(async data => {
-        // console.log(data)
+        console.log('Data retrieved:', data);
         for (let i = 1; i < data.data.data.length; i++) {
           const ligne = data.data.data[i];
-          // console.log(ligne)
+          console.log('Ligne:', ligne);
           try {
             this.fournisseurService.getFournisseurIdByName(ligne[5]).subscribe(fournisseurId => {
-              const fournId: number = fournisseurId
-              // console.log(fournisseurId)
+              const fournId: number = fournisseurId;
+              console.log('Fournisseur ID:', fournisseurId);
               try {
                 this.typeCoutService.getTypeCoutIdByLabel(ligne[0]).subscribe(typeCout => {
-                  const typeId: number = typeCout
-                  // console.log(typeCout)
+                  const typeId: number = typeCout;
+                  console.log('Type cout:', typeCout);
                   try {
                     this.userService.getById(this.userService.userValue.id).subscribe(data => {
                       const userId = data.id;
-                      // console.log(userId);
+                      console.log('User ID:', userId);
 
                       const cout = {
                         id: 0,
@@ -293,38 +292,104 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
                         FournisseurId: fournId
                       };
 
-                      console.log(cout)
+                      console.log('Cout:', cout);
 
                       this.coutService.create(cout).subscribe(
                         () => {
-                          this.toastr.success('Parfait', 'Ajout a la bibliothèque réussie')
+                          this.toastr.success('Parfait', 'Ajout à la bibliothèque réussie');
                         },
                         (error) => {
-                          this.toastr.error('Attention', 'Une erreur est survenue')
+                          this.toastr.error('Attention', 'Une erreur est survenue');
+                          console.error(error);
                         }
                       );
-
                     });
                   } catch (error) {
-                    this.toastr.error('Attention', 'Une erreur est survenue')
-
+                    this.toastr.error('Attention', 'Une erreur est survenue');
                     console.error(error);
                   }
                 });
               } catch (error) {
-                this.toastr.error('Attention', 'Une erreur est survenue')
+                this.toastr.error('Attention', 'Une erreur est survenue');
                 console.error(error);
               }
-
-            })
+            });
           } catch (error) {
-            this.toastr.error('Attention', 'Une erreur est survenue')
-
+            this.toastr.error('Attention', 'Une erreur est survenue');
             console.error(error);
           }
-
         }
-      })
+      });
     }
   }
+
+  // async uploadData(): Promise<void> {
+  //   const file = this.importedFiles.find(f => f.checked);
+  //   if (!file) {
+  //     this.toastr.error('Erreur', 'Aucun fichier séléctionner')
+  //     return
+  //   }
+  //   if (file) {
+  //     this.importExcelService.getById(file.id).subscribe(async data => {
+  //       // console.log(data)
+  //       for (let i = 1; i < data.data.data.length; i++) {
+  //         const ligne = data.data.data[i];
+  //         // console.log(ligne)
+  //         try {
+  //           this.fournisseurService.getFournisseurIdByName(ligne[5]).subscribe(fournisseurId => {
+  //             const fournId: number = fournisseurId
+  //             // console.log(fournisseurId)
+  //             try {
+  //               this.typeCoutService.getTypeCoutIdByLabel(ligne[0]).subscribe(typeCout => {
+  //                 const typeId: number = typeCout
+  //                 // console.log(typeCout)
+  //                 try {
+  //                   this.userService.getById(this.userService.userValue.id).subscribe(data => {
+  //                     const userId = data.id;
+  //                     // console.log(userId);
+  //
+  //                     const cout = {
+  //                       id: 0,
+  //                       TypeCoutId: typeId,
+  //                       designation: ligne[1],
+  //                       EntrepriseId: data.Entreprises[0].id,
+  //                       prixUnitaire: ligne[3],
+  //                       unite: ligne[4],
+  //                       FournisseurId: fournId
+  //                     };
+  //
+  //                     console.log(cout)
+  //
+  //                     this.coutService.create(cout).subscribe(
+  //                       () => {
+  //                         this.toastr.success('Parfait', 'Ajout a la bibliothèque réussie')
+  //                       },
+  //                       (error) => {
+  //                         this.toastr.error('Attention', 'Une erreur est survenue')
+  //                       }
+  //                     );
+  //
+  //                   });
+  //                 } catch (error) {
+  //                   this.toastr.error('Attention', 'Une erreur est survenue')
+  //
+  //                   console.error(error);
+  //                 }
+  //               });
+  //             } catch (error) {
+  //               this.toastr.error('Attention', 'Une erreur est survenue')
+  //               console.error(error);
+  //             }
+  //
+  //           })
+  //         } catch (error) {
+  //           this.toastr.error('Attention', 'Une erreur est survenue')
+  //
+  //           console.error(error);
+  //         }
+  //
+  //       }
+  //     })
+  //   }
+  // }
 }

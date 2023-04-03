@@ -72,7 +72,7 @@
 .container-frais-chantier .container-sous-lot-frais-chantier .ouvrage-frais-chantier {
   display: flex;
   justify-content: space-around;
-  height: 5rem;
+  min-height: 5rem;
   border: solid 0.5px #E4EBF3;
 }
 .container-frais-chantier .container-sous-lot-frais-chantier .ouvrage-frais-chantier .detail-ouvrage-frais-chantier {
@@ -272,6 +272,14 @@
   width: min-content;
   margin: 5px;
   padding: 5px;
+}
+
+#input-fraisGeneraux {
+  width: 40px;
+}
+
+#designation-ouvrage {
+  width: 400px;
 }
 
 .container {

@@ -1,9 +1,9 @@
-th, td {
-  color: #334E68;
+.testcontainer {
+  background-color: #F0F4F8;
 }
 
-.container {
-  background-color: #F0F4F8;
+th, td {
+  color: #334E68;
 }
 
 .cardParams {
@@ -19,7 +19,7 @@ h1 {
   color: #334E68;
   font-size: 35px;
   padding-top: 1%;
-  margin-bottom: 2%;
+  margin-bottom: 1%;
 }
 
 .containerParams {
@@ -71,6 +71,11 @@ table {
 
 .mat-dialog-container {
   padding: 0;
+}
+
+.btn-back {
+  margin-left: 1%;
+  margin-bottom: 2%;
 }
 
 /*# sourceMappingURL=sous-detail-prix.component.css.map */

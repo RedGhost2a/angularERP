@@ -12,6 +12,9 @@
         <mat-form-field appearance="legacy">
           <mat-label>Désignation</mat-label>
           <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm">
+          <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
+            Vous devez entrer une désignation.
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="legacy">
@@ -21,13 +24,16 @@
           </select>
 
           <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
-            Vous devez entrer une unité.
+            Vous devez choisir l'unité.
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="legacy">
           <mat-label>Prix Unitaire</mat-label>
           <input type="number" formControlName="prixUnitaire" matInput placeholder="Ex: 9,2">
+          <mat-error *ngIf="this.myFormGroup.get('prixUnitaire')?.hasError('required')">
+            Vous devez entrer une nombre.
+          </mat-error>
         </mat-form-field>
       </div>
 
@@ -38,6 +44,9 @@
         <mat-form-field appearance="legacy">
           <mat-label>Ratio</mat-label>
           <input  type="number" formControlName="ratio" matInput placeholder="Ex: 9,2">
+          <mat-error *ngIf="this.myFormGroup.get('ratio')?.hasError('required')">
+            Vous devez entrer une nombre.
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="legacy">
@@ -48,6 +57,9 @@
         <mat-form-field appearance="legacy">
           <mat-label>Efficience</mat-label>
           <input  type="number" formControlName="efficience" matInput placeholder="Ex: 9,2">
+          <mat-error *ngIf="this.myFormGroup.get('efficience')?.hasError('required')">
+            Vous devez entrer une nombre.
+          </mat-error>
         </mat-form-field>
 
       </div>
@@ -89,9 +101,12 @@
           <mat-select formControlName="FournisseurId">
             <!--                  <mat-select formControlName="Fournisseurs">-->
             <mat-option *ngFor="let item of initialData[1]" [value]="[item.commercialName, item.remarque, item.id]">
-              {{item.commercialName}} {{item.id}}
+              {{item.commercialName}}
             </mat-option>
           </mat-select>
+          <mat-error *ngIf="this.myFormGroup.get('FournisseurId')?.hasError('required')">
+            Vous devez entrer un fournisseur.
+          </mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -103,8 +118,8 @@
     <div class="containerButton">
 <!--      <div class="buttons">-->
 
-        <button mat-stroked-button color="primary"> Retour</button>
-        <button mat-raised-button color="primary" (click)="createCoutDuDevis(); closeDialog()"> Ajouter ce composant</button>
+        <button mat-stroked-button color="primary" (click)=" closeDialog()">Retour</button>
+        <button mat-raised-button color="primary" (click)="createCoutDuDevis()"> Ajouter ce composant</button>
 
         <!--    <button mat-raised-button [routerLink]="['/listCout']" (click)="createAndUpdateCout()">{{textButton}}</button>-->
 <!--      </div>-->

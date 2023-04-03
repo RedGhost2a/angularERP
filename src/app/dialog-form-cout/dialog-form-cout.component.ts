@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {OuvrageService} from "../_service/ouvrage.service";
@@ -13,6 +13,7 @@ import {OuvrageCout} from "../_models/ouvrageCout";
 import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
 import {TypeCoutService} from "../_service/typeCout.service";
 import {TypeCout} from "../_models/type-cout";
+import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 
 @Component({
   selector: 'app-dialog-form-cout',
@@ -40,6 +41,7 @@ export class DialogFormCoutComponent implements OnInit {
               private coutService: CoutService,
               private ouvrageCoutService: OuvrageCoutService,
               private typeCoutService: TypeCoutService,
+              @Inject(TOASTR_TOKEN) private toastr: Toastr
   ) {
     this.initialData = this.data;
     transformVirguletoPoint()
@@ -59,15 +61,15 @@ export class DialogFormCoutComponent implements OnInit {
   createFormCout(): void {
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
-      designation: new FormControl(),
-      unite: new FormControl(""),
-      prixUnitaire: new FormControl(""),
+      designation: new FormControl('',Validators.required),
+      unite: new FormControl("",Validators.required),
+      prixUnitaire: new FormControl("",[Validators.required,]),
       EntrepriseId: new FormControl(""),
       TypeCoutId: new FormControl(""),
-      FournisseurId: new FormControl(""),
-      ratio: new FormControl(""),
+      FournisseurId: new FormControl("",Validators.required),
+      ratio: new FormControl("",[Validators.required]),
       uRatio: new FormControl(""),
-      efficience: new FormControl("")
+      efficience: new FormControl("",[Validators.required])
     });
 
   }
@@ -78,6 +80,12 @@ export class DialogFormCoutComponent implements OnInit {
   }
 
   createCoutDuDevis(): void {
+    this.myFormGroup.markAllAsTouched();
+    if (this.myFormGroup.invalid) {
+      // Form is invalid, show error message
+      this.toastr.error("Le formulaire est invalide.", "Erreur !");
+      return;
+    }
     if (this.isInDevis) {
       this.myFormGroup.controls["EntrepriseId"].setValue(this.dataSharingService.entrepriseId)
       this.coutDuDevis = this.myFormGroup.getRawValue();
@@ -93,6 +101,12 @@ export class DialogFormCoutComponent implements OnInit {
 
 
       this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe(responseCout => {
+        this.myFormGroup.markAllAsTouched();
+        if (this.myFormGroup.invalid) {
+          // Form is invalid, show error message
+          this.toastr.error("Le formulaire est invalide.", "Erreur !");
+          return;
+        }
           const ouvrageCoutDuDevis: OuvrageCoutDuDevis = {
             OuvrageDuDeviId: this.dataSharingService.ouvrage.id,
             CoutDuDeviId: responseCout?.id,
@@ -100,10 +114,12 @@ export class DialogFormCoutComponent implements OnInit {
             uRatio: this.myFormGroup.getRawValue().uRatio,
           }
           this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCoutDuDevis).subscribe()
+        this.closeDialog()
         }
       )
       if (this.isChecked === false) {
         this.coutService.create(this.cout).subscribe((res: any) => {
+
           const ouvrageCout: OuvrageCout = {
             OuvrageId: 0,
             CoutId: res.cout.id,
