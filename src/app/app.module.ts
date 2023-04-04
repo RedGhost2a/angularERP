@@ -86,6 +86,7 @@ import {AideComponent} from './aide/aide.component';
 import {DialogImportExcelComponent} from "./dialog-import-excel/dialog-import-excel.component";
 import { DialogLotComponent } from './dialog-lot/dialog-lot.component';
 import { DialogSouslotComponent } from './dialog-souslot/dialog-souslot.component';
+import { DialogUniteForFormComponent } from './dialog-unite-for-form/dialog-unite-for-form.component';
 
 
 const appRoutes: Routes = [];
@@ -140,6 +141,7 @@ declare const toastr: Toastr;
     DialogImportExcelComponent,
     DialogLotComponent,
     DialogSouslotComponent,
+    DialogUniteForFormComponent,
 
 
   ],

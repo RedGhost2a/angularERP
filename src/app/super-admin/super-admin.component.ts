@@ -21,6 +21,7 @@ import {TypeCoutService} from "../_service/typeCout.service";
 import {FournisseurService} from "../_service/fournisseur.service";
 import {ImportExcel} from "../_models/importExcel";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
+import {DialogUniteForFormComponent} from "../dialog-unite-for-form/dialog-unite-for-form.component";
 
 
 @Component({
@@ -257,6 +258,10 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
       console.log('The dialog was closed');
     });
   }
+
+
+
+
   async uploadData(): Promise<void> {
     const file = this.importedFiles.find(f => f.checked);
     if (!file) {
@@ -323,73 +328,17 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // async uploadData(): Promise<void> {
-  //   const file = this.importedFiles.find(f => f.checked);
-  //   if (!file) {
-  //     this.toastr.error('Erreur', 'Aucun fichier séléctionner')
-  //     return
-  //   }
-  //   if (file) {
-  //     this.importExcelService.getById(file.id).subscribe(async data => {
-  //       // console.log(data)
-  //       for (let i = 1; i < data.data.data.length; i++) {
-  //         const ligne = data.data.data[i];
-  //         // console.log(ligne)
-  //         try {
-  //           this.fournisseurService.getFournisseurIdByName(ligne[5]).subscribe(fournisseurId => {
-  //             const fournId: number = fournisseurId
-  //             // console.log(fournisseurId)
-  //             try {
-  //               this.typeCoutService.getTypeCoutIdByLabel(ligne[0]).subscribe(typeCout => {
-  //                 const typeId: number = typeCout
-  //                 // console.log(typeCout)
-  //                 try {
-  //                   this.userService.getById(this.userService.userValue.id).subscribe(data => {
-  //                     const userId = data.id;
-  //                     // console.log(userId);
-  //
-  //                     const cout = {
-  //                       id: 0,
-  //                       TypeCoutId: typeId,
-  //                       designation: ligne[1],
-  //                       EntrepriseId: data.Entreprises[0].id,
-  //                       prixUnitaire: ligne[3],
-  //                       unite: ligne[4],
-  //                       FournisseurId: fournId
-  //                     };
-  //
-  //                     console.log(cout)
-  //
-  //                     this.coutService.create(cout).subscribe(
-  //                       () => {
-  //                         this.toastr.success('Parfait', 'Ajout a la bibliothèque réussie')
-  //                       },
-  //                       (error) => {
-  //                         this.toastr.error('Attention', 'Une erreur est survenue')
-  //                       }
-  //                     );
-  //
-  //                   });
-  //                 } catch (error) {
-  //                   this.toastr.error('Attention', 'Une erreur est survenue')
-  //
-  //                   console.error(error);
-  //                 }
-  //               });
-  //             } catch (error) {
-  //               this.toastr.error('Attention', 'Une erreur est survenue')
-  //               console.error(error);
-  //             }
-  //
-  //           })
-  //         } catch (error) {
-  //           this.toastr.error('Attention', 'Une erreur est survenue')
-  //
-  //           console.error(error);
-  //         }
-  //
-  //       }
-  //     })
-  //   }
-  // }
+
+  openUniteForFormDialog(): void {
+    const dialogRef = this.dialog.open(DialogUniteForFormComponent, {
+      width: '500px',
+      // data: { form: this.importForm }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+
 }
