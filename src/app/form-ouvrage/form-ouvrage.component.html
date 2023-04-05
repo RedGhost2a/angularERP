@@ -27,20 +27,17 @@
           Vous devez entrer un aléas.
         </mat-error>
       </mat-form-field>
+
       <mat-form-field appearance="legacy">
         <mat-label>Unité</mat-label>
-        <select formControlName="unite" matNativeControl required (blur)="setValueURatio()">
-          <option value="F">Forfait</option>
-          <option value="m">Mètres</option>
-          <option value="m²">Mètres carrés</option>
-          <option value="m³">Mètres cubes</option>
-          <option value="Kg">Kilogrammes</option>
-          <option value="Tn">Tonnes</option>
+        <select formControlName="unite"  matNativeControl required (blur)="setValueURatio()">
+          <option *ngFor="let unite of uniteList" value="{{unite.name}}"> {{unite.name}}</option>
         </select>
         <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
           Vous devez entrer une unité.
         </mat-error>
       </mat-form-field>
+
       <mat-form-field appearance="legacy" style="width: 100px">
         <mat-label>Ratio</mat-label>
         <input type="number" formControlName="ratio" matInput placeholder="Ex: 0.7">

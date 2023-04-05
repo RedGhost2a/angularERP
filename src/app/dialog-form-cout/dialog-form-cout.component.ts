@@ -14,6 +14,8 @@ import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
 import {TypeCoutService} from "../_service/typeCout.service";
 import {TypeCout} from "../_models/type-cout";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
+import {UniteForForm} from "../_models/uniteForForm";
+import {UniteForFormService} from "../_service/uniteForForm.service";
 
 @Component({
   selector: 'app-dialog-form-cout',
@@ -31,6 +33,8 @@ export class DialogFormCoutComponent implements OnInit {
   categories: any[] = [];
   typeCout !: TypeCout[];
   isCout: boolean = true;
+  uniteList!:UniteForForm[];
+
 
 
 
@@ -41,6 +45,7 @@ export class DialogFormCoutComponent implements OnInit {
               private coutService: CoutService,
               private ouvrageCoutService: OuvrageCoutService,
               private typeCoutService: TypeCoutService,
+              private uniteForFormService: UniteForFormService,
               @Inject(TOASTR_TOKEN) private toastr: Toastr
   ) {
     this.initialData = this.data;
@@ -50,6 +55,7 @@ export class DialogFormCoutComponent implements OnInit {
   ngOnInit(): void {
     this.getAllTypeCouts(this.dataSharingService.entrepriseId)
     console.log(this.data[2])
+    this.getUniteByEnteprise(this.dataSharingService.entrepriseId)
     if (this.regexDetailOuvrage.test(window.location.pathname)) {
       this.isInDevis = false;
     }
@@ -57,6 +63,13 @@ export class DialogFormCoutComponent implements OnInit {
     this.createFormCout()
     console.log("entreprise ID :", this.dataSharingService.entrepriseId)
   }
+
+  getUniteByEnteprise(id:number):void {
+    this.uniteForFormService.getUniteByEntreprise(id).subscribe(data=>{
+      this.uniteList=data
+    })
+  }
+
 
   createFormCout(): void {
     this.myFormGroup = new FormGroup({
@@ -66,6 +79,7 @@ export class DialogFormCoutComponent implements OnInit {
       prixUnitaire: new FormControl("",[Validators.required,]),
       EntrepriseId: new FormControl(""),
       TypeCoutId: new FormControl(""),
+      type: new FormControl(""),
       FournisseurId: new FormControl("",Validators.required),
       ratio: new FormControl("",[Validators.required]),
       uRatio: new FormControl(""),
@@ -91,13 +105,13 @@ export class DialogFormCoutComponent implements OnInit {
       this.coutDuDevis = this.myFormGroup.getRawValue();
       this.coutDuDevis.fournisseur = this.myFormGroup.getRawValue().FournisseurId[0]
       this.coutDuDevis.remarque !== null ? this.myFormGroup.getRawValue().FournisseurId[1] : ""
-      this.coutDuDevis.type = this.myFormGroup.getRawValue().TypeCoutId[0]
+      this.coutDuDevis.type = this.myFormGroup.getRawValue().type
       this.coutDuDevis.categorie = this.myFormGroup.getRawValue().TypeCoutId[1]
-      // console.log(this.myFormGroup.getRawValue())
+       console.log(this.myFormGroup.getRawValue())
       this.cout = this.myFormGroup.getRawValue();
       console.log("cout", this.cout)
       this.cout.FournisseurId = this.myFormGroup.getRawValue().FournisseurId[2]
-      this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[2]
+      this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[0]
 
 
       this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe(responseCout => {

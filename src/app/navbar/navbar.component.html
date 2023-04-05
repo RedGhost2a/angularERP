@@ -37,7 +37,7 @@
 <mat-sidenav-container>
 
   <mat-sidenav #sidenav mode="side"
-               opened="true">
+               opened="false" >
     <mat-nav-list *ngIf="userService.userValue">
       <div class="wrapper" *ngIf="userService.userValue.id">
         <div class="wrapper_avatar">
@@ -180,7 +180,7 @@
       </div>
     </div>
   </mat-sidenav>
-  <mat-sidenav-content>
+  <mat-sidenav-content (click)="closeSidenav()">
     <div style="height: calc(100vh - 64px); ">
       <router-outlet>
       </router-outlet>

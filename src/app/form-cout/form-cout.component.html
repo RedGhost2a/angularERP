@@ -14,10 +14,9 @@
       </mat-form-field>
       <mat-form-field appearance="legacy">
         <mat-label>Unité</mat-label>
-        <select  formControlName="unite" matNativeControl required >
-          <option *ngFor="let option of this.datasharingService.options" [value]="option.value">{{ option.label }}</option>
+        <select formControlName="unite"  matNativeControl required >
+          <option *ngFor="let unite of uniteList" value="{{unite.name}}"> {{unite.name}}</option>
         </select>
-
         <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
           Vous devez entrer une unité.
         </mat-error>

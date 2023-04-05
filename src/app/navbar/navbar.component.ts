@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 
 import {UserService} from "../_service/user.service";
 import {navbarData} from "./nav-data"
@@ -7,6 +7,7 @@ import {User} from "../_models/users";
 import {faCaretDown, IconDefinition} from "@fortawesome/free-solid-svg-icons";
 import {DialogNotesComponent} from "../dialog-notes/dialog-notes.component";
 import {MatDialog} from "@angular/material/dialog";
+import {MatSidenav} from "@angular/material/sidenav";
 
 
 @Component({
@@ -15,6 +16,8 @@ import {MatDialog} from "@angular/material/dialog";
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent {
+  @ViewChild('sidenav') sidenav!: MatSidenav;
+
   navData = navbarData;
   navDataSuperAdmin = navbarDataAdmin
   @Input() user!: User;
@@ -36,12 +39,19 @@ export class NavbarComponent {
 
   }
 
+
   toggleSubnav(data: any) {
     console.log(data)
     if (data.children) {
       data.children.forEach((child: { routeLink: string, icon: any, label: string, visible: boolean }) => {
         child.visible = !child.visible;
       });
+    }
+  }
+
+  closeSidenav() {
+    if (this.sidenav && this.sidenav.opened) {
+      this.sidenav.close();
     }
   }
 

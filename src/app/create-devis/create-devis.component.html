@@ -412,7 +412,7 @@
             <div class="sous-lot-frais-chantier">
               <button class="btn">
                 <mat-icon>expand_more</mat-icon>
-                <span class="designation-sous-lot-frais-chantier">{{ sublot.id | number }}</span>
+                <span class="designation-sous-lot-frais-chantier">id {{ sublot.id | number }}</span>
               </button>
               <span
                 class="designation-sous-lot-frais-chantier">{{ sublot.designation | uppercase }}</span>
@@ -446,6 +446,7 @@
 
               </mat-menu>
             </div>
+
             <div class="container-ouvrage-frais-chantier" *ngFor="let ouvrage of sublot.OuvrageDuDevis"
                  [hidden]="hiddenChildren.get(sublot.id)">
               <div>

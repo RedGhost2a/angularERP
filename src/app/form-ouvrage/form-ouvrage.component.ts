@@ -9,6 +9,8 @@ import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {SousLotOuvrage} from "../_models/sousLotOuvrage";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint";
+import {UniteForForm} from "../_models/uniteForForm";
+import {UniteForFormService} from "../_service/uniteForForm.service";
 
 @Component({
   selector: 'app-form-ouvrage',
@@ -25,11 +27,14 @@ export class FormOuvrageComponent implements OnInit {
   regexOuvrage = new RegExp(`^/listOuvrage`)
   isOuvrage :boolean = true;
   titleModal:string = "Ajout d'un ouvrage dans la bibliothèque de prix";
+  entrepriseId!:number;
+  uniteList!:UniteForForm[];
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: number,
               private formBuilder: FormBuilder,
               private ouvrageService: OuvrageService,
               private userService: UserService,
+              private uniteForForm:UniteForFormService,
               private dialogRef: MatDialogRef<DialogComponent>,
               @Inject(TOASTR_TOKEN) private toastr: Toastr) {
     this.initialData = this.data
@@ -37,11 +42,14 @@ export class FormOuvrageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getUserById()
+    this.getUserById();
     this.createFormOuvrage()
     if(this.regexSousDetail.test(window.location.pathname))
       this.isOuvrage = false;
-    this.titleModal = "Ajout d'un ouvrage"
+    this.titleModal = "Ajout d'un ouvrage";
+
+
+
   }
 
 
@@ -134,8 +142,17 @@ export class FormOuvrageComponent implements OnInit {
     this.currentUser = this.userService.userValue;
     this.userService.getById(this.currentUser.id).subscribe(data => {
       this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id)
+      this.entrepriseId=data.Entreprises[0].id
+      if (this.entrepriseId) {
+        this.getUniteByEnteprise();
+      }
     })
   }
+  getUniteByEnteprise():void {
+    this.uniteForForm.getUniteByEntreprise(this.entrepriseId).subscribe(data=>{
+      this.uniteList=data
 
+    })
+  }
 
 }

@@ -31,14 +31,23 @@ import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint";
 export class SousDetailPrixComponent implements OnInit {
   ouvrageID!: number;
   currentOuvrage !: Ouvrage;
-  columnsToDisplay = ["type"
-    , "categorie", "designation", "unite", "uRatio",
+  columnsToDisplay = [
+    "type",
+    "categorie",
+    "designation",
+    "unite",
+    "uRatio",
     "ratio",
     "efficience",
-    "quantite", "prixUnitaireHT",
-    "DSTotal", "PUHTEquilibre", "prixHTEquilibre",
+    "quantite",
+    "prixUnitaireHT",
+    "DSTotal",
+    "PUHTEquilibre",
+    "prixHTEquilibre",
     "PUHTCalcule",
-    "prixHTCalcule", "boutons"];
+    "prixHTCalcule",
+    "boutons"
+  ];
   coefEqui: number = 35.79;
 
   totalDBS = {
@@ -73,7 +82,7 @@ export class SousDetailPrixComponent implements OnInit {
         this.currentOuvrage = data;
         this.dataShared.ouvrage = data;
         // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = 10;
-        console.log(this.currentOuvrage)
+        console.log("currentouvrage",this.currentOuvrage)
         if(this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage ){
           // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = this.currentOuvrage.prix
         }

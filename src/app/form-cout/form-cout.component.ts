@@ -13,6 +13,8 @@ import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
 import {DataSharingService} from "../_service/data-sharing-service.service";
+import {UniteForFormService} from "../_service/uniteForForm.service";
+import {UniteForForm} from "../_models/uniteForForm";
 
 
 interface FournisseurCout {
@@ -40,6 +42,8 @@ export class FormCoutComponent implements OnInit {
   isCout: boolean = true;
   categories: any[] = [];
   types!:String;
+  uniteList!:UniteForForm[];
+
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Cout,
@@ -50,6 +54,7 @@ export class FormCoutComponent implements OnInit {
               private userService: UserService,
               private fournisseurService: FournisseurService,
               private typeCoutService: TypeCoutService,
+              private uniteForFormService: UniteForFormService,
               public datasharingService: DataSharingService,
               @Inject(TOASTR_TOKEN) private toastr: Toastr) {
     this.initialData = this.data;
@@ -66,6 +71,8 @@ export class FormCoutComponent implements OnInit {
     if (this.initialData !== null)
       this.generateFormUpdate();
   }
+
+
 
   //Determine si c'est l'ajout d'un nouveau cout ou la modification d'un cout existant au click
   createAndUpdate(): void {
@@ -101,6 +108,14 @@ export class FormCoutComponent implements OnInit {
       this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id),
         this.getAllTypeCouts(data.Entreprises[0].id)
       this.getAllFournisseur(data.Entreprises[0].id)
+      if (data.Entreprises[0].id) {
+        this.getUniteByEnteprise(data.Entreprises[0].id);
+      }
+    })
+  }
+  getUniteByEnteprise(id : number):void {
+    this.uniteForFormService.getUniteByEntreprise(id).subscribe(data=>{
+      this.uniteList=data
     })
   }
 
