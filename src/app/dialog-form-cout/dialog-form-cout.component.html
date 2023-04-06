@@ -43,7 +43,7 @@
 
         <mat-form-field appearance="legacy">
           <mat-label>Ratio</mat-label>
-          <input  type="number" formControlName="ratio" matInput placeholder="Ex: 9,2">
+          <input  type="number" formControlName="ratio" matInput placeholder="Ex: 2">
           <mat-error *ngIf="this.myFormGroup.get('ratio')?.hasError('required')">
             Vous devez entrer une nombre.
           </mat-error>
@@ -51,7 +51,7 @@
 
         <mat-form-field appearance="legacy">
           <mat-label>U/Ratio</mat-label>
-          <input formControlName="uRatio" matInput placeholder="Ex: 9,2">
+          <input formControlName="uRatio" matInput placeholder="Ex: mètres/heure">
         </mat-form-field>
 
         <mat-form-field appearance="legacy">

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {OuvrageService} from "../_service/ouvrage.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DataSharingService} from "../_service/data-sharing-service.service";
@@ -19,9 +19,13 @@ import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {FormCoutComponent} from "../form-cout/form-cout.component";
 import {CoutDuDevis} from "../_models/cout-du-devis";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint";
+import {UniteForForm} from "../_models/uniteForForm";
+import {OuvrageCout} from "../_models/ouvrageCout";
+import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
+import {UniteForFormService} from "../_service/uniteForForm.service";
 
 @Component({
   selector: 'app-sous-detail-prix',
@@ -31,6 +35,8 @@ import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint";
 export class SousDetailPrixComponent implements OnInit {
   ouvrageID!: number;
   currentOuvrage !: Ouvrage;
+  isFormVisible = false;
+
   columnsToDisplay = [
     "type",
     "categorie",
@@ -53,6 +59,14 @@ export class SousDetailPrixComponent implements OnInit {
   totalDBS = {
     prixOuvrage: 0
   };
+  myFormGroup!: FormGroup;
+  coutDuDevis!: CoutDuDevis
+  cout!: Cout;
+  isChecked: boolean = false;
+  isInDevis: boolean = true;
+  categories: any[] = [];
+  typeCout !: TypeCout[];
+  uniteList!:UniteForForm[];
 
   currentUser !: User
   listCout !: Cout[]
@@ -65,15 +79,30 @@ export class SousDetailPrixComponent implements OnInit {
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute,
               public dataShared: DataSharingService, private coutService: CoutService, private userService: UserService,
               public dialog: MatDialog, private sousLotOuvrageService: SousLotOuvrageService,private fournisseurService : FournisseurService,
-              private typeCoutService : TypeCoutService, private ouvrageCoutService : OuvrageCoutService, private router : Router
+              private typeCoutService : TypeCoutService, private ouvrageCoutService : OuvrageCoutService, private router : Router,              public dataSharingService: DataSharingService,
+private uniteForFormService : UniteForFormService,
+              @Inject(TOASTR_TOKEN) private toastr: Toastr
+
   ) {
     transformVirguletoPoint()
+    this.createFormCout2()
+    this.createFormCout();
+    this.createFormOuvrage()
+
+
+  }
+  toggleForm() {
+    this.isFormVisible = !this.isFormVisible;
+    //reinitialiser le formulaire
+
+
+
+
 
   }
 
   ngOnInit(): void {
-    this.createFormCout();
-    this.createFormOuvrage()
+
     console.log("debut ngOninit")
     this.route.params.subscribe(async params => {
       this.ouvrageID = +params['id'];
@@ -192,6 +221,8 @@ export class SousDetailPrixComponent implements OnInit {
       data => {
         this.currentUser = data
         this.dataShared.entrepriseId = data.Entreprises[0].id;
+        this.getUniteByEnteprise( this.dataShared.entrepriseId)
+
         this.getAllCout(data.Entreprises[0].id)
         this.getAllFournisseurs(data.Entreprises[0].id)
         this.getAllTypeCouts(data.Entreprises[0].id)
@@ -394,4 +425,121 @@ export class SousDetailPrixComponent implements OnInit {
     });
   }
 
+  createFormCout2(): void {
+    this.myFormGroup = new FormGroup({
+      id: new FormControl(),
+      designation: new FormControl('',Validators.required),
+      unite: new FormControl("",Validators.required),
+      prixUnitaire: new FormControl("",[Validators.required,]),
+      EntrepriseId: new FormControl(""),
+      TypeCoutId: new FormControl(""),
+      type: new FormControl(""),
+      FournisseurId: new FormControl("",Validators.required),
+      ratio: new FormControl("",[Validators.required]),
+      uRatio: new FormControl(""),
+      efficience: new FormControl(1,[Validators.required])
+    });
+  }
+
+  checked() {
+    this.isChecked = !this.isChecked;
+    console.log(this.isChecked)
+  }
+
+  createCoutDuDevis(): void {
+    this.myFormGroup.markAllAsTouched();
+    if (this.myFormGroup.invalid) {
+      // Form is invalid, show error message
+      this.toastr.error("Le formulaire est invalide.", "Erreur !");
+      return;
+    }
+    if (this.isInDevis) {
+      this.myFormGroup.controls["EntrepriseId"].setValue(this.dataSharingService.entrepriseId)
+      this.coutDuDevis = this.myFormGroup.getRawValue();
+      this.coutDuDevis.fournisseur = this.myFormGroup.getRawValue().FournisseurId[0]
+      this.coutDuDevis.remarque !== null ? this.myFormGroup.getRawValue().FournisseurId[1] : ""
+      this.coutDuDevis.type = this.myFormGroup.getRawValue().type
+      this.coutDuDevis.categorie = this.myFormGroup.getRawValue().TypeCoutId[1]
+      console.log(this.myFormGroup.getRawValue())
+      this.cout = this.myFormGroup.getRawValue();
+      console.log("cout", this.cout)
+      this.cout.FournisseurId = this.myFormGroup.getRawValue().FournisseurId[2]
+      this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[0]
+
+
+      this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe(responseCout => {
+          this.myFormGroup.markAllAsTouched();
+          if (this.myFormGroup.invalid) {
+            // Form is invalid, show error message
+            this.toastr.error("Le formulaire est invalide.", "Erreur !");
+            return;
+          }
+          const ouvrageCoutDuDevis: OuvrageCoutDuDevis = {
+            OuvrageDuDeviId: this.dataSharingService.ouvrage.id,
+            CoutDuDeviId: responseCout?.id,
+            ratio: this.myFormGroup.getRawValue().ratio,
+            uRatio: this.myFormGroup.getRawValue().uRatio,
+          }
+          this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCoutDuDevis).subscribe()
+          this.myFormGroup.reset();
+          this.ngOnInit()
+
+        }
+      )
+      if (this.isChecked === false) {
+        this.coutService.create(this.cout).subscribe((res: any) => {
+
+          const ouvrageCout: OuvrageCout = {
+            OuvrageId: 0,
+            CoutId: res.cout.id,
+            ratio: this.myFormGroup.getRawValue().ratio,
+            uRatio: this.myFormGroup.getRawValue().uRatio,
+          }
+          this.ouvrageCoutService.createOuvrageCoutByDesignation(this.dataSharingService.ouvrage.id, ouvrageCout).subscribe()
+          this.myFormGroup.reset();
+          this.ngOnInit()
+        })
+
+      }
+    } else {
+      this.myFormGroup.controls["EntrepriseId"].setValue(this.dataShared.entrepriseId )
+      this.cout = this.myFormGroup.getRawValue();
+      this.cout.FournisseurId = this.myFormGroup.getRawValue().FournisseurId[2]
+      this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[2]
+
+      this.coutService.create(this.cout).subscribe((res: any) => {
+        const ouvrageCout: OuvrageCout = {
+          OuvrageId:this.ouvrageID,
+          CoutId: res.cout.id,
+          ratio: this.myFormGroup.getRawValue().ratio,
+          uRatio: this.myFormGroup.getRawValue().uRatio,
+        }
+        console.log("ouvrage cout dans le ELSE",ouvrageCout)
+        this.ouvrageCoutService.create(ouvrageCout).subscribe()
+        this.myFormGroup.reset();
+        this.ngOnInit()
+      })
+    }
+
+  }
+
+  //Recupere tous les type de couts pour implementer le select picker du template
+  getCategorieByType(type: string): void {
+    this.typeCoutService.getCategorieByType(type).subscribe(data => {
+      this.categories = data;
+
+      console.log(this.categories);
+    });
+  }
+  getUniteByEnteprise(id:number):void {
+    this.uniteForFormService.getUniteByEntreprise(id).subscribe(data=>{
+      this.uniteList=data
+      console.log(this.uniteList)
+    })
+  }
+
+  setValueURatio(){
+    const unite = this.myFormGroup.get('unite')?.value
+    this.myFormGroup.controls['uRatio'].setValue(`${unite}/h`)
+  }
 }

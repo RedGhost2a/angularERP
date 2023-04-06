@@ -6,6 +6,13 @@ th, td {
   color: #334E68;
 }
 
+.valid-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
 .cardParams {
   color: #334E68;
   width: 13%;
@@ -51,6 +58,12 @@ h1 {
   justify-content: space-around;
 }
 
+.containerCards2 {
+  display: flex;
+  justify-content: space-around;
+  margin: 9px 17px 0 25px;
+}
+
 table {
   width: 98%;
   margin-top: 15px;
@@ -62,11 +75,13 @@ table {
 .btnSousDetails {
   display: flex;
   justify-content: flex-end;
-  margin-right: 50px;
   margin-top: 30px;
-}
-.btnSousDetails :first-child {
-  margin-right: 30px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  align-items: center;
+  flex-direction: row;
+  margin-right: 85px;
 }
 
 .mat-dialog-container {

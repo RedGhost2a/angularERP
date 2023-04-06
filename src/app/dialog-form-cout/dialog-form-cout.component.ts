@@ -50,6 +50,8 @@ export class DialogFormCoutComponent implements OnInit {
   ) {
     this.initialData = this.data;
     transformVirguletoPoint()
+    this.createFormCout()
+
   }
 
   ngOnInit(): void {
@@ -60,7 +62,7 @@ export class DialogFormCoutComponent implements OnInit {
       this.isInDevis = false;
     }
 
-    this.createFormCout()
+    // this.createFormCout()
     console.log("entreprise ID :", this.dataSharingService.entrepriseId)
   }
 

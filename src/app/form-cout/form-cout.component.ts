@@ -128,7 +128,8 @@ export class FormCoutComponent implements OnInit {
       EntrepriseId: new FormControl(),
       type : new FormControl(),
       TypeCoutId: new FormControl(""),
-      FournisseurId: new FormControl("")
+      FournisseurId: new FormControl(""),
+      uRatio: new FormControl(""),
     });
   }
 
@@ -167,6 +168,7 @@ export class FormCoutComponent implements OnInit {
     this.textForm = "La modification de ce composant va impacter les ouvrages de la bibliothèque de prix associés. Les devis déjà existants ne seront pas modifiés."
     this.textButton = "Modifier ce composant"
     console.log(this.initialData)
+     this.myFormGroup.controls["uRatio"].setValue(this.initialData.OuvrageCout.uRatio)
     this.myFormGroup.patchValue(this.initialData)
     this.getCategorieByType(this.initialData.TypeCout.type)
     this.myFormGroup.controls["type"].setValue(this.initialData.TypeCout.type)

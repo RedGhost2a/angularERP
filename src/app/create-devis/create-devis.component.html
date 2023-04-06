@@ -683,9 +683,9 @@
                 <div class="paramsSub">
                   <div class="itemsParams">
 
-                    <mat-card-subtitle>Frais généraux (<mat-form-field  appearance="legacy" id="input-fraisGeneraux">
+                    <mat-card-subtitle>Frais généraux (<mat-form-field style="width: 135px;text-align: center"  appearance="legacy" id="input-fraisGeneraux">
                       <input (blur)="this.updateFraisGeneraux($event)" formControlName="percentFraisGeneraux"   type="number" matInput [placeholder]="this.myFormFraisGeneraux.get('percentFraisGeneraux')?.value" >
-                    </mat-form-field>) %</mat-card-subtitle>
+                    </mat-form-field >) %</mat-card-subtitle>
                     <p>{{!this.devis.fraisGeneraux ? 0 : this.devis.fraisGeneraux | number : '1.2-2'}} €</p>
                   </div>
                   <div class="itemsParams">

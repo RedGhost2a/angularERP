@@ -21,6 +21,15 @@
           Vous devez entrer une unité.
         </mat-error>
       </mat-form-field>
+
+      <mat-form-field appearance="legacy">
+        <mat-label>Unité Ratio</mat-label>
+        <input formControlName="uRatio" matInput placeholder="Ex: mètres/heures">
+
+        <mat-error *ngIf="this.myFormGroup.get('uRatio')?.hasError('required')">
+          Vous devez entrer une unité.
+        </mat-error>
+      </mat-form-field>
       <mat-form-field appearance="legacy" style="width: 100px">
         <mat-label>Prix Unitaire</mat-label>
         <input type="number" formControlName="prixUnitaire" matInput placeholder="Ex: 9,2">
