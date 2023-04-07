@@ -1,307 +1,301 @@
 <div class="testcontainer">
 
-<div class="container">
+  <div class="container">
 
-<h1>{{currentOuvrage.designation}}</h1>
-  <button class="btn-back" mat-stroked-button color="primary"  routerLink="/devisCreate/{{this.dataShared.deviId}}" >{{textButtonBack}}</button>
+    <h1>{{currentOuvrage.designation}}</h1>
+    <button class="btn-back" mat-stroked-button color="primary"
+            routerLink="/devisCreate/{{this.dataSharingService.deviId}}">{{textButtonBack}}</button>
 
-  <div class="containerCards">
+    <div class="containerCards">
 
 
-  <mat-card class="cardParams">
-    <mat-card-header>
-      <mat-card-title>Ratio & quantité</mat-card-title>
+      <mat-card class="cardParams">
+        <mat-card-header>
+          <mat-card-title>Ratio & quantité</mat-card-title>
 
-      <!--        <mat-card-subtitle>Start</mat-card-subtitle>-->
-    </mat-card-header>
-    <hr>
-    <mat-card-content>
-      <div class="containerParams">
-        <div class="paramsSub">
-          <mat-card-subtitle>Ratio</mat-card-subtitle>
-          <div class="itemsParams">
-            <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 30px">
-              <input type="number" (keyup.enter)="ratioOuvrageChange()" formControlName="ratioOuvrage" matInput required
-                     [placeholder]="this.currentOuvrage.ratio.toString()">
-            </mat-form-field>
-<!--            <p>{{this.currentOuvrage.ratio}}</p>-->
-            <p>{{this.currentOuvrage.uRatio}}</p>
+          <!--        <mat-card-subtitle>Start</mat-card-subtitle>-->
+        </mat-card-header>
+        <hr>
+        <mat-card-content>
+          <div class="containerParams">
+            <div class="paramsSub">
+              <mat-card-subtitle>Ratio</mat-card-subtitle>
+              <div class="itemsParams">
+                <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 30px">
+                  <input type="number" (keyup.enter)="ratioOuvrageChange()" formControlName="ratioOuvrage" matInput
+                         required
+                         [placeholder]="this.currentOuvrage.ratio.toString()">
+                </mat-form-field>
+                <!--            <p>{{this.currentOuvrage.ratio}}</p>-->
+                <p>{{this.currentOuvrage.uRatio}}</p>
+              </div>
+              <mat-card-subtitle>Quantité marché</mat-card-subtitle>
+              <div class="itemsParams" *ngIf="this.currentOuvrage.SousLotOuvrage !== undefined">
+                <!--            <p>{{this.currentOuvrage.SousLotOuvrage?.quantityOuvrage}}</p>-->
+                <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 30px">
+                  <input (keyup.enter)="quantityChange()" formControlName="quantity" matInput required
+                         [placeholder]="this.currentOuvrage.SousLotOuvrage.quantityOuvrage.toString()">
+                </mat-form-field>
+                <p>{{this.currentOuvrage.unite}}</p>
+              </div>
+
+            </div>
+            <!--        <div class="paramsSub">-->
+            <!--            <mat-card-subtitle>Quantité métré</mat-card-subtitle>-->
+            <!--          <div class="itemsParams">-->
+            <!--            <p>A voir</p>-->
+            <!--            <p>A voir</p>-->
+            <!--          </div>-->
+            <!--      </div>-->
           </div>
-          <mat-card-subtitle>Quantité marché</mat-card-subtitle>
-          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLotOuvrage !== undefined">
-<!--            <p>{{this.currentOuvrage.SousLotOuvrage?.quantityOuvrage}}</p>-->
-            <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 30px">
-              <input (keyup.enter)="quantityChange()" formControlName="quantity" matInput required
-                     [placeholder]="this.currentOuvrage.SousLotOuvrage.quantityOuvrage.toString()">
-            </mat-form-field>
-            <p>{{this.currentOuvrage.unite}}</p>
-          </div>
+        </mat-card-content>
+      </mat-card>
 
-        </div>
-        <!--        <div class="paramsSub">-->
-        <!--            <mat-card-subtitle>Quantité métré</mat-card-subtitle>-->
-        <!--          <div class="itemsParams">-->
-        <!--            <p>A voir</p>-->
-        <!--            <p>A voir</p>-->
-        <!--          </div>-->
-        <!--      </div>-->
+      <mat-card class="cardParams">
+        <mat-card-header>
+          <mat-card-title>Bénéfice & Aléas</mat-card-title>
+
+          <!--        <mat-card-subtitle>Start</mat-card-subtitle>-->
+        </mat-card-header>
+        <hr>
+        <mat-card-content>
+          <div class="containerParams">
+            <div class="paramsSub" *ngIf="this.currentOuvrage.SousLotOuvrage !== undefined">
+              <mat-card-subtitle>Bénéfice</mat-card-subtitle>
+              <div class="itemsParams">
+                <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 30px">
+                  <input type="number" (keyup.enter)="beneficeChange()" formControlName="benefice" matInput required
+                         [placeholder]="this.currentOuvrage.benefice.toString()">
+                </mat-form-field>
+                <!--            <p>{{this.currentOuvrage.benefice}} %</p>-->
+                <p> %</p>
+                <p> {{this.currentOuvrage.SousLotOuvrage.beneficeInEuro | number : '1.2-2'}} €</p>
+              </div>
+              <mat-card-subtitle>Aléas</mat-card-subtitle>
+              <div class="itemsParams">
+                <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 30px">
+                  <input type="number" (keyup.enter)="aleasChange()" formControlName="aleas" matInput required
+                         [placeholder]="this.currentOuvrage.aleas.toString()">
+                </mat-form-field>
+                <!--            <p>{{this.currentOuvrage.aleas}} %</p>-->
+                <p> %</p>
+                <p>{{this.currentOuvrage.SousLotOuvrage.aleasInEuro | number : '1.2-2'}} €</p>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+
+      <mat-card class="cardParams">
+        <mat-card-header>
+          <mat-card-title>Déboursé sec</mat-card-title>
+        </mat-card-header>
+        <hr>
+        <mat-card-content>
+          <div class="containerParams">
+            <div class="paramsSub">
+              <mat-card-subtitle>PU DS HT</mat-card-subtitle>
+              <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
+                <!--            <p>{{this.prixUnitaireHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage,this.currentOuvrage.SousLots[0].SousLotOuvrage?.quantityOuvrage)  | number : '1.2-2'}} €</p>-->
+                <p>{{this.currentOuvrage.SousLotOuvrage?.prixUniHT | number : '1.2-2'}} € OK</p>
+              </div>
+              <mat-card-subtitle>Débousé sec HT</mat-card-subtitle>
+              <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
+                <p>{{this.currentOuvrage.SousLotOuvrage?.prixOuvrage  | number : '1.2-2'}} €</p>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="cardParams">
+        <mat-card-header>
+          <mat-card-title>Prix d'équilibre</mat-card-title>
+        </mat-card-header>
+        <hr>
+        <mat-card-content>
+          <div class="containerParams">
+            <div class="paramsSub">
+              <mat-card-subtitle>PU HT équilibre</mat-card-subtitle>
+              <div class="itemsParams">
+                <p>{{this.currentOuvrage.SousLotOuvrage?.prixUniEquiHT | number : '1.2-2' }}€</p>
+              </div>
+              <mat-card-subtitle>Prix HT équilibre</mat-card-subtitle>
+              <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
+                <p>{{this.currentOuvrage.SousLotOuvrage?.prixEquiHT  | number : '1.2-2'}} €</p>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="cardParams">
+        <mat-card-header>
+          <mat-card-title>Prix Calculé</mat-card-title>
+        </mat-card-header>
+        <hr>
+        <mat-card-content>
+          <div class="containerParams">
+            <div class="paramsSub">
+              <mat-card-subtitle>PU HT calculé</mat-card-subtitle>
+              <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
+                <!--            <p>{{this.prixUnitaireCalculeHT(this.prixCalculeHT(this.currentOuvrage.benefice,this.currentOuvrage.aleas,this.prixEquilibreHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage)),this.currentOuvrage.SousLots[0].SousLotOuvrage?.quantityOuvrage)  | number : '1.2-2'}} €</p>-->
+                <p>{{this.currentOuvrage.SousLotOuvrage?.prixUniCalcHT | number : '1.2-2'}} €</p>
+              </div>
+
+              <mat-card-subtitle>Prix HT calculé</mat-card-subtitle>
+              <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
+                <p>{{this.currentOuvrage.SousLotOuvrage?.prixCalcHT | number : '1.2-2'}} €</p>
+                <!--            <p>{{this.prixCalculeHT(this.currentOuvrage.benefice,this.currentOuvrage.aleas,this.prixEquilibreHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage)) | number : '1.2-2' }}€</p>-->
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="cardParams">
+        <mat-card-header>
+          <mat-card-title>Prix de Vente</mat-card-title>
+        </mat-card-header>
+        <hr>
+        <mat-card-content>
+          <div class="containerParams">
+            <div class="paramsSub">
+              <mat-card-subtitle>Prix de vente HT</mat-card-subtitle>
+              <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
+                <p>{{this.currentOuvrage.SousLotOuvrage?.prixVenteHT === 0 ? (this.currentOuvrage?.SousLotOuvrage?.prixCalcHT| number : '1.2-2') : (this.currentOuvrage.SousLotOuvrage?.prixVenteHT | number : '1.2-2')}}
+                  €</p>
+              </div>
+              <mat-card-subtitle>Prix de vente Uni</mat-card-subtitle>
+              <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
+                <p>{{this.currentOuvrage.SousLotOuvrage?.prixUniVenteHT === 0 ? (this.currentOuvrage?.SousLotOuvrage?.prixUniCalcHT | number : '1.2-2') : (this.currentOuvrage.SousLotOuvrage?.prixUniVenteHT | number : '1.2-2')}}
+                  €</p>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+
+    </div>
+    <div class="btnSousDetails">
+      <button mat-raised-button color="primary" (click)="openDialogImport(this.currentOuvrage.id)">
+        Importer un composant
+      </button>
+
+
+      <button mat-stroked-button color="primary" (click)="openDialogCreate(this.currentOuvrage.id)">
+        Creer un composant
+      </button>
+      <div (click)="isFormVisible = !isFormVisible">
+        <mat-icon color="primary">add_circle</mat-icon>
       </div>
-    </mat-card-content>
-  </mat-card>
-
-  <mat-card class="cardParams">
-    <mat-card-header>
-      <mat-card-title>Bénéfice & Aléas</mat-card-title>
-
-      <!--        <mat-card-subtitle>Start</mat-card-subtitle>-->
-    </mat-card-header>
-    <hr>
-    <mat-card-content>
-      <div class="containerParams">
-        <div class="paramsSub" *ngIf="this.currentOuvrage.SousLotOuvrage !== undefined">
-          <mat-card-subtitle>Bénéfice</mat-card-subtitle>
-          <div class="itemsParams">
-            <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 30px">
-              <input   type="number" (keyup.enter)="beneficeChange()" formControlName="benefice" matInput required
-                     [placeholder]="this.currentOuvrage.benefice.toString()">
-            </mat-form-field>
-<!--            <p>{{this.currentOuvrage.benefice}} %</p>-->
-            <p> %</p>
-            <p> {{this.currentOuvrage.SousLotOuvrage.beneficeInEuro | number : '1.2-2'}} €</p>
-          </div>
-          <mat-card-subtitle>Aléas</mat-card-subtitle>
-          <div class="itemsParams">
-            <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 30px">
-              <input  type="number" (keyup.enter)="aleasChange()" formControlName="aleas" matInput required
-                     [placeholder]="this.currentOuvrage.aleas.toString()">
-            </mat-form-field>
-<!--            <p>{{this.currentOuvrage.aleas}} %</p>-->
-            <p> %</p>
-            <p>{{this.currentOuvrage.SousLotOuvrage.aleasInEuro | number : '1.2-2'}} €</p>
-          </div>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
 
 
-  <mat-card class="cardParams">
-    <mat-card-header>
-      <mat-card-title>Déboursé sec</mat-card-title>
-    </mat-card-header>
-    <hr>
-    <mat-card-content>
-      <div class="containerParams">
-        <div class="paramsSub">
-          <mat-card-subtitle>PU DS HT</mat-card-subtitle>
-          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
-            <!--            <p>{{this.prixUnitaireHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage,this.currentOuvrage.SousLots[0].SousLotOuvrage?.quantityOuvrage)  | number : '1.2-2'}} €</p>-->
-            <p>{{this.currentOuvrage.SousLotOuvrage?.prixUniHT | number : '1.2-2'}} € OK</p>
-          </div>
-          <mat-card-subtitle>Débousé sec HT</mat-card-subtitle>
-          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
-            <p>{{this.currentOuvrage.SousLotOuvrage?.prixOuvrage  | number : '1.2-2'}} €</p>
-          </div>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
+    <div *ngIf="this.currentOuvrage.CoutDuDevis">
 
-  <mat-card class="cardParams">
-    <mat-card-header>
-      <mat-card-title>Prix d'équilibre</mat-card-title>
-    </mat-card-header>
-    <hr>
-    <mat-card-content>
-      <div class="containerParams">
-        <div class="paramsSub">
-          <mat-card-subtitle>PU HT équilibre</mat-card-subtitle>
-          <div class="itemsParams">
-            <p>{{this.currentOuvrage.SousLotOuvrage?.prixUniEquiHT | number : '1.2-2' }}€</p>
-          </div>
-          <mat-card-subtitle>Prix HT équilibre</mat-card-subtitle>
-          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
-            <p>{{this.currentOuvrage.SousLotOuvrage?.prixEquiHT  | number : '1.2-2'}} €</p>
-          </div>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
+      <table *ngIf="currentOuvrage " mat-table [dataSource]="currentOuvrage.CoutDuDevis">
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef> Type</th>
+          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.type}} </td>
+          <td routerLink="/ouvrageDetail/{{ouvrage.id}}" mat-cell
+              *matCellDef="let ouvrage"> {{ouvrage.designation}} </td>
+        </ng-container>
+        <ng-container matColumnDef="categorie">
+          <th mat-header-cell *matHeaderCellDef> Catégorie</th>
+          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.categorie}} </td>
+          <!--      <td routerLink="/ouvrageDetail/{{ouvrage.id}}" mat-cell *matCellDef="let ouvrage"> {{ouvrage.designation}} </td>-->
+        </ng-container>
+        <ng-container matColumnDef="designation">
+          <th mat-header-cell *matHeaderCellDef> Désignation</th>
+          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.designation}} </td>
+          <!--      <td mat-cell routerLink="/ouvrageDetail/{{ouvrage.id}}" *matCellDef="let ouvrage"> {{ouvrage.benefice}} </td>-->
+        </ng-container>
+        <ng-container matColumnDef="unite">
+          <th mat-header-cell *matHeaderCellDef> U</th>
+          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.unite}} </td>
 
-  <mat-card class="cardParams">
-    <mat-card-header>
-      <mat-card-title>Prix Calculé</mat-card-title>
-    </mat-card-header>
-    <hr>
-    <mat-card-content>
-      <div class="containerParams">
-        <div class="paramsSub">
-          <mat-card-subtitle>PU HT calculé</mat-card-subtitle>
-          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
-            <!--            <p>{{this.prixUnitaireCalculeHT(this.prixCalculeHT(this.currentOuvrage.benefice,this.currentOuvrage.aleas,this.prixEquilibreHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage)),this.currentOuvrage.SousLots[0].SousLotOuvrage?.quantityOuvrage)  | number : '1.2-2'}} €</p>-->
-            <p>{{this.currentOuvrage.SousLotOuvrage?.prixUniCalcHT | number : '1.2-2'}} €</p>
-          </div>
-
-          <mat-card-subtitle>Prix HT calculé</mat-card-subtitle>
-          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
-            <p>{{this.currentOuvrage.SousLotOuvrage?.prixCalcHT | number : '1.2-2'}} €</p>
-            <!--            <p>{{this.prixCalculeHT(this.currentOuvrage.benefice,this.currentOuvrage.aleas,this.prixEquilibreHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage)) | number : '1.2-2' }}€</p>-->
-          </div>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
-
-  <mat-card class="cardParams">
-    <mat-card-header>
-      <mat-card-title>Prix de Vente</mat-card-title>
-    </mat-card-header>
-    <hr>
-    <mat-card-content>
-      <div class="containerParams">
-        <div class="paramsSub">
-          <mat-card-subtitle>Prix de vente HT</mat-card-subtitle>
-          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
-            <p>{{this.currentOuvrage.SousLotOuvrage?.prixVenteHT === 0 ? (this.currentOuvrage?.SousLotOuvrage?.prixCalcHT| number : '1.2-2' ) : (this.currentOuvrage.SousLotOuvrage?.prixVenteHT | number : '1.2-2')}} €</p>
-          </div>
-          <mat-card-subtitle>Prix de vente Uni </mat-card-subtitle>
-          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
-            <p>{{this.currentOuvrage.SousLotOuvrage?.prixUniVenteHT === 0 ? (this.currentOuvrage?.SousLotOuvrage?.prixUniCalcHT | number : '1.2-2') : (this.currentOuvrage.SousLotOuvrage?.prixUniVenteHT | number : '1.2-2')}} €</p>
-          </div>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
-
-
-
-</div>
-<div class="btnSousDetails">
-  <button  mat-raised-button color="primary" (click)="openDialogImport(this.currentOuvrage.id)">
-    Importer un composant
-  </button>
-
-
-
-  <button mat-stroked-button color="primary" (click)="openDialogCreate(this.currentOuvrage.id)">
-    Creer un composant
-  </button>
-  <div  (click)="isFormVisible = !isFormVisible">
-    <mat-icon color="primary" >add_circle</mat-icon>
-  </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-<div  *ngIf="this.currentOuvrage.CoutDuDevis">
-
-  <table *ngIf="currentOuvrage " mat-table  [dataSource]="currentOuvrage.CoutDuDevis">
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef> Type</th>
-      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.type}} </td>
-      <td routerLink="/ouvrageDetail/{{ouvrage.id}}" mat-cell *matCellDef="let ouvrage"> {{ouvrage.designation}} </td>
-    </ng-container>
-    <ng-container matColumnDef="categorie">
-      <th mat-header-cell *matHeaderCellDef> Catégorie</th>
-      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.categorie}} </td>
-      <!--      <td routerLink="/ouvrageDetail/{{ouvrage.id}}" mat-cell *matCellDef="let ouvrage"> {{ouvrage.designation}} </td>-->
-    </ng-container>
-    <ng-container matColumnDef="designation">
-      <th mat-header-cell *matHeaderCellDef> Désignation</th>
-      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.designation}} </td>
-      <!--      <td mat-cell routerLink="/ouvrageDetail/{{ouvrage.id}}" *matCellDef="let ouvrage"> {{ouvrage.benefice}} </td>-->
-    </ng-container>
-    <ng-container matColumnDef="unite">
-      <th mat-header-cell *matHeaderCellDef> U</th>
-      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.unite}} </td>
-
-      <!--      <td mat-cell routerLink="/ouvrageDetail/{{ouvrage.id}}" *matCellDef="let ouvrage"> {{ouvrage.aleas}} </td>-->
-    </ng-container>
-    <ng-container matColumnDef="uRatio">
-      <th mat-header-cell *matHeaderCellDef> U/Ratio</th>
-      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.OuvrageCoutDuDevis.uRatio}} </td>
-      <td routerLink="/ouvrageDetail/{{ouvrage.id}}" mat-cell *matCellDef="let ouvrage"> {{ouvrage.designation}} </td>
-    </ng-container>
-    <ng-container matColumnDef="ratio">
-      <th mat-header-cell *matHeaderCellDef> Ratio</th>
-      <td mat-cell *matCellDef="let coutDuDevis">
+          <!--      <td mat-cell routerLink="/ouvrageDetail/{{ouvrage.id}}" *matCellDef="let ouvrage"> {{ouvrage.aleas}} </td>-->
+        </ng-container>
+        <ng-container matColumnDef="uRatio">
+          <th mat-header-cell *matHeaderCellDef> U/Ratio</th>
+          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.OuvrageCoutDuDevis.uRatio}} </td>
+          <td routerLink="/ouvrageDetail/{{ouvrage.id}}" mat-cell
+              *matCellDef="let ouvrage"> {{ouvrage.designation}} </td>
+        </ng-container>
+        <ng-container matColumnDef="ratio">
+          <th mat-header-cell *matHeaderCellDef> Ratio</th>
+          <td mat-cell *matCellDef="let coutDuDevis">
             <mat-form-field appearance="legacy" [formGroup]="formCout" style="width: 30px">
-              <input  type="number" (keyup.enter)="ratioChange(coutDuDevis)" formControlName="ratio" matInput required
-                      [placeholder]="coutDuDevis.OuvrageCoutDuDevis.ratio">
+              <input type="number" (keyup.enter)="ratioChange(coutDuDevis)" formControlName="ratio" matInput required
+                     [placeholder]="coutDuDevis.OuvrageCoutDuDevis.ratio">
             </mat-form-field>
-      </td>
-    </ng-container>
+          </td>
+        </ng-container>
 
-    <ng-container matColumnDef="efficience">
-      <th mat-header-cell *matHeaderCellDef> Efficience</th>
-      <td mat-cell *matCellDef="let coutDuDevis">
-        <mat-form-field appearance="legacy" [formGroup]="formCout" style="width: 30px">
-          <input  type="number" (keyup.enter)="efficienceChange(coutDuDevis)" formControlName="efficience" matInput required
-                 [placeholder]="coutDuDevis.OuvrageCoutDuDevis.efficience">
-        </mat-form-field>
-      </td>
-    </ng-container>
-
-
-
+        <ng-container matColumnDef="efficience">
+          <th mat-header-cell *matHeaderCellDef> Efficience</th>
+          <td mat-cell *matCellDef="let coutDuDevis">
+            <mat-form-field appearance="legacy" [formGroup]="formCout" style="width: 30px">
+              <input type="number" (keyup.enter)="efficienceChange(coutDuDevis)" formControlName="efficience" matInput
+                     required
+                     [placeholder]="coutDuDevis.OuvrageCoutDuDevis.efficience">
+            </mat-form-field>
+          </td>
+        </ng-container>
 
 
-<!--    <mat-form-field appearance="legacy" [formGroup]="formCout" id="quantity-ouvrage-frias">-->
-<!--      <input formControlName="ratio" matInput required-->
-<!--              placeholder="test">-->
-<!--    </mat-form-field>-->
-<!--    <ng-container matColumnDef="efficience">-->
-<!--      <th mat-header-cell *matHeaderCellDef> Efficience</th>-->
-<!--      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.OuvrageCoutDuDevis.efficience}} </td>-->
-<!--    </ng-container>-->
-<!--    <mat-form-field appearance="legacy" style="width: 80px" [formGroup]="formCout">-->
-<!--&lt;!&ndash;      <mat-label style="font-size: 1.1rem">Efficience</mat-label>&ndash;&gt;-->
+        <!--    <mat-form-field appearance="legacy" [formGroup]="formCout" id="quantity-ouvrage-frias">-->
+        <!--      <input formControlName="ratio" matInput required-->
+        <!--              placeholder="test">-->
+        <!--    </mat-form-field>-->
+        <!--    <ng-container matColumnDef="efficience">-->
+        <!--      <th mat-header-cell *matHeaderCellDef> Efficience</th>-->
+        <!--      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.OuvrageCoutDuDevis.efficience}} </td>-->
+        <!--    </ng-container>-->
+        <!--    <mat-form-field appearance="legacy" style="width: 80px" [formGroup]="formCout">-->
+        <!--&lt;!&ndash;      <mat-label style="font-size: 1.1rem">Efficience</mat-label>&ndash;&gt;-->
 
-<!--            <th mat-header-cell *matHeaderCellDef> Efficience</th>-->
-<!--            <td mat-cell *matCellDef="let coutDuDevis">-->
-<!--              <input (blur)="updateCout()" [placeholder]="coutDuDevis.OuvrageCoutDuDevis.efficience"-->
-<!--                                                               formControlName="efficience" matInput>-->
-<!--            </td>-->
+        <!--            <th mat-header-cell *matHeaderCellDef> Efficience</th>-->
+        <!--            <td mat-cell *matCellDef="let coutDuDevis">-->
+        <!--              <input (blur)="updateCout()" [placeholder]="coutDuDevis.OuvrageCoutDuDevis.efficience"-->
+        <!--                                                               formControlName="efficience" matInput>-->
+        <!--            </td>-->
 
-<!--    </mat-form-field>-->
-    <ng-container matColumnDef="quantite" *ngIf="this.currentOuvrage.SousLots !== undefined">
-      <th mat-header-cell *matHeaderCellDef> Quantité</th>
-      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.quantite}} </td>
-    </ng-container>
-    <ng-container matColumnDef="prixUnitaireHT">
-      <th mat-header-cell *matHeaderCellDef> PU HT</th>
-      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixUnitaire| number : '1.2-2'}} €</td>
-    </ng-container>
-    <ng-container matColumnDef="DSTotal" *ngIf="this.currentOuvrage.SousLots !== undefined">
-      <th mat-header-cell *matHeaderCellDef> DS Total</th>
-      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.debourseSecTotal | number : '1.2-2'}} €</td>
-    </ng-container>
-    <ng-container matColumnDef="PUHTEquilibre" *ngIf="this.currentOuvrage.SousLots !== undefined">
-      <th mat-header-cell *matHeaderCellDef> PU HT équilibre</th>
-      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixUnitaireEquiHT | number : '1.2-2'}} €</td>
-    </ng-container>
-    <ng-container matColumnDef="prixHTEquilibre" *ngIf="this.currentOuvrage.SousLots !== undefined">
-      <th mat-header-cell *matHeaderCellDef> Prix HT équilibre</th>
-      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixEquiHT | number : '1.2-2' }} €</td>
-    </ng-container>
-    <ng-container matColumnDef="PUHTCalcule" *ngIf="this.currentOuvrage.SousLots !== undefined">
-      <th mat-header-cell *matHeaderCellDef>PU HT calculé</th>
-      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixUnitaireCalcHT | number : '1.2-2'}} €</td>
-    </ng-container>
-    <ng-container matColumnDef="prixHTCalcule" *ngIf="this.currentOuvrage.SousLots !== undefined">
-      <th mat-header-cell *matHeaderCellDef>Prix HT calculé</th>
-      <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixCalcHT | number : '1.2-2'}} €</td>
-    </ng-container>
-    <ng-container matColumnDef="boutons" *ngIf="this.currentOuvrage.SousLots !== undefined">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let coutDuDevis"> <span class="designation-ouvrage-frais-chantier">
+        <!--    </mat-form-field>-->
+        <ng-container matColumnDef="quantite" *ngIf="this.currentOuvrage.SousLots !== undefined">
+          <th mat-header-cell *matHeaderCellDef> Quantité</th>
+          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.quantite}} </td>
+        </ng-container>
+        <ng-container matColumnDef="prixUnitaireHT">
+          <th mat-header-cell *matHeaderCellDef> PU HT</th>
+          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixUnitaire| number : '1.2-2'}} €</td>
+        </ng-container>
+        <ng-container matColumnDef="DSTotal" *ngIf="this.currentOuvrage.SousLots !== undefined">
+          <th mat-header-cell *matHeaderCellDef> DS Total</th>
+          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.debourseSecTotal | number : '1.2-2'}} €</td>
+        </ng-container>
+        <ng-container matColumnDef="PUHTEquilibre" *ngIf="this.currentOuvrage.SousLots !== undefined">
+          <th mat-header-cell *matHeaderCellDef> PU HT équilibre</th>
+          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixUnitaireEquiHT | number : '1.2-2'}} €</td>
+        </ng-container>
+        <ng-container matColumnDef="prixHTEquilibre" *ngIf="this.currentOuvrage.SousLots !== undefined">
+          <th mat-header-cell *matHeaderCellDef> Prix HT équilibre</th>
+          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixEquiHT | number : '1.2-2' }} €</td>
+        </ng-container>
+        <ng-container matColumnDef="PUHTCalcule" *ngIf="this.currentOuvrage.SousLots !== undefined">
+          <th mat-header-cell *matHeaderCellDef>PU HT calculé</th>
+          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixUnitaireCalcHT | number : '1.2-2'}} €</td>
+        </ng-container>
+        <ng-container matColumnDef="prixHTCalcule" *ngIf="this.currentOuvrage.SousLots !== undefined">
+          <th mat-header-cell *matHeaderCellDef>Prix HT calculé</th>
+          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixCalcHT | number : '1.2-2'}} €</td>
+        </ng-container>
+        <ng-container matColumnDef="boutons" *ngIf="this.currentOuvrage.SousLots !== undefined">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let coutDuDevis"> <span class="designation-ouvrage-frais-chantier">
                   <mat-icon [matMenuTriggerFor]="boutonOuv">more_vert</mat-icon>
                 <mat-menu class="menuBoutonSl" #boutonOuv>
                   <button mat-button color="primary" (click)="openDialogUpdateCout(coutDuDevis)">
@@ -313,125 +307,126 @@
                 </mat-menu>
 
                   </span>
-      </td>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <!--    <tr mat-header-row *matHeaderRowDef="columnsToDisplay" style="font-weight: normal;font-style: oblique" ></tr>-->
+        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+      </table>
+    </div>
+    <ng-container *ngIf="isFormVisible" [formGroup]="this.myFormGroup" (keyup.enter)="createCoutDuDevis()">
+      <!--  <button routerLink="/listCout" mat-raised-button color="accent">Retour</button>-->
+
+
+      <div class="containerCards2 ">
+
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Désignation</mat-label>
+          <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm">
+          <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
+            Vous devez entrer une désignation.
+          </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Unité</mat-label>
+          <select formControlName="unite" matNativeControl required (blur)="setValueURatio()">
+            <option *ngFor="let unite of uniteList" value="{{unite.name}}"> {{unite.name}}</option>
+          </select>
+          <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
+            Vous devez entrer une unité.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Prix Unitaire</mat-label>
+          <input type="number" formControlName="prixUnitaire" matInput placeholder="Ex: 9,2">
+          <mat-error *ngIf="this.myFormGroup.get('prixUnitaire')?.hasError('required')">
+            Vous devez entrer une nombre.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Ratio</mat-label>
+          <input type="number" formControlName="ratio" matInput placeholder="Ex: 2">
+          <mat-error *ngIf="this.myFormGroup.get('ratio')?.hasError('required')">
+            Vous devez entrer une nombre.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>U/Ratio</mat-label>
+          <input formControlName="uRatio" matInput placeholder="Ex: mètres/heures">
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Efficience</mat-label>
+          <input type="number" formControlName="efficience" matInput placeholder="Ex: 0.5">
+          <mat-error *ngIf="this.myFormGroup.get('efficience')?.hasError('required')">
+            Vous devez entrer une nombre.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Type du composant</mat-label>
+          <mat-select formControlName="type" (selectionChange)="getCategorieByType($event.value)">
+            <mat-option *ngFor="let item of listTypeCout |unique:'type'" [value]="item.type">
+              {{item.type}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="this.myFormGroup.get('TypeCoutId')?.hasError('required')">
+            Vous devez entrer un type.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Catégorie du composant</mat-label>
+          <mat-select formControlName="TypeCoutId">
+            <mat-option *ngFor="let item of categories" [value]="[item.id,item.categorie]">
+              {{item.categorie}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="this.myFormGroup.get('CategorieCout')?.hasError('required')">
+            Vous devez entrer une categorie.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Fournisseur</mat-label>
+          <mat-select formControlName="FournisseurId">
+            <!--                  <mat-select formControlName="Fournisseurs">-->
+            <mat-option *ngFor="let item of listFournisseur" [value]="[item.commercialName, item.remarque, item.id]">
+              {{item.commercialName}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="this.myFormGroup.get('FournisseurId')?.hasError('required')">
+            Vous devez entrer un fournisseur.
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+
+      <div class="valid-form" *ngIf="isInDevis">
+        <mat-checkbox class="example-margin" (change)="checked()" [(ngModel)]="isChecked">Ajouter ce composant
+          uniquement dans cet ouvrage et non dans la bibliotheque
+        </mat-checkbox>
+        <button mat-raised-button color="primary" (click)="createCoutDuDevis()">Valider</button>
+      </div>
+
+      <div class="btnSousDetails">
+        <!--      <div class="buttons">-->
+
+
+        <!--    <button mat-raised-button [routerLink]="['/listCout']" (click)="createAndUpdateCout()">{{textButton}}</button>-->
+        <!--      </div>-->
+      </div>
+
+
     </ng-container>
-    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"  ></tr>
-<!--    <tr mat-header-row *matHeaderRowDef="columnsToDisplay" style="font-weight: normal;font-style: oblique" ></tr>-->
-    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay" ></tr>
-  </table>
-</div>
-  <ng-container  *ngIf="isFormVisible" [formGroup]="this.myFormGroup" (keyup.enter)="createCoutDuDevis()">
-    <!--  <button routerLink="/listCout" mat-raised-button color="accent">Retour</button>-->
 
 
-
-    <div class="containerCards2 ">
-
-
-      <mat-form-field  appearance="legacy">
-        <mat-label>Désignation</mat-label>
-        <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm">
-        <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
-          Vous devez entrer une désignation.
-        </mat-error>
-      </mat-form-field>
-
-
-      <mat-form-field  appearance="legacy">
-        <mat-label>Unité</mat-label>
-        <select formControlName="unite"  matNativeControl required  (blur)="setValueURatio()">
-          <option *ngFor="let unite of uniteList" value="{{unite.name}}"> {{unite.name}}</option>
-        </select>
-        <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
-          Vous devez entrer une unité.
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="legacy">
-        <mat-label>Prix Unitaire</mat-label>
-        <input type="number" formControlName="prixUnitaire" matInput placeholder="Ex: 9,2">
-        <mat-error *ngIf="this.myFormGroup.get('prixUnitaire')?.hasError('required')">
-          Vous devez entrer une nombre.
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="legacy">
-        <mat-label>Ratio</mat-label>
-        <input  type="number" formControlName="ratio" matInput placeholder="Ex: 2">
-        <mat-error *ngIf="this.myFormGroup.get('ratio')?.hasError('required')">
-          Vous devez entrer une nombre.
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="legacy">
-        <mat-label>U/Ratio</mat-label>
-        <input formControlName="uRatio" matInput placeholder="Ex: mètres/heures">
-      </mat-form-field>
-
-      <mat-form-field appearance="legacy">
-        <mat-label>Efficience</mat-label>
-        <input  type="number" formControlName="efficience" matInput placeholder="Ex: 0.5">
-        <mat-error *ngIf="this.myFormGroup.get('efficience')?.hasError('required')">
-          Vous devez entrer une nombre.
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="legacy">
-        <mat-label>Type du composant</mat-label>
-        <mat-select formControlName="type" (selectionChange)="getCategorieByType($event.value)">
-          <mat-option *ngFor="let item of listTypeCout |unique:'type'" [value]="item.type">
-            {{item.type}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="this.myFormGroup.get('TypeCoutId')?.hasError('required')">
-          Vous devez entrer un type.
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="legacy" >
-        <mat-label>Catégorie du composant</mat-label>
-        <mat-select formControlName="TypeCoutId">
-          <mat-option *ngFor="let item of categories" [value]="[item.id,item.categorie]">
-            {{item.categorie}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="this.myFormGroup.get('CategorieCout')?.hasError('required')">
-          Vous devez entrer une categorie.
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="legacy">
-        <mat-label>Fournisseur</mat-label>
-        <mat-select formControlName="FournisseurId">
-          <!--                  <mat-select formControlName="Fournisseurs">-->
-          <mat-option *ngFor="let item of listFournisseur" [value]="[item.commercialName, item.remarque, item.id]">
-            {{item.commercialName}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="this.myFormGroup.get('FournisseurId')?.hasError('required')">
-          Vous devez entrer un fournisseur.
-        </mat-error>
-      </mat-form-field>
-
-    </div>
-
-    <div class="valid-form" *ngIf="isInDevis">
-      <mat-checkbox  class="example-margin" (change)="checked()" [(ngModel)]="isChecked">Ajouter ce composant uniquement dans cet ouvrage et non dans la bibliotheque</mat-checkbox>
-      <button  mat-raised-button color="primary" (click)="createCoutDuDevis()">Valider</button>
-    </div>
-
-    <div class="btnSousDetails">
-      <!--      <div class="buttons">-->
-
-
-      <!--    <button mat-raised-button [routerLink]="['/listCout']" (click)="createAndUpdateCout()">{{textButton}}</button>-->
-      <!--      </div>-->
-    </div>
-
-
-  </ng-container>
-
-
-</div>
+  </div>
 
 </div>
