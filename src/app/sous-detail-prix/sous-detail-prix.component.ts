@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {OuvrageService} from "../_service/ouvrage.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DataSharingService} from "../_service/data-sharing-service.service";
@@ -74,10 +74,10 @@ export class SousDetailPrixComponent implements OnInit {
   textButtonBack : string = "Retour au devis";
 
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute,
-              public dataShared: DataSharingService, private coutService: CoutService, private userService: UserService,
-              public dialog: MatDialog, private sousLotOuvrageService: SousLotOuvrageService,private fournisseurService : FournisseurService,
+              public dataSharingService: DataSharingService, private coutService: CoutService, private userService: UserService,
+              public dialog: MatDialog, private sousLotOuvrageService: SousLotOuvrageService, private fournisseurService : FournisseurService,
               private typeCoutService : TypeCoutService, private ouvrageCoutService : OuvrageCoutService,
-              private router : Router, private uniteForFormService : UniteForFormService,@Inject(TOASTR_TOKEN) private toastr: Toastr
+              private router : Router, private uniteForFormService : UniteForFormService, @Inject(TOASTR_TOKEN) private toastr: Toastr
   ) {
     transformVirguletoPoint()
     this.createFormCout2()
@@ -95,7 +95,7 @@ export class SousDetailPrixComponent implements OnInit {
       await this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe(async data => {
         console.log("this currentOuvrage ", data)
         this.currentOuvrage = data;
-        this.dataShared.ouvrage = data;
+        this.dataSharingService.ouvrage = data;
         // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = 10;
         console.log(this.currentOuvrage)
         if(this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage ){
@@ -237,8 +237,8 @@ export class SousDetailPrixComponent implements OnInit {
     this.userService.getById(this.currentUser.id).subscribe(
       data => {
         this.currentUser = data
-        this.dataShared.entrepriseId = data.Entreprises[0].id;
-        this.getUniteByEnteprise( this.dataShared.entrepriseId)
+        this.dataSharingService.entrepriseId = data.Entreprises[0].id;
+        this.getUniteByEnteprise( this.dataSharingService.entrepriseId)
 
         this.getAllCout(data.Entreprises[0].id)
         this.getAllFournisseurs(data.Entreprises[0].id)
@@ -272,12 +272,12 @@ export class SousDetailPrixComponent implements OnInit {
 
    async prixUnitaireHT() {
     if (this.currentOuvrage.SousLotOuvrage !== undefined) {
-       await this.dataShared.prixUnitaireHT(this.currentOuvrage.SousLotOuvrage)
+       await this.dataSharingService.prixUnitaireHT(this.currentOuvrage.SousLotOuvrage)
     }
   }
   prixVenteHT(){
     if (this.currentOuvrage.SousLotOuvrage !== undefined) {
-    this.dataShared.prixVenteHT(this.currentOuvrage.SousLotOuvrage)
+    this.dataSharingService.prixVenteHT(this.currentOuvrage.SousLotOuvrage)
     }
   }
 
@@ -285,34 +285,34 @@ export class SousDetailPrixComponent implements OnInit {
     // console.log("ouvrage", this.currentOuvrage)
     if (this.currentOuvrage.SousLotOuvrage) {
       // console.log("prixEquilibreHT")
-      this.dataShared.prixEquilibreHT(this.currentOuvrage.SousLotOuvrage)
+      this.dataSharingService.prixEquilibreHT(this.currentOuvrage.SousLotOuvrage)
     }
   }
 
   prixUnitaireEquilibreHT(): void {
     if (this.currentOuvrage.SousLotOuvrage) {
-      this.dataShared.prixUnitaireEquilibre(this.currentOuvrage.SousLotOuvrage)
+      this.dataSharingService.prixUnitaireEquilibre(this.currentOuvrage.SousLotOuvrage)
     }
   }
 
   beneficePercentToEuro(): void {
     if (this.currentOuvrage.SousLotOuvrage)
-      this.dataShared.beneficePercentToEuro(this.currentOuvrage.SousLotOuvrage, this.currentOuvrage.benefice)
+      this.dataSharingService.beneficePercentToEuro(this.currentOuvrage.SousLotOuvrage, this.currentOuvrage.benefice)
   }
 
   aleasPercentToEuro(): void {
     if (this.currentOuvrage.SousLotOuvrage)
-      this.dataShared.aleasPercentToEuro(this.currentOuvrage.SousLotOuvrage, this.currentOuvrage.aleas)
+      this.dataSharingService.aleasPercentToEuro(this.currentOuvrage.SousLotOuvrage, this.currentOuvrage.aleas)
   }
 
   prixCalculeHT(): void {
     if (this.currentOuvrage.SousLotOuvrage)
-      this.dataShared.prixCalculeHT(this.currentOuvrage.SousLotOuvrage, this.currentOuvrage.benefice, this.currentOuvrage.aleas)
+      this.dataSharingService.prixCalculeHT(this.currentOuvrage.SousLotOuvrage, this.currentOuvrage.benefice, this.currentOuvrage.aleas)
   }
 
   prixUnitaireCalculeHT(): void {
     if (this.currentOuvrage.SousLotOuvrage) {
-      this.dataShared.prixUnitaireCalculeHT(this.currentOuvrage.SousLotOuvrage)
+      this.dataSharingService.prixUnitaireCalculeHT(this.currentOuvrage.SousLotOuvrage)
     }
   }
 
@@ -337,7 +337,7 @@ export class SousDetailPrixComponent implements OnInit {
       })
           console.log("TOTAL",this.totalDBS)
       if(this.currentOuvrage.SousLotOuvrage)
-      this.dataShared.SetPrixOuvrage(this.totalDBS, this.currentOuvrage.SousLotOuvrage)
+      this.dataSharingService.SetPrixOuvrage(this.totalDBS, this.currentOuvrage.SousLotOuvrage)
       if (this.currentOuvrage.SousLotOuvrage?.id){
         this.sousLotOuvrageService.updatedPrice(this.currentOuvrage.SousLotOuvrage.id, this.totalDBS).subscribe((res)=>{
           console.log("response",res)
@@ -346,7 +346,7 @@ export class SousDetailPrixComponent implements OnInit {
     }
     if(this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage && !this.currentOuvrage.CoutDuDevis?.length){
       this.totalDBS.prixOuvrage = this.currentOuvrage.prix * this.currentOuvrage.SousLotOuvrage.quantityOuvrage
-      this.dataShared.SetPrixOuvrage(this.totalDBS, this.currentOuvrage.SousLotOuvrage)
+      this.dataSharingService.SetPrixOuvrage(this.totalDBS, this.currentOuvrage.SousLotOuvrage)
 
     }
   }
@@ -355,7 +355,7 @@ export class SousDetailPrixComponent implements OnInit {
     if (this.currentOuvrage.CoutDuDevis) {
       this.currentOuvrage.CoutDuDevis.forEach(coutDuDevis => {
         if (coutDuDevis.debourseSecTotal)
-          coutDuDevis.prixEquiHT = coutDuDevis.debourseSecTotal * this.dataShared.coefEqui
+          coutDuDevis.prixEquiHT = coutDuDevis.debourseSecTotal * this.dataSharingService.coefEqui
       })
     }
   }
@@ -519,7 +519,7 @@ export class SousDetailPrixComponent implements OnInit {
 
       }
     } else {
-      this.myFormGroup.controls["EntrepriseId"].setValue(this.dataShared.entrepriseId )
+      this.myFormGroup.controls["EntrepriseId"].setValue(this.dataSharingService.entrepriseId )
       this.cout = this.myFormGroup.getRawValue();
       this.cout.FournisseurId = this.myFormGroup.getRawValue().FournisseurId[2]
       this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[2]

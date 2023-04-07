@@ -8,7 +8,12 @@
 
       <mat-form-field appearance="legacy">
         <mat-label>Désignation</mat-label>
-        <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm" style="width: 200px">
+<!--        <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm" style="width: 200px">-->
+        <textarea formControlName="designation" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
         <mat-error *ngIf="this.myFormGroup.get('designation')?.hasError('required')">
           Vous devez entrer une designation.
         </mat-error>

@@ -98,11 +98,7 @@
           <span class="designation-lot-frais-chantier">{{ lotFraisDeChantier.prix | number }} €</span>
           <mat-icon [matMenuTriggerFor]="boutonLOT">more_vert</mat-icon>
           <mat-menu class="menuBoutonSl" #boutonLOT>
-            <button mat-button color="primary" *ngIf="lotFraisDeChantier"
-                    (click)="openDialogLot(lotFraisDeChantier)">
-              Modifier ce lot
-            </button>
-            <br>
+
 
             <button mat-button color="primary" *ngIf="lotFraisDeChantier"
                     (click)="showForm = !showForm; isLot = true; curentLotId= lotFraisDeChantier.id">
@@ -170,7 +166,7 @@
                 </div>
 
 
-                <div class="detail-ouvrage-frais-chantier"  id="designation-ouvrage">
+                <div class="detail-ouvrage-frais-chantier"  id="designation-ouvrage-fraisDeChantier">
                   <span class="designation-ouvrage-frais-chantier">Désignation</span>
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.designation}}</span>
                 </div>
@@ -466,7 +462,7 @@
                   </div>
 
 
-                  <div class="detail-ouvrage-frais-chantier">
+                  <div class="detail-ouvrage-frais-chantier" id="designation-ouvrage-devis">
                     <span class="designation-ouvrage-frais-chantier">Désignation</span>
                     <span class="designation-ouvrage-frais-chantier">{{ouvrage.designation}}</span>
                   </div>

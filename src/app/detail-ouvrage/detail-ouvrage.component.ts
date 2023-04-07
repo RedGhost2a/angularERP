@@ -125,11 +125,11 @@ export class DetailOuvrageComponent implements OnInit {
   uRatioUpdate(ouvrage: Ouvrage): void {
     // ouvrageCout.uRatio = "";
     ouvrage.Couts?.forEach(cout => {
-      if (cout.OuvrageCout) {
-        cout.OuvrageCout.uRatio = `${cout.unite}/${ouvrage.unite}`
-        console.log(`${cout.unite}/${ouvrage.unite}`)
-        this.ouvrageCoutService.updateOuvrageCout(cout.id, ouvrage.id, cout.OuvrageCout).subscribe()
-      }
+      // if (cout.OuvrageCout) {
+      //   cout.OuvrageCout.uRatio = `${cout.unite}/${ouvrage.unite}`
+      //   console.log(`${cout.unite}/${ouvrage.unite}`)
+      //   this.ouvrageCoutService.updateOuvrageCout(cout.id, ouvrage.id, cout.OuvrageCout).subscribe()
+      // }
     })
     // ouvrageCout.uRatio = `${cout.unite}/${ouvrage.unite}`
 

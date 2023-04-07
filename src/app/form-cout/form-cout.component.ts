@@ -15,6 +15,7 @@ import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
 import {DataSharingService} from "../_service/data-sharing-service.service";
 import {UniteForFormService} from "../_service/uniteForForm.service";
 import {UniteForForm} from "../_models/uniteForForm";
+import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 
 
 interface FournisseurCout {
@@ -39,6 +40,7 @@ export class FormCoutComponent implements OnInit {
   cout!: Cout
   regexSousDetail = new RegExp(`^/sousDetailPrix`)
   regexCout = new RegExp(`^/listCout`)
+  regexOuvrageDetail = new RegExp(`^/ouvrageDetail`)
   isCout: boolean = true;
   categories: any[] = [];
   types!:String;
@@ -55,13 +57,14 @@ export class FormCoutComponent implements OnInit {
               private fournisseurService: FournisseurService,
               private typeCoutService: TypeCoutService,
               private uniteForFormService: UniteForFormService,
-              public datasharingService: DataSharingService,
+              public datasharingService: DataSharingService, private ouvrageCoutService : OuvrageCoutService,
               @Inject(TOASTR_TOKEN) private toastr: Toastr) {
     this.initialData = this.data;
   }
 
 
   ngOnInit(): void {
+    console.log(this.initialData)
     this.createFormCout();
     transformVirguletoPoint()
     this.getUserById();
@@ -76,7 +79,7 @@ export class FormCoutComponent implements OnInit {
 
   //Determine si c'est l'ajout d'un nouveau cout ou la modification d'un cout existant au click
   createAndUpdate(): void {
-    console.log(this.myFormGroup.getRawValue())
+    // console.log(this.myFormGroup.getRawValue())
 
     this.myFormGroup.markAllAsTouched();
     if (this.myFormGroup.invalid) {
@@ -89,9 +92,10 @@ export class FormCoutComponent implements OnInit {
         this.closeDialog()
       });
     }
-    if (this.regexCout.test(window.location.pathname)) {
-      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(() => {
+    if (this.regexCout.test(window.location.pathname) || this.regexOuvrageDetail.test(window.location.pathname)) {
+      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(()=>{
         this.closeDialog()
+
       });
     }
     if (this.regexSousDetail.test(window.location.pathname)) {
