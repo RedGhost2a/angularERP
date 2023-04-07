@@ -3,7 +3,7 @@
 <div class="container">
 
 <h1>{{currentOuvrage.designation}}</h1>
-  <button class="btn-back" mat-stroked-button color="primary"  routerLink="/devisCreate/{{this.dataShared.deviId}}" [queryParams]="{ tab: 1 }">Retour au devis</button>
+  <button class="btn-back" mat-stroked-button color="primary"  routerLink="/devisCreate/{{this.dataShared.deviId}}" >{{textButtonBack}}</button>
 
   <div class="containerCards">
 
@@ -28,8 +28,12 @@
             <p>{{this.currentOuvrage.uRatio}}</p>
           </div>
           <mat-card-subtitle>Quantité marché</mat-card-subtitle>
-          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
-            <p>{{this.currentOuvrage.SousLotOuvrage?.quantityOuvrage}}</p>
+          <div class="itemsParams" *ngIf="this.currentOuvrage.SousLotOuvrage !== undefined">
+<!--            <p>{{this.currentOuvrage.SousLotOuvrage?.quantityOuvrage}}</p>-->
+            <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 30px">
+              <input (keyup.enter)="quantityChange()" formControlName="quantity" matInput required
+                     [placeholder]="this.currentOuvrage.SousLotOuvrage.quantityOuvrage.toString()">
+            </mat-form-field>
             <p>{{this.currentOuvrage.unite}}</p>
           </div>
 

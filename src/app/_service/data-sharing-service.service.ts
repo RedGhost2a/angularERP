@@ -15,6 +15,7 @@ export class DataSharingService {
   ouvrage!: Ouvrage
   entrepriseId!: number;
   deviId!:number;
+  selectedIndex!:number
 
 
   constructor(private sousDetailPrixService: SousDetailPrixService,

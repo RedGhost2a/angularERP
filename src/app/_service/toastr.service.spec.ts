@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ToastrService } from './toastr.service';
+import {ToastrService} from "ngx-toastr";
 
 describe('ToastrService', () => {
   let service: ToastrService;

@@ -57,13 +57,13 @@ export class FormOuvrageComponent implements OnInit {
     }
     if(this.regexOuvrage.test(window.location.pathname)){
     this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe(data => {
-      this.closeDialog()
+      // this.closeDialog()
     })
     }
     if(this.initialData !== null){
       if(this.isChecked === false){
         this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe(data => {
-          this.closeDialog()
+          // this.closeDialog()
         })
       }
       console.log("dans le if ", this.initialData)
@@ -99,7 +99,7 @@ export class FormOuvrageComponent implements OnInit {
 
       this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe((data)=>{
         console.log("console",data)
-        this.closeDialog()
+        // this.closeDialog()
       })
     })
 
@@ -125,7 +125,13 @@ export class FormOuvrageComponent implements OnInit {
   }
   setValueURatio(){
     const unite = this.myFormGroup.get('unite')?.value
+    console.log("unité",unite)
     this.myFormGroup.controls['uRatio'].setValue(`${unite}/h`)
+    if(unite === "F"){
+      this.myFormGroup.controls['ratio'].setValue(1)
+    }else{
+      this.myFormGroup.controls['ratio'].setValue("")
+    }
   }
 
   getUserById(): void {

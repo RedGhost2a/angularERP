@@ -58,7 +58,6 @@ export class EditDevisComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAllClient()
     this.getAllEntreprise()
     this.createFormDevis()
     this.getEnterpriseByUser()
@@ -94,8 +93,8 @@ export class EditDevisComponent implements OnInit {
   //   return this.myFormGroup.controls;
   // }
 
-  getAllClient(): void {
-    this.clientService.getAll().subscribe(data => this.listClient = data)
+  getAllClient(entrepriseId:number): void {
+    this.clientService.getAllByEntreprise(entrepriseId).subscribe((data:any) => this.listClient = data)
   }
 
   getAllEntreprise(): void {
@@ -147,6 +146,7 @@ export class EditDevisComponent implements OnInit {
     this.userService.getById(currentUser).subscribe(value => {
       this.curentUserEntreprise = value.Entreprises
       console.log(this.curentUserEntreprise)
+      this.getAllClient(this.curentUserEntreprise[0].id)
 
 
     })

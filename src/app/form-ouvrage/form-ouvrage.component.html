@@ -8,7 +8,7 @@
 
       <mat-form-field appearance="legacy">
         <mat-label>Désignation</mat-label>
-        <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm" style="width: 200px">
+        <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm" style="width: 200px" >
         <mat-error *ngIf="this.myFormGroup.get('designation')?.hasError('required')">
           Vous devez entrer une designation.
         </mat-error>
@@ -29,7 +29,7 @@
       </mat-form-field>
       <mat-form-field appearance="legacy">
         <mat-label>Unité</mat-label>
-        <select formControlName="unite" matNativeControl required (blur)="setValueURatio()">
+        <select formControlName="unite" matNativeControl required (ngModelChange)="setValueURatio()">
           <option value="F">Forfait</option>
           <option value="m">Mètres</option>
           <option value="m²">Mètres carrés</option>
@@ -43,7 +43,7 @@
       </mat-form-field>
       <mat-form-field appearance="legacy" style="width: 100px">
         <mat-label>Ratio</mat-label>
-        <input formControlName="ratio" matInput placeholder="Ex: 0.7">
+        <input formControlName="ratio" matInput placeholder="Ex: 1.3 m²/h">
         <mat-error *ngIf="this.myFormGroup.get('ratio')?.hasError('required')">
           Vous devez entrer un ratio.
         </mat-error>
@@ -51,7 +51,7 @@
 
       <mat-form-field appearance="legacy">
         <mat-label>U/Ratio</mat-label>
-        <input type="text" formControlName="uRatio" matInput placeholder="Ex: m3/h  ">
+        <input type="text" formControlName="uRatio" matInput placeholder="Ex: m²/h ">
 <!--               value=" {{ myFormGroup.controls['unite'].getRawValue().toString()}}/h"-->
 
         <mat-error *ngIf="this.myFormGroup.get('uRatio')?.hasError('required')">

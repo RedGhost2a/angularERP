@@ -55,7 +55,7 @@ export class DialogFormCoutComponent implements OnInit {
       FournisseurId: new FormControl(""),
       ratio: new FormControl(""),
       uRatio: new FormControl(""),
-      efficience: new FormControl("")
+      efficience: new FormControl(1)
     });
 
   }

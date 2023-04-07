@@ -6,6 +6,8 @@ import {MatDialog} from "@angular/material/dialog";
 import {DialogConfirmSuppComponent} from "../../dialog-confirm-supp/dialog-confirm-supp.component";
 import {EditComponent} from "../edit/edit.component";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {User} from "../../_models/users";
+import {UserService} from "../../_service/user.service";
 
 @Component({
   selector: 'app-list-client',
@@ -31,16 +33,19 @@ export class ListClientComponent implements OnInit {
 
   columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   expandedElement: any | null;
+  currentUser!: User;
 
-  constructor(private clientService: ClientService, private dialog: MatDialog) {
+  constructor(private clientService: ClientService, private dialog: MatDialog, private userService:UserService) {
   }
 
   ngOnInit(): void {
-    this.getAll()
+    this.currentUser = this.userService.userValue;
+    this.userService.getById(this.currentUser.id).subscribe(data => {
+      console.log("user by id ", data)
+      this.getAll(data.Entreprises[0].id)
+    })
     //TODO TERMINER LA FONCTION DE RECHERCHE
     console.log(this.dataSource)
-
-
   }
 
   applyFilter(event: Event) {
@@ -63,9 +68,9 @@ export class ListClientComponent implements OnInit {
     this.clientService.deleteByID(id).subscribe((() => this.ngOnInit()))
   }
 
-  getAll(): void {
-    this.clientService.getAll().subscribe(data => {
-        console.log(data)
+  getAll(entrepriseId:number): void {
+    this.clientService.getAllByEntreprise(entrepriseId).subscribe((data:any) => {
+        console.log(entrepriseId)
         this.listClient = data
         // this.dataSource = this.listClient
         this.dataSource = new MatTableDataSource(this.listClient);

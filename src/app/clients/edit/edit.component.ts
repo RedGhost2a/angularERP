@@ -7,6 +7,9 @@ import {NGXLogger} from "ngx-logger";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../../dialogListOuvrage/dialog.component";
 import {Client} from "../../_models/client";
+import {User} from "../../_models/users";
+import {UserService} from "../../_service/user.service";
+import {da} from "date-fns/locale";
 
 
 @Component({
@@ -23,6 +26,7 @@ export class EditComponent implements OnInit {
   textButton: string = "Créer le client";
   titreForm: string = "Création d'un client";
   textForm: string = "Veuillez créer un nouveau client comme destinataire du devis. Il sera disponible dans l'interface de création de devis"
+  currentUser!: User;
 
 
   constructor(private clientService: ClientService,
@@ -32,17 +36,23 @@ export class EditComponent implements OnInit {
               @Inject(TOASTR_TOKEN) private toastr: Toastr,
               private logger: NGXLogger,
               @Inject(MAT_DIALOG_DATA) public data: Client,
-              private dialogRef: MatDialogRef<DialogComponent>) {
+              private dialogRef: MatDialogRef<DialogComponent>, private userService: UserService) {
 
     this.initialData = this.data
   }
 
 
   ngOnInit(): void {
+    this.currentUser = this.userService.userValue;
+    this.userService.getById(this.currentUser.id).subscribe(data => {
+      this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id)
+    })
     this.createFormClient()
-    console.log(this.initialData)
     if (this.initialData !== null)
       this.generateFormUpdate();
+    console.log(this.currentUser)
+    console.log(this.initialData)
+
   }
 
 ///Boucle infini
@@ -60,26 +70,29 @@ export class EditComponent implements OnInit {
   }
 
   createFormClient(): void {
+    // console.log(entrepriseId)
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
-      firstName: new FormControl('',),
-      lastName: new FormControl(''),
+      firstName: new FormControl("",),
+      lastName: new FormControl(""),
       denomination: new FormControl('', [Validators.required, Validators.minLength(3)]),
       email: new FormControl(''),
       phonenumber: new FormControl(''),
       type: new FormControl('', [Validators.required]),
       tvaintra: new FormControl(0),
       siret: new FormControl(0),
+      EntrepriseId: new FormControl(''),
       Adresse: new FormGroup({
         adresses: new FormControl('', [Validators.required]),
         city: new FormControl('', [Validators.required]),
         country: new FormControl('France'),
-        zipcode: new FormControl(''),
+        zipcode: new FormControl(0),
       })
     });
   }
 
   createAndUpdate(): void {
+      console.log(this.myFormGroup.getRawValue())
     this.myFormGroup.markAllAsTouched();
     if (this.myFormGroup.invalid) {
       // Form is invalid, show error message
@@ -108,8 +121,8 @@ export class EditComponent implements OnInit {
     this.titreForm = "Modifier le client"
     this.textForm = "La modification de ce client sera valable sur l'ensemble des devis sur lesquels il est associé."
     this.textButton = "Modifier le client"
+    console.log(this.myFormGroup.getRawValue())
     this.myFormGroup.patchValue(this.initialData)
-    // console.log(this.myFormGroup.getRawValue())
   }
 
 

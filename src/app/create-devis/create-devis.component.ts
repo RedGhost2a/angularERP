@@ -1,4 +1,13 @@
-import {ChangeDetectorRef, Component, Inject, Injectable, OnInit, OnDestroy} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  Injectable,
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  ViewChild
+} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LotService} from "../_service/lot.service"
 import {ActivatedRoute, Event, NavigationExtras, Router} from "@angular/router";
@@ -31,6 +40,7 @@ import {Entreprise} from "../_models/entreprise";
 import {DialogLotComponent} from "../dialog-lot/dialog-lot.component";
 import {DialogSouslotComponent} from "../dialog-souslot/dialog-souslot.component";
 import {Log} from "../_models/log";
+import {MatTabChangeEvent, MatTabGroup} from "@angular/material/tabs";
 
 // import {Json2CsvTransform} from "json2csv";
 
@@ -41,9 +51,8 @@ import {Log} from "../_models/log";
 })
 //, AfterContentChecked
 @Injectable()
-export class CreateDevisComponent implements OnInit {
+export class CreateDevisComponent implements OnInit, AfterViewInit {
   isFocused: boolean = false;
-
   lotFraisDeChantier!: Lot;
   form!: FormGroup;
   testLots!: Lot[];
@@ -86,8 +95,9 @@ export class CreateDevisComponent implements OnInit {
     element: {
       dynamicDownload: null as unknown as HTMLElement,
     }
+    ,
   };
-  selectedIndex = 0;
+  selectedIndex !:number;
 
 
 //TODO ON NE PEUT METTRE QUE UN SEUL ET MEME OUVRAGE PAR SOUS_LOT; //
@@ -106,17 +116,41 @@ export class CreateDevisComponent implements OnInit {
               private sousDetailPrixService: SousDetailPrixService,
               private ouvrageCoutService: OuvrageCoutService,
               public sharedData: DataSharingService,
-              private changeDetector: ChangeDetectorRef,
   ) {
     this.expandedLotId = undefined;
+    const storedIndex = localStorage.getItem("index");
+    if (storedIndex) {
+      this.selectedIndex = +storedIndex;
+    }
 
   }
 
+  ngAfterViewInit(): void {
+    // this.selectedIndex
+    // this.selectedIndex = this.sharedData.selectedIndex + 1
+    console.log("AFTER VIEW INIT")
+    }
+
+
+
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      const tabIndex = +params['tab'];
-      this.selectedIndex = isNaN(tabIndex) ? 0 : tabIndex;
-    });
+    // setTimeout(()=>{
+    //   console.log(localStorage.getItem('index'))
+    //   const index = localStorage.getItem("index")
+    //   this.selectedIndex = parseInt(index ?? "0")
+    // console.log("event", this.selectedIndex)
+    //   // console.log(this.selectedIndex)
+    // },100)
+    // this.activeTabIndex = 2
+    // this.route.fragment.subscribe((fragment) => {
+    //   if (fragment) {
+    //     const tabIndex = parseInt(fragment.replace('tab', ''), 10) - 1;
+    //     if (!isNaN(tabIndex)) {
+    //       this.activeTabIndex = tabIndex;
+    //     }
+    //   }
+    // });
+
     console.log('url',this.router.url)
     transformVirguletoPoint()
     // this.sousDetailPrixService.setCoefEqui(this.coutTotal() / this.prixDevis)
@@ -143,7 +177,7 @@ export class CreateDevisComponent implements OnInit {
     this.dataLoad = false;
 
     this.getDevisExport()
-
+   this.setSelectedIndex()
 
     // quantityCout(quantityOuvrage: number, sousLot: SousLot): void {
     //   console.log("quantityCout")
@@ -161,13 +195,8 @@ export class CreateDevisComponent implements OnInit {
     //
     //   }
   }
-  navigateToTab(tabIndex: number) {
-    const navigationExtras: NavigationExtras = {
-      queryParams: { tab: tabIndex },
-      queryParamsHandling: 'merge'
-    };
-    this.router.navigate(['/your-page'], navigationExtras);
-  }
+
+
 
   ngOnDestroy() {
     let devisBDD: Devis
@@ -177,39 +206,43 @@ export class CreateDevisComponent implements OnInit {
       devisBDD.debourseSecTotal += this.lotFraisDeChantier?.prix
     devisBDD.prixVenteHT += this.fraisDeChantier.prixVenteHT
     devisBDD.prixCalcHT += this.fraisDeChantier.prixCalcHT
-    console.log(devisBDD)
-    console.log(devisBDD.debourseSecTotal)
     this.devisService.update(devisBDD, this.devisId).subscribe()
+  }
+  onTabChanged(index:number) {
+    localStorage.setItem("index", index.toString())
+  }
+  setSelectedIndex(){
+    setTimeout(()=>{
+      const index = localStorage.getItem("index")
+      this.selectedIndex = parseInt(index ?? "0")
+    },200)
   }
 
   fraisGeneraux(): void {
     if (this.lotFraisDeChantier.prix !== undefined) {
       this.devis.fraisGeneraux = (this.lotFraisDeChantier.prix + this.devis.debourseSecTotal) * (this.myFormFraisGeneraux.get('percentFraisGeneraux')?.value / 100)
-      // this.devis.fraisGeneraux = (this.lotFraisDeChantier.prix + this.devis.debourseSecTotal) * 0.2
+      this.coutTotal();
+      this.totalDepense()
+    }else{
+      this.devis.fraisGeneraux = this.devis.debourseSecTotal * (this.myFormFraisGeneraux.get('percentFraisGeneraux')?.value / 100)
       this.coutTotal();
       this.totalDepense()
     }
-    // return 0
   }
 
   updateFraisGeneraux(event: any) {
-    console.log(event.target.value)
     if (event.target.value !== '') {
       this.myFormFraisGeneraux.setValue({percentFraisGeneraux: event.target.value})
       this.devisService.update(this.myFormFraisGeneraux.getRawValue(), this.devisId).subscribe()
-      console.log(this.myFormFraisGeneraux.getRawValue())
-      // this.myFormFraisGeneraux.setValue({fraisGeneraux:event})
       this.fraisGeneraux()
     }
   }
 
   moyenneBenefice(): void {
     this.devis.moyenneBenefice = (this.resultBeneficeFraisDeChantier + this.resultBeneficeLots) / 2
-    // return (this.resultBeneficeFraisDeChantier + this.resultBeneficeLots) / 2
   }
 
   moyenneAleas(): void {
-    // return (this.resultAleasLots + this.resultAleasFraisDeChantier) / 2
     this.devis.moyenneAleas = (this.resultAleasLots + this.resultAleasFraisDeChantier) / 2
   }
 
@@ -237,6 +270,9 @@ export class CreateDevisComponent implements OnInit {
       // return this.lotFraisDeChantier.prix + this.prixDevis + this.fraisGeneraux()
       console.log("cout total debourse fonction",this.devis.fraisGeneraux)
       this.coefEquilibre()
+    }else{
+      this.devis.coutTotal = this.devis.debourseSecTotal + this.devis.fraisGeneraux
+      this.coefEquilibre()
     }
     // return 0
   }
@@ -245,6 +281,7 @@ export class CreateDevisComponent implements OnInit {
     console.log("this.devis.coutTotal", this.devis.coutTotal)
     console.log("this.devis.debourseSecTotal", this.devis.debourseSecTotal)
     if (this.lotFraisDeChantier.prix !== 0 && this.testLots[0].prix !== 0 && this.testLots[0].prix !== NaN) {
+
       console.log("cout total debouser",this.devis.coutTotal)
       console.log("debouser",this.devis.debourseSecTotal)
       this.devis.coeffEquilibre = this.devis.coutTotal / this.devis.debourseSecTotal
@@ -503,6 +540,9 @@ export class CreateDevisComponent implements OnInit {
       // console.log("lot.prix", lot.prix, "lot id ", lot.id)
       this.getSommeDevis()
     })
+  }
+  testLocation(){
+    console.log(window.location)
   }
 
 

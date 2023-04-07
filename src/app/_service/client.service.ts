@@ -20,7 +20,14 @@ export class ClientService {
 
   getByCompany(id: any) {
     return this.http.get(`${environment.apiUrl}/clients/${id}/`);
+  }
 
+  getAllByEntreprise(entrepriseId:number){
+    return this.http.get(`${environment.apiUrl}/clients/entreprise`, {
+      params: {
+        EntrepriseId: entrepriseId
+      }
+    });
   }
 
 

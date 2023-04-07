@@ -4,9 +4,9 @@
 
 <ng-template #content>
 
-  <mat-tab-group animationDuration="0ms" class="onglet" [selectedIndex]="selectedIndex">
+  <mat-tab-group animationDuration="0ms" class="onglet"  [(selectedIndex)]="selectedIndex" >
 
-    <mat-tab label="Frais de chantier" *ngIf="lotFraisDeChantier !== undefined">
+    <mat-tab label="Frais de chantier" *ngIf="lotFraisDeChantier !== undefined" id="tab1">
 
       <div class="container-frais-chantier">
         <div class="container-card-frais-chantier">
@@ -251,7 +251,7 @@
                     class="designation-ouvrage-frais-chantier">
                       <mat-form-field [formGroup]="myFormGroup" id="prix-arrondi-frais-chantier">
                                             <input type="number" formControlName="quantityOuvrage" matInput required
-                                                   [placeholder]="ouvrage.SousLotOuvrage.prixUniVenteHT.toString()"
+                                                   placeholder="{{ouvrage.SousLotOuvrage.prixUniVenteHT.toString() | number: '1.2-2'}}"
                                                    (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">
                                           </mat-form-field>
                     </span>
@@ -269,7 +269,7 @@
                   <span class="designation-ouvrage-frais-chantier">
                   <mat-icon [matMenuTriggerFor]="boutonOuv">more_vert</mat-icon>
                 <mat-menu class="menuBoutonSl" #boutonOuv>
-                  <button mat-button color="primary" routerLink="/sousDetailPrix/{{ouvrage.id}}">
+                  <button mat-button color="primary" routerLink="/sousDetailPrix/{{ouvrage.id}}" (click)="onTabChanged(0)">
                     Voir le detail de l'ouvrage
                   </button>
                   <button mat-button color="warn" (click)="deleteOuvrageDuDevis(ouvrage.id)">
@@ -287,7 +287,7 @@
     </mat-tab>
 
 
-    <mat-tab class="devis" label="Devis" *ngIf="lotFraisDeChantier !== undefined ">
+    <mat-tab class="devis" label="Devis" *ngIf="lotFraisDeChantier !== undefined " id="tab2">
       <div class="container-frais-chantier">
         <div class="container-card-frais-chantier">
           <div class="text-frais-chantier">
@@ -532,7 +532,7 @@
                       class="designation-ouvrage-frais-chantier">
                       <mat-form-field [formGroup]="myFormGroup" id="prix-arrondi-devis">
                                             <input type="number" formControlName="quantityOuvrage" matInput required
-                                                   [placeholder]="ouvrage.SousLotOuvrage.prixUniVenteHT.toString()"
+                                                   placeholder="{{ouvrage.SousLotOuvrage.prixUniVenteHT.toString() | number: '1.2-2'}}"
                                                    (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">
                                           </mat-form-field>
                     </span>
@@ -550,7 +550,7 @@
                   <span class="designation-ouvrage-frais-chantier">
                   <mat-icon [matMenuTriggerFor]="boutonOuv">more_vert</mat-icon>
                 <mat-menu class="menuBoutonSl" #boutonOuv>
-                  <button mat-button color="primary" routerLink="/sousDetailPrix/{{ouvrage.id}}">
+                  <button mat-button color="primary" routerLink="/sousDetailPrix/{{ouvrage.id}}" (click)="onTabChanged(1)">
                     Voir le detail de l'ouvrage
                   </button>
                   <button mat-button color="warn" (click)="deleteOuvrageDuDevis(ouvrage.id)">
@@ -574,7 +574,7 @@
     </mat-tab>
 
 
-    <mat-tab label="Paramètre de chantier" *ngIf="lotFraisDeChantier !== undefined">
+    <mat-tab label="Paramètre de chantier" *ngIf="lotFraisDeChantier !== undefined" id="tab3">
       <div class="bigContainerParams">
         <div class="ContainerParamsFraisDevis">
           <mat-card class="cardParams">
@@ -635,8 +635,8 @@
                   </div>
                   <div class="itemsParams">
                     <mat-card-subtitle>Bénéfice & Aléas</mat-card-subtitle>
-                    <p *ngIf="!this.resultAleasLots || !this.resultBeneficeLots; else other">0 %</p>
-                    <ng-template #other>{{this.resultAleasLots + this.resultBeneficeLots  | number : '1.2-2'}} %</ng-template>
+                    <p>{{this.resultBeneficeLots + this.resultAleasLots | number : '1.2-2'}} %</p>
+
 
                   </div>
                 </div>
