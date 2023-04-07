@@ -67,17 +67,18 @@ export class FormOuvrageComponent implements OnInit {
     }
     if(this.regexOuvrage.test(window.location.pathname)){
     this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe(data => {
-      // this.closeDialog()
+      this.closeDialog()
     })
     }
     if(this.initialData !== null){
       if(this.isChecked === false){
         this.ouvrageService.create(this.myFormGroup.getRawValue()).subscribe(data => {
-          // this.closeDialog()
+          this.closeDialog()
         })
       }
       console.log("dans le if ", this.initialData)
       this.createOuvrageDuDevis();
+          this.closeDialog()
     }
   }
   checked(){

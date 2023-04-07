@@ -11,7 +11,7 @@ import {Cout} from "../_models/cout";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
-import {transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
+import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
 import {DataSharingService} from "../_service/data-sharing-service.service";
 import {UniteForFormService} from "../_service/uniteForForm.service";
 import {UniteForForm} from "../_models/uniteForForm";
@@ -40,10 +40,12 @@ export class FormCoutComponent implements OnInit {
   cout!: Cout
   regexSousDetail = new RegExp(`^/sousDetailPrix`)
   regexCout = new RegExp(`^/listCout`)
+  regexOuvrageDetail = new RegExp(`^/ouvrageDetail`)
   isCout: boolean = true;
   categories: any[] = [];
-  types!: String;
-  uniteList!: UniteForForm[];
+  types!:String;
+  uniteList!:UniteForForm[];
+
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Cout,
@@ -55,14 +57,14 @@ export class FormCoutComponent implements OnInit {
               private fournisseurService: FournisseurService,
               private typeCoutService: TypeCoutService,
               private uniteForFormService: UniteForFormService,
-              public datasharingService: DataSharingService,
-              private ouvrageCoutService: OuvrageCoutService,
+              public datasharingService: DataSharingService, private ouvrageCoutService : OuvrageCoutService,
               @Inject(TOASTR_TOKEN) private toastr: Toastr) {
     this.initialData = this.data;
   }
 
 
   ngOnInit(): void {
+    console.log(this.initialData)
     this.createFormCout();
     transformVirguletoPoint()
     this.getUserById();
@@ -74,9 +76,10 @@ export class FormCoutComponent implements OnInit {
   }
 
 
+
   //Determine si c'est l'ajout d'un nouveau cout ou la modification d'un cout existant au click
   createAndUpdate(): void {
-    console.log(this.myFormGroup.getRawValue())
+    // console.log(this.myFormGroup.getRawValue())
 
     this.myFormGroup.markAllAsTouched();
     if (this.myFormGroup.invalid) {
@@ -89,13 +92,11 @@ export class FormCoutComponent implements OnInit {
         this.closeDialog()
       });
     }
-    if (this.regexCout.test(window.location.pathname)) {
-      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(() => {
-
-
+    if (this.regexCout.test(window.location.pathname) || this.regexOuvrageDetail.test(window.location.pathname)) {
+      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(()=>{
         this.closeDialog()
-      });
 
+      });
     }
     if (this.regexSousDetail.test(window.location.pathname)) {
       this.coutService.updateCoutDuDevis(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(() => {
@@ -116,10 +117,9 @@ export class FormCoutComponent implements OnInit {
       }
     })
   }
-
-  getUniteByEnteprise(id: number): void {
-    this.uniteForFormService.getUniteByEntreprise(id).subscribe(data => {
-      this.uniteList = data
+  getUniteByEnteprise(id : number):void {
+    this.uniteForFormService.getUniteByEntreprise(id).subscribe(data=>{
+      this.uniteList=data
     })
   }
 
@@ -130,7 +130,7 @@ export class FormCoutComponent implements OnInit {
       unite: new FormControl("", Validators.required),
       prixUnitaire: new FormControl("", Validators.required),
       EntrepriseId: new FormControl(),
-      type: new FormControl(),
+      type : new FormControl(),
       TypeCoutId: new FormControl(""),
       FournisseurId: new FormControl(""),
       uRatio: new FormControl(""),
@@ -172,11 +172,12 @@ export class FormCoutComponent implements OnInit {
     this.textForm = "La modification de ce composant va impacter les ouvrages de la bibliothèque de prix associés. Les devis déjà existants ne seront pas modifiés."
     this.textButton = "Modifier ce composant"
     console.log(this.initialData)
-    this.myFormGroup.controls["uRatio"].setValue(this.initialData.OuvrageCout.uRatio)
+     this.myFormGroup.controls["uRatio"].setValue(this.initialData.OuvrageCout.uRatio)
     this.myFormGroup.patchValue(this.initialData)
     this.getCategorieByType(this.initialData.TypeCout.type)
     this.myFormGroup.controls["type"].setValue(this.initialData.TypeCout.type)
   }
+
 
 
   closeDialog() {
