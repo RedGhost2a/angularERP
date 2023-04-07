@@ -1,6 +1,10 @@
 <mat-tab-group mat-stretch-tabs style="padding: 10px">
+
   <mat-tab *ngIf="entreprise">
     <ng-template mat-tab-label>
+      <button mat-flat-button >
+        <mat-icon style="color: #0c5593" [routerLink]="'/admin/'">arrow_back</mat-icon>
+      </button>
       <mat-icon class="example-tab-icon">business</mat-icon>
       Liste des clients
     </ng-template>
@@ -106,6 +110,7 @@
     </mat-accordion>
 
   </mat-tab>
+
 </mat-tab-group>
 
 <!--<div *ngIf="entreprise">-->

@@ -1,5 +1,5 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validator, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../_service/user.service";
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
@@ -32,6 +32,7 @@ export class UserEditComponent implements OnInit {
     this.userForm = new FormGroup({
       'email': new FormControl('', [Validators.required, Validators.email]),
       'password': new FormControl('', Validators.required),
+      'passwordConfirm': new FormControl('', Validators.required),
       'title': new FormControl('', Validators.required),
       'firstName': new FormControl('', Validators.required),
       'lastName': new FormControl('', Validators.required),
@@ -39,7 +40,7 @@ export class UserEditComponent implements OnInit {
       'avatarUrl': new FormControl(this.selectedAvatar),
       'EntrepriseId': new FormControl('', Validators.required)
     });
-
+  this.role= this.userService.userValue.role;
   }
 
   success(message: string): void {
@@ -72,7 +73,8 @@ export class UserEditComponent implements OnInit {
   }
 
   createAndUpdate(): void {
-    console.log(this.userForm.getRawValue())
+    const password = this.userForm.get('password')?.value;
+    const confirmPassword = this.userForm.get('passwordConfirm')?.value;
     this.userForm.markAllAsTouched();
     this.route.params.subscribe(params => {
       const userID = +params['id']
@@ -80,6 +82,13 @@ export class UserEditComponent implements OnInit {
         if (this.userForm.invalid) {
           // Form is invalid, show error message
           this.toastr.error("Le formulaire est invalide.", "Erreur !");
+          return;
+        }
+
+
+
+        if (password !== confirmPassword) {
+          this.toastr.error( "Erreur !","Les mots de passe ne correspondent pas.");
           return;
         }
         const userData = this.userForm.getRawValue();
@@ -134,10 +143,7 @@ export class UserEditComponent implements OnInit {
         this.textButton = "Modification d'un  utilisateur"
         this.userService.getById(userID).subscribe(data => {
           this.entrepriseDenomination=data.Entreprises[0].denomination,
-
-          console.log(this.entrepriseDenomination)
-          this.role = data['role']
-          // Assuming res has a structure like:
+          // this.role = data['role']
           data = {
             email: data.email,
             password: data.password,

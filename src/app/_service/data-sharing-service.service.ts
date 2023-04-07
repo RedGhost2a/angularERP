@@ -14,6 +14,14 @@ export class DataSharingService {
   coefEqui!: number
   ouvrage!: Ouvrage
   entrepriseId!: number;
+  options = [
+    { value: 'F', label: 'Forfait' },
+    { value: 'm', label: 'Mètres' },
+    { value: 'm²', label: 'Mètres carrés' },
+    { value: 'm³', label: 'Mètres cubes' },
+    { value: 'Kg', label: 'Kilogrammes' },
+    { value: 'Tn', label: 'Tonnes' }
+  ];
   deviId!:number;
   selectedIndex!:number
 

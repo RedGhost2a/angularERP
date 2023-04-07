@@ -21,6 +21,10 @@
   width: 100px;
 }
 
+#input-adresse {
+  width: 40%;
+}
+
 .inputs {
   margin-bottom: 2%;
   display: flex;

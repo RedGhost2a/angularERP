@@ -12,6 +12,9 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
+import {DataSharingService} from "../_service/data-sharing-service.service";
+import {UniteForFormService} from "../_service/uniteForForm.service";
+import {UniteForForm} from "../_models/uniteForForm";
 
 
 interface FournisseurCout {
@@ -39,6 +42,8 @@ export class FormCoutComponent implements OnInit {
   isCout: boolean = true;
   categories: any[] = [];
   types!:String;
+  uniteList!:UniteForForm[];
+
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Cout,
@@ -49,6 +54,8 @@ export class FormCoutComponent implements OnInit {
               private userService: UserService,
               private fournisseurService: FournisseurService,
               private typeCoutService: TypeCoutService,
+              private uniteForFormService: UniteForFormService,
+              public datasharingService: DataSharingService,
               @Inject(TOASTR_TOKEN) private toastr: Toastr) {
     this.initialData = this.data;
   }
@@ -64,6 +71,8 @@ export class FormCoutComponent implements OnInit {
     if (this.initialData !== null)
       this.generateFormUpdate();
   }
+
+
 
   //Determine si c'est l'ajout d'un nouveau cout ou la modification d'un cout existant au click
   createAndUpdate(): void {
@@ -99,6 +108,14 @@ export class FormCoutComponent implements OnInit {
       this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id),
         this.getAllTypeCouts(data.Entreprises[0].id)
       this.getAllFournisseur(data.Entreprises[0].id)
+      if (data.Entreprises[0].id) {
+        this.getUniteByEnteprise(data.Entreprises[0].id);
+      }
+    })
+  }
+  getUniteByEnteprise(id : number):void {
+    this.uniteForFormService.getUniteByEntreprise(id).subscribe(data=>{
+      this.uniteList=data
     })
   }
 
@@ -111,7 +128,8 @@ export class FormCoutComponent implements OnInit {
       EntrepriseId: new FormControl(),
       type : new FormControl(),
       TypeCoutId: new FormControl(""),
-      FournisseurId: new FormControl("")
+      FournisseurId: new FormControl(""),
+      uRatio: new FormControl(""),
     });
   }
 
@@ -150,10 +168,13 @@ export class FormCoutComponent implements OnInit {
     this.textForm = "La modification de ce composant va impacter les ouvrages de la bibliothèque de prix associés. Les devis déjà existants ne seront pas modifiés."
     this.textButton = "Modifier ce composant"
     console.log(this.initialData)
+     this.myFormGroup.controls["uRatio"].setValue(this.initialData.OuvrageCout.uRatio)
     this.myFormGroup.patchValue(this.initialData)
     this.getCategorieByType(this.initialData.TypeCout.type)
     this.myFormGroup.controls["type"].setValue(this.initialData.TypeCout.type)
   }
+
+
 
   closeDialog() {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage

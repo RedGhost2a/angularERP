@@ -1,5 +1,5 @@
 .testcontainer{
-
+  //height: 100vh;
   background-color:#F0F4F8 ;
 }
 th,td{
@@ -7,6 +7,13 @@ th,td{
 }
 
 .container{
+}
+
+.valid-form{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
 }
 
 .cardParams{
@@ -50,6 +57,12 @@ h1{
   justify-content: space-around;
   //background-color: #F0F4F8;
 }
+.containerCards2{
+  display:flex;
+  justify-content: space-around;
+  margin: 9px 17px 0 25px;
+  //background-color: #F0F4F8;
+}
 table {
   width: 98%;
   margin-top: 15px;
@@ -62,11 +75,21 @@ table {
 .btnSousDetails{
   display: flex;
   justify-content: flex-end;
-  margin-right: 50px;
+  //margin-right: 50px;
   margin-top: 30px;
-  :first-child{
-    margin-right: 30px;
-  }
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  align-items: center;
+  flex-direction: row;
+  margin-right: 85px;
+  //:first-child{
+  //  margin-right: 30px;
+  //}
+  //:last-child{
+  //  margin-left: 30px;
+  //  margin-top: 3px;
+  //}
 
 }
 .mat-dialog-container {

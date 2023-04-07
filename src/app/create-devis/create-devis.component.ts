@@ -715,8 +715,6 @@ export class CreateDevisComponent implements OnInit, AfterViewInit {
   getLotFraisDeChantier(): void {
     this.devisService.getLotFraisDeChantier(this.devisId).subscribe(data => {
       console.log("GET LOT FRAIS DE CHANTIER", data);
-
-
       let nombreOuvrage = 0;
       this.resultAleasFraisDeChantier = 0;
       this.resultBeneficeFraisDeChantier = 0;

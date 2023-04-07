@@ -21,6 +21,7 @@ import {TypeCoutService} from "../_service/typeCout.service";
 import {FournisseurService} from "../_service/fournisseur.service";
 import {ImportExcel} from "../_models/importExcel";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
+import {DialogUniteForFormComponent} from "../dialog-unite-for-form/dialog-unite-for-form.component";
 
 
 @Component({
@@ -258,73 +259,92 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
     });
   }
 
+
+
+
   async uploadData(): Promise<void> {
     const file = this.importedFiles.find(f => f.checked);
     if (!file) {
-      this.toastr.error('Erreur', 'Aucun fichier séléctionner')
-      return
+      console.log('Aucun fichier sélectionné');
+      this.toastr.error('Erreur', 'Aucun fichier sélectionné');
+      return;
     }
-    if (file) {
-      this.importExcelService.getById(file.id).subscribe(async data => {
-        // console.log(data)
-        for (let i = 1; i < data.data.data.length; i++) {
-          const ligne = data.data.data[i];
-          // console.log(ligne)
-          try {
-            this.fournisseurService.getFournisseurIdByName(ligne[5]).subscribe(fournisseurId => {
-              const fournId: number = fournisseurId
-              // console.log(fournisseurId)
-              try {
-                this.typeCoutService.getTypeCoutIdByLabel(ligne[0]).subscribe(typeCout => {
-                  const typeId: number = typeCout
-                  // console.log(typeCout)
-                  try {
-                    this.userService.getById(this.userService.userValue.id).subscribe(data => {
-                      const userId = data.id;
-                      // console.log(userId);
+    console.log('Fichier sélectionné :', file);
 
-                      const cout = {
-                        id: 0,
-                        TypeCoutId: typeId,
-                        designation: ligne[1],
-                        EntrepriseId: data.Entreprises[0].id,
-                        prixUnitaire: ligne[3],
-                        unite: ligne[4],
-                        FournisseurId: fournId
-                      };
+    this.importExcelService.getById(file.id).subscribe(async data => {
+      console.log('Données récupérées :', data);
+      for (let i = 1; i < data.data.data.length; i++) {
+        const ligne = data.data.data[i];
+        console.log('Ligne traitée :', ligne);
+        try {
+          this.fournisseurService.getFournisseurIdByName(ligne[5]).subscribe(fournisseurId => {
+            const fournId: number = fournisseurId;
+            console.log('ID du fournisseur trouvé :', fournId);
 
-                      console.log(cout)
+            try {
+              this.typeCoutService.getTypeCoutIdByLabel(ligne[0]).subscribe(typeCout => {
+                const typeId: number = typeCout;
+                console.log('ID du type de coût trouvé :', typeId);
 
-                      this.coutService.create(cout).subscribe(
-                        () => {
-                          this.toastr.success('Parfait', 'Ajout a la bibliothèque réussie')
-                        },
-                        (error) => {
-                          this.toastr.error('Attention', 'Une erreur est survenue')
-                        }
-                      );
+                try {
+                  this.userService.getById(this.userService.userValue.id).subscribe(user => {
+                    const userId = user.id;
+                    console.log('ID de l\'utilisateur :', userId);
 
-                    });
-                  } catch (error) {
-                    this.toastr.error('Attention', 'Une erreur est survenue')
+                    const cout = {
+                      id: 0,
+                      TypeCoutId: typeId,
+                      designation: ligne[1],
+                      EntrepriseId: user.Entreprises[0].id,
+                      prixUnitaire: ligne[3],
+                      unite: ligne[4],
+                      FournisseurId: fournId
+                    };
+                    console.log('Nouveau coût à ajouter :', cout);
 
-                    console.error(error);
-                  }
-                });
-              } catch (error) {
-                this.toastr.error('Attention', 'Une erreur est survenue')
-                console.error(error);
-              }
-
-            })
-          } catch (error) {
-            this.toastr.error('Attention', 'Une erreur est survenue')
-
-            console.error(error);
-          }
-
+                    this.coutService.create(cout).subscribe(
+                      () => {
+                        console.log('Le coût a été ajouté avec succès.');
+                        this.toastr.success('Parfait', 'Ajout à la bibliothèque réussie');
+                      },
+                      (error) => {
+                        console.error('Erreur lors de l\'ajout du coût :', error);
+                        this.toastr.error('Attention', 'Une erreur est survenue');
+                      }
+                    );
+                  });
+                } catch (error) {
+                  console.error('Erreur lors de la récupération de l\'utilisateur :', error);
+                  this.toastr.error('Attention', 'Une erreur est survenue');
+                }
+              });
+            } catch (error) {
+              console.error('Erreur lors de la récupération du type de coût :', error);
+              this.toastr.error('Attention', 'Une erreur est survenue');
+            }
+          });
+        } catch (error) {
+          console.error('Erreur lors de la récupération du fournisseur :', error);
+          this.toastr.error('Attention', 'Une erreur est survenue');
         }
-      })
-    }
+      }
+    }, error => {
+      console.error('Erreur lors de la récupération des données :', error);
+      this.toastr.error('Attention', 'Une erreur est survenue');
+    });
   }
+
+
+  openUniteForFormDialog(): void {
+    const dialogRef = this.dialog.open(DialogUniteForFormComponent, {
+      width: '500px',
+      // data: { form: this.importForm }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+
 }

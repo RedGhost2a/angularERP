@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {OuvrageService} from "../_service/ouvrage.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DataSharingService} from "../_service/data-sharing-service.service";
@@ -19,8 +19,13 @@ import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {FormCoutComponent} from "../form-cout/form-cout.component";
 import {CoutDuDevis} from "../_models/cout-du-devis";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
+import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint";
+import {UniteForForm} from "../_models/uniteForForm";
+import {OuvrageCout} from "../_models/ouvrageCout";
+import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
+import {UniteForFormService} from "../_service/uniteForForm.service";
 import {MatTabGroup} from "@angular/material/tabs";
 
 @Component({
@@ -31,8 +36,14 @@ import {MatTabGroup} from "@angular/material/tabs";
 export class SousDetailPrixComponent implements OnInit {
   ouvrageID!: number;
   currentOuvrage !: Ouvrage;
-  columnsToDisplay = ["type"
-    , "categorie", "designation", "unite", "uRatio",
+  isFormVisible = false;
+
+  columnsToDisplay = [
+    "type",
+    "categorie",
+    "designation",
+    "unite",
+    "uRatio",
     "ratio",
     "efficience",
     "quantite", "prixUnitaireHT",
@@ -44,6 +55,14 @@ export class SousDetailPrixComponent implements OnInit {
   totalDBS = {
     prixOuvrage: 0
   };
+  myFormGroup!: FormGroup;
+  coutDuDevis!: CoutDuDevis
+  cout!: Cout;
+  isChecked: boolean = false;
+  isInDevis: boolean = true;
+  categories: any[] = [];
+  typeCout !: TypeCout[];
+  uniteList!:UniteForForm[];
 
   currentUser !: User
   listCout !: Cout[]
@@ -56,13 +75,18 @@ export class SousDetailPrixComponent implements OnInit {
 
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute,
               public dataShared: DataSharingService, private coutService: CoutService, private userService: UserService,
-              public dialog: MatDialog, private sousLotOuvrageService: SousLotOuvrageService, private fournisseurService: FournisseurService,
-              private typeCoutService: TypeCoutService, private ouvrageCoutService: OuvrageCoutService, private router: Router
+              public dialog: MatDialog, private sousLotOuvrageService: SousLotOuvrageService,private fournisseurService : FournisseurService,
+              private typeCoutService : TypeCoutService, private ouvrageCoutService : OuvrageCoutService,
+              private router : Router, private uniteForFormService : UniteForFormService,@Inject(TOASTR_TOKEN) private toastr: Toastr
   ) {
+    transformVirguletoPoint()
+    this.createFormCout2()
+    this.createFormCout();
+    this.createFormOuvrage()
+
   }
 
   ngOnInit(): void {
-    this.changeTextButton()
     this.createFormCout();
     this.createFormOuvrage()
     console.log("debut ngOninit")
@@ -71,17 +95,14 @@ export class SousDetailPrixComponent implements OnInit {
       await this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe(async data => {
         console.log("this currentOuvrage ", data)
         this.currentOuvrage = data;
-
         this.dataShared.ouvrage = data;
         // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = 10;
         console.log(this.currentOuvrage)
-        if (this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage) {
+        if(this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage ){
           // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = this.currentOuvrage.prix
         }
         if (data.SousLots) {
           this.currentOuvrage.SousLotOuvrage = data.SousLots[0].SousLotOuvrage
-          // if(this.currentOuvrage.SousLotOuvrage)
-          // this.currentOuvrage.SousLotOuvrage.quantityOuvrage = 10;
         }
         await this.debousesSecTotalCout()
         this.getCurrentUser()
@@ -105,6 +126,17 @@ export class SousDetailPrixComponent implements OnInit {
     })
   }
 
+  toggleForm() {
+    this.isFormVisible = !this.isFormVisible;
+    //reinitialiser le formulaire
+
+
+
+
+
+  }
+
+
   changeTextButton(){
     if(localStorage.getItem('index') === "0"){
       this.textButtonBack = "Retour au frais de chantier"
@@ -114,32 +146,31 @@ export class SousDetailPrixComponent implements OnInit {
 
   ratioChange(coutDuDevis: CoutDuDevis) {
     console.log(this.formCout.getRawValue().ratio)
-    if (this.formCout.getRawValue().ratio !== null) {
+    if(this.formCout.getRawValue().ratio !== null){
 
-      this.ouvrageCoutDuDevis = {
-        OuvrageDuDeviId: this.currentOuvrage.id,
-        CoutDuDeviId: coutDuDevis.id,
-        ratio: +this.formCout.getRawValue().ratio
-      }
-      if (coutDuDevis.id)
-        this.ouvrageCoutService.updateOuvrageCoutDuDevis(coutDuDevis?.id, this.currentOuvrage.id, this.ouvrageCoutDuDevis).subscribe(() => {
-          // this.getById()
-          this.ngOnInit()
-        })
+    this.ouvrageCoutDuDevis = {
+      OuvrageDuDeviId: this.currentOuvrage.id,
+      CoutDuDeviId: coutDuDevis.id,
+      ratio: +this.formCout.getRawValue().ratio
+    }
+    if(coutDuDevis.id)
+    this.ouvrageCoutService.updateOuvrageCoutDuDevis(coutDuDevis?.id,  this.currentOuvrage.id, this.ouvrageCoutDuDevis).subscribe(() => {
+      // this.getById()
+      this.ngOnInit()
+    })
     }
   }
-
   efficienceChange(coutDuDevis: CoutDuDevis) {
-    console.log("efficience", this.formCout.getRawValue().efficience)
-    if (this.formCout.getRawValue().efficience !== null) {
+    console.log("efficience",this.formCout.getRawValue().efficience)
+    if(this.formCout.getRawValue().efficience !== null){
 
       this.ouvrageCoutDuDevis = {
         OuvrageDuDeviId: this.currentOuvrage.id,
         CoutDuDeviId: coutDuDevis.id,
         efficience: +this.formCout.getRawValue().efficience,
       }
-      if (coutDuDevis.id)
-        this.ouvrageCoutService.updateOuvrageCoutDuDevis(coutDuDevis?.id, this.currentOuvrage.id, this.ouvrageCoutDuDevis).subscribe(() => {
+      if(coutDuDevis.id)
+        this.ouvrageCoutService.updateOuvrageCoutDuDevis(coutDuDevis?.id,  this.currentOuvrage.id, this.ouvrageCoutDuDevis).subscribe(() => {
           // this.getById()
           this.ngOnInit()
         })
@@ -149,18 +180,17 @@ export class SousDetailPrixComponent implements OnInit {
 
   ratioOuvrageChange() {
     console.log(this.formOuvrage.getRawValue().ratioOuvrage)
-    if (this.formOuvrage.getRawValue().ratioOuvrage !== null) {
-      this.ouvrageService.updateOuvrageDuDevis({ratio: this.formOuvrage.getRawValue().ratioOuvrage}, this.currentOuvrage.id).subscribe(() => {
-        // this.getById()
-        this.ngOnInit()
-      })
+    if(this.formOuvrage.getRawValue().ratioOuvrage !== null){
+        this.ouvrageService.updateOuvrageDuDevis({ratio:this.formOuvrage.getRawValue().ratioOuvrage},this.currentOuvrage.id).subscribe(() => {
+          // this.getById()
+          this.ngOnInit()
+        })
     }
   }
-
   beneficeChange() {
     console.log(this.formOuvrage.getRawValue().benefice)
-    if (this.formOuvrage.getRawValue().benefice !== null) {
-      this.ouvrageService.updateOuvrageDuDevis({benefice: this.formOuvrage.getRawValue().benefice}, this.currentOuvrage.id).subscribe(() => {
+    if(this.formOuvrage.getRawValue().benefice !== null){
+      this.ouvrageService.updateOuvrageDuDevis({benefice:this.formOuvrage.getRawValue().benefice},this.currentOuvrage.id).subscribe(() => {
         // this.getById()
         this.ngOnInit()
       })
@@ -179,8 +209,8 @@ export class SousDetailPrixComponent implements OnInit {
 
   aleasChange() {
     console.log(this.formOuvrage.getRawValue().aleas)
-    if (this.formOuvrage.getRawValue().aleas !== null) {
-      this.ouvrageService.updateOuvrageDuDevis({aleas: this.formOuvrage.getRawValue().aleas}, this.currentOuvrage.id).subscribe(() => {
+    if(this.formOuvrage.getRawValue().aleas !== null){
+      this.ouvrageService.updateOuvrageDuDevis({aleas:this.formOuvrage.getRawValue().aleas},this.currentOuvrage.id).subscribe(() => {
         // this.getById()
         this.ngOnInit()
       })
@@ -188,14 +218,13 @@ export class SousDetailPrixComponent implements OnInit {
   }
 
 
-  createFormCout() {
+  createFormCout(){
     this.formCout = new FormGroup({
       ratio: new FormControl(),
       efficience: new FormControl()
     })
   }
-
-  createFormOuvrage() {
+  createFormOuvrage(){
     this.formOuvrage = new FormGroup({
       ratioOuvrage: new FormControl(),
       benefice: new FormControl(),
@@ -203,13 +232,14 @@ export class SousDetailPrixComponent implements OnInit {
       quantity: new FormControl()
     })
   }
-
   getCurrentUser(): void {
     this.currentUser = this.userService.userValue;
     this.userService.getById(this.currentUser.id).subscribe(
       data => {
         this.currentUser = data
         this.dataShared.entrepriseId = data.Entreprises[0].id;
+        this.getUniteByEnteprise( this.dataShared.entrepriseId)
+
         this.getAllCout(data.Entreprises[0].id)
         this.getAllFournisseurs(data.Entreprises[0].id)
         this.getAllTypeCouts(data.Entreprises[0].id)
@@ -222,35 +252,32 @@ export class SousDetailPrixComponent implements OnInit {
     this.coutService.getAll(entrepriseID).subscribe(
       data => {
         this.listCout = data
-        console.log("list cout", data)
+        console.log("list cout",data)
       }
     )
   }
-
-  getAllFournisseurs(entrepriseID: number): void {
-    this.fournisseurService.getAllFournisseurs(entrepriseID).subscribe(fournisseurs => {
+  getAllFournisseurs(entrepriseID:number):void {
+    this.fournisseurService.getAllFournisseurs(entrepriseID).subscribe(fournisseurs =>{
       console.log("liste des fournisseurs: ", fournisseurs)
       this.listFournisseur = fournisseurs;
     })
   }
-
-  getAllTypeCouts(entrepriseID: number): void {
-    this.typeCoutService.getAllTypeCouts(entrepriseID).subscribe(typeCouts => {
+  getAllTypeCouts(entrepriseID: number):void {
+    this.typeCoutService.getAllTypeCouts(entrepriseID).subscribe(typeCouts =>{
       console.log("liste des type de couts : ", typeCouts)
       this.listTypeCout = typeCouts;
     })
   }
 
 
-  async prixUnitaireHT() {
+   async prixUnitaireHT() {
     if (this.currentOuvrage.SousLotOuvrage !== undefined) {
-      await this.dataShared.prixUnitaireHT(this.currentOuvrage.SousLotOuvrage)
+       await this.dataShared.prixUnitaireHT(this.currentOuvrage.SousLotOuvrage)
     }
   }
-
-  prixVenteHT() {
+  prixVenteHT(){
     if (this.currentOuvrage.SousLotOuvrage !== undefined) {
-      this.dataShared.prixVenteHT(this.currentOuvrage.SousLotOuvrage)
+    this.dataShared.prixVenteHT(this.currentOuvrage.SousLotOuvrage)
     }
   }
 
@@ -301,23 +328,23 @@ export class SousDetailPrixComponent implements OnInit {
   async debousesSecTotalCout() {
     this.totalDBS.prixOuvrage = 0;
     if (this.currentOuvrage.CoutDuDevis) {
-      this.currentOuvrage.CoutDuDevis.forEach(coutDuDevis => {
+      this.currentOuvrage.CoutDuDevis.forEach( coutDuDevis  => {
         if (coutDuDevis.OuvrageCoutDuDevis?.ratio && this.currentOuvrage.SousLotOuvrage) {
           coutDuDevis.debourseSecTotal = coutDuDevis.prixUnitaire * (coutDuDevis.OuvrageCoutDuDevis?.ratio * this.currentOuvrage.SousLotOuvrage?.quantityOuvrage)
           this.totalDBS.prixOuvrage += coutDuDevis.debourseSecTotal
           console.log(this.totalDBS)
         }
       })
-      console.log("TOTAL", this.totalDBS)
-      if (this.currentOuvrage.SousLotOuvrage)
-        this.dataShared.SetPrixOuvrage(this.totalDBS, this.currentOuvrage.SousLotOuvrage)
-      if (this.currentOuvrage.SousLotOuvrage?.id) {
-        this.sousLotOuvrageService.updatedPrice(this.currentOuvrage.SousLotOuvrage.id, this.totalDBS).subscribe((res) => {
-          console.log("response", res)
+          console.log("TOTAL",this.totalDBS)
+      if(this.currentOuvrage.SousLotOuvrage)
+      this.dataShared.SetPrixOuvrage(this.totalDBS, this.currentOuvrage.SousLotOuvrage)
+      if (this.currentOuvrage.SousLotOuvrage?.id){
+        this.sousLotOuvrageService.updatedPrice(this.currentOuvrage.SousLotOuvrage.id, this.totalDBS).subscribe((res)=>{
+          console.log("response",res)
         })
       }
     }
-    if (this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage && !this.currentOuvrage.CoutDuDevis?.length) {
+    if(this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage && !this.currentOuvrage.CoutDuDevis?.length){
       this.totalDBS.prixOuvrage = this.currentOuvrage.prix * this.currentOuvrage.SousLotOuvrage.quantityOuvrage
       this.dataShared.SetPrixOuvrage(this.totalDBS, this.currentOuvrage.SousLotOuvrage)
 
@@ -363,12 +390,17 @@ export class SousDetailPrixComponent implements OnInit {
 
   openDialogImport(ouvragDuDevisId: number) {
     this.dialog.open(DialogListCoutComponent, {
-      panelClass: 'test',
+      panelClass:'test',
       data: this.listCout,
       width: '90%',
       height: '70%'
     }).afterClosed().subscribe(async result => {
-      this.ngOnInit()
+      if (result) {
+        console.log("result ? list cout: ", result)
+        this.ngOnInit()
+      } else {
+        console.log("afterClose else")
+      }
       console.log("console")
 
     });
@@ -376,11 +408,11 @@ export class SousDetailPrixComponent implements OnInit {
 
   openDialogCreate(ouvragDuDevisId: number) {
     this.dialog.open(DialogFormCoutComponent, {
-      data: [this.listTypeCout, this.listFournisseur],
+      data: [ this.listTypeCout, this.listFournisseur],
       width: '55%',
       height: '60%'
     }).afterClosed().subscribe(async result => {
-      this.ngOnInit()
+        this.ngOnInit()
 
     });
   }
@@ -397,6 +429,7 @@ export class SousDetailPrixComponent implements OnInit {
   }
 
 
+
   deleteItem(coutDuDeviId: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
     dialogRef.afterClosed().subscribe(result => {
@@ -409,5 +442,121 @@ export class SousDetailPrixComponent implements OnInit {
     });
   }
 
+  createFormCout2(): void {
+    this.myFormGroup = new FormGroup({
+      id: new FormControl(),
+      designation: new FormControl('',Validators.required),
+      unite: new FormControl("",Validators.required),
+      prixUnitaire: new FormControl("",[Validators.required,]),
+      EntrepriseId: new FormControl(""),
+      TypeCoutId: new FormControl(""),
+      type: new FormControl(""),
+      FournisseurId: new FormControl("",Validators.required),
+      ratio: new FormControl("",[Validators.required]),
+      uRatio: new FormControl(""),
+      efficience: new FormControl(1,[Validators.required])
+    });
+  }
 
+  checked() {
+    this.isChecked = !this.isChecked;
+    console.log(this.isChecked)
+  }
+
+  createCoutDuDevis(): void {
+    this.myFormGroup.markAllAsTouched();
+    if (this.myFormGroup.invalid) {
+      // Form is invalid, show error message
+      this.toastr.error("Le formulaire est invalide.", "Erreur !");
+      return;
+    }
+    if (this.isInDevis) {
+      this.myFormGroup.controls["EntrepriseId"].setValue(this.dataSharingService.entrepriseId)
+      this.coutDuDevis = this.myFormGroup.getRawValue();
+      this.coutDuDevis.fournisseur = this.myFormGroup.getRawValue().FournisseurId[0]
+      this.coutDuDevis.remarque !== null ? this.myFormGroup.getRawValue().FournisseurId[1] : ""
+      this.coutDuDevis.type = this.myFormGroup.getRawValue().type
+      this.coutDuDevis.categorie = this.myFormGroup.getRawValue().TypeCoutId[1]
+      console.log(this.myFormGroup.getRawValue())
+      this.cout = this.myFormGroup.getRawValue();
+      console.log("cout", this.cout)
+      this.cout.FournisseurId = this.myFormGroup.getRawValue().FournisseurId[2]
+      this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[0]
+
+
+      this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe(responseCout => {
+          this.myFormGroup.markAllAsTouched();
+          if (this.myFormGroup.invalid) {
+            // Form is invalid, show error message
+            this.toastr.error("Le formulaire est invalide.", "Erreur !");
+            return;
+          }
+          const ouvrageCoutDuDevis: OuvrageCoutDuDevis = {
+            OuvrageDuDeviId: this.dataSharingService.ouvrage.id,
+            CoutDuDeviId: responseCout?.id,
+            ratio: this.myFormGroup.getRawValue().ratio,
+            uRatio: this.myFormGroup.getRawValue().uRatio,
+          }
+          this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCoutDuDevis).subscribe()
+          this.myFormGroup.reset();
+          this.ngOnInit()
+
+        }
+      )
+      if (this.isChecked === false) {
+        this.coutService.create(this.cout).subscribe((res: any) => {
+
+          const ouvrageCout: OuvrageCout = {
+            OuvrageId: 0,
+            CoutId: res.cout.id,
+            ratio: this.myFormGroup.getRawValue().ratio,
+            uRatio: this.myFormGroup.getRawValue().uRatio,
+          }
+          this.ouvrageCoutService.createOuvrageCoutByDesignation(this.dataSharingService.ouvrage.id, ouvrageCout).subscribe()
+          this.myFormGroup.reset();
+          this.ngOnInit()
+        })
+
+      }
+    } else {
+      this.myFormGroup.controls["EntrepriseId"].setValue(this.dataShared.entrepriseId )
+      this.cout = this.myFormGroup.getRawValue();
+      this.cout.FournisseurId = this.myFormGroup.getRawValue().FournisseurId[2]
+      this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[2]
+
+      this.coutService.create(this.cout).subscribe((res: any) => {
+        const ouvrageCout: OuvrageCout = {
+          OuvrageId:this.ouvrageID,
+          CoutId: res.cout.id,
+          ratio: this.myFormGroup.getRawValue().ratio,
+          uRatio: this.myFormGroup.getRawValue().uRatio,
+        }
+        console.log("ouvrage cout dans le ELSE",ouvrageCout)
+        this.ouvrageCoutService.create(ouvrageCout).subscribe()
+        this.myFormGroup.reset();
+        this.ngOnInit()
+      })
+    }
+
+  }
+
+  //Recupere tous les type de couts pour implementer le select picker du template
+  getCategorieByType(type: string): void {
+    this.typeCoutService.getCategorieByType(type).subscribe(data => {
+      this.categories = data;
+
+      console.log(this.categories);
+    });
+  }
+  getUniteByEnteprise(id:number):void {
+    this.uniteForFormService.getUniteByEntreprise(id).subscribe(data=>{
+      this.uniteList=data
+      console.log(this.uniteList)
+    })
+  }
+
+  setValueURatio(){
+    const unite = this.myFormGroup.get('unite')?.value
+    this.myFormGroup.controls['uRatio'].setValue(`${unite}/h`)
+  }
 }

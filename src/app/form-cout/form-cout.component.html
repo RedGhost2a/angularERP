@@ -12,10 +12,21 @@
           Vous devez entrer une designation.
         </mat-error>
       </mat-form-field>
-      <mat-form-field appearance="legacy" id="input-unite" style="width: 80px">
+      <mat-form-field appearance="legacy">
         <mat-label>Unité</mat-label>
-        <input formControlName="unite" matInput placeholder="Ex: M2">
+        <select formControlName="unite"  matNativeControl required >
+          <option *ngFor="let unite of uniteList" value="{{unite.name}}"> {{unite.name}}</option>
+        </select>
         <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
+          Vous devez entrer une unité.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="legacy">
+        <mat-label>Unité Ratio</mat-label>
+        <input formControlName="uRatio" matInput placeholder="Ex: mètres/heures">
+
+        <mat-error *ngIf="this.myFormGroup.get('uRatio')?.hasError('required')">
           Vous devez entrer une unité.
         </mat-error>
       </mat-form-field>
