@@ -1,7 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
-import {Cout} from "../_models/cout";
 import {OuvrageService} from "../_service/ouvrage.service";
 import {CoutService} from "../_service/cout.service";
 import {CoutDuDevis} from "../_models/cout-du-devis";
@@ -44,7 +43,7 @@ export class DialogListCoutComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("ouvrage ", this.dataSharingService.ouvrage)
-     // this.dataSource = new MatTableDataSource(this.data);
+    // this.dataSource = new MatTableDataSource(this.data);
     // console.log(this.initialData)
   }
 
@@ -71,12 +70,13 @@ export class DialogListCoutComponent implements OnInit {
       // console.log(type)
       const designation = data.designation.toLowerCase();
       const categories = data.TypeCout.categorie.toLowerCase();
-      const valuesToSearch = [type, designation,categories];
+      const valuesToSearch = [type, designation, categories];
       return valuesToSearch.some(value => value.includes(searchText));
     };
     this.dataSource.filter = filterValue.trim().toLowerCase();
     console.log(this.dataSource.filter)
   }
+
   onCheck(idCout: number): void {
     if (this.selectedCoutIds.indexOf(idCout) !== -1) {
       this.selectedCoutIds.forEach((element, index) => {
@@ -114,7 +114,9 @@ export class DialogListCoutComponent implements OnInit {
                 uRatio: uRatio,
               }
               console.log("this ouvrage cout ", ouvrageCout)
-              this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCout).subscribe()
+              this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCout).subscribe(() => {
+                this.closeDialog();
+              })
             }
           )
 
@@ -126,7 +128,9 @@ export class DialogListCoutComponent implements OnInit {
             ratio: 1,
             uRatio: `${cout.unite}/${this.dataSharingService.ouvrage.unite}`,
           }
-          this.ouvrageCoutService.createOuvrageCoutByDesignation(this.dataSharingService.ouvrage.id, ouvrageCout).subscribe()
+          this.ouvrageCoutService.createOuvrageCoutByDesignation(this.dataSharingService.ouvrage.id, ouvrageCout).subscribe(() => {
+            this.closeDialog();
+          })
         }
       })
     })

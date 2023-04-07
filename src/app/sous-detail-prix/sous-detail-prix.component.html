@@ -21,7 +21,7 @@
             <div class="paramsSub">
               <mat-card-subtitle>Ratio</mat-card-subtitle>
               <div class="itemsParams">
-                <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 30px">
+                <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 80px">
                   <input type="number" (keyup.enter)="ratioOuvrageChange()" formControlName="ratioOuvrage" matInput
                          required
                          [placeholder]="this.currentOuvrage.ratio.toString()">
@@ -32,7 +32,7 @@
               <mat-card-subtitle>Quantité marché</mat-card-subtitle>
               <div class="itemsParams" *ngIf="this.currentOuvrage.SousLotOuvrage !== undefined">
                 <!--            <p>{{this.currentOuvrage.SousLotOuvrage?.quantityOuvrage}}</p>-->
-                <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 30px">
+                <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 80px">
                   <input (keyup.enter)="quantityChange()" formControlName="quantity" matInput required
                          [placeholder]="this.currentOuvrage.SousLotOuvrage.quantityOuvrage.toString()">
                 </mat-form-field>
