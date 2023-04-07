@@ -78,6 +78,7 @@ export class FormOuvrageComponent implements OnInit {
       }
       console.log("dans le if ", this.initialData)
       this.createOuvrageDuDevis();
+          this.closeDialog()
     }
   }
   checked(){

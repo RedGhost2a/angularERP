@@ -51,7 +51,7 @@
     <div>
       <mat-checkbox class="example-margin" (change)="checked()" [(ngModel)]="isChecked">Ajouter ce composant uniquement dans cet ouvrage et non dans la bibliotheque</mat-checkbox>
     </div>
-    <button  class='button' (click)="addCoutOuvrageDuDevis();closeDialog()" mat-raised-button color="primary" >Importer ce composant </button>
+    <button  class='button' (click)="addCoutOuvrageDuDevis()" mat-raised-button color="primary" >Importer ce composant </button>
 <!--    <button  class='button' (click)="addCoutOuvrageDuDevis();closeDialog()" mat-raised-button color="primary" [disabled]="selectedCoutIds.length === 0 ? true : false" [innerHTML]="selectedCoutIds.length > 1 ? 'Importer ces composants' : 'Importer ce composant'">Importer ce composant </button>-->
     <!--    <button  class='button' routerLink="/ouvrageDetail/{{ouvrageId}}" (click)="addCoutOuvrage()" mat-raised-button color="primary">Valider </button>-->
 

@@ -398,13 +398,7 @@ export class SousDetailPrixComponent implements OnInit {
       width: '90%',
       height: '70%'
     }).afterClosed().subscribe(async result => {
-      if (result) {
-        console.log("result ? list cout: ", result)
         this.ngOnInit()
-      } else {
-        console.log("afterClose else")
-      }
-      console.log("console")
 
     });
   }
@@ -498,6 +492,7 @@ export class SousDetailPrixComponent implements OnInit {
             CoutDuDeviId: responseCout?.id,
             ratio: this.myFormGroup.getRawValue().ratio,
             uRatio: this.myFormGroup.getRawValue().uRatio,
+            efficience: this.myFormGroup.getRawValue().efficience
           }
           this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCoutDuDevis).subscribe()
           this.myFormGroup.reset();

@@ -114,7 +114,9 @@ export class DialogListCoutComponent implements OnInit {
                 uRatio: uRatio,
               }
               console.log("this ouvrage cout ", ouvrageCout)
-              this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCout).subscribe()
+              this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCout).subscribe(()=>{
+                this.closeDialog()
+              })
             }
           )
 
@@ -126,7 +128,9 @@ export class DialogListCoutComponent implements OnInit {
             ratio: 1,
             uRatio: `${cout.unite}/${this.dataSharingService.ouvrage.unite}`,
           }
-          this.ouvrageCoutService.createOuvrageCoutByDesignation(this.dataSharingService.ouvrage.id, ouvrageCout).subscribe()
+          this.ouvrageCoutService.createOuvrageCoutByDesignation(this.dataSharingService.ouvrage.id, ouvrageCout).subscribe(()=>{
+            this.closeDialog()
+          })
         }
       })
     })
