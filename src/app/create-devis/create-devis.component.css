@@ -279,7 +279,7 @@
   width: 40px;
 }
 
-#designation-ouvrage {
+#designation-ouvrage-fraisDeChantier, #designation-ouvrage-devis {
   width: 400px;
   height: 190px;
 }

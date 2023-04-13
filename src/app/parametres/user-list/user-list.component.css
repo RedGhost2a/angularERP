@@ -8,6 +8,7 @@
 .container {
   display: flex;
   flex-direction: column;
+  padding: 20px;
 }
 
 .big-container {
@@ -62,9 +63,13 @@ mat-card-image {
   justify-content: space-between;
 }
 
-.btn {
+.menu {
   padding: 5px;
   margin: 0;
+}
+
+.btn {
+  margin: 0 5px;
 }
 
 /*# sourceMappingURL=user-list.component.css.map */
