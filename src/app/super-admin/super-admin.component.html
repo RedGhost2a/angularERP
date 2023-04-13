@@ -38,10 +38,42 @@
       </ng-template>
       <h3 class="bold">Liste des entreprises </h3>
       <div class="wrapper">
-        <div *ngFor="let entreprise of listEntreprise index as i"
-             [routerLink]="['/admin/entreprise/'+ entreprise.id]">
-          <button mat-stroked-button>{{entreprise.denomination|uppercase}}</button>
-        </div>
+        <table mat-table
+               [dataSource]="dataSourceEntreprise">
+
+          <ng-container matColumnDef="nEntreprise">
+            <th mat-header-cell *matHeaderCellDef>N°</th>
+            <td routerLink="/admin/entreprise/{{entreprise.id}}" mat-cell *matCellDef="let entreprise">{{entreprise.id}}</td>
+          </ng-container>
+          <ng-container matColumnDef="commercialName">
+            <th mat-header-cell *matHeaderCellDef>Nom commercial</th>
+            <td routerLink="/admin/entreprise/{{entreprise.id}}" mat-cell *matCellDef="let entreprise">{{entreprise.commercialName}}</td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="denomination">
+            <th mat-header-cell *matHeaderCellDef>Dénomination </th>
+            <td routerLink="/admin/entreprise/{{entreprise.id}}" mat-cell *matCellDef="let entreprise">{{entreprise.denomination}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="siret">
+            <th mat-header-cell *matHeaderCellDef> Siret</th>
+            <td routerLink="/admin/entreprise/{{entreprise.id}}" mat-cell
+                *matCellDef="let entreprise">{{entreprise.siret}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="phoneNumber">
+            <th mat-header-cell *matHeaderCellDef> Téléphone</th>
+            <td routerLink="/admin/entreprise/{{entreprise.id}}" mat-cell *matCellDef="let entreprise">{{entreprise.phoneNumber}} </td>
+          </ng-container>
+
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsEntreprise"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsEntreprise;">
+          </tr>
+
+        </table>
       </div>
     </mat-tab>
 

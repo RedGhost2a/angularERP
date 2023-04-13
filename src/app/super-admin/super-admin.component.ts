@@ -22,6 +22,7 @@ import {FournisseurService} from "../_service/fournisseur.service";
 import {ImportExcel} from "../_models/importExcel";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {DialogUniteForFormComponent} from "../dialog-unite-for-form/dialog-unite-for-form.component";
+import {Devis} from "../_models/devis";
 
 
 @Component({
@@ -41,6 +42,9 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
 
 
   listEntreprise !: Entreprise[];
+  dataSourceEntreprise = new MatTableDataSource<Entreprise>([]);
+  displayedColumnsEntreprise: string[] = ['nEntreprise', 'commercialName', 'denomination', 'siret', 'phoneNumber'];
+
   listUser !: User[];
   user!: string;
   devis: any;
@@ -126,6 +130,7 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
   getAll(): void {
     this.entrepriseService.getAll().subscribe((data: any) => {
         this.listEntreprise = data
+      this.dataSourceEntreprise = data;
         const nbDevisByCompany = this.listEntreprise.map((value: any, index) => {
           return value.Devis.length
         })

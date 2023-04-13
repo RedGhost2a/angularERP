@@ -1,4 +1,4 @@
-import {InjectionToken} from '@angular/core';
+import {InjectionToken, NgModule} from '@angular/core';
 
 export let TOASTR_TOKEN = new InjectionToken<Toastr>('toastr');
 
@@ -15,3 +15,5 @@ export interface Toastr {
   // @ts-ignore
   error(msg: string, title: string)
 }
+
+

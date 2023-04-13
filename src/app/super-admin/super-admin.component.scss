@@ -1,3 +1,19 @@
+table {
+  width: 90%;
+  margin-top: 30px;
+}
+.mat-row:hover{
+  background-color: #EEF9FF;
+  cursor: pointer;
+}
+th,td{
+  color: #334E68;
+  padding-right: 0px;
+}
+th.mat-header-cell:last-of-type, td.mat-cell:last-of-type, td.mat-footer-cell:last-of-type {
+  padding-right: 0;
+}
+
 .container {
   display: flex;
   flex-direction: column;

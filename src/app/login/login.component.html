@@ -22,12 +22,12 @@
       <mat-card-content>
         <mat-form-field appearance="outline" style="width: 300px;">
           <mat-label class="mat-label">Mot de passe</mat-label>
-          <input type="password" formControlName="password" matInput style=" height: 25px">
+          <input id="test" type="password" formControlName="password" matInput style=" height: 25px">
           <!--      <mat-icon matSuffix>password</mat-icon>-->
         </mat-form-field>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button color="primary" type="submit" (click)="onSubmit()">VALIDER</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="this.form.invalid ? true : false" (click)="onSubmit()">VALIDER</button>
       </mat-card-actions>
     </mat-card>
 

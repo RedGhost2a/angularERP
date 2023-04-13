@@ -199,6 +199,7 @@ export class CreateDevisComponent implements OnInit, AfterViewInit {
 
 
   ngOnDestroy() {
+    console.log('ngDestroy')
     let devisBDD: Devis
     devisBDD = this.devis;
     devisBDD.prixEquiHT += this.fraisDeChantier.prixEquiHT
