@@ -529,7 +529,7 @@ export class CreateDevisComponent implements OnInit, AfterViewInit {
 
   getSommeSousLot(sousLot: SousLot, lot: Lot) {
     this.sousLotOuvrageService.getSommeSousLot(sousLot.id).subscribe(data => {
-      // console.log("sousLot prix : ", sousLot.prix)
+      console.log("sousLot prix : ", sousLot.prix)
       sousLot.prix = data
       lot.prix = 0;
       for (let sub of lot.SousLots) {
@@ -701,6 +701,9 @@ export class CreateDevisComponent implements OnInit, AfterViewInit {
       this.getAllOuvrageExceptFraisDeChantier(data.EntrepriseId);
       this.getAllOuvrageFraisDeChantier(data.EntrepriseId)
       this.getSommeOuvrage()
+
+
+
       this.getSommeOuvrageFraisDeChantier()
 
       this.moyenneAleas()
@@ -791,7 +794,7 @@ export class CreateDevisComponent implements OnInit, AfterViewInit {
   }
 
   deleteOuvrageDuDevis(id: number): void {
-    this.ouvrageService.deleteOuvrageDuDevisByID(id).subscribe(() => {
+    this.ouvrageService.deleteOuvrageDuDevisByID(id).subscribe((res) => {
       this.success("Ouvrage effacer!")
       this.getAllLots()
       this.getLotFraisDeChantier()

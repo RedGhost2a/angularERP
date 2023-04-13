@@ -197,6 +197,7 @@ export class SousDetailPrixComponent implements OnInit {
 
   quantityChange() {
     console.log(this.formOuvrage.getRawValue().quantity)
+    console.log(this.currentOuvrage)
     if (this.formOuvrage.getRawValue().quantity !== null && this.currentOuvrage.SousLotOuvrage && this.currentOuvrage?.SousLotOuvrage.id) {
       this.currentOuvrage.SousLotOuvrage!.quantityOuvrage = this.formOuvrage.getRawValue().quantity
       this.sousLotOuvrageService.update(this.currentOuvrage.SousLotOuvrage.id, this.currentOuvrage.SousLotOuvrage).subscribe(() => {
@@ -341,17 +342,17 @@ export class SousDetailPrixComponent implements OnInit {
       console.log("TOTAL", this.totalDBS)
       if (this.currentOuvrage.SousLotOuvrage)
         this.dataSharingService.SetPrixOuvrage(this.totalDBS, this.currentOuvrage.SousLotOuvrage)
-      if (this.currentOuvrage.SousLotOuvrage?.id) {
-        this.sousLotOuvrageService.updatedPrice(this.currentOuvrage.SousLotOuvrage.id, this.totalDBS).subscribe((res) => {
-          console.log("response", res)
-        })
-      }
     }
     if (this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage && !this.currentOuvrage.CoutDuDevis?.length) {
       this.totalDBS.prixOuvrage = this.currentOuvrage.prix * this.currentOuvrage.SousLotOuvrage.quantityOuvrage
       this.dataSharingService.SetPrixOuvrage(this.totalDBS, this.currentOuvrage.SousLotOuvrage)
 
     }
+      if (this.currentOuvrage.SousLotOuvrage?.id) {
+        this.sousLotOuvrageService.updatedPrice(this.currentOuvrage.SousLotOuvrage.id, this.totalDBS).subscribe((res) => {
+          console.log("response", res)
+        })
+      }
   }
 
   prixEquilibreHTCout(): void {
