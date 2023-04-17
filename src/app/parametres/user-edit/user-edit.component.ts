@@ -85,8 +85,6 @@ export class UserEditComponent implements OnInit {
           return;
         }
 
-
-
         if (password !== confirmPassword) {
           this.toastr.error( "Erreur !","Les mots de passe ne correspondent pas.");
           return;

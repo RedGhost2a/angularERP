@@ -1,2 +1,71 @@
-<p>dashboard works!</p>
-<app-form-cout></app-form-cout>
+<div class="flex-row">
+  <mat-card class="facturation">
+    <mat-card-title  class="card-text">Facturation des chantiers</mat-card-title>
+    <mat-card-subtitle>MONTANT CA HT</mat-card-subtitle>
+    <mat-card-content>
+      <p class="card-text" >{{this.prixVenteHTCalculer}}€</p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="facturation">
+    <mat-card-title  class="card-text">Facturation des chantiers</mat-card-title>
+    <mat-card-subtitle>Total Frais</mat-card-subtitle>
+    <mat-card-content>
+      <p  class="card-text">{{this.fraisCalculer}}€</p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="facturation">
+    <mat-card-title  class="card-text">Moyenne des B & A</mat-card-title>
+    <mat-card-subtitle>Tout devis confondus</mat-card-subtitle>
+    <mat-card-content>
+      <p  class="card-text" >{{this.moyenneDeLaMoyenneBenefAleas|number}}%</p>
+    </mat-card-content>
+  </mat-card>
+
+</div>
+<div class="flex-row" >
+  <mat-card    style="width: 300px;background: #0c5593;margin-left: 30px">
+    <mat-card-content *ngIf="devis">
+      <h1  class="card-text" >Vos 5 derniers devis</h1>
+      <div class="devis-flex-row facturation " style="border: wheat 1px solid;border-radius: 6px; margin-top: 5px" *ngFor="let userDevis of devis.reverse().slice(0,5)" >
+        <mat-card-header >
+          <mat-card-title >{{userDevis.name | uppercase}}</mat-card-title>
+          <mat-card-subtitle class="devis-status">{{userDevis.status}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content c>
+          <p class="devis-row">Le: {{userDevis.createdAt | date}}</p>
+        <mat-icon [matMenuTriggerFor]="bouton" class="devis-icon" style="color: #D9E2EC">more_vert</mat-icon>
+
+        </mat-card-content> <mat-menu class="devis-menu" #bouton>
+        <button mat-button color="accent" [routerLink]="['/devisCreate', userDevis.id]" class="devis-menu-button">
+          Modifier ce devis
+        </button>
+        <br>
+        <button mat-button color="primary" [routerLink]="['/devisDetail', userDevis.id]" class="devis-menu-button">
+          Voir ce devis
+        </button>
+        <br>
+      </mat-menu>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+
+
+
+</div>
+<div class="chart-container " style="padding: 50px;width: 70%;margin: auto">
+  <canvas  id="MyChart" >{{ chart }}</canvas>
+</div>
+<!-- Utilisez une boucle ngFor pour itérer sur entrepriseData -->
+<!--<div *ngFor="let entreprise of entrepriseData">-->
+<!--  &lt;!&ndash; Appelez la méthode createChart() pour chaque entreprise &ndash;&gt;-->
+<!--  <h2>{{ entreprise.entreprise }}</h2>-->
+<!--  <canvas id="MyChart" width="400" height="200"></canvas>-->
+<!--  <button (click)="createChart(entreprise)">Créer le graphique</button>-->
+<!--</div>-->
+
+
+
+

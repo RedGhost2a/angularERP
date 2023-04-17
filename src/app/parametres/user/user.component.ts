@@ -8,6 +8,9 @@ import {EntrepriseService} from "../../_service/entreprise.service";
 import {Entreprise} from "../../_models/entreprise";
 import {DialogConfirmSuppComponent} from "../../dialog-confirm-supp/dialog-confirm-supp.component";
 import {MatDialog} from "@angular/material/dialog";
+import {MatTableDataSource} from "@angular/material/table";
+import {Devis} from "../../_models/devis";
+import {Client} from "../../_models/client";
 
 @Component({
   selector: 'app-user',
@@ -20,6 +23,8 @@ export class UserComponent implements OnInit {
   notes!: Notes[];
   userEntreprise!: Entreprise[];
   curentUser !: any;
+  displayedColumns: string[] = ['nDevis', 'nomDevis', 'dateDevis', 'status','prixVenteHT'];
+  dataSource = new MatTableDataSource<Devis>([]);
 
 
   constructor(private accountService: UserService,
@@ -61,7 +66,8 @@ export class UserComponent implements OnInit {
   getDevisByUser(id: any): void {
     this.devis = this.devisService.getDevisByUser(id).subscribe(data => {
       this.devis = data.Devis
-      console.log(this.devis)
+      this.dataSource = data.Devis;
+      console.log("Devis.....",this.devis)
 
     });
   }
@@ -70,13 +76,11 @@ export class UserComponent implements OnInit {
     this.notesService.getNoteByUser(id).subscribe(data => {
       this.notes = data
       // console.log(this.notes)
-
     });
   }
 
   deleteItem(id: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Appeler la fonction de suppression ici

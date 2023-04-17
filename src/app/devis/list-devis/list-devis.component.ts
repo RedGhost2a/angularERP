@@ -63,7 +63,7 @@ export class ListDevisComponent implements OnInit {
     if (this.userService.userValue.role === 'Super Admin'){
       this.devisService.getAll().subscribe(data => {
         this.dataSource.data = data;
-        console.log(data)
+        // console.log(data)
       })
     }else
     {
