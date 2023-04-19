@@ -10,10 +10,12 @@ import {environment} from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+
 export class UserService {
   private userSubject!: BehaviorSubject<User>;
-  public user !: Observable<User>;
+  private user !: Observable<User>;
   role !: any
+  // private user: any = null;
 
 
   constructor(
@@ -31,11 +33,18 @@ export class UserService {
     }
     this.user = this.userSubject.asObservable();
   }
+  // public static getInstance(): UserService {
+  //   if (!!UserService.instance) {
+  //     UserService.instance = new UserService( );
+  //   }
+  //   return UserService.instance;
+  // }
 
 
   public get userValue(): User {
     return this.userSubject.value;
   }
+
 
   login(email: string, password: string) {
     return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, {email, password})

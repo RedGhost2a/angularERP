@@ -64,13 +64,16 @@ export class FormCoutComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log(this.initialData)
+    console.log("67",this.initialData)
     this.createFormCout();
     transformVirguletoPoint()
     this.getUserById();
-    console.log(window.location.pathname)
-    if (this.regexSousDetail.test(window.location.pathname))
+    console.log("is cout ", this.isCout)
+    if (this.regexSousDetail.test(window.location.pathname) || this.regexOuvrageDetail.test(window.location.pathname)){
       this.isCout = false;
+      this.myFormGroup.addControl("uRatio", new FormControl())
+      console.log("dans le if ?")
+    }
     if (this.initialData !== null)
       this.generateFormUpdate();
   }
@@ -80,7 +83,6 @@ export class FormCoutComponent implements OnInit {
   //Determine si c'est l'ajout d'un nouveau cout ou la modification d'un cout existant au click
   createAndUpdate(): void {
     // console.log(this.myFormGroup.getRawValue())
-
     this.myFormGroup.markAllAsTouched();
     if (this.myFormGroup.invalid) {
       // Form is invalid, show error message
@@ -92,17 +94,19 @@ export class FormCoutComponent implements OnInit {
         this.closeDialog()
       });
     }
-    if (this.regexCout.test(window.location.pathname) || this.regexOuvrageDetail.test(window.location.pathname)) {
+    if (this.regexCout.test(window.location.pathname) ) {
+      console.log("form",this.myFormGroup.getRawValue())
       this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(()=>{
         this.closeDialog()
-
       });
     }
-    if (this.regexSousDetail.test(window.location.pathname)) {
-      this.coutService.updateCoutDuDevis(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(() => {
+    if (this.regexOuvrageDetail.test(window.location.pathname) || this.regexSousDetail.test(window.location.pathname)) {
+      console.log("form",this.myFormGroup.getRawValue())
+      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(()=>{
         this.closeDialog()
-      })
+      });
     }
+
   }
 
 
@@ -133,9 +137,9 @@ export class FormCoutComponent implements OnInit {
       type : new FormControl(),
       TypeCoutId: new FormControl(""),
       FournisseurId: new FormControl(""),
-      uRatio: new FormControl(""),
     });
   }
+
 
 
 //Recupere tous les type de couts pour implementer le select picker du template
@@ -172,7 +176,8 @@ export class FormCoutComponent implements OnInit {
     this.textForm = "La modification de ce composant va impacter les ouvrages de la bibliothèque de prix associés. Les devis déjà existants ne seront pas modifiés."
     this.textButton = "Modifier ce composant"
     console.log(this.initialData)
-     this.myFormGroup.controls["uRatio"].setValue(this.initialData.OuvrageCout.uRatio)
+    if(!this.isCout)
+      this.myFormGroup.controls["uRatio"].setValue(this.initialData.OuvrageCout.uRatio)
     this.myFormGroup.patchValue(this.initialData)
     this.getCategorieByType(this.initialData.TypeCout.type)
     this.myFormGroup.controls["type"].setValue(this.initialData.TypeCout.type)

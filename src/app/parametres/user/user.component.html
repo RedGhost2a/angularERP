@@ -7,6 +7,103 @@
 
     <mat-tab>
       <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">description</mat-icon>
+        Mes commentaires
+      </ng-template>
+
+
+      <div *ngIf="this.notes">
+        <h1>Liste de mes commentaires</h1>
+        <mat-card class="devis" *ngFor="let note of this.notes;" [style.background-color]="getColor(note)">
+          <div>
+            <h1 style="width: 20%">{{note.id|number}} </h1>
+          </div>
+
+          <mat-card-header class="devis_header" style="width: 50%">
+            <mat-card-title>{{note.title|uppercase}}</mat-card-title>
+            <mat-card-subtitle> {{note.typeError}} {{note?.optionsTypeError}}</mat-card-subtitle>
+            <mat-card-subtitle>Le: {{note.createdAt |date}}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content style="width: 50%">
+            <p class="devis-row">Sujet:  {{note.text|uppercase}}</p>
+            <mat-card-subtitle style="color: blue" *ngIf="note.resolution">Problème résolu! <br> Vous pouvez supprimer
+            </mat-card-subtitle>
+          </mat-card-content>
+          <mat-icon class="icon" style="color: blue" *ngIf="note.resolution" (click)="deleteItem(note.id)">delete
+          </mat-icon>
+          <mat-icon class="icon" style="color: blue" *ngIf="note.typeError==='Je souhaite créer une note !'"
+                    (click)="deleteItem(note.id)">delete
+          </mat-icon>
+
+        </mat-card>
+
+
+      </div>
+
+
+      <mat-card class="post-it">
+        <mat-card-content *ngFor="let note of this.notes;let i = index">
+          <!-- Your content goes here -->
+          <ul *ngIf="note.typeError === 'Je souhaite créer une note !'&& i<7">
+            <li>
+
+              {{note.title|uppercase}} {{note.text|uppercase}}
+            </li>
+
+          </ul>
+        </mat-card-content>
+      </mat-card>
+
+
+    </mat-tab>
+
+
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon class="example-tab-icon">inventory</mat-icon>
+        Mes Devis
+      </ng-template>
+      <div *ngIf="this.devis">
+        <h1>Liste des devis</h1>
+        <mat-card class="devis" *ngFor="let userDevis of this.devis">
+          <div>
+            <h1 style="width: 20%">{{userDevis.id|number}} </h1>
+          </div>
+          <mat-card-header class="devis_header">
+            <mat-card-title>{{userDevis.name|uppercase}}</mat-card-title>
+            <mat-card-subtitle> {{userDevis.status}}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content style="width: 50%">
+            <p class="devis-row">Intitulé:  {{userDevis.name|uppercase}}</p>
+            <p class="devis-row">Le: {{userDevis.createdAt |date}}</p>
+            <!--          <p class="devis-row">Le: {{userDevis.Client.firstName |date}}</p>-->
+          </mat-card-content>
+          <mat-icon [matMenuTriggerFor]="bouton" class="icon">more_vert</mat-icon>
+          <mat-menu class="menuBoutonSl" #bouton>
+
+            <button mat-button color="accent" [routerLink]="['/devisCreate', userDevis.id]">
+              Modifier ce devis
+            </button>
+            <br>
+            <button mat-button color="primary" [routerLink]="['/devisDetail', userDevis.id]">
+              Voir ce devis
+            </button>
+            <br>
+
+
+          </mat-menu>
+
+        </mat-card>
+      </div>
+
+
+    </mat-tab>
+
+
+    <mat-tab>
+      <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">account_circle</mat-icon>
         Mon compte
       </ng-template>
@@ -62,99 +159,9 @@
     </mat-tab>
 
 
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon">inventory</mat-icon>
-        Mes Devis
-      </ng-template>
-      <div *ngIf="this.devis">
-        <h1>Liste des devis</h1>
-        <mat-card class="devis" *ngFor="let userDevis of this.devis">
-          <div>
-            <h1 style="width: 20%">{{userDevis.id|number}} </h1>
-          </div>
-          <mat-card-header class="devis_header">
-            <mat-card-title>{{userDevis.name|uppercase}}</mat-card-title>
-            <mat-card-subtitle> {{userDevis.status}}</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content style="width: 50%">
-            <p class="devis-row">Intitulé:  {{userDevis.name|uppercase}}</p>
-            <p class="devis-row">Le: {{userDevis.createdAt |date}}</p>
-            <!--          <p class="devis-row">Le: {{userDevis.Client.firstName |date}}</p>-->
-          </mat-card-content>
-          <mat-icon [matMenuTriggerFor]="bouton" class="icon">more_vert</mat-icon>
-          <mat-menu class="menuBoutonSl" #bouton>
-
-            <button mat-button color="accent" [routerLink]="['/devisCreate', userDevis.id]">
-              Modifier ce devis
-            </button>
-            <br>
-            <button mat-button color="primary" [routerLink]="['/devisDetail', userDevis.id]">
-              Voir ce devis
-            </button>
-            <br>
 
 
-          </mat-menu>
 
-        </mat-card>
-      </div>
-
-
-    </mat-tab>
-
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <mat-icon class="example-tab-icon">description</mat-icon>
-        Mes commentaires
-      </ng-template>
-
-
-      <div *ngIf="this.notes">
-        <h1>Liste de mes commentaires</h1>
-        <mat-card class="devis" *ngFor="let note of this.notes;" [style.background-color]="getColor(note)">
-          <div>
-            <h1 style="width: 20%">{{note.id|number}} </h1>
-          </div>
-
-          <mat-card-header class="devis_header" style="width: 50%">
-            <mat-card-title>{{note.title|uppercase}}</mat-card-title>
-            <mat-card-subtitle> {{note.typeError}} {{note?.optionsTypeError}}</mat-card-subtitle>
-            <mat-card-subtitle>Le: {{note.createdAt |date}}</mat-card-subtitle>
-          </mat-card-header>
-
-          <mat-card-content style="width: 50%">
-            <p class="devis-row">Sujet:  {{note.text|uppercase}}</p>
-            <mat-card-subtitle style="color: blue" *ngIf="note.resolution">Problème résolu! <br> Vous pouvez supprimer
-            </mat-card-subtitle>
-          </mat-card-content>
-          <mat-icon class="icon" style="color: blue" *ngIf="note.resolution" (click)="deleteItem(note.id)">delete
-          </mat-icon>
-          <mat-icon class="icon" style="color: blue" *ngIf="note.typeError==='Je souhaite créer une note !'"
-                    (click)="deleteItem(note.id)">delete
-          </mat-icon>
-
-        </mat-card>
-
-
-      </div>
-
-
-      <mat-card class="post-it">
-        <mat-card-content *ngFor="let note of this.notes;let i = index">
-          <!-- Your content goes here -->
-          <ul *ngIf="note.typeError === 'Je souhaite créer une note !'&& i<7">
-            <li>
-
-              {{note.title|uppercase}} {{note.text|uppercase}}
-            </li>
-
-          </ul>
-        </mat-card-content>
-      </mat-card>
-
-
-    </mat-tab>
 
     <mat-tab>
       <ng-template mat-tab-label>

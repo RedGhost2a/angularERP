@@ -32,6 +32,7 @@ import {SousDetailPrixComponent} from "./sous-detail-prix/sous-detail-prix.compo
 import {LogsComponent} from "./logs/logs.component";
 import {FormOuvrageComponent} from "./form-ouvrage/form-ouvrage.component";
 import {AideComponent} from "./aide/aide.component";
+import {UserService} from "./_service/user.service";
 
 const routes: Routes = [
   {
@@ -157,7 +158,8 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers:[UserService]
 })
 export class AppRoutingModule {
 }
