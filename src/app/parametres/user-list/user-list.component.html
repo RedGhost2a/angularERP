@@ -2,15 +2,27 @@
 
 
   <h3 class="title"> Liste des utilisateurs</h3>
-  <div class="header">
 
 
-  </div>
+    <div class="header">
+      <mat-form-field>
+        <mat-label>Recherche d'un client</mat-label>
+        <div>
+
+        </div>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. cim..." #input>
+      </mat-form-field>
+      <div>
+        <button mat-raised-button color="primary" [routerLink]="'/users/new'">Ajouter un utilisateur</button>
+
+      </div>
+    </div>
   <div class="container">
 
-    <div class="btn">
-      <button mat-raised-button color="primary" [routerLink]="'/users/new'">Ajouter un utilisateur</button>
-    </div>
+
+
+
+
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
 
