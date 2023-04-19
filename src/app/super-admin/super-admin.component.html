@@ -12,19 +12,44 @@
       <h3 class="bold">Options d'administration</h3>
       <div class="wrapper">
 
-        <button mat-flat-button color="primary" [routerLink]="'/entreprises/new'">Ajouter une entreprise
-          <!--        <mat-icon>create</mat-icon>-->
-        </button>
-        <button mat-flat-button color="primary" [routerLink]="'/devis/'">Liste des devis
-          <!--        <mat-icon>list</mat-icon>-->
-        </button>
-        <button mat-flat-button color="primary" [routerLink]="'/users/new'">Ajouter un utilisateur
-          <!--        <mat-icon>create</mat-icon>-->
-        </button>
+        <div class="card">
 
-        <button mat-raised-button color="primary" (click)="openImportDialog()">Importer des données</button>
+          <div class="row">
+            <button class="btn" [routerLink]="'/entreprises/new'">
+              <mat-icon class="icn">add</mat-icon>
+            </button>
+            <p>Ajouter une entreprise</p>
+          </div>
 
-        <button mat-raised-button color="primary" (click)="openUniteForFormDialog()">Créer une unité</button>
+          <div class="row">
+            <button class="btn" [routerLink]="'/devis/'">
+              <mat-icon class="icn">list</mat-icon>
+            </button>
+            <p>Liste des devis</p>
+          </div>
+
+          <div class="row">
+            <button class="btn" [routerLink]="'/users/new'">
+              <mat-icon class="icn">create</mat-icon>
+            </button>
+            <p>Ajouter un utilisateur</p>
+          </div>
+
+          <div class="row">
+            <button class="btn" (click)="openImportDialog()">
+              <mat-icon class="icn"> import_export</mat-icon>
+            </button>
+            <p>Importer des données</p>
+          </div>
+
+          <div class="row">
+            <button class="btn"  (click)="openUniteForFormDialog()">
+              <mat-icon class="icn">playlist_add</mat-icon>
+            </button>
+            <p>Créer une unité</p>
+          </div>
+
+        </div>
 
 
       </div>
@@ -43,17 +68,20 @@
 
           <ng-container matColumnDef="nEntreprise">
             <th mat-header-cell *matHeaderCellDef>N°</th>
-            <td routerLink="/admin/entreprise/{{entreprise.id}}" mat-cell *matCellDef="let entreprise">{{entreprise.id}}</td>
+            <td routerLink="/admin/entreprise/{{entreprise.id}}" mat-cell
+                *matCellDef="let entreprise">{{entreprise.id}}</td>
           </ng-container>
           <ng-container matColumnDef="commercialName">
             <th mat-header-cell *matHeaderCellDef>Nom commercial</th>
-            <td routerLink="/admin/entreprise/{{entreprise.id}}" mat-cell *matCellDef="let entreprise">{{entreprise.commercialName}}</td>
+            <td routerLink="/admin/entreprise/{{entreprise.id}}" mat-cell
+                *matCellDef="let entreprise">{{entreprise.commercialName}}</td>
           </ng-container>
 
           <!-- Weight Column -->
           <ng-container matColumnDef="denomination">
-            <th mat-header-cell *matHeaderCellDef>Dénomination </th>
-            <td routerLink="/admin/entreprise/{{entreprise.id}}" mat-cell *matCellDef="let entreprise">{{entreprise.denomination}}</td>
+            <th mat-header-cell *matHeaderCellDef>Dénomination</th>
+            <td routerLink="/admin/entreprise/{{entreprise.id}}" mat-cell
+                *matCellDef="let entreprise">{{entreprise.denomination}}</td>
           </ng-container>
 
           <ng-container matColumnDef="siret">
@@ -64,9 +92,9 @@
 
           <ng-container matColumnDef="phoneNumber">
             <th mat-header-cell *matHeaderCellDef> Téléphone</th>
-            <td routerLink="/admin/entreprise/{{entreprise.id}}" mat-cell *matCellDef="let entreprise">{{entreprise.phoneNumber}} </td>
+            <td routerLink="/admin/entreprise/{{entreprise.id}}" mat-cell
+                *matCellDef="let entreprise">{{entreprise.phoneNumber}} </td>
           </ng-container>
-
 
 
           <tr mat-header-row *matHeaderRowDef="displayedColumnsEntreprise"></tr>
@@ -214,12 +242,14 @@
       <div class="wrapper-bis">
         <div class="flex-column">
 
-          <button class="btn" mat-raised-button color="primary" (click)="openImportDialog()">Importer des données
+          <button style="margin: 5px" mat-raised-button color="primary" (click)="openImportDialog()">Importer des
+            données
           </button>
-          <button class="btn" mat-raised-button color="primary">Exporter des données</button>
-          <button class="btn" mat-raised-button color="accent">Extraire types</button>
-          <button class="btn" mat-raised-button color="accent" (click)="uploadData()">Extraire composants</button>
-          <button class="btn" mat-raised-button color="accent">Extraire ouvrages</button>
+          <button style="margin: 5px" mat-raised-button color="primary">Exporter des données</button>
+          <button style="margin: 5px" mat-raised-button color="accent">Extraire types</button>
+          <button style="margin: 5px" mat-raised-button color="accent" (click)="uploadData()">Extraire composants
+          </button>
+          <button style="margin: 5px" mat-raised-button color="accent">Extraire ouvrages</button>
         </div>
 
         <table mat-table [dataSource]="importedFiles" style="width: 33%">

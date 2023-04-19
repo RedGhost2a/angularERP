@@ -28,6 +28,9 @@ export class UserListComponent implements OnInit {
   delete(id: any): void {
     this.userService.deleteByID(id).subscribe(() => this.ngOnInit())
   }
+  update(user: User, id: number): void {
+    this.userService.update(user, id).subscribe(() => this.ngOnInit())
+  }
 
   getAll(): void {
     this.userService.getAll().subscribe(data => {
