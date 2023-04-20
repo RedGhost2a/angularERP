@@ -50,6 +50,7 @@ export class UserComponent implements OnInit {
     const currentUser = this.user.id;
     this.accountService.getById(currentUser).subscribe(value => {
       this.curentUser = value;
+      console.log('currentUser',this.curentUser)
       const entreprises: Entreprise[] = []; // tableau pour stocker les entreprises
       for (let i = 0; i < this.curentUser.Entreprises.length; i++) {
         this.entrepriseService.getById(this.curentUser.Entreprises[i].UserEntreprise.EntrepriseId).subscribe(data => {

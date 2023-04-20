@@ -31,6 +31,10 @@ export class UserListComponent implements OnInit {
   update(user: User, id: number): void {
     this.userService.update(user, id).subscribe(() => this.ngOnInit())
   }
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
   getAll(): void {
     this.userService.getAll().subscribe(data => {

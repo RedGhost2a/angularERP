@@ -22,7 +22,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="legacy">
+      <mat-form-field appearance="legacy" *ngIf="!this.isCout">
         <mat-label>Unité Ratio</mat-label>
         <input formControlName="uRatio" matInput placeholder="Ex: mètres/heures">
 

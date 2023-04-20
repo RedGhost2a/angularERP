@@ -44,6 +44,7 @@ export class OuvrageAddCoutComponent implements OnInit {
 
 
   ngOnInit(): void {
+    console.log(this.initialData)
     this.route.params.subscribe(params =>{
       console.log("params",params)
       this.currentOuvrageId = +params['id']
@@ -72,6 +73,7 @@ export class OuvrageAddCoutComponent implements OnInit {
         OuvrageId: this.initialData.id,
         CoutId: cout,
         ratio: 1,
+        // uRatio: `${this.initialData.unite}`
       }
        this.ouvrageCoutService.create(this.ouvrageCout).subscribe()
     })
