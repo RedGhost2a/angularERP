@@ -1,3 +1,6 @@
+
+
+
 <div class="flex-row">
   <mat-card class="facturation">
     <mat-card-title  class="card-text">Facturation des chantiers</mat-card-title>
@@ -9,7 +12,7 @@
 
   <mat-card class="facturation">
     <mat-card-title  class="card-text">Facturation des chantiers</mat-card-title>
-    <mat-card-subtitle>Total Frais</mat-card-subtitle>
+    <mat-card-subtitle>DEBOURSE SEC TOTAL</mat-card-subtitle>
     <mat-card-content>
       <p  class="card-text">{{this.fraisCalculer}}€</p>
     </mat-card-content>
@@ -17,7 +20,7 @@
 
   <mat-card class="facturation">
     <mat-card-title  class="card-text">Moyenne des B & A</mat-card-title>
-    <mat-card-subtitle>Tout devis confondus</mat-card-subtitle>
+    <mat-card-subtitle>TOUT DEVIS CONFONDUS</mat-card-subtitle>
     <mat-card-content>
       <p  class="card-text" >{{this.moyenneDeLaMoyenneBenefAleas|number}}%</p>
     </mat-card-content>
@@ -33,7 +36,7 @@
           <mat-card-title >{{userDevis.name | uppercase}}</mat-card-title>
           <mat-card-subtitle class="devis-status">{{userDevis.status}}</mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content c>
+        <mat-card-content >
           <p class="devis-row">Le: {{userDevis.createdAt | date}}</p>
         <mat-icon [matMenuTriggerFor]="bouton" class="devis-icon" style="color: #D9E2EC">more_vert</mat-icon>
 
@@ -56,15 +59,14 @@
 
 </div>
 <div class="chart-container " style="padding: 50px;width: 70%;margin: auto">
+  <div *ngIf="this.user.role ==='Admin'">
+    <h1>{{this.denomination}}</h1>
+    <button (click)="prevEntreprise()"><</button>
+    <button (click)="nextEntreprise()">></button>
+  </div>
   <canvas  id="MyChart" >{{ chart }}</canvas>
 </div>
-<!-- Utilisez une boucle ngFor pour itérer sur entrepriseData -->
-<!--<div *ngFor="let entreprise of entrepriseData">-->
-<!--  &lt;!&ndash; Appelez la méthode createChart() pour chaque entreprise &ndash;&gt;-->
-<!--  <h2>{{ entreprise.entreprise }}</h2>-->
-<!--  <canvas id="MyChart" width="400" height="200"></canvas>-->
-<!--  <button (click)="createChart(entreprise)">Créer le graphique</button>-->
-<!--</div>-->
+
 
 
 

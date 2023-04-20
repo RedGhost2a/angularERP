@@ -9,6 +9,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {Cout} from "../_models/cout";
 import {FormOuvrageComponent} from "../form-ouvrage/form-ouvrage.component";
 import {MatTableDataSource} from "@angular/material/table";
+import {DialogUniteForFormComponent} from "../dialog-unite-for-form/dialog-unite-for-form.component";
 
 
 @Component({
@@ -39,7 +40,16 @@ export class ListOuvrageComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+  openUniteForFormDialog(): void {
+    const dialogRef = this.dialog.open(DialogUniteForFormComponent, {
+      width: '700px',
+      // data: { form: this.importForm }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
   getAll(entrepriseId: number): void {
     this.ouvrageService.getAll(entrepriseId).subscribe(data => {
       this.listOuvrage = data;
