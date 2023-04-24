@@ -19,9 +19,12 @@
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. bet..." #input>
       </mat-form-field>
       <div>
+        <button   (click)="openUniteForFormDialog()">
+          <mat-icon class="icn">playlist_add</mat-icon>
+        </button>
         <button (click)="openDialogCreate(null)" mat-raised-button color="primary">Ajouter un ouvrage</button>
-        <!--      <button routerLink="/cout" mat-raised-button color="primary">Ajouter un composant</button>-->
       </div>
+
     </div>
   </div>
 
