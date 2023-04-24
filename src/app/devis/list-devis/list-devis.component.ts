@@ -8,6 +8,8 @@ import {EditDevisComponent} from "../edit-devis/edit-devis.component";
 import {UserService} from "../../_service/user.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {da} from "date-fns/locale";
+import _default from "chart.js/dist/plugins/plugin.tooltip";
+import numbers = _default.defaults.animations.numbers;
 
 @Component({
   selector: 'app-list-devis',
@@ -18,12 +20,12 @@ export class ListDevisComponent implements OnInit {
   @Input() devis!: Devis;
   @Output() deleteDevis: EventEmitter<any> = new EventEmitter()
 
-  displayedColumns: string[] = ['nDevis', 'nomDevis', 'dateDevis', 'client', 'status', 'referent','prixVenteHT', 'boutons'];
+  displayedColumns: string[] = ['nDevis', 'nomDevis', 'dateDevis', 'client', 'status', 'referent', 'prixVenteHT', 'boutons'];
   // displayedColumns: string[] = ['Devis n°', 'Nom', 'Client', "Status", "Action"];
   clickedRows = new Set<Client>();
 
 
-  entrepriseID !: number;
+  entrepriseID: number[] = [];
   dataSource = new MatTableDataSource<Devis>([]);
 
   constructor(private devisService: DevisService,
@@ -57,28 +59,33 @@ export class ListDevisComponent implements OnInit {
   }
 
 
-
-
-  getDeviswithRole(){
-    if (this.userService.userValue.role === 'Super Admin'){
+  getDeviswithRole() {
+    if (this.userService.userValue.role === 'Super Admin') {
       this.devisService.getAll().subscribe(data => {
         this.dataSource.data = data;
         // console.log(data)
       })
-    }else
-    {
+    } else {
       this.userService.getById(this.userService.userValue.id).subscribe(data => {
         console.log(data)
-        this.entrepriseID = data.Entreprises[0].id
-        this.devisService.getDevisByEnterprise(this.entrepriseID).subscribe(data => {
-          this.dataSource.data = data.Devis;
-        })
+        this.entrepriseID = data.Entreprises.map((item: { id: any }) => item.id)
+        console.log("tabl", this.entrepriseID)
+        this.getDevisByEntreprise()
       })
+
 
     }
   }
 
+  getDevisByEntreprise() {
+    this.entrepriseID.forEach(entrepriseID => {
+      this.devisService.getDevisByEnterprise(entrepriseID).subscribe(data => {
+        this.dataSource.data = data.Devis;
+        console.log("console", this.dataSource.data)
+      })
 
+    })
+  }
 
   openDialogCreate() {
     this.dialog.open(EditDevisComponent, {
