@@ -151,11 +151,11 @@
             <div>
               <div class="ouvrage-frais-chantier" *ngIf="ouvrage.SousLotOuvrage">
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier">Id</span>
+                  <span class="designation-ouvrage-frais-chantier-td">Id</span>
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.id}}</span>
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier">Qte</span>
+                  <span class="designation-ouvrage-frais-chantier-td">Qte</span>
                   <mat-form-field appearance="legacy" [formGroup]="myFormGroup" id="quantity-ouvrage-frias-de-chantier">
                     <input type="number"  formControlName="quantityOuvrage" matInput required
                            [placeholder]="ouvrage.SousLotOuvrage.quantityOuvrage.toString()"
@@ -167,37 +167,37 @@
 
 
                 <div class="detail-ouvrage-frais-chantier"  id="designation-ouvrage-fraisDeChantier">
-                  <span class="designation-ouvrage-frais-chantier">Désignation</span>
+                  <span class="designation-ouvrage-frais-chantier-td">Désignation</span>
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.designation}}</span>
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier">Bénéfice</span>
+                  <span class="designation-ouvrage-frais-chantier-td">Bénéfice</span>
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.benefice}}</span>
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier">Aléas</span>
+                  <span class="designation-ouvrage-frais-chantier-td">Aléas</span>
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.aleas}}</span>
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier">Unité</span>
+                  <span class="designation-ouvrage-frais-chantier-td">Unité</span>
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.unite}}</span>
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier">U/Ratio</span>
+                  <span class="designation-ouvrage-frais-chantier-td">U/Ratio</span>
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.uRatio}}</span>
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier">Ratio</span>
+                  <span class="designation-ouvrage-frais-chantier-td">Ratio</span>
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.ratio}}</span>
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier">Total DS HT</span>
+                  <span class="designation-ouvrage-frais-chantier-td">Total DS HT</span>
                   <span
                     class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixOuvrage | number: '1.2-2'}}
                     €</span>
                 </div>
                 <div class="detail-ouvrage-frais-chantier" *ngIf="ouvrage.CoutDuDevis">
-                  <span class="designation-ouvrage-frais-chantier">PU DS HT</span>
+                  <span class="designation-ouvrage-frais-chantier-td">PU DS HT</span>
 <!--                  <span-->
 <!--                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniHT | number: '1.2-2'}}-->
 <!--                    €</span>-->
@@ -210,13 +210,13 @@
                     €</span>
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier">Prix Equilibre HT</span>
+                  <span class="designation-ouvrage-frais-chantier-td">Prix Equilibre HT</span>
                   <span
                     class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixEquiHT | number: '1.2-2'}}
                     €</span>
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier">Prix Calculé HT</span>
+                  <span class="designation-ouvrage-frais-chantier-td">Prix Calculé HT</span>
                   <span
                     class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixCalcHT | number: '1.2-2'}}
                     €</span>
@@ -242,7 +242,7 @@
 <!--                  &lt;!&ndash;                  </span>&ndash;&gt;-->
 <!--                </div>-->
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier">PU Vente HT </span>
+                  <span class="designation-ouvrage-frais-chantier-td">PU Vente HT </span>
                   <span
                     class="designation-ouvrage-frais-chantier">
                       <mat-form-field [formGroup]="myFormGroup" id="prix-arrondi-frais-chantier">
@@ -256,7 +256,7 @@
                   <!--                      €</span>-->
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier">Prix Vente HT</span>
+                  <span class="designation-ouvrage-frais-chantier-td">Prix Vente HT</span>
                   <span
                     class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixVenteHT | number: '1.2-2'}}
                     €</span>
@@ -448,11 +448,11 @@
               <div>
                 <div class="ouvrage-frais-chantier" *ngIf="ouvrage.SousLotOuvrage">
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier">Id</span>
+                    <span class="designation-ouvrage-frais-chantier-td">Id</span>
                     <span class="designation-ouvrage-frais-chantier">{{ouvrage.id}}</span>
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier">Qte</span>
+                    <span class="designation-ouvrage-frais-chantier-td">Qte</span>
                     <mat-form-field appearance="legacy" [formGroup]="myFormGroup" id="quantity-ouvrage-frias">
                       <input type="number"  formControlName="quantityOuvrage" matInput required
                              [placeholder]="ouvrage.SousLotOuvrage.quantityOuvrage.toString()"
@@ -463,27 +463,27 @@
 
 
                   <div class="detail-ouvrage-frais-chantier" id="designation-ouvrage-devis">
-                    <span class="designation-ouvrage-frais-chantier">Désignation</span>
+                    <span class="designation-ouvrage-frais-chantier-td">Désignation</span>
                     <span class="designation-ouvrage-frais-chantier">{{ouvrage.designation}}</span>
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier">Bénéfice</span>
+                    <span class="designation-ouvrage-frais-chantier-td">Bénéfice</span>
                     <span class="designation-ouvrage-frais-chantier">{{ouvrage.benefice}}</span>
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier">Aléas</span>
+                    <span class="designation-ouvrage-frais-chantier-td">Aléas</span>
                     <span class="designation-ouvrage-frais-chantier">{{ouvrage.aleas}}</span>
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier">Unité</span>
+                    <span class="designation-ouvrage-frais-chantier-td">Unité</span>
                     <span class="designation-ouvrage-frais-chantier">{{ouvrage.unite}}</span>
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier">U/Ratio</span>
+                    <span class="designation-ouvrage-frais-chantier-td">U/Ratio</span>
                     <span class="designation-ouvrage-frais-chantier">{{ouvrage.uRatio}}</span>
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier">Ratio</span>
+                    <span class="designation-ouvrage-frais-chantier-td">Ratio</span>
                     <span class="designation-ouvrage-frais-chantier">{{ouvrage.ratio}}</span>
                   </div>
 
@@ -491,14 +491,14 @@
 
 
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier">Total DS HT</span>
+                    <span class="designation-ouvrage-frais-chantier-td">Total DS HT</span>
                     <span
                       class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixOuvrage | number: '1.2-2'}}
                       €</span>
 
                   </div>
                   <div class="detail-ouvrage-frais-chantier" *ngIf="ouvrage.CoutDuDevis">
-                    <span class="designation-ouvrage-frais-chantier">PU DS HT </span>
+                    <span class="designation-ouvrage-frais-chantier-td">PU DS HT </span>
 
                     <span *ngIf="ouvrage.CoutDuDevis.length >= 1"
                       class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniHT | number: '1.2-2'}}
@@ -511,19 +511,19 @@
 
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier">Prix Equilibre HT</span>
+                    <span class="designation-ouvrage-frais-chantier-td">Prix Equilibre HT</span>
                     <span
                       class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixEquiHT | number: '1.2-2'}}
                       €</span>
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier">Prix Calculé HT</span>
+                    <span class="designation-ouvrage-frais-chantier-td">Prix Calculé HT</span>
                     <span
                       class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixCalcHT | number: '1.2-2'}}
                       €</span>
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier">PU Vente HT </span>
+                    <span class="designation-ouvrage-frais-chantier-td">PU Vente HT </span>
                     <span
                       class="designation-ouvrage-frais-chantier">
                       <mat-form-field [formGroup]="myFormGroup" id="prix-arrondi-devis">
@@ -537,7 +537,7 @@
                     <!--                      €</span>-->
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier">Prix Vente HT</span>
+                    <span class="designation-ouvrage-frais-chantier-td">Prix Vente HT</span>
                     <span
                       class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixVenteHT | number: '1.2-2'}}
                       €</span>

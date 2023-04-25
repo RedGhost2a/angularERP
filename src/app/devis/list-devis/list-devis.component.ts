@@ -18,12 +18,12 @@ export class ListDevisComponent implements OnInit {
   @Input() devis!: Devis;
   @Output() deleteDevis: EventEmitter<any> = new EventEmitter()
 
-  displayedColumns: string[] = ['nDevis', 'nomDevis', 'dateDevis', 'client', 'status', 'referent','prixVenteHT', 'boutons'];
+  displayedColumns: string[] = ['nDevis', 'nomDevis', 'dateDevis', 'client', 'status', 'referent', 'prixVenteHT', 'boutons'];
   // displayedColumns: string[] = ['Devis n°', 'Nom', 'Client', "Status", "Action"];
   clickedRows = new Set<Client>();
 
 
-  entrepriseID !: number;
+  entrepriseID: number[] = [];
   dataSource = new MatTableDataSource<Devis>([]);
 
   constructor(private devisService: DevisService,
@@ -78,8 +78,8 @@ export class ListDevisComponent implements OnInit {
   }
 
 
-  getDeviswithRole(){
-    if (this.userService.userValue.role === 'Super Admin'){
+  getDeviswithRole() {
+    if (this.userService.userValue.role === 'Super Admin') {
       this.devisService.getAll().subscribe(data => {
         this.dataSource.data = data;
          console.log(data)
@@ -88,13 +88,23 @@ export class ListDevisComponent implements OnInit {
     {
       this.userService.getById(this.userService.userValue.id).subscribe(data => {
         console.log(data)
-        this.entrepriseID = data.Entreprises[0].id
-        this.devisService.getDevisByEnterprise(this.entrepriseID).subscribe(data => {
-          this.dataSource.data = data.Devis;
-        })
+        this.entrepriseID = data.Entreprises.map((item: { id: any }) => item.id)
+        console.log("tabl", this.entrepriseID)
+        this.getDevisByEntreprise()
       })
 
+
     }
+  }
+
+  getDevisByEntreprise() {
+    this.entrepriseID.forEach(entrepriseID => {
+      this.devisService.getDevisByEnterprise(entrepriseID).subscribe(data => {
+        this.dataSource.data = data.Devis;
+        console.log("console", this.dataSource.data)
+      })
+
+    })
   }
 
 
