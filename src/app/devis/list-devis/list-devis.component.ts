@@ -51,19 +51,38 @@ export class ListDevisComponent implements OnInit {
     });
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    this.dataSource.filter = filterValue;
+  // applyFilter(event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+  //   this.dataSource.filter = filterValue;
+  // }
+
+  private getFilterPredicate(): (data: any, filter: string) => boolean {
+    return (data: any, filter: string) => {
+      const searchText = filter.trim().toLowerCase();
+      const client = data.Client.denomination.toLowerCase();
+      const name = data.name.toLowerCase();
+      const date = data.createdAt.toLowerCase();
+      const status = data.status.toLowerCase();
+       const referentFN = data.Users[0].firstName.toLowerCase();
+       const referentLN = data.Users[0].lastName.toLowerCase();
+      const valuesToSearch = [client, name,date,
+        status,referentFN,referentLN];
+      return valuesToSearch.some(value => value.includes(searchText));
+    };
   }
 
-
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSource.filterPredicate = this.getFilterPredicate();
+  }
 
 
   getDeviswithRole(){
     if (this.userService.userValue.role === 'Super Admin'){
       this.devisService.getAll().subscribe(data => {
         this.dataSource.data = data;
-        // console.log(data)
+         console.log(data)
       })
     }else
     {

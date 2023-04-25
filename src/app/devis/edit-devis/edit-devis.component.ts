@@ -34,6 +34,7 @@ export class EditDevisComponent implements OnInit {
   textButton = "Créer ce devis";
   curentUserEntreprise!: any[];
   userEntreprise!: any[];
+  clientId!: number;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Devis,
               private dialogRef: MatDialogRef<DialogComponent>,
@@ -58,17 +59,24 @@ export class EditDevisComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.getAllEntreprise()
     this.createFormDevis()
     this.getEnterpriseByUser()
   }
 
   createFormDevis(): void {
+    const currentUrl = this.router.url;
+    if (currentUrl.includes('clients')) {
+      this.clientId = this.data.ClientId;
+      console.log(this.clientId)
+    }
+
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
       name: new FormControl("", Validators.required),
       status: new FormControl({ value: 'Initialisation', disabled: true }, Validators.required),
-      ClientId: new FormControl("", Validators.required),
+      ClientId: new FormControl(this.clientId, Validators.required),
       EntrepriseId: new FormControl("", Validators.required),
       UserId: new FormControl(this.userId),
       percentFraisGeneraux: new FormControl(20),
@@ -86,6 +94,7 @@ export class EditDevisComponent implements OnInit {
       prixCalcHT: new FormControl(0),
       prixVenteHT: new FormControl(0),
       beneficeAleasTotal: new FormControl(0),
+      validityTime: new FormControl(90),
     });
   }
 
@@ -110,7 +119,8 @@ export class EditDevisComponent implements OnInit {
   }
 
   createDevis(): void {
-    // console.log(this.myFormGroup.getRawValue());
+
+     console.log(this.myFormGroup.getRawValue());
     this.myFormGroup.markAllAsTouched();
     if (this.myFormGroup.invalid) {
       // Form is invalid, show error message

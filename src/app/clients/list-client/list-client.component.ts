@@ -8,6 +8,7 @@ import {EditComponent} from "../edit/edit.component";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {User} from "../../_models/users";
 import {UserService} from "../../_service/user.service";
+import {EditDevisComponent} from "../../devis/edit-devis/edit-devis.component";
 
 @Component({
   selector: 'app-list-client',
@@ -55,12 +56,24 @@ export class ListClientComponent implements OnInit {
 
   deleteItem(id: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Appeler la fonction de suppression ici
         this.clientService.deleteByID(id).subscribe((() => this.ngOnInit()))
       }
+    });
+  }
+
+  //creer devis pour le client
+
+  openDialogCreateDevis(ClientId: string) {
+    this.dialog.open(EditDevisComponent, {
+      width: '70%',
+      height: '37%',
+      data: {ClientId: ClientId}
+    }).afterClosed().subscribe(async result => {
+      this.ngOnInit()
+
     });
   }
 

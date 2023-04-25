@@ -41,19 +41,7 @@
       </mat-form-field>
 
 
-<!--      <mat-form-field appearance="legacy">-->
-<!--        <mat-label>Status</mat-label>-->
-<!--        <select formControlName="status" matNativeControl value="Initialisation" [disabled]="true" >-->
 
-<!--          <option value="Initialisation">Initialisation</option>-->
-<!--&lt;!&ndash;          <option value="Extraction">Bon pour extraction</option>&ndash;&gt;-->
-<!--&lt;!&ndash;          <option value="Facturation">Facturation</option>&ndash;&gt;-->
-<!--&lt;!&ndash;          <option value="Cloturer">Cloturer</option>&ndash;&gt;-->
-<!--        </select>-->
-<!--        <mat-error *ngIf="this.myFormGroup.get('status')?.hasError('required')">-->
-<!--          Vous devez choisir un status.-->
-<!--        </mat-error>-->
-<!--      </mat-form-field>-->
 
       <mat-form-field appearance="legacy">
         <mat-label>Status</mat-label>
@@ -61,6 +49,12 @@
         <mat-error *ngIf="this.myFormGroup.get('status')?.hasError('required')">
           Vous devez choisir un status.
         </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="legacy">
+        <mat-label>Durée de validité</mat-label>
+        <input formControlName="validityTime" matInput   >
+
       </mat-form-field>
 
     </div>

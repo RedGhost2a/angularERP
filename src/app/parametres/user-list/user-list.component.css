@@ -4,11 +4,23 @@
   justify-content: space-between;
   align-items: center;
 }
+.header :first-child {
+  margin-left: 5%;
+}
+.header :last-child {
+  margin-right: 5.5%;
+}
+
+table {
+  width: 90%;
+  margin-top: 30px;
+}
 
 .container {
   display: flex;
   flex-direction: column;
   padding: 20px;
+  align-items: center;
 }
 
 .big-container {

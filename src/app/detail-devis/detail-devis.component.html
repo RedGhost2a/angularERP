@@ -73,13 +73,18 @@
                 </mat-card-subtitle>
                 <p>{{devis.createdAt |date:'dd/MM/yyyy '}}</p>
               </div>
+
+              <div class="detail">
+                <mat-card-subtitle class="subTitle">Durée validité</mat-card-subtitle>
+                <mat-form-field>
+                  <input matInput [(ngModel)]="validityTime"
+                         (ngModelChange)="updateValidityDevis()">
+                </mat-form-field>
+                <mat-card-subtitle>Reste {{this.jourRestant}} jours</mat-card-subtitle>
+              </div>
               <div class="detail" style="color: red">
                 <mat-card-subtitle class="subTitle">Date fin du devis</mat-card-subtitle>
                 <p>{{this.jourFinDevis}}</p>
-              </div>
-              <div class="detail">
-                <mat-card-subtitle class="subTitle">Durée validité</mat-card-subtitle>
-                <p>{{this.jourRestant}} jours</p>
               </div>
 
             </div>
