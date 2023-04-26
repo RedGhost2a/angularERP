@@ -1,5 +1,6 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {EditComponent} from "../../clients/edit/edit.component";
 import {DevisService} from "../../_service/devis.service";
 import {ClientService} from "../../_service/client.service";
 import {Client} from "../../_models/client";
@@ -8,9 +9,11 @@ import {EntrepriseService} from 'src/app/_service/entreprise.service';
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../_service/user.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../../dialogListOuvrage/dialog.component";
 import {Devis} from "../../_models/devis";
+import {map, Observable, startWith} from "rxjs";
+import {da} from "date-fns/locale";
 
 @Component({
   selector: 'app-edit-devis',
@@ -34,6 +37,8 @@ export class EditDevisComponent implements OnInit {
   textButton = "Créer ce devis";
   curentUserEntreprise!: any[];
   userEntreprise!: any[];
+  filteredOptions!: Observable<string[]>;
+  options: string[] = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Devis,
               private dialogRef: MatDialogRef<DialogComponent>,
@@ -58,16 +63,27 @@ export class EditDevisComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.getAllEntreprise()
     this.createFormDevis()
     this.getEnterpriseByUser()
   }
 
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    console.log(this.options.filter(option => option.toLowerCase().includes(filterValue)))
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  clientSelected(){
+    console.log(this.myFormGroup.get('ClientId'))
+  }
   createFormDevis(): void {
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
       name: new FormControl("", Validators.required),
-      status: new FormControl({ value: 'Initialisation', disabled: true }, Validators.required),
+      status: new FormControl({value: 'Initialisation', disabled: true}, Validators.required),
       ClientId: new FormControl("", Validators.required),
       EntrepriseId: new FormControl("", Validators.required),
       UserId: new FormControl(this.userId),
@@ -93,8 +109,26 @@ export class EditDevisComponent implements OnInit {
   //   return this.myFormGroup.controls;
   // }
 
-  getAllClient(entrepriseId:number): void {
-    this.clientService.getAllByEntreprise(entrepriseId).subscribe((data:any) => this.listClient = data)
+  getAllClient(entrepriseId: number): void {
+    this.clientService.getAllByEntreprise(entrepriseId).subscribe((data: any) => {
+      this.listClient = data
+      data.forEach((client:any)=>{
+        this.options.push(client.denomination)
+      })
+      // console.log('deno ?',data)
+      this.filterClient()
+    })
+  }
+
+  filterClient() {
+    console.log('option', this.options)
+
+    // @ts-ignore
+    this.filteredOptions = this.myFormGroup.get('ClientId').valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
+    console.log('filter',this.filteredOptions)
   }
 
   getAllEntreprise(): void {
@@ -117,7 +151,11 @@ export class EditDevisComponent implements OnInit {
       this.toastr.error("Le formulaire est invalide.", "Erreur !");
       return;
     }
-
+    console.log(this.myFormGroup.get('ClientId'))
+    this.clientService.getByDenomination(this.myFormGroup.get('ClientId')?.value).subscribe((data:any) =>{
+      console.log(data)
+      // this.myFormGroup.controls['uRatio'].setValue(`${unite}/h`)
+    this.myFormGroup.controls['ClientId'].setValue(data[0].id)
     this.devisService.create(this.myFormGroup.getRawValue())
       .subscribe(
         () => {
@@ -133,6 +171,7 @@ export class EditDevisComponent implements OnInit {
           this.toastr.error("Une erreur est survenue lors de la création du devis.", "Erreur !");
         }
       );
+    })
   }
 
 
@@ -140,6 +179,8 @@ export class EditDevisComponent implements OnInit {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
     this.dialogRef.close();
   }
+
+
 
   getEnterpriseByUser(): any {
     const currentUser = this.userService.userValue.id;

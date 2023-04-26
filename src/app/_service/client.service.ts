@@ -29,6 +29,13 @@ export class ClientService {
       }
     });
   }
+  getByDenomination(denomination:any){
+    return this.http.get(`${environment.apiUrl}/clients/by/denomination`, {
+      params: {
+        denomination: denomination
+      }
+    });
+  }
 
 
   getAll(): Observable<any> {

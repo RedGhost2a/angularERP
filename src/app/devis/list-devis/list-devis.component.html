@@ -14,7 +14,8 @@
         </div>
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. cim..." #input>
       </mat-form-field>
-      <div>
+      <div class="buttons">
+        <button (click)="openDialogCreateClient()" mat-stroked-button color="primary">Creer un client</button>
         <button (click)="openDialogCreate()" mat-raised-button color="primary">Creer un devis</button>
         <!--      <button routerLink="/cout" mat-raised-button color="primary">Ajouter un composant</button>-->
       </div>
@@ -34,6 +35,11 @@
       </ng-container>
 
       <!-- Weight Column -->
+      <ng-container matColumnDef="client">
+        <th mat-header-cell *matHeaderCellDef> Client</th>
+        <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.Client.denomination}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="nomDevis">
         <th mat-header-cell *matHeaderCellDef>Nom du devis</th>
         <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.name}}</td>
@@ -45,10 +51,6 @@
             *matCellDef="let devis">{{devis.createdAt | date:'dd/MM/YYYY'}}</td>
       </ng-container>
 
-      <ng-container matColumnDef="client">
-        <th mat-header-cell *matHeaderCellDef> Client</th>
-        <td routerLink="/devisDetail/{{devis.id}}" mat-cell *matCellDef="let devis">{{devis.Client.denomination}} </td>
-      </ng-container>
 
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef>Status</th>

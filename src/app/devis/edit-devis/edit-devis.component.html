@@ -4,8 +4,38 @@
     <p>{{textForm}}</p>
     <div class="inputs">
 
+
+<!--      <mat-form-field appearance="legacy">-->
+<!--        <mat-label>Client</mat-label>-->
+<!--        <mat-select formControlName="ClientId">-->
+<!--          <mat-option [value]=+client.id *ngFor="let client of listClient">-->
+<!--            {{ client.firstName && client.lastName ? client.firstName + ' ' + client.lastName : client.denomination }}-->
+<!--          </mat-option>-->
+<!--        </mat-select>-->
+
+<!--      </mat-form-field>-->
+
+      <mat-form-field class="example-full-width" appearance="legacy">
+        <mat-label>Client</mat-label>
+        <input type="text"
+               placeholder="Rechercher un client"
+               aria-label="Number"
+               matInput
+               formControlName="ClientId"
+               [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option" >
+            {{option}}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="this.myFormGroup.get('ClientId')?.hasError('required')">
+          Vous devez choisir un client.
+        </mat-error>
+      </mat-form-field>
+
+
       <mat-form-field appearance="legacy">
-        <mat-label>Nom</mat-label>
+        <mat-label>Nom du devis</mat-label>
         <input formControlName="name" matInput placeholder="Ex: Devis toiture">
         <mat-error *ngIf="this.myFormGroup.get('name')?.hasError('required')">
           Vous devez choisir un nom.
@@ -16,18 +46,7 @@
         <!--      </div>-->
       </mat-form-field>
 
-      <mat-form-field appearance="legacy">
-        <mat-label>Client</mat-label>
-        <mat-select formControlName="ClientId">
-          <mat-option [value]=+client.id *ngFor="let client of listClient">
-            {{ client.firstName && client.lastName ? client.firstName + ' ' + client.lastName : client.denomination }}
-          </mat-option>
-        </mat-select>
 
-        <mat-error *ngIf="this.myFormGroup.get('ClientId')?.hasError('required')">
-          Vous devez choisir un client.
-        </mat-error>
-      </mat-form-field>
 
       <mat-form-field appearance="legacy">
         <mat-label>Entreprise</mat-label>

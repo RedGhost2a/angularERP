@@ -7,9 +7,10 @@ import {MatDialog} from "@angular/material/dialog";
 import {EditDevisComponent} from "../edit-devis/edit-devis.component";
 import {UserService} from "../../_service/user.service";
 import {MatTableDataSource} from "@angular/material/table";
-import {da} from "date-fns/locale";
+import {da, de} from "date-fns/locale";
 import _default from "chart.js/dist/plugins/plugin.tooltip";
 import numbers = _default.defaults.animations.numbers;
+import {EditComponent} from "../../clients/edit/edit.component";
 
 @Component({
   selector: 'app-list-devis',
@@ -20,7 +21,7 @@ export class ListDevisComponent implements OnInit {
   @Input() devis!: Devis;
   @Output() deleteDevis: EventEmitter<any> = new EventEmitter()
 
-  displayedColumns: string[] = ['nDevis', 'nomDevis', 'dateDevis', 'client', 'status', 'referent', 'prixVenteHT', 'boutons'];
+  displayedColumns: string[] = ['nDevis','client', 'nomDevis', 'dateDevis',  'status', 'referent', 'prixVenteHT', 'boutons'];
   // displayedColumns: string[] = ['Devis n°', 'Nom', 'Client', "Status", "Action"];
   clickedRows = new Set<Client>();
 
@@ -80,8 +81,9 @@ export class ListDevisComponent implements OnInit {
   getDevisByEntreprise() {
     this.entrepriseID.forEach(entrepriseID => {
       this.devisService.getDevisByEnterprise(entrepriseID).subscribe(data => {
-        this.dataSource.data = data.Devis;
-        console.log("console", this.dataSource.data)
+        console.log("devis ", data)
+        this.dataSource.data = data.Devis
+        console.log(this.dataSource)
       })
 
     })
@@ -91,6 +93,15 @@ export class ListDevisComponent implements OnInit {
     this.dialog.open(EditDevisComponent, {
       width: '70%',
       height: '37%'
+    }).afterClosed().subscribe(async result => {
+      this.ngOnInit()
+
+    });
+  }
+  openDialogCreateClient() {
+    this.dialog.open(EditComponent, {
+      width: '90%',
+      height: '80%'
     }).afterClosed().subscribe(async result => {
       this.ngOnInit()
 

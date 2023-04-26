@@ -27,12 +27,12 @@
            class="mat-elevation-z8">
             <ng-container matColumnDef="lastname">
               <th mat-header-cell *matHeaderCellDef>Nom</th>
-              <td mat-cell *matCellDef="let client">{{client.lastName}}</td>
+              <td mat-cell *matCellDef="let client">{{client.firstName}}</td>
             </ng-container>
 
             <ng-container matColumnDef="firstname">
               <th mat-header-cell *matHeaderCellDef>Prénom</th>
-              <td mat-cell *matCellDef="let client">{{client.firstName}}</td>
+              <td mat-cell *matCellDef="let client">{{client.lastName}}</td>
             </ng-container>
 
             <ng-container matColumnDef="adresse">

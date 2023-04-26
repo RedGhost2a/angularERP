@@ -9,6 +9,17 @@
 
     <!--    <form class="form" [formGroup]="myFormGroup">-->
     <div class="inputs">
+
+
+      <mat-form-field appearance="legacy" id="input-categorie">
+        <mat-label>Catégorie</mat-label>
+        <select formControlName="type" matNativeControl required>
+          <option value="Particulier">Particulier</option>
+          <option value="Professionel">Professionel</option>
+          <option value="Etat">État</option>
+          <option value="Collectivité">Collectivité</option>
+        </select>
+      </mat-form-field>
       <div class="input">
         <mat-form-field appearance="legacy" id="input-denomination">
           <mat-label>Dénomination</mat-label>
@@ -19,16 +30,7 @@
         </mat-form-field>
 
       </div>
-
-      <mat-form-field appearance="legacy" id="input-categorie">
-        <mat-label>Catégorie</mat-label>
-        <select formControlName="type" matNativeControl required>
-          <option value="Particulier">Particulier</option>
-          <option value="Professionel">Professionel</option>
-          <option value="Commune">Commune</option>
-          <option value="Collectivité">Collectivité</option>
-        </select>
-      </mat-form-field>
+      <div></div>
 
       <mat-form-field
         *ngIf="myFormGroup.controls['type'].getRawValue() === 'Professionel' || myFormGroup.controls['type'].getRawValue() === 'Collectivité' || myFormGroup.controls['type'].getRawValue() === 'Commune'"

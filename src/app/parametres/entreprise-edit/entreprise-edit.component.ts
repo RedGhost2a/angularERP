@@ -46,19 +46,20 @@ export class EntrepriseEditComponent implements OnInit {
   createFormEntreprise(){
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
-      commercialName: new FormControl('', ),
+      commercialName: new FormControl('', [Validators.required]),
       denomination: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      formeJuridique: new FormControl('', ),
-      capital: new FormControl('', ),
-      rcs: new FormControl('', ),
-      siret: new FormControl('', ),
-      nafCode: new FormControl(""),
-      phoneNumber:new FormControl('', [Validators.required]),
+      formeJuridique: new FormControl('',[Validators.required] ),
+      capital: new FormControl('',[Validators.required] ),
+      rcs: new FormControl('',[Validators.required] ),
+      siret: new FormControl('', [Validators.required]),
+      nafCode: new FormControl("",[Validators.required]),
+      phoneNumber:new FormControl('', ),
+      tvaNumber:new FormControl(''),
       Adresse: new FormGroup({
         adresses: new FormControl('', [Validators.required]),
         city: new FormControl('',[Validators.required] ),
-        country: new FormControl('', ),
-        zipcode: new FormControl('', ),
+        country: new FormControl('',[Validators.required] ),
+        zipcode: new FormControl('', [Validators.required]),
       })
     });
   }
@@ -114,46 +115,46 @@ export class EntrepriseEditComponent implements OnInit {
         this.textButton = 'Modifier la société'
         this.entepriseService.getById(entrepriseID).subscribe(data => {
           // Assuming res has a structure like:
-          data = {
-            id: data.id,
-            commercialName: data.commercialName,
-            denomination: data.denomination,
-            formeJuridique: data.formeJuridique,
-            capital: data.capital,
-            rcs: data.rcs,
-            siret: data.siret,
-            nafCode: data.nafCode,
-            tvaNumber: data.tvaNumber,
-            adresses: data.adresses,
-            zipcode: data.zipcode,
-            city: data.city,
-            country: data.country,
-            email: data.email,
-            phoneNumber: data.phoneNumber,
-          }
+          // data = {
+          //   id: data.id,
+          //   commercialName: data.commercialName,
+          //   denomination: data.denomination,
+          //   formeJuridique: data.formeJuridique,
+          //   capital: data.capital,
+          //   rcs: data.rcs,
+          //   siret: data.siret,
+          //   nafCode: data.nafCode,
+          //   tvaNumber: data.tvaNumber,
+          //   adresses: data.adresses,
+          //   zipcode: data.zipcode,
+          //   city: data.city,
+          //   country: data.country,
+          //   email: data.email,
+          //   phoneNumber: data.phoneNumber,
+          // }
 
           this.myFormGroup.patchValue(data);
           console.log("data :  ",data)
         });
       } else {
         this.textButton = 'Créer une nouvelle entreprise'
-        this.formBuilder.group({
-          id: [],
-          commercialName: [],
-          denomination: [],
-          formeJuridique: [],
-          capital: [],
-          rcs: [],
-          siret: [],
-          nafCode: [],
-          tvaNumber: [],
-          adresses: [],
-          zipcode: [],
-          city: [],
-          country: [],
-          email: [],
-          phoneNumber: [],
-        });
+        // this.formBuilder.group({
+        //   id: [],
+        //   commercialName: [],
+        //   denomination: [],
+        //   formeJuridique: [],
+        //   capital: [],
+        //   rcs: [],
+        //   siret: [],
+        //   nafCode: [],
+        //   tvaNumber: [],
+        //   adresses: [],
+        //   zipcode: [],
+        //   city: [],
+        //   country: [],
+        //   email: [],
+        //   phoneNumber: [],
+        // });
 
 
       }
