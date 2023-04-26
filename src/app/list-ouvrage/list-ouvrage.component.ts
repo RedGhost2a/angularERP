@@ -42,7 +42,7 @@ export class ListOuvrageComponent implements OnInit {
   }
   openUniteForFormDialog(): void {
     const dialogRef = this.dialog.open(DialogUniteForFormComponent, {
-      width: '700px',
+      width: '80%',
       // data: { form: this.importForm }
     });
 

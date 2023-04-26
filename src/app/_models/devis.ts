@@ -32,4 +32,5 @@ export class Devis {
   prixVenteHT!: number;
   beneficeAleasTotal!: number;
   beneficeAleasTotalPercent!: number;
+  validityTime!: number;
 }

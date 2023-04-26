@@ -4,13 +4,14 @@ import {OuvrageService} from "../_service/ouvrage.service";
 import {ActivatedRoute} from "@angular/router";
 import {User} from "../_models/users";
 import {UserService} from "../_service/user.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {SousLotOuvrage} from "../_models/sousLotOuvrage";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint";
 import {UniteForForm} from "../_models/uniteForForm";
 import {UniteForFormService} from "../_service/uniteForForm.service";
+import {DialogUniteForFormComponent} from "../dialog-unite-for-form/dialog-unite-for-form.component";
 
 @Component({
   selector: 'app-form-ouvrage',
@@ -36,7 +37,8 @@ export class FormOuvrageComponent implements OnInit {
               private userService: UserService,
               private uniteForForm:UniteForFormService,
               private dialogRef: MatDialogRef<DialogComponent>,
-              @Inject(TOASTR_TOKEN) private toastr: Toastr) {
+              @Inject(TOASTR_TOKEN) private toastr: Toastr,
+              private dialog: MatDialog) {
     this.initialData = this.data
     transformVirguletoPoint()
   }
@@ -51,7 +53,16 @@ export class FormOuvrageComponent implements OnInit {
 
 
   }
+  openUniteForFormDialog(): void {
+    const dialogRef = this.dialog.open(DialogUniteForFormComponent, {
+      width: '800px',
+      // data: { form: this.importForm }
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
 
   createOuvrage(): void {
     console.log(this.myFormGroup.getRawValue())

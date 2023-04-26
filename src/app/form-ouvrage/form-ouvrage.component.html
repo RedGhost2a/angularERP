@@ -33,7 +33,8 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="legacy">
+      <mat-form-field appearance="legacy" >
+
         <mat-label>Unité</mat-label>
         <select formControlName="unite"  matNativeControl required (blur)="setValueURatio()">
           <option *ngFor="let unite of uniteList" value="{{unite.name}}"> {{unite.name}}</option>
@@ -41,8 +42,15 @@
         <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
           Vous devez entrer une unité.
         </mat-error>
+
       </mat-form-field>
 
+      <span >    <mat-icon style="
+    color: deepskyblue;
+    margin-left: -60px;
+;
+" (click)="openUniteForFormDialog()">+</mat-icon>
+</span>
       <mat-form-field appearance="legacy" style="width: 100px">
         <mat-label>Ratio</mat-label>
         <input type="number" formControlName="ratio" matInput placeholder="Ex: 0.7">

@@ -26,6 +26,7 @@ export class DetailDevisComponent implements OnInit {
   statusForm!: FormGroup;
   detailStatus: string[] = ['Initialisation', 'En attente', 'Accepté', 'Refusé', "Cloturer", 'Je ne sais pas'];
   selectedStatus!: string;
+  validityTime!: number;
 
 
   constructor(private devisService: DevisService,
@@ -36,13 +37,13 @@ export class DetailDevisComponent implements OnInit {
               private formBuilder: FormBuilder) {
 
 
+
   }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.devisID = +params['id'];
       this.getById();
-
     })
 
   }
@@ -58,6 +59,16 @@ export class DetailDevisComponent implements OnInit {
     });
   }
 
+  updateValidityDevis() {
+    this.devisService.update({validityTime:this.validityTime}, this.devisID).subscribe(() => {
+      this.toastr.success('Succes', 'La durée a été mis à jour.');
+      this.getById();
+    }, error => {
+      this.toastr.error('Error', 'Une erreur est survenue lors de la mise à jour de la durée.');
+      console.error(error);
+    });
+  }
+
 
   getById(): void {
     this.devisService.getById(this.devisID).subscribe(data => {
@@ -65,12 +76,13 @@ export class DetailDevisComponent implements OnInit {
       this.devis = data;
       this.selectedStatus = this.devis.status;
       this.client = Client;
+      this.validityTime = this.devis.validityTime;
       this.user = Users[0];
       // La date du jour
       const today = new Date();
       if (this.devis && this.devis.createdAt) {
         const createdAt = new Date(this.devis.createdAt);
-        const endDate = addDays(createdAt, 90);
+        const endDate = addDays(createdAt, this.validityTime);
         this.jourRestant = differenceInDays(endDate, today);
         this.jourFinDevis = format(endDate, 'dd/MM/yyyy');
       } else {

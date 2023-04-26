@@ -9,7 +9,7 @@ import {EntrepriseService} from 'src/app/_service/entreprise.service';
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../_service/user.service";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../../dialogListOuvrage/dialog.component";
 import {Devis} from "../../_models/devis";
 import {map, Observable, startWith} from "rxjs";
@@ -37,6 +37,7 @@ export class EditDevisComponent implements OnInit {
   textButton = "Créer ce devis";
   curentUserEntreprise!: any[];
   userEntreprise!: any[];
+  clientId!: number;
   filteredOptions!: Observable<string[]>;
   options: string[] = [];
 
@@ -63,7 +64,6 @@ export class EditDevisComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.getAllEntreprise()
     this.createFormDevis()
     this.getEnterpriseByUser()
@@ -80,10 +80,16 @@ export class EditDevisComponent implements OnInit {
     console.log(this.myFormGroup.get('ClientId'))
   }
   createFormDevis(): void {
+    const currentUrl = this.router.url;
+    if (currentUrl.includes('clients')) {
+      this.clientId = this.data.ClientId;
+      console.log(this.clientId)
+    }
+
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
       name: new FormControl("", Validators.required),
-      status: new FormControl({value: 'Initialisation', disabled: true}, Validators.required),
+      status: new FormControl({ value: 'Initialisation', disabled: true }, Validators.required),
       ClientId: new FormControl("", Validators.required),
       EntrepriseId: new FormControl("", Validators.required),
       UserId: new FormControl(this.userId),
@@ -102,6 +108,7 @@ export class EditDevisComponent implements OnInit {
       prixCalcHT: new FormControl(0),
       prixVenteHT: new FormControl(0),
       beneficeAleasTotal: new FormControl(0),
+      validityTime: new FormControl(90),
     });
   }
 
@@ -171,7 +178,6 @@ export class EditDevisComponent implements OnInit {
           this.toastr.error("Une erreur est survenue lors de la création du devis.", "Erreur !");
         }
       );
-    })
   }
 
 
@@ -179,8 +185,6 @@ export class EditDevisComponent implements OnInit {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
     this.dialogRef.close();
   }
-
-
 
   getEnterpriseByUser(): any {
     const currentUser = this.userService.userValue.id;
