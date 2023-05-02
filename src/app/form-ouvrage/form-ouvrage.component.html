@@ -8,7 +8,7 @@
 
       <mat-form-field appearance="legacy">
         <mat-label>Désignation</mat-label>
-<!--        <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm" style="width: 200px">-->
+        <!--        <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm" style="width: 200px">-->
         <textarea formControlName="designation" matInput
                   cdkTextareaAutosize
                   #autosize="cdkTextareaAutosize"
@@ -33,10 +33,10 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="legacy" >
+      <mat-form-field appearance="legacy">
 
         <mat-label>Unité</mat-label>
-        <select formControlName="unite"  matNativeControl required (blur)="setValueURatio()">
+        <select formControlName="unite" matNativeControl required (blur)="setValueURatio()">
           <option *ngFor="let unite of uniteList" value="{{unite.name}}"> {{unite.name}}</option>
         </select>
         <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
@@ -45,9 +45,9 @@
 
       </mat-form-field>
 
-      <span >    <mat-icon style="
+      <span>    <mat-icon style="
     color: deepskyblue;
-    margin-left: -60px;
+    margin-left: 20px;
 ;
 " (click)="openUniteForFormDialog()">+</mat-icon>
 </span>
@@ -62,7 +62,7 @@
       <mat-form-field appearance="legacy">
         <mat-label>U/Ratio</mat-label>
         <input type="text" formControlName="uRatio" matInput placeholder="Ex: m3/h  ">
-<!--               value=" {{ myFormGroup.controls['unite'].getRawValue().toString()}}/h"-->
+        <!--               value=" {{ myFormGroup.controls['unite'].getRawValue().toString()}}/h"-->
 
         <mat-error *ngIf="this.myFormGroup.get('uRatio')?.hasError('required')">
           Vous devez entrer un U/ratio.
@@ -76,8 +76,10 @@
 
     </div>
     <div *ngIf="!isOuvrage">
-      <mat-checkbox class="example-margin" (change)="checked()" [(ngModel)]="isChecked">Ajouter cet ouvrage uniquement dans ce devis et non dans la bibliotheque</mat-checkbox>
-<!--      <span>Ajouter cet ouvrage uniquement dans ce devis et non dans la bibliotheque</span>-->
+      <mat-checkbox class="example-margin" (change)="checked()" [(ngModel)]="isChecked">Ajouter cet ouvrage uniquement
+        dans ce devis et non dans la bibliotheque
+      </mat-checkbox>
+      <!--      <span>Ajouter cet ouvrage uniquement dans ce devis et non dans la bibliotheque</span>-->
     </div>
 
 

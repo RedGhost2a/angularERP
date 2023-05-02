@@ -1,6 +1,5 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {EditComponent} from "../../clients/edit/edit.component";
 import {DevisService} from "../../_service/devis.service";
 import {ClientService} from "../../_service/client.service";
 import {Client} from "../../_models/client";
@@ -13,7 +12,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../../dialogListOuvrage/dialog.component";
 import {Devis} from "../../_models/devis";
 import {map, Observable, startWith} from "rxjs";
-import {da} from "date-fns/locale";
 
 @Component({
   selector: 'app-edit-devis',
@@ -76,9 +74,10 @@ export class EditDevisComponent implements OnInit {
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
-  clientSelected(){
+  clientSelected() {
     console.log(this.myFormGroup.get('ClientId'))
   }
+
   createFormDevis(): void {
     const currentUrl = this.router.url;
     if (currentUrl.includes('clients')) {
@@ -89,7 +88,7 @@ export class EditDevisComponent implements OnInit {
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
       name: new FormControl("", Validators.required),
-      status: new FormControl({ value: 'Initialisation', disabled: true }, Validators.required),
+      status: new FormControl({value: 'Initialisation', disabled: true}, Validators.required),
       ClientId: new FormControl("", Validators.required),
       EntrepriseId: new FormControl("", Validators.required),
       UserId: new FormControl(this.userId),
@@ -119,7 +118,7 @@ export class EditDevisComponent implements OnInit {
   getAllClient(entrepriseId: number): void {
     this.clientService.getAllByEntreprise(entrepriseId).subscribe((data: any) => {
       this.listClient = data
-      data.forEach((client:any)=>{
+      data.forEach((client: any) => {
         this.options.push(client.denomination)
       })
       // console.log('deno ?',data)
@@ -135,7 +134,7 @@ export class EditDevisComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value || '')),
     );
-    console.log('filter',this.filteredOptions)
+    console.log('filter', this.filteredOptions)
   }
 
   getAllEntreprise(): void {
@@ -159,25 +158,26 @@ export class EditDevisComponent implements OnInit {
       return;
     }
     console.log(this.myFormGroup.get('ClientId'))
-    this.clientService.getByDenomination(this.myFormGroup.get('ClientId')?.value).subscribe((data:any) =>{
+    this.clientService.getByDenomination(this.myFormGroup.get('ClientId')?.value).subscribe((data: any) => {
       console.log(data)
       // this.myFormGroup.controls['uRatio'].setValue(`${unite}/h`)
-    this.myFormGroup.controls['ClientId'].setValue(data[0].id)
-    this.devisService.create(this.myFormGroup.getRawValue())
-      .subscribe(
-        () => {
-          // Devis created successfully, show success message
-          this.toastr.success("Devis créé avec succès.", "Succès !");
-          this.closeDialog()
+      this.myFormGroup.controls['ClientId'].setValue(data[0].id)
+      this.devisService.create(this.myFormGroup.getRawValue())
+        .subscribe(
+          () => {
+            // Devis created successfully, show success message
+            this.toastr.success("Devis créé avec succès.", "Succès !");
+            this.closeDialog()
 
-          this.router.navigate(['/devis']);
-        },
-        (error) => {
-          // Error occurred, show error message
-          console.log(error);
-          this.toastr.error("Une erreur est survenue lors de la création du devis.", "Erreur !");
-        }
-      );
+            this.router.navigate(['/devis']);
+          },
+          (error) => {
+            // Error occurred, show error message
+            console.log(error);
+            this.toastr.error("Une erreur est survenue lors de la création du devis.", "Erreur !");
+          }
+        );
+    })
   }
 
 
@@ -198,3 +198,4 @@ export class EditDevisComponent implements OnInit {
 
   }
 }
+
