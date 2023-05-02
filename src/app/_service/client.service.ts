@@ -52,7 +52,7 @@ export class ClientService {
   }
 
   deleteByID(id: any): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/${id}`)
+    return this.http.delete(`${environment.apiUrl}/clients/${id}`)
   }
 
 }
