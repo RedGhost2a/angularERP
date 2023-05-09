@@ -33,4 +33,6 @@ export class Devis {
   beneficeAleasTotal!: number;
   beneficeAleasTotalPercent!: number;
   validityTime!: number;
+  beneficeInPercent!:number;
+  aleasInPercent!:number;
 }

@@ -15,5 +15,6 @@ export class OuvrageDuDevis {
   CoutDuDevis!: CoutDuDevis[];
   SousLots?:SousLot[];
   prixEquiHT!:number;
-  SousLotOuvrage ?:SousLotOuvrage
+  SousLotOuvrage ?:SousLotOuvrage;
+  alteredBenefOrAleas?:boolean;
 }

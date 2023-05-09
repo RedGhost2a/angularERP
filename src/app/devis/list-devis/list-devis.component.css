@@ -29,6 +29,11 @@
   margin-right: 5.5%;
 }
 
+.buttons {
+  width: 300px;
+  display: flex;
+}
+
 th, td {
   color: #334E68;
   padding-right: 0px;

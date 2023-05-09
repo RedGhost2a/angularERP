@@ -839,9 +839,9 @@ export class CreateDevisComponent implements OnInit, AfterViewInit {
 
   openDialogCreate(sousLotId: number) {
     this.dialog.open(FormOuvrageComponent, {
-      data: sousLotId,
+      data: {sousLotId: sousLotId, devisId: this.devisId},
       width: '90%',
-      height: '40%'
+      height: '40%',
     }).afterClosed().subscribe(result => {
       // this.allCalculOuvrageFraisDeChantier()
       // this.allCalculOuvrage()

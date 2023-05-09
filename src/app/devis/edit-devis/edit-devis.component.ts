@@ -8,7 +8,7 @@ import {EntrepriseService} from 'src/app/_service/entreprise.service';
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../_service/user.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../../dialogListOuvrage/dialog.component";
 import {Devis} from "../../_models/devis";
 import {map, Observable, startWith} from "rxjs";
@@ -38,6 +38,8 @@ export class EditDevisComponent implements OnInit {
   clientId!: number;
   filteredOptions!: Observable<string[]>;
   options: string[] = [];
+  hideClientField: boolean = false;
+
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Devis,
               private dialogRef: MatDialogRef<DialogComponent>,
@@ -48,7 +50,8 @@ export class EditDevisComponent implements OnInit {
               @Inject(TOASTR_TOKEN) private toastr: Toastr,
               private router: Router,
               private userService: UserService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private dialog: MatDialog,) {
     this.initialData = data;
     // this.myFormGroup = this.formBuilder.group({
     //   name: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -83,32 +86,64 @@ export class EditDevisComponent implements OnInit {
     if (currentUrl.includes('clients')) {
       this.clientId = this.data.ClientId;
       console.log(this.clientId)
+      this.myFormGroup = new FormGroup({
+        id: new FormControl(),
+        name: new FormControl("", Validators.required),
+        status: new FormControl({value: 'Initialisation', disabled: true}, Validators.required),
+        ClientId: new FormControl(this.clientId, Validators.required),
+        EntrepriseId: new FormControl("", Validators.required),
+        UserId: new FormControl(this.userId),
+        percentFraisGeneraux: new FormControl(20),
+        fraisGeneraux: new FormControl(0),
+        coutTotal: new FormControl(0),
+        debourseSecTotal: new FormControl(0),
+        totalDepense: new FormControl(0),
+        moyenneBenefice: new FormControl(0),
+        moyenneAleas: new FormControl(0),
+        moyenneBeneficeAleas: new FormControl(0),
+        coeffEquilibre: new FormControl(0),
+        prixEquiHT: new FormControl(0),
+        beneficeInEuro: new FormControl(0),
+        aleasInEuro: new FormControl(0),
+        prixCalcHT: new FormControl(0),
+        prixVenteHT: new FormControl(0),
+        beneficeAleasTotal: new FormControl(0),
+        validityTime: new FormControl(90),
+        beneficeInPercent: new FormControl(),
+        aleasInPercent: new FormControl(),
+      });
+      this.hideClientField = true;
+
+    }else {
+      this.myFormGroup = new FormGroup({
+        id: new FormControl(),
+        name: new FormControl("", Validators.required),
+        status: new FormControl({value: 'Initialisation', disabled: true}, Validators.required),
+        ClientId: new FormControl("", Validators.required),
+        EntrepriseId: new FormControl("", Validators.required),
+        UserId: new FormControl(this.userId),
+        percentFraisGeneraux: new FormControl(20),
+        fraisGeneraux: new FormControl(0),
+        coutTotal: new FormControl(0),
+        debourseSecTotal: new FormControl(0),
+        totalDepense: new FormControl(0),
+        moyenneBenefice: new FormControl(0),
+        moyenneAleas: new FormControl(0),
+        moyenneBeneficeAleas: new FormControl(0),
+        coeffEquilibre: new FormControl(0),
+        prixEquiHT: new FormControl(0),
+        beneficeInEuro: new FormControl(0),
+        aleasInEuro: new FormControl(0),
+        prixCalcHT: new FormControl(0),
+        prixVenteHT: new FormControl(0),
+        beneficeAleasTotal: new FormControl(0),
+        validityTime: new FormControl(90),
+        beneficeInPercent: new FormControl(),
+        aleasInPercent: new FormControl(),
+      });
     }
 
-    this.myFormGroup = new FormGroup({
-      id: new FormControl(),
-      name: new FormControl("", Validators.required),
-      status: new FormControl({value: 'Initialisation', disabled: true}, Validators.required),
-      ClientId: new FormControl("", Validators.required),
-      EntrepriseId: new FormControl("", Validators.required),
-      UserId: new FormControl(this.userId),
-      percentFraisGeneraux: new FormControl(20),
-      fraisGeneraux: new FormControl(0),
-      coutTotal: new FormControl(0),
-      debourseSecTotal: new FormControl(0),
-      totalDepense: new FormControl(0),
-      moyenneBenefice: new FormControl(0),
-      moyenneAleas: new FormControl(0),
-      moyenneBeneficeAleas: new FormControl(0),
-      coeffEquilibre: new FormControl(0),
-      prixEquiHT: new FormControl(0),
-      beneficeInEuro: new FormControl(0),
-      aleasInEuro: new FormControl(0),
-      prixCalcHT: new FormControl(0),
-      prixVenteHT: new FormControl(0),
-      beneficeAleasTotal: new FormControl(0),
-      validityTime: new FormControl(90),
-    });
+
   }
 
   // get f() {
@@ -150,7 +185,7 @@ export class EditDevisComponent implements OnInit {
   }
 
   createDevis(): void {
-    // console.log(this.myFormGroup.getRawValue());
+    console.log(this.myFormGroup.getRawValue());
     this.myFormGroup.markAllAsTouched();
     if (this.myFormGroup.invalid) {
       // Form is invalid, show error message
@@ -158,10 +193,14 @@ export class EditDevisComponent implements OnInit {
       return;
     }
     console.log(this.myFormGroup.get('ClientId'))
+    // if (isNaN(devisId))
     this.clientService.getByDenomination(this.myFormGroup.get('ClientId')?.value).subscribe((data: any) => {
       console.log(data)
       // this.myFormGroup.controls['uRatio'].setValue(`${unite}/h`)
-      this.myFormGroup.controls['ClientId'].setValue(data[0].id)
+      const currentUrl = this.router.url;
+      if (!currentUrl.includes('clients')) {
+        this.myFormGroup.controls['ClientId'].setValue(data[0].id)
+      }
       this.devisService.create(this.myFormGroup.getRawValue())
         .subscribe(
           () => {
@@ -179,6 +218,19 @@ export class EditDevisComponent implements OnInit {
         );
     })
   }
+  // updateDevis(devis:Devis,id:number){
+  //   const dialogEditDevis = this.dialog.open(EditDevisComponent);
+  //
+  //   dialogEditDevis.afterClosed().subscribe(result=>{
+  //     if (result){
+  //       this.devisService.update(devis,id).subscribe(data=>{
+  //         console.log(data)
+  //       })
+  //     }
+  //   })
+  //
+  // }
+
 
 
   closeDialog() {
@@ -192,8 +244,6 @@ export class EditDevisComponent implements OnInit {
       this.curentUserEntreprise = value.Entreprises
       console.log(this.curentUserEntreprise)
       this.getAllClient(this.curentUserEntreprise[0].id)
-
-
     })
 
   }

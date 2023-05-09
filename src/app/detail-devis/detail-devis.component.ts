@@ -9,6 +9,7 @@ import {Lot} from "../_models/lot";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {addDays, differenceInDays, format} from 'date-fns';
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {OuvrageService} from "../_service/ouvrage.service";
 
 @Component({
   selector: 'app-detail-devis',
@@ -27,6 +28,12 @@ export class DetailDevisComponent implements OnInit {
   detailStatus: string[] = ['Initialisation', 'En attente', 'Accepté', 'Refusé', "Cloturer", 'Je ne sais pas'];
   selectedStatus!: string;
   validityTime!: number;
+  isEditMode:boolean=false;
+  isEditMode2:boolean=false;
+  isEditMode3:boolean=false;
+  isEditMode4:boolean=false;
+  beneficeInPercent!:number;
+  aleasInPercent!:number;
 
 
   constructor(private devisService: DevisService,
@@ -34,7 +41,8 @@ export class DetailDevisComponent implements OnInit {
               private router: Router,
               private lotService: LotService,
               @Inject(TOASTR_TOKEN) private toastr: Toastr,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private ouvrageService:OuvrageService) {
 
 
 
@@ -58,6 +66,65 @@ export class DetailDevisComponent implements OnInit {
       console.error(error);
     });
   }
+
+  updateBenefDevis() {
+    this.devisService.update({beneficeInPercent: this.beneficeInPercent}, this.devisID).subscribe(() => {
+      this.toastr.success('Succes', 'Le statut a été mis à jour.');
+      this.getById();
+      this.updateBenefAndAleasDevis()
+
+    }, error => {
+      this.toastr.error('Error', 'Une erreur est survenue lors de la mise à jour du statut.');
+      console.error(error);
+    });
+  }
+
+  updateAleasDevis() {
+    this.devisService.update({aleasInPercent: this.aleasInPercent}, this.devisID).subscribe(() => {
+      this.toastr.success('Succes', 'Le statut a été mis à jour.');
+     this.updateBenefAndAleasDevis()
+      this.getById();
+    }, error => {
+      this.toastr.error('Error', 'Une erreur est survenue lors de la mise à jour du statut.');
+      console.error(error);
+    });
+  }
+
+  updateBenefAndAleasDevis() {
+    // récupérer le devis en cours de modification
+    this.devisService.getOuvrages(this.devisID).subscribe(devis => {
+      const ouvrages = devis[1];
+
+      // stocker les ids des ouvrages dont alteredBenefOrAleas est false
+      const ouvragesIds: number[] = [];
+      ouvrages.forEach((ouvrage: any) => {
+        if (!ouvrage.alteredBenefOrAleas) {
+          ouvragesIds.push(ouvrage.id);
+        }
+      });
+      console.log(ouvragesIds)
+      // mettre à jour les ouvrages avec les nouvelles valeurs pour les ouvrages dont alteredBenefOrAleas est true
+      const updatedOuvrage = {
+        benefice: this.beneficeInPercent,
+        aleas: this.aleasInPercent
+      };
+     for (let i=0;i < ouvragesIds.length;i++) {
+        this.ouvrageService.updateOuvrageDuDevis(updatedOuvrage, [ouvragesIds[i]]).subscribe(() => {
+          this.toastr.success('Succes', 'Les champs benefice et aleas ont été mis à jour.');
+          this.getById();
+        }, error => {
+          this.toastr.error('Error', 'Une erreur est survenue lors de la mise à jour des champs benefice et aleas.');
+          console.error(error);
+        });
+      }
+
+    });
+  }
+
+
+
+
+
 
   updateValidityDevis() {
     this.devisService.update({validityTime:this.validityTime}, this.devisID).subscribe(() => {
@@ -95,7 +162,7 @@ export class DetailDevisComponent implements OnInit {
     this.devis.coeffEquilibre = 1;
     localStorage.setItem("coef", this.devis.coeffEquilibre.toString())
     this.lot.devisId = devisId;
-    this.lot.designation = `Frais de chantier ${this.lot.devisId}`
+    this.lot.designation = `Frais de chantier du devis n°: ${this.lot.devisId}`
     console.log("console lot detail devis", this.lot)
     this.lotService.createLotFraisDeChantier(this.lot)
       .subscribe((response: any) => {

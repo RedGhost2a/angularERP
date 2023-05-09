@@ -188,7 +188,7 @@ export class SousDetailPrixComponent implements OnInit {
   beneficeChange() {
     console.log(this.formOuvrage.getRawValue().benefice)
     if (this.formOuvrage.getRawValue().benefice !== null) {
-      this.ouvrageService.updateOuvrageDuDevis({benefice: this.formOuvrage.getRawValue().benefice}, this.currentOuvrage.id).subscribe(() => {
+      this.ouvrageService.updateOuvrageDuDevis({benefice: this.formOuvrage.getRawValue().benefice,alteredBenefOrAleas:true}, this.currentOuvrage.id).subscribe(() => {
         // this.getById()
         this.ngOnInit()
       })
@@ -209,7 +209,7 @@ export class SousDetailPrixComponent implements OnInit {
   aleasChange() {
     console.log(this.formOuvrage.getRawValue().aleas)
     if (this.formOuvrage.getRawValue().aleas !== null) {
-      this.ouvrageService.updateOuvrageDuDevis({aleas: this.formOuvrage.getRawValue().aleas}, this.currentOuvrage.id).subscribe(() => {
+      this.ouvrageService.updateOuvrageDuDevis({aleas: this.formOuvrage.getRawValue().aleas,alteredBenefOrAleas:true}, this.currentOuvrage.id).subscribe(() => {
         // this.getById()
         this.ngOnInit()
       })
@@ -229,7 +229,8 @@ export class SousDetailPrixComponent implements OnInit {
       ratioOuvrage: new FormControl(),
       benefice: new FormControl(),
       aleas: new FormControl(),
-      quantity: new FormControl()
+      quantity: new FormControl(),
+      alteredBenefOrAleas:new FormControl()
     })
   }
 

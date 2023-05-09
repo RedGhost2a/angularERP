@@ -15,7 +15,7 @@
 
 <!--      </mat-form-field>-->
 
-      <mat-form-field class="example-full-width" appearance="legacy">
+      <mat-form-field class="example-full-width" appearance="legacy" *ngIf="!hideClientField">
         <mat-label>Client</mat-label>
         <input type="text"
                placeholder="Rechercher un client"
@@ -73,6 +73,19 @@
       <mat-form-field appearance="legacy">
         <mat-label>Durée de validité</mat-label>
         <input formControlName="validityTime" matInput   >
+
+      </mat-form-field>
+
+
+      <mat-form-field appearance="legacy">
+        <mat-label>Bénéfice en %</mat-label>
+        <input formControlName="beneficeInPercent" matInput   >
+
+      </mat-form-field>
+
+      <mat-form-field appearance="legacy">
+        <mat-label>Aléas en %</mat-label>
+        <input formControlName="aleasInPercent" matInput   >
 
       </mat-form-field>
 

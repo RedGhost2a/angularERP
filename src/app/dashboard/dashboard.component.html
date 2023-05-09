@@ -6,7 +6,7 @@
     <mat-card-title  class="card-text">Facturation des chantiers</mat-card-title>
     <mat-card-subtitle>MONTANT CA HT</mat-card-subtitle>
     <mat-card-content>
-      <p class="card-text" >{{this.prixVenteHTCalculer}}€</p>
+      <p class="card-text" >{{this.prixVenteHTCalculer| number: '1.2-2'}}€</p>
     </mat-card-content>
   </mat-card>
 
@@ -14,7 +14,7 @@
     <mat-card-title  class="card-text">Facturation des chantiers</mat-card-title>
     <mat-card-subtitle>DEBOURSE SEC TOTAL</mat-card-subtitle>
     <mat-card-content>
-      <p  class="card-text">{{this.fraisCalculer}}€</p>
+      <p  class="card-text">{{this.fraisCalculer| number: '1.2-2'}}€</p>
     </mat-card-content>
   </mat-card>
 
@@ -22,7 +22,7 @@
     <mat-card-title  class="card-text">Moyenne des B & A</mat-card-title>
     <mat-card-subtitle>TOUT DEVIS CONFONDUS</mat-card-subtitle>
     <mat-card-content>
-      <p  class="card-text" >{{this.moyenneDeLaMoyenneBenefAleas|number}}%</p>
+      <p  class="card-text" >{{this.moyenneDeLaMoyenneBenefAleas| number: '1.2-2'}}%</p>
     </mat-card-content>
   </mat-card>
 
@@ -31,7 +31,7 @@
   <mat-card    style="width: 300px;background: #0c5593;margin-left: 30px">
     <mat-card-content *ngIf="devis">
       <h1  class="card-text" >Vos 5 derniers devis</h1>
-      <div class="devis-flex-row facturation " style="border: wheat 1px solid;border-radius: 6px; margin-top: 5px" *ngFor="let userDevis of devis.reverse().slice(0,5)" >
+      <div class="devis-flex-row facturation " style="border: wheat 1px solid;border-radius: 6px; margin-top: 5px" *ngFor="let userDevis of devis.slice(0,5)" >
         <mat-card-header >
           <mat-card-title >{{userDevis.name | uppercase}}</mat-card-title>
           <mat-card-subtitle class="devis-status">{{userDevis.status}}</mat-card-subtitle>

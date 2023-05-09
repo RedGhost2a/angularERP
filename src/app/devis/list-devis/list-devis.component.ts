@@ -21,7 +21,7 @@ export class ListDevisComponent implements OnInit {
   @Input() devis!: Devis;
   @Output() deleteDevis: EventEmitter<any> = new EventEmitter()
 
-  displayedColumns: string[] = ['nDevis','client', 'nomDevis', 'dateDevis',  'status', 'referent', 'prixVenteHT', 'boutons'];
+  displayedColumns: string[] = ['nDevis','client', 'nomDevis', 'dateDevis',  'status', 'referent', 'prixVenteHT','benefice','aleas', 'boutons'];
   // displayedColumns: string[] = ['Devis n°', 'Nom', 'Client', "Status", "Action"];
   clickedRows = new Set<Client>();
 
@@ -53,6 +53,7 @@ export class ListDevisComponent implements OnInit {
       }
     });
   }
+
 
   // applyFilter(event: Event) {
   //   const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();

@@ -20,6 +20,17 @@
   font-family: Michroma;
   border-top: 10px solid #0c5593;
 }
+.title2{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  background-color: #FFFFFF;;
+  color: rgb(8, 31, 44);
+  font-family: Michroma;
+}
 .example-card{
   //border: solid red ;
   margin-top:5% ;
@@ -51,10 +62,15 @@
   //margin-left: 20px;
 
 }
+.sous-detail{
+  margin-top: 30px;
+}
 .group3{
   //border:solid;
   display: flex;
-  margin-left: 20px;
+  //margin-left: 20px;
+  justify-content: center;
+
 
 }
 .subContainer2{

@@ -12,6 +12,7 @@ import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint";
 import {UniteForForm} from "../_models/uniteForForm";
 import {UniteForFormService} from "../_service/uniteForForm.service";
 import {DialogUniteForFormComponent} from "../dialog-unite-for-form/dialog-unite-for-form.component";
+import {DevisService} from "../_service/devis.service";
 
 @Component({
   selector: 'app-form-ouvrage',
@@ -21,7 +22,7 @@ import {DialogUniteForFormComponent} from "../dialog-unite-for-form/dialog-unite
 export class FormOuvrageComponent implements OnInit {
   public myFormGroup!: FormGroup;
   private currentUser!: User;
-  initialData: number
+  initialData: {sousLotId: number, devisId: number};
   sousLotOuvrageDuDevis !: SousLotOuvrage;
   isChecked : boolean = false;
   regexSousDetail = new RegExp(`^/devisCreate`)
@@ -30,25 +31,31 @@ export class FormOuvrageComponent implements OnInit {
   titleModal:string = "Ajout d'un ouvrage dans la bibliothèque de prix";
   entrepriseId!:number;
   uniteList!:UniteForForm[];
+  beneficeInPercent!:number;
+  aleasInPercent!:number;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: number,
+  constructor(@Inject(MAT_DIALOG_DATA) public data:  {sousLotId: number, devisId: number},
               private formBuilder: FormBuilder,
               private ouvrageService: OuvrageService,
               private userService: UserService,
               private uniteForForm:UniteForFormService,
               private dialogRef: MatDialogRef<DialogComponent>,
               @Inject(TOASTR_TOKEN) private toastr: Toastr,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,
+              private devisService:DevisService,
+              ) {
     this.initialData = this.data
-    transformVirguletoPoint()
+    transformVirguletoPoint();
   }
 
   ngOnInit(): void {
-    this.getUserById();
     this.createFormOuvrage()
+    this.getUserById();
     if(this.regexSousDetail.test(window.location.pathname))
       this.isOuvrage = false;
     this.titleModal = "Ajout d'un ouvrage";
+    console.log("initialDta",this.initialData)
+    this.getAleasBenefFromDevis()
 
 
 
@@ -99,11 +106,16 @@ export class FormOuvrageComponent implements OnInit {
 
   createOuvrageDuDevis(): void {
     console.log(this.myFormGroup.controls['prix'].value)
+    if (this.myFormGroup.controls['benefice'].value !== this.beneficeInPercent || this.myFormGroup.controls['aleas'].value !== this.aleasInPercent) {
+      this.myFormGroup.controls['alteredBenefOrAleas'].setValue(true);
+    }
+
+
     this.ouvrageService.createOuvrageDuDevis(this.myFormGroup.getRawValue()).subscribe( response =>{
       console.log("response ouvrage cout du devis ", response)
       // const prixOuvrage =
       this.sousLotOuvrageDuDevis = {
-        SousLotId: this.initialData,
+        SousLotId: this.initialData.sousLotId,
         OuvrageDuDeviId: response.OuvrageDuDevis?.id,
         prixOuvrage: response.prix,
         prixUniVenteHT: 0,
@@ -132,19 +144,31 @@ export class FormOuvrageComponent implements OnInit {
     this.dialogRef.close();
   }
 
+getAleasBenefFromDevis(){
+  this.devisService.getById(this.initialData.devisId).subscribe(data=>{
+    this.beneficeInPercent=data.beneficeInPercent
+    this.aleasInPercent=data.aleasInPercent
+    this.myFormGroup.controls['benefice'].setValue(this.beneficeInPercent);
+    this.myFormGroup.controls['aleas'].setValue(this.aleasInPercent);
+    this.myFormGroup.controls['alteredBenefOrAleas '].setValue(false);
+
+  })
+}
 
   createFormOuvrage(): void {
     this.myFormGroup = new FormGroup({
       designation: new FormControl('', Validators.required),
-      benefice: new FormControl({value: 10, disabled: false}),
-      aleas: new FormControl({value: 5, disabled: false}),
+      benefice: new FormControl( this.beneficeInPercent, Validators.required),
+      aleas: new FormControl( this.aleasInPercent, Validators.required),
       unite: new FormControl('', Validators.required),
       ratio: new FormControl('', Validators.required),
       uRatio: new FormControl('', Validators.required),
       prix: new FormControl(0),
+      alteredBenefOrAleas : new FormControl(false),
       EntrepriseId: new FormControl('', Validators.required),
     });
   }
+
   setValueURatio(){
     const unite = this.myFormGroup.get('unite')?.value
     console.log("unité",unite)

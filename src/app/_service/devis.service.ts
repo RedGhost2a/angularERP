@@ -56,5 +56,9 @@ export class DevisService {
   getLotFraisDeChantier(id: number): Observable<any> {
     return this.http.get(`${environment.apiUrl}/devis/fraisDeChantier/${id}`)
   }
+
+  getOuvrages(id: number): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/devis/ouvrages/${id}`)
+  }
 }
 

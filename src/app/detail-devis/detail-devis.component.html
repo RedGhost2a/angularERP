@@ -3,6 +3,7 @@
 
   <div class="container-header">
     <h3 class="title"> Détail du devis</h3>
+    <h3 class="title2">{{devis.name|uppercase}}</h3>
     <!--    <button mat-flat-button class="btn">-->
     <!--      <mat-icon [routerLink]="'/'">arrow_back</mat-icon>-->
     <!--    </button>-->
@@ -39,14 +40,43 @@
                 <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
                 <p>{{devis.prixVenteHT | number: '1.2-2'}} €</p>
               </div>
+
               <div class="detail">
                 <mat-card-subtitle class="subTitle">Réferent</mat-card-subtitle>
                 <p>{{user.firstName + ' ' + user.lastName}}</p>
               </div>
             </div>
+          </div>  <div class="group2">
+            <div class="detailList">
+              <!-- HTML -->
+              <div class="detail">
+                <mat-card-subtitle class="subTitle">Bénéfice en % <mat-icon style="margin-bottom: -7px">info</mat-icon></mat-card-subtitle>
+                <ng-container *ngIf="!isEditMode; else editModeTemplate">
+                  <p style="color: green" (click)="isEditMode = true">{{devis.beneficeInPercent}} %</p>
+                </ng-container>
+                <ng-template #editModeTemplate>
+                  <input matInput type="number" [(ngModel)]="beneficeInPercent" (ngModelChange)="updateBenefDevis()" (blur)="isEditMode = false">
+                </ng-template>
+              </div>
+
+
+              <div class="detail">
+                <mat-card-subtitle class="subTitle">Aléas en % <mat-icon style="margin-bottom: -7px">info</mat-icon></mat-card-subtitle>
+                <ng-container *ngIf="!isEditMode2; else editModeTemplate2">
+                  <p style="color: red" (click)="isEditMode2 = true">{{devis.aleasInPercent}} %</p>
+                </ng-container>
+                <ng-template #editModeTemplate2>
+                  <input matInput type="number" [(ngModel)]="aleasInPercent" (ngModelChange)="updateAleasDevis()" (blur)="isEditMode2 = false">
+                </ng-template>
+              </div>
+            </div>
           </div>
+
         </div>
+
       </mat-card-title-group>
+      <mat-card-subtitle style="margin-top: 20px"><mat-icon style="margin-bottom: -7px" >info</mat-icon> Les champs pourvus de cette icone sont modifiable.</mat-card-subtitle>
+
     </mat-card>
 
 
@@ -60,31 +90,41 @@
             <div class="detailList2">
 
               <div class="detail">
-                <mat-card-subtitle class="subTitle">Statut</mat-card-subtitle>
-                <mat-form-field appearance="legacy" style="width: 90px">
+                <mat-card-subtitle class="subTitle">Statut<mat-icon style="margin-bottom: -7px" >info</mat-icon></mat-card-subtitle>
+                <ng-container *ngIf="!isEditMode3; else editModeTemplate3">
+                <p class="sous-detail"  (click)="isEditMode3 = true">{{devis.status}}</p>
+                </ng-container>
+                <ng-template #editModeTemplate3>
+                <mat-form-field appearance="legacy" >
                   <mat-select [(ngModel)]="selectedStatus"
-                              (ngModelChange)="updateStatusDevis()">
-                    <mat-option *ngFor="let status of detailStatus" [value]="status">{{status}}</mat-option>
+                              (ngModelChange)="updateStatusDevis()" >
+                    <mat-option *ngFor="let status of detailStatus" [value]="status" (blur)="isEditMode3 = false">{{status}}</mat-option>
                   </mat-select>
                 </mat-form-field>
+                </ng-template>
               </div>
               <div class="detail" style="color: green">
                 <mat-card-subtitle id="devisDebutDate" class="subTitle">Date du devis
                 </mat-card-subtitle>
-                <p>{{devis.createdAt |date:'dd/MM/yyyy '}}</p>
+                <p class="sous-detail">{{devis.createdAt |date:'dd/MM/yyyy '}}</p>
               </div>
 
               <div class="detail">
-                <mat-card-subtitle class="subTitle">Durée validité</mat-card-subtitle>
-                <mat-form-field>
-                  <input matInput [(ngModel)]="validityTime"
-                         (ngModelChange)="updateValidityDevis()">
+                <mat-card-subtitle class="subTitle">Durée validité<mat-icon style="margin-bottom: -7px" >info</mat-icon></mat-card-subtitle>
+                  <ng-container *ngIf="!isEditMode4; else editModeTemplate4">
+                    <p class="sous-detail"(click)="isEditMode4 = true">{{validityTime}}</p>
+                  </ng-container>
+                  <ng-template #editModeTemplate4>
+                    <mat-form-field>
+                    <input matInput [(ngModel)]="validityTime"
+                         (ngModelChange)="updateValidityDevis()" (blur)="isEditMode4 = false">
                 </mat-form-field>
+                  </ng-template>
                 <mat-card-subtitle>Reste {{this.jourRestant}} jours</mat-card-subtitle>
               </div>
               <div class="detail" style="color: red">
                 <mat-card-subtitle class="subTitle">Date fin du devis</mat-card-subtitle>
-                <p>{{this.jourFinDevis}}</p>
+                <p class="sous-detail">{{this.jourFinDevis}}</p>
               </div>
 
             </div>
