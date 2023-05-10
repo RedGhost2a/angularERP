@@ -6,7 +6,10 @@ import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
 import {AlertService} from "../../_service/alert.service";
 import {ThemePalette} from "@angular/material/core";
 import {EntrepriseService} from "../../_service/entreprise.service";
-import {MatDialog} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {Fournisseur} from "../../_models/fournisseur";
+import {User} from "../../_models/users";
+import {DialogComponent} from "../../dialogListOuvrage/dialog.component";
 
 
 @Component({
@@ -16,31 +19,53 @@ import {MatDialog} from '@angular/material/dialog';
 })
 export class UserEditComponent implements OnInit {
   @Input() updateUser!: UserEditComponent
-  userForm: FormGroup;
-  textButton!: string;
-  color: ThemePalette = 'accent';
-  checked = true;
+  userForm!: FormGroup;
+  titreForm: string = "Créer un utilisateur";
   disabled = false;
   listEntreprise: any[] = [];
   avatarUrl: any;
-  role: string = ''
-  entrepriseDenomination!: string;
+  role!: string;
+  entrepriseId : number [] = [];
+  initialData: any;
+  userId = this.userService.userValue.id;
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder, private alerteService: AlertService,
-              private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr, private entrepriseService: EntrepriseService, public dialog: MatDialog) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private userService: UserService, private formBuilder: FormBuilder, private alerteService: AlertService,
+              private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr, private entrepriseService: EntrepriseService,
+               private dialogRef: MatDialogRef<DialogComponent>) {
 
+    this.initialData = data;
+  }
+  ngOnInit(): void {
+    this.getUserById()
+    this.getEntrepriseForUser();
+    this.createFormUser()
+    if(this.initialData !== null){
+      console.log(this.initialData)
+      this.generateFormUpdate()
+    }
+  }
+  createFormUser(): void {
+    console.log(this.userService.userValue.role)
     this.userForm = new FormGroup({
-      'email': new FormControl('', [Validators.required, Validators.email]),
-      'password': new FormControl('', Validators.required),
-      'passwordConfirm': new FormControl('', Validators.required),
-      'title': new FormControl('', Validators.required),
-      'firstName': new FormControl('', Validators.required),
-      'lastName': new FormControl('', Validators.required),
-      'role': new FormControl('', Validators.required),
-      'avatarUrl': new FormControl(this.selectedAvatar),
-      'EntrepriseId': new FormControl('', Validators.required)
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', Validators.required),
+      passwordConfirm: new FormControl('', Validators.required),
+      title: new FormControl('', Validators.required),
+      firstName: new FormControl('', Validators.required),
+      lastName: new FormControl('', Validators.required),
+      role: new FormControl('', Validators.required),
+      avatarUrl: new FormControl('', Validators.required),
+      EntrepriseId: new FormControl('', Validators.required)
     });
-  this.role= this.userService.userValue.role;
+  }
+  generateFormUpdate(): void {
+    this.titreForm = "Modification d'un utilisateur "
+    this.initialData.Entreprises.forEach((entreprise : any) =>{
+      this.entrepriseId.push(entreprise.id)
+
+    })
+    this.userForm.controls['EntrepriseId'].setValue(this.entrepriseId)
+    this.userForm.patchValue(this.initialData)
   }
 
   success(message: string): void {
@@ -76,45 +101,25 @@ export class UserEditComponent implements OnInit {
     const password = this.userForm.get('password')?.value;
     const confirmPassword = this.userForm.get('passwordConfirm')?.value;
     this.userForm.markAllAsTouched();
-    this.route.params.subscribe(params => {
-      const userID = +params['id']
-      if (isNaN(userID)) {
-        if (this.userForm.invalid) {
-          // Form is invalid, show error message
-          this.toastr.error("Le formulaire est invalide.", "Erreur !");
-          return;
-        }
-
-        if (password !== confirmPassword) {
-          this.toastr.error( "Erreur !","Les mots de passe ne correspondent pas.");
-          return;
-        }
-        const userData = this.userForm.getRawValue();
-        this.userService.register(userData).subscribe(
-          (): void => {
-            console.log(this.userForm.getRawValue())
-            this.success("Nouvelle utilisateur en vue !")
-            this.router.navigate(['/users']);
-
-          }, error => {
-            console.log(error)
-            this.warning("Une erreur est survenue lors de la création")
-          }
-        )
-      } else {
-        this.userService.update(this.userForm.getRawValue(), String(userID))
-          .subscribe((): void => {
-            this.success("Modification effectuée !")
-            this.router.navigate(['/users']);
-
-          }, (error: any) => {
-            console.log(error)
-            this.warning("Impossible de modifier les champs!")
-          });
-      }
-    })
+    if (this.userForm.invalid) {
+      // Form is invalid, show error message
+      this.toastr.error("Le formulaire est invalide.", "Erreur !");
+      return;
+    }
+    if (this.initialData === null) {
+      this.userService.register(this.userForm.getRawValue()).subscribe(data => {
+        this.closeDialog();
+      });
+    } else {
+      this.userService.update(this.userForm.getRawValue(), this.initialData.id).subscribe(data => {
+        this.closeDialog();
+      });
+    }
   }
-
+  closeDialog() {
+    // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
+    this.dialogRef.close();
+  }
 
   previewAvatar(event: any) {
     const file = event.target.files[0];
@@ -124,39 +129,19 @@ export class UserEditComponent implements OnInit {
     }
     reader.readAsDataURL(file);
   }
+  getUserById(): void {
+    this.userService.getById(this.userId).subscribe(data => {
+      this.role = data.role;
+      console.log("getUser by id",this.entrepriseId)
+    })
+  }
 
   getEntrepriseForUser() {
     this.entrepriseService.getAll().subscribe((data: any) => {
       this.listEntreprise = data
-      // console.log(this.listEntreprise)
     })
 
   }
 
-  ngOnInit(): void {
-    this.getEntrepriseForUser();
-    this.route.params.subscribe(params => {
-      const userID = +params['id']
-      if (!isNaN(userID)) {
-        this.textButton = "Modification d'un  utilisateur"
-        this.userService.getById(userID).subscribe(data => {
-          this.entrepriseDenomination=data.Entreprises[0].denomination,
-          // this.role = data['role']
-          data = {
-            email: data.email,
-            password: data.password,
-            title: data.title,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            role: data.role,
-            avatarUrl: data.avatarUrl,
-            EntrepriseId: data.Entreprises[0].id,
-          }
-          this.userForm.patchValue(data);
-        });
-      } else {
-        this.textButton = "Création d'un utilisateur"
-      }
-    })
-  }
+
 }

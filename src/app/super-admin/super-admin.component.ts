@@ -278,8 +278,8 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
 
     this.importExcelService.getById(file.id).subscribe(async data => {
       console.log('Données récupérées :', data);
-      for (let i = 1; i < data.data.data.length; i++) {
-        const ligne = data.data.data[i];
+      for (let i = 1; i < data.data.length; i++) {
+        const ligne = data.data[i];
         console.log('Ligne traitée :', ligne);
         try {
           this.fournisseurService.getFournisseurIdByName(ligne[5]).subscribe(fournisseurId => {

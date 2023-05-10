@@ -31,7 +31,7 @@
   <mat-card    style="width: 300px;background: #0c5593;margin-left: 30px">
     <mat-card-content *ngIf="devis">
       <h1  class="card-text" >Vos 5 derniers devis</h1>
-      <div class="devis-flex-row facturation " style="border: wheat 1px solid;border-radius: 6px; margin-top: 5px" *ngFor="let userDevis of devis.reverse().slice(0,5)" >
+      <div class="devis-flex-row facturation " style="border: wheat 1px solid;border-radius: 6px; margin-top: 5px" *ngFor="let userDevis of devis.slice(0,5)" >
         <mat-card-header >
           <mat-card-title >{{userDevis.name | uppercase}}</mat-card-title>
           <mat-card-subtitle class="devis-status">{{userDevis.status}}</mat-card-subtitle>

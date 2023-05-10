@@ -19,7 +19,7 @@ import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {FormCoutComponent} from "../form-cout/form-cout.component";
 import {CoutDuDevis} from "../_models/cout-du-devis";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 import {transformVirguletoPoint} from "../_helpers/transformVirguletoPoint";
 import {UniteForForm} from "../_models/uniteForForm";
@@ -48,8 +48,9 @@ export class SousDetailPrixComponent implements OnInit {
     "quantite", "prixUnitaireHT",
     "DSTotal", "PUHTEquilibre", "prixHTEquilibre",
     "PUHTCalcule",
-    "prixHTCalcule", "boutons"];
-  coefEqui: number = 35.79;
+    "prixHTCalcule", "boutons"
+  ];
+
 
   totalDBS = {
     prixOuvrage: 0
@@ -68,6 +69,7 @@ export class SousDetailPrixComponent implements OnInit {
   listFournisseur!: Fournisseur[]
   listTypeCout!: TypeCout []
   formCout!: FormGroup;
+  formMetre !: FormGroup;
   formOuvrage!: FormGroup;
   ouvrageCoutDuDevis!: OuvrageCoutDuDevis
   textButtonBack: string = "Retour au devis";
@@ -76,18 +78,23 @@ export class SousDetailPrixComponent implements OnInit {
               public dataSharingService: DataSharingService, private coutService: CoutService, private userService: UserService,
               public dialog: MatDialog, private sousLotOuvrageService: SousLotOuvrageService, private fournisseurService: FournisseurService,
               private typeCoutService: TypeCoutService, private ouvrageCoutService: OuvrageCoutService,
-              private router: Router, private uniteForFormService: UniteForFormService, @Inject(TOASTR_TOKEN) private toastr: Toastr
+              private router: Router, private uniteForFormService: UniteForFormService, @Inject(TOASTR_TOKEN) private toastr: Toastr,
+              private formBuilder: FormBuilder
   ) {
     transformVirguletoPoint()
     this.createFormCout2()
     this.createFormCout();
     this.createFormOuvrage()
+    this.dynamicFormMetre()
 
   }
 
   ngOnInit(): void {
+    // this.dynamicFormMetre()
+
     this.createFormCout();
     this.createFormOuvrage()
+    // this.createFormMetre();
     console.log("debut ngOninit")
     this.route.params.subscribe(async params => {
       this.ouvrageID = +params['id'];
@@ -118,11 +125,17 @@ export class SousDetailPrixComponent implements OnInit {
         this.prixCalculeHTCout()
         this.prixUnitaireCalculeHTCout()
         this.prixVenteHT()
+        this.changeTextButton()
 
         console.log("ngOninit", data)
 
       })
     })
+  }
+
+  metresControls() {
+    console.log((this.formMetre.get('metresS') as FormArray).controls)
+    return (this.formMetre.get('metres') as FormArray).controls;
   }
 
   toggleForm() {
@@ -231,6 +244,49 @@ export class SousDetailPrixComponent implements OnInit {
       aleas: new FormControl(),
       quantity: new FormControl()
     })
+  }
+
+  private createFormMetre(): FormGroup {
+    return new FormGroup({
+      longueur: new FormControl('s'),
+      largeur: new FormControl('DS'),
+      hauteur: new FormControl('DSDSDS  '),
+    })
+  }
+
+
+  dynamicFormMetre() {
+    this.formMetre = this.formBuilder.group({
+      metres: this.formBuilder.array([this.createFormMetre()])
+    })
+  }
+
+  public addMetreFormGroup() {
+    console.log('add metre form group')
+    // this.metresControls()
+    const metres = this.formMetre.get('metres') as FormArray
+    metres.push(this.createFormMetre())
+    // console.log(this.formMetre.get('metres')?.value)
+    // console.log(this.formMetre.)
+  }
+
+  valueFormMetre() {
+    console.log(this.formMetre.getRawValue().metres.length)
+    const metresArray = this.formMetre.get('metres') as FormArray;
+
+// Parcourir le tableau "metres" et récupérer la valeur de chaque champ "longueur", "largeur" et "hauteur"
+    for (let i = 0; i < metresArray.length; i++) {
+      const metreFormGroup = metresArray.controls[i] as FormGroup;
+      const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
+      const largeurFormControl = metreFormGroup.controls['largeur'] as FormControl;
+      const hauteurFormControl = metreFormGroup.controls['hauteur'] as FormControl;
+
+      // Afficher la valeur de chaque champ dans la console
+      longueurFormControl.setValue('test')
+      console.log(`Valeur de longueur du metre ${i + 1} : ${longueurFormControl.value}`);
+      console.log(`Valeur de largeur du metre ${i + 1} : ${largeurFormControl.value}`);
+      console.log(`Valeur de hauteur du metre ${i + 1} : ${hauteurFormControl.value}`);
+    }
   }
 
   getCurrentUser(): void {
@@ -348,11 +404,11 @@ export class SousDetailPrixComponent implements OnInit {
       this.dataSharingService.SetPrixOuvrage(this.totalDBS, this.currentOuvrage.SousLotOuvrage)
 
     }
-      if (this.currentOuvrage.SousLotOuvrage?.id) {
-        this.sousLotOuvrageService.updatedPrice(this.currentOuvrage.SousLotOuvrage.id, this.totalDBS).subscribe((res) => {
-          console.log("response", res)
-        })
-      }
+    if (this.currentOuvrage.SousLotOuvrage?.id) {
+      this.sousLotOuvrageService.updatedPrice(this.currentOuvrage.SousLotOuvrage.id, this.totalDBS).subscribe((res) => {
+        console.log("response", res)
+      })
+    }
   }
 
   prixEquilibreHTCout(): void {
@@ -399,7 +455,7 @@ export class SousDetailPrixComponent implements OnInit {
       width: '90%',
       height: '70%'
     }).afterClosed().subscribe(async result => {
-        this.ngOnInit()
+      this.ngOnInit()
 
     });
   }
@@ -558,4 +614,8 @@ export class SousDetailPrixComponent implements OnInit {
     const unite = this.myFormGroup.get('unite')?.value
     this.myFormGroup.controls['uRatio'].setValue(`${unite}/h`)
   }
+
+
+
+
 }

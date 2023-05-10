@@ -27,7 +27,7 @@ export class ListDevisComponent implements OnInit {
 
 
   entrepriseID: number[] = [];
-  dataSource = new MatTableDataSource<Devis>([]);
+  dataSource :any;
 
   constructor(private devisService: DevisService,
               private dialog: MatDialog,
@@ -84,7 +84,7 @@ export class ListDevisComponent implements OnInit {
   getDeviswithRole() {
     if (this.userService.userValue.role === 'Super Admin') {
       this.devisService.getAll().subscribe(data => {
-        this.dataSource.data = data;
+        this.dataSource = new MatTableDataSource(data)
         // console.log(data)
       })
     } else {
@@ -101,10 +101,11 @@ export class ListDevisComponent implements OnInit {
 
   getDevisByEntreprise() {
     this.entrepriseID.forEach(entrepriseID => {
+      console.log("entrepriseID", entrepriseID)
       this.devisService.getDevisByEnterprise(entrepriseID).subscribe(data => {
         console.log("devis ", data)
-        this.dataSource.data = data.Devis
-        console.log(this.dataSource)
+        this.dataSource = new MatTableDataSource(data)
+        console.log(this.dataSource.data)
       })
 
     })

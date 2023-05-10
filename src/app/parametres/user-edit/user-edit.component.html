@@ -1,98 +1,217 @@
-<div class="form-group">
-  <div class="form-group-header">
-    <h1 class="form-group-title">{{textButton}}</h1>
+<!--<div class="form-group">-->
+<!--  <div class="form-group-header">-->
+<!--    <h1 class="form-group-title">{{textButton}}</h1>-->
+<!--  </div>-->
+<!--  <form class="form" [formGroup]="userForm">-->
+<!--    <mat-form-field class="input-group">-->
+<!--      <mat-label class="mat-label">Avatar</mat-label>-->
+<!--      <mat-select formControlName="avatarUrl">-->
+<!--        <mat-option style="flex-direction: column;justify-content: center; height: 100px" *ngFor="let avatar of getAvatars()" value='{{avatar}}'-->
+<!--                    class="avatar-item">{{avatar.substring(0, avatar.lastIndexOf('.'))}}-->
+
+
+<!--          <div style="text-align: center; width: 49px">-->
+<!--            <img src="./assets/avatar/{{avatar}}" alt="Avatar">-->
+
+<!--          </div>-->
+<!--        </mat-option>-->
+<!--      </mat-select>-->
+<!--    </mat-form-field>-->
+<!--    <mat-form-field class="input-group">-->
+<!--      <mat-label class="mat-label"> Titre</mat-label>-->
+<!--      <input matInput placeholder="Entrer le titre" formControlName="title">-->
+<!--      <mat-error *ngIf="userForm.get('title')?.hasError('required')">-->
+<!--        Vous devez entrer un titre.-->
+<!--      </mat-error>-->
+<!--    </mat-form-field>-->
+<!--    <mat-form-field class="input-group">-->
+<!--      <mat-label class="mat-label"> Prénom</mat-label>-->
+<!--      <input placeholder="Entrer le prénom" matInput formControlName="firstName">-->
+<!--      <mat-error *ngIf="userForm.get('firstName')?.hasError('required')">-->
+<!--        Vous devez entrer un prénom.-->
+<!--      </mat-error>-->
+<!--    </mat-form-field>-->
+<!--    <mat-form-field class="input-group">-->
+<!--      <mat-label class="mat-label"> Nom</mat-label>-->
+<!--      <input matInput placeholder="Entrer le nom" formControlName="lastName">-->
+<!--      <mat-error *ngIf="userForm.get('lastName')?.hasError('required')">-->
+<!--        Vous devez entrer un nom.-->
+<!--      </mat-error>-->
+<!--    </mat-form-field>-->
+<!--    <mat-form-field class="input-group" *ngIf="this.role==='Super Admin'">-->
+<!--      <mat-label class="mat-label">Role</mat-label>-->
+<!--      <mat-select formControlName="role">-->
+<!--        <mat-option value="Super Admin">Super Admin</mat-option>-->
+<!--        <mat-option value="Admin">Admin</mat-option>-->
+<!--        <mat-option value="User">User</mat-option>-->
+<!--      </mat-select>-->
+<!--      <mat-error *ngIf="userForm.get('role')?.hasError('required')">-->
+<!--        Vous devez définir un rôle.-->
+<!--      </mat-error>-->
+<!--    </mat-form-field>-->
+<!--    <mat-form-field class="input-group">-->
+<!--      <mat-label class="mat-label">Entreprises</mat-label>-->
+<!--      <mat-select formControlName="EntrepriseId" multiple >-->
+<!--        <mat-option [value]=+entreprise.id-->
+<!--                    *ngFor="let entreprise of listEntreprise">{{ entreprise.denomination }}-->
+
+<!--      </mat-option>-->
+
+<!--      </mat-select>-->
+<!--      <mat-error *ngIf="userForm.get('EntrepriseId')?.hasError('required')">-->
+<!--        Vous devez choisir au moins une entreprise.-->
+<!--      </mat-error>-->
+<!--    </mat-form-field>-->
+
+
+<!--    <mat-form-field class="input-group">-->
+<!--      <mat-label class="mat-label">Email</mat-label>-->
+<!--      <input matInput placeholder="toto@test.com" formControlName="email">-->
+<!--      <mat-error *ngIf="userForm.get('email')?.hasError('required')">-->
+<!--        Vous devez entrer une adresse e-mail.-->
+<!--      </mat-error>-->
+<!--      <mat-error *ngIf="userForm.get('email')?.hasError('email')">-->
+<!--        Adresse e-mail invalide.-->
+<!--      </mat-error>-->
+<!--    </mat-form-field>-->
+<!--    <mat-form-field class="input-group">-->
+<!--      <mat-label class="mat-label">Password</mat-label>-->
+<!--      <input type="password" matInput formControlName="password" autocomplete="current-password">-->
+<!--      <mat-error *ngIf="userForm.get('password')?.hasError('required')">-->
+<!--        Vous devez définir un mot de passe.-->
+<!--      </mat-error>-->
+<!--    </mat-form-field>-->
+
+<!--    <mat-form-field class="input-group">-->
+<!--      <mat-label class="mat-label">Confirmation password</mat-label>-->
+<!--      <input type="password" matInput formControlName="passwordConfirm" >-->
+<!--      <mat-error *ngIf="userForm.get('passwordConfirm')?.hasError('required')">-->
+<!--        Les mots de passe ne correspondent pas.-->
+<!--      </mat-error>-->
+<!--    </mat-form-field>-->
+
+
+<!--  </form>-->
+<!--  <button class="button" color="primary" mat-flat-button (click)="createAndUpdate()"-->
+<!--          type="submit">{{textButton}}</button>-->
+<!--</div>-->
+<ng-container [formGroup]="this.userForm">
+
+  <div class="container global-form-container">
+    <h3 class="global-form-title">{{titreForm}}</h3>
+    <p class="global-form-p">Ces informations sont indispensables à la bonne identification de l'utilisateur</p>
+    <div class="global-inputs">
+
+      <mat-form-field class="input-group">
+        <mat-label class="mat-label">Avatar</mat-label>
+        <mat-select formControlName="avatarUrl">
+          <mat-option style="flex-direction: column;justify-content: center; height: 100px"
+                      *ngFor="let avatar of getAvatars()" value='{{avatar}}'
+                      class="avatar-item">{{avatar.substring(0, avatar.lastIndexOf('.'))}}
+
+
+            <div style="text-align: center; width: 49px">
+              <img src="./assets/avatar/{{avatar}}" alt="Avatar">
+            </div>
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="legacy">
+        <mat-label>Titre</mat-label>
+        <input formControlName="title" matInput>
+        <mat-error *ngIf="this.userForm.get('title')?.hasError('required')">
+          Ce champs est requis.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-group" *ngIf="this.role==='Super Admin'">
+        <mat-label class="mat-label">Role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option value="Super Admin">Super Admin</mat-option>
+          <mat-option value="Admin">Admin</mat-option>
+          <mat-option value="User">User</mat-option>
+        </mat-select>
+        <mat-error *ngIf="userForm.get('role')?.hasError('required')">
+          Ce champs est requis.
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <h4>Contact</h4>
+    <div class="global-inputs">
+      <mat-form-field appearance="legacy">
+        <mat-label>Nom</mat-label>
+        <input formControlName="lastName" matInput>
+        <mat-error *ngIf="this.userForm.get('lastName')?.hasError('required')">
+          Ce champs est requis.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="legacy">
+        <mat-label>Prénom</mat-label>
+        <input formControlName="firstName" matInput>
+        <mat-error *ngIf="this.userForm.get('firstName')?.hasError('required')">
+          Ce champs est requis.
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="global-inputs">
+        <mat-label class="mat-label">Entreprises</mat-label>
+        <mat-select formControlName="EntrepriseId" multiple>
+          <mat-option [value]=+entreprise.id
+                      *ngFor="let entreprise of listEntreprise">{{ entreprise.denomination }}
+
+          </mat-option>
+
+        </mat-select>
+        <mat-error *ngIf="userForm.get('EntrepriseId')?.hasError('required')">
+          Vous devez choisir au moins une entreprise.
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="global-inputs">
+
+      <mat-form-field class="input-group" id="input-email">
+        <mat-label class="mat-label">Email</mat-label>
+        <input matInput placeholder="exemple@gmail.com" formControlName="email">
+        <mat-error *ngIf="userForm.get('email')?.hasError('required')">
+          Ce champs est requis.
+        </mat-error>
+        <mat-error *ngIf="userForm.get('email')?.hasError('email')">
+          Adresse e-mail invalide.
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="global-inputs">
+
+      <mat-form-field class="input-group">
+        <mat-label class="mat-label">Password</mat-label>
+        <input type="password" matInput formControlName="password" autocomplete="current-password">
+        <mat-error *ngIf="userForm.get('password')?.hasError('required')">
+          Ce champs est requis.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-group">
+        <mat-label class="mat-label">Confirmation password</mat-label>
+        <input type="password" matInput formControlName="passwordConfirm">
+        <mat-error *ngIf="userForm.get('passwordConfirm')?.hasError('required')">
+          Les mots de passe ne correspondent pas.
+        </mat-error>
+      </mat-form-field>
+      <div></div>
+
+    </div>
+
+    <div class="global-form-buttons">
+
+      <button mat-stroked-button (click)="closeDialog()" color="primary">Retour</button>
+      <button mat-raised-button (click)="createAndUpdate()" color="primary">Valider</button>
+      <!--      <button mat-stroked-button color="primary" (click)="closeDialog()">Retour</button>-->
+      <!--      <button mat-raised-button color="primary" (click)="createOuvrage()">Ajouter cet ouvrage</button>-->
+    </div>
   </div>
-  <form class="form" [formGroup]="userForm">
-    <mat-form-field class="input-group">
-      <mat-label class="mat-label">Avatar</mat-label>
-      <mat-select formControlName="avatarUrl">
-        <mat-option style="flex-direction: column" *ngFor="let avatar of getAvatars()" value='{{avatar}}'
-                    class="avatar-item">{{avatar.substring(0, avatar.lastIndexOf('.'))}}
+</ng-container>
 
-
-
-          <div style="text-align: center; width: 49px">
-            <img src="./assets/avatar/{{avatar}}" alt="Avatar">
-
-          </div>
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field class="input-group">
-      <mat-label class="mat-label"> Titre</mat-label>
-      <input matInput placeholder="Entrer le nom" formControlName="title">
-      <mat-error *ngIf="userForm.get('title')?.hasError('required')">
-        Vous devez entrer un titre.
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field class="input-group">
-      <mat-label class="mat-label"> Nom</mat-label>
-      <input matInput formControlName="firstName">
-      <mat-error *ngIf="userForm.get('firstName')?.hasError('required')">
-        Vous devez entrer un nom
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field class="input-group">
-      <mat-label class="mat-label"> Prénom</mat-label>
-      <input matInput placeholder="Entrer le prénom" formControlName="lastName">
-      <mat-error *ngIf="userForm.get('lastName')?.hasError('required')">
-        Vous devez entrer un prénom.
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field class="input-group" *ngIf="this.role==='Super Admin'">
-      <mat-label class="mat-label">Role</mat-label>
-      <mat-select formControlName="role">
-        <mat-option value="Super Admin">Super Admin</mat-option>
-        <mat-option value="Admin">Admin</mat-option>
-        <mat-option value="User">User</mat-option>
-      </mat-select>
-      <mat-error *ngIf="userForm.get('role')?.hasError('required')">
-        Vous devez définir un rôle.
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field class="input-group">
-      <mat-label class="mat-label">Entreprises</mat-label>
-      <mat-select formControlName="EntrepriseId" multiple >
-        <mat-option [value]=+entreprise.id
-                    *ngFor="let entreprise of listEntreprise">{{ entreprise.denomination }}
-
-      </mat-option>
-
-      </mat-select>
-      <mat-error *ngIf="userForm.get('EntrepriseId')?.hasError('required')">
-        Vous devez choisir au moins une entreprise.
-      </mat-error>
-    </mat-form-field>
-
-
-    <mat-form-field class="input-group">
-      <mat-label class="mat-label">Email</mat-label>
-      <input matInput placeholder="toto@test.com" formControlName="email">
-      <mat-error *ngIf="userForm.get('email')?.hasError('required')">
-        Vous devez entrer une adresse e-mail.
-      </mat-error>
-      <mat-error *ngIf="userForm.get('email')?.hasError('email')">
-        Adresse e-mail invalide.
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field class="input-group">
-      <mat-label class="mat-label">Password</mat-label>
-      <input type="password" matInput formControlName="password" autocomplete="current-password">
-      <mat-error *ngIf="userForm.get('password')?.hasError('required')">
-        Vous devez définir un mot de passe.
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="input-group">
-      <mat-label class="mat-label">Confirmation password</mat-label>
-      <input type="password" matInput formControlName="passwordConfirm" >
-      <mat-error *ngIf="userForm.get('passwordConfirm')?.hasError('required')">
-        Les mots de passe ne correspondent pas.
-      </mat-error>
-    </mat-form-field>
-
-
-  </form>
-  <button class="button" color="primary" mat-flat-button (click)="createAndUpdate()"
-          type="submit">{{textButton}}</button>
-</div>
