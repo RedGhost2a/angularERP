@@ -1,14 +1,13 @@
 <ng-container [formGroup]="this.myFormGroup">
 
-  <div class="container">
+  <div class="container global-form-container">
     <!--  <ng-container>-->
-    <h3>{{titreForm}}</h3>
-    <p>{{textForm}}</p>
-    <blockquote style="font-size: 10px; font-style: italic">Les champs marqués d'une astérisque * sont obligatoires.
-    </blockquote>
+    <h3 class="global-form-title">{{titreForm}}</h3>
+    <p class="global-form-p">{{textForm}}</p>
+    <blockquote *ngIf="initialData[1]===false" style="font-size: 10px; font-style: italic">Les champs marqués d'une astérisque * sont obligatoires.</blockquote>
 
     <!--    <form class="form" [formGroup]="myFormGroup">-->
-    <div class="inputs">
+    <div class="inputs global-inputs">
 
 
       <mat-form-field appearance="legacy" id="input-categorie">
@@ -20,7 +19,6 @@
           <option value="Collectivité">Collectivité</option>
         </select>
       </mat-form-field>
-      <div class="input">
         <mat-form-field appearance="legacy" id="input-denomination">
           <mat-label>Dénomination</mat-label>
           <input type="text" matInput placeholder="Entrer la dénomination commerciale" formControlName="denomination">
@@ -29,7 +27,6 @@
           </mat-error>
         </mat-form-field>
 
-      </div>
       <div></div>
 
       <mat-form-field
@@ -47,7 +44,7 @@
       </mat-form-field>
     </div>
     <h4>Adresse du siège social</h4>
-    <div class="inputs" formGroupName="Adresse">
+    <div class="inputs global-inputs" formGroupName="Adresse">
       <!--      <div formGroupName="Adresse">-->
       <mat-form-field appearance="legacy" id="input-adresse">
         <mat-label>Adresse</mat-label>
@@ -62,10 +59,10 @@
         </mat-error>
       </mat-form-field>
 
-      <div class="input">
+      <div class="input global-input">
         <mat-form-field appearance="legacy" id="input-zipCode">
           <mat-label>Code postal</mat-label>
-          <input type="number" matInput placeholder=" Ex. 20167" formControlName="zipcode">
+          <input matInput placeholder=" Ex. 20167" formControlName="zipcode">
           <!--          <mat-error *ngIf="this.myFormGroup.get('Adresse.zipcode')?.hasError('required')">-->
           <!--            Vous devez inscrire un code postal.-->
           <!--          </mat-error>-->
@@ -75,7 +72,7 @@
 
       <mat-form-field appearance="legacy">
         <mat-label>Ville</mat-label>
-        <input type="text" matInput placeholder="Ajaccio" formControlName="city">
+        <input type="text" matInput placeholder="Ajaccio" formControlName="city" >
         <mat-error *ngIf="this.myFormGroup.get('Adresse.city')?.hasError('required')">
           Vous devez inscrire une ville.
         </mat-error>
@@ -90,8 +87,8 @@
     </div>
     <h4>Contact</h4>
 
-    <div class="inputs">
-      <div class="input">
+    <div class="inputs global-inputs">
+      <div class="input global-input">
         <mat-form-field appearance="legacy" color="primary">
           <mat-label>Nom</mat-label>
           <input type="text" matInput placeholder="Entrer le nom" formControlName="firstName">
@@ -102,7 +99,7 @@
         <!--          </div>-->
       </div>
 
-      <div class="input">
+      <div class="input global-input">
         <mat-form-field appearance="legacy">
           <mat-label>Prénom</mat-label>
           <input type="text" matInput placeholder="Entrer le prénom" formControlName="lastName">
@@ -113,7 +110,7 @@
         <!--          </div>-->
       </div>
 
-      <div class="input">
+      <div class="input global-input">
         <mat-form-field appearance="legacy">
           <mat-label>Email</mat-label>
           <input type="email" matInput formControlName="email">
@@ -123,10 +120,10 @@
         <!--        </div>-->
       </div>
 
-      <div class="input">
+      <div class="input global-input">
         <mat-form-field appearance="legacy">
           <mat-label>Numéro de téléphone</mat-label>
-          <input type="number" matInput formControlName="phonenumber">
+          <input  matInput formControlName="phonenumber">
 
         </mat-form-field>
         <!--        <div *ngIf=" f['phonenumber'].invalid && f['phonenumber'].touched  " class="invalid-feedback">-->
@@ -137,9 +134,10 @@
     </div>
 
 
-    <div class="buttons">
+    <div class="buttons global-form-buttons">
       <button mat-stroked-button color="primary" (click)="closeDialog()">Retour</button>
-      <button mat-raised-button color="primary" (click)="createAndUpdate()">{{textButton}}</button>
+      <button mat-raised-button color="primary" (click)="createAndUpdate()" [disabled]="initialData[1] === true ? true : false" >{{textButton}}</button>
     </div>
   </div>
 </ng-container>
+

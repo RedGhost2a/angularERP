@@ -37,7 +37,6 @@ html, body {
   height: 100%;
 }
 
-
 body {
   margin: 0 0 0 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -46,11 +45,86 @@ body {
 .test .mat-dialog-container {
   padding: 0;
 }
-//.mat-dialog-container {
-//  padding: 0 !important;
-//  background-color: #0c5593;
-//}
-.testcontainer{
-  height: calc(100vh - 64px);
+.testcontainer, .global-height{
+    min-height: calc(100vh - 64px);
+}
+// style for list/table
+.global-big-container{
+  background-color: #F0F4F8;
+  height: 100%;
+  .global-title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    background-color: #FFFFFF;;
+    color: rgb(8, 31, 44);
+    font-size: 1.2rem;
+    font-weight: 500;
+    font-family: Michroma;
+    border-top: 10px solid #0c5593;
+  }
+    .global-header{
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .global-search-input{
+        margin-left: 5%;
+      }
+      .global-button-add{
+        margin-right: 5%;
+      }
+    }
+  .global-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .global-table{
+      width: 90%;
+      margin-top: 30px;
+      .global-td{
+        color: #334E68;
+        padding-right: 0px;
+      }
+      .global-td-hover:hover {
+        background-color: #EEF9FF;
+        cursor: pointer;
+      }
+      .global-td-hover-designation{
+        max-width: 20vw;
+      }
+      .global-th{
+        color: #334E68;
+        font-size: 0.9rem;
+        padding-right: 0px;
+      }
+    }
+  }
+}
+//style for form
+.global-form-container{
+  display: flex;
+  flex-direction: column;
+  .global-form-title{
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+  .global-form-p{
+    margin-top: 2%;
+    font-size: 1rem;
+  }
+  .global-inputs{
+    margin-bottom: 2%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .global-form-buttons{
+    display: flex;
+    justify-content: space-between;
+    margin-top:3%;
+  }
+
 }
 

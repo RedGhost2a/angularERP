@@ -11,7 +11,7 @@
       <div class="container-frais-chantier">
         <div class="container-card-frais-chantier">
           <div class="text-frais-chantier">
-            <h4 class="title-frais-chantier">Chiffrage des frais de chantier</h4>
+            <h4 class="title-frais-chantier test-style-global" >Chiffrage des frais de chantier</h4>
             <p class="text-frais-chantier">Veuillez ajouter les sous-lots et les ouvrages <br> que vous souhaitez
               afficher dans vos frais de chantier.
             </p>
@@ -28,37 +28,6 @@
                 <div>
                   <p>{{!this.lotFraisDeChantier.prix ? 0 : this.lotFraisDeChantier.prix| number : '1.2-2'}} €</p>
                 </div>
-                <mat-card-subtitle>Prix Equilibre HT</mat-card-subtitle>
-                <div>
-                  <p>{{!this.fraisDeChantier.prixEquiHT ? 0 : this.fraisDeChantier.prixEquiHT| number: '1.2-2'}} €</p>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-
-          <mat-card class="card">
-            <mat-card-content>
-              <div>
-                <mat-card-subtitle>Bénéfice</mat-card-subtitle>
-                <div>
-                  <p>{{!this.fraisDeChantier.beneficeInEuro ? 0: this.fraisDeChantier.beneficeInEuro | number : '1.2-2'}} € </p>
-                </div>
-                <mat-card-subtitle>Aléas</mat-card-subtitle>
-                <div>
-                  <p>{{!this.fraisDeChantier.aleasInEuro ? 0 : this.fraisDeChantier.aleasInEuro | number: '1.2-2'}} €</p>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-
-
-          <mat-card class="card">
-            <mat-card-content>
-              <div>
-                <mat-card-subtitle>Prix Calculé</mat-card-subtitle>
-                <div>
-                  <p>{{!this.fraisDeChantier.prixCalcHT ? 0 : this.fraisDeChantier.prixCalcHT | number : '1.2-2'}} € </p>
-                </div>
                 <mat-card-subtitle>Prix de Vente</mat-card-subtitle>
                 <div>
                   <p>{{!this.fraisDeChantier.prixVenteHT ? 0 : this.fraisDeChantier.prixVenteHT | number: '1.2-2'}} €</p>
@@ -68,20 +37,10 @@
           </mat-card>
 
 
-          <mat-card class="card">
-            <mat-card-content>
-              <div>
-                <mat-card-subtitle>Bénéfice & Aléas en %</mat-card-subtitle>
-                <div>
-                  <p>{{!this.fraisDeChantier.beneficeAleasTotalPercent ? 0 : this.fraisDeChantier.beneficeAleasTotalPercent | number: '1.2-2'}} %</p>
-                </div>
-                <mat-card-subtitle>Bénéfice & Aléas en €</mat-card-subtitle>
-                <div>
-                  <p>{{!this.fraisDeChantier.beneficeAleasTotal ? 0 : this.fraisDeChantier.beneficeAleasTotal| number: '1.2-2'}} €</p>
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
+
+
+
+
         </div>
 
         <form [formGroup]="form" (ngSubmit)="onSubmit()" [hidden]="!showForm">
@@ -170,14 +129,14 @@
                   <span class="designation-ouvrage-frais-chantier-td">Désignation</span>
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.designation}}</span>
                 </div>
-                <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier-td">Bénéfice</span>
-                  <span class="designation-ouvrage-frais-chantier">{{ouvrage.benefice}}</span>
-                </div>
-                <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier-td">Aléas</span>
-                  <span class="designation-ouvrage-frais-chantier">{{ouvrage.aleas}}</span>
-                </div>
+<!--                <div class="detail-ouvrage-frais-chantier">-->
+<!--                  <span class="designation-ouvrage-frais-chantier-td">Bénéfice</span>-->
+<!--                  <span class="designation-ouvrage-frais-chantier">{{ouvrage.benefice}}</span>-->
+<!--                </div>-->
+<!--                <div class="detail-ouvrage-frais-chantier">-->
+<!--                  <span class="designation-ouvrage-frais-chantier-td">Aléas</span>-->
+<!--                  <span class="designation-ouvrage-frais-chantier">{{ouvrage.aleas}}</span>-->
+<!--                </div>-->
                 <div class="detail-ouvrage-frais-chantier">
                   <span class="designation-ouvrage-frais-chantier-td">Unité</span>
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.unite}}</span>
@@ -198,9 +157,6 @@
                 </div>
                 <div class="detail-ouvrage-frais-chantier" *ngIf="ouvrage.CoutDuDevis">
                   <span class="designation-ouvrage-frais-chantier-td">PU DS HT</span>
-<!--                  <span-->
-<!--                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniHT | number: '1.2-2'}}-->
-<!--                    €</span>-->
                   <span *ngIf="ouvrage.CoutDuDevis.length >= 1"
                         class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniHT | number: '1.2-2'}}
                     €
@@ -209,38 +165,6 @@
                         class="designation-ouvrage-frais-chantier">{{ouvrage.prix | number: '1.2-2'}}
                     €</span>
                 </div>
-                <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier-td">Prix Equilibre HT</span>
-                  <span
-                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixEquiHT | number: '1.2-2'}}
-                    €</span>
-                </div>
-                <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier-td">Prix Calculé HT</span>
-                  <span
-                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixCalcHT | number: '1.2-2'}}
-                    €</span>
-                </div>
-<!--                <div class="detail-ouvrage-frais-chantier">-->
-<!--                  <span class="designation-ouvrage-frais-chantier">PU Vente HT</span>-->
-<!--                  <span-->
-<!--                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniVenteHT | number: '1.2-2'}}-->
-<!--                    €</span>-->
-<!--                </div>-->
-<!--                <div class="detail-ouvrage-frais-chantier">-->
-<!--                  <span class="designation-ouvrage-frais-chantier">Prix Vente HT</span>-->
-<!--                  <span-->
-<!--                    class="designation-ouvrage-frais-chantier">-->
-<!--                      <mat-form-field [formGroup]="myFormGroup" id="prix-arrondi-frais-chantier">-->
-<!--                                            <input type="number" formControlName="quantityOuvrage" matInput required-->
-<!--                                                   [placeholder]="ouvrage.SousLotOuvrage.prixUniVenteHT.toString()"-->
-<!--                                                   (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">-->
-<!--                                          </mat-form-field>-->
-<!--                    </span>-->
-<!--                  &lt;!&ndash;                  <span&ndash;&gt;-->
-<!--                  &lt;!&ndash;                    class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixVenteHT | number: '1.2-2'}}€&ndash;&gt;-->
-<!--                  &lt;!&ndash;                  </span>&ndash;&gt;-->
-<!--                </div>-->
                 <div class="detail-ouvrage-frais-chantier">
                   <span class="designation-ouvrage-frais-chantier-td">PU Vente HT </span>
                   <span
@@ -251,9 +175,6 @@
                                                    (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">
                                           </mat-form-field>
                     </span>
-                  <!--                    <span-->
-                  <!--                      class="designation-ouvrage-frais-chantier">{{ouvrage.SousLotOuvrage.prixUniVenteHT | number: '1.2-2'}}-->
-                  <!--                      €</span>-->
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
                   <span class="designation-ouvrage-frais-chantier-td">Prix Vente HT</span>
@@ -281,6 +202,7 @@
         </div>
       </div>
     </mat-tab>
+
 
 
     <mat-tab class="devis" label="Devis" *ngIf="lotFraisDeChantier !== undefined " id="tab2">
@@ -583,25 +505,25 @@
               <div class="containerParams">
                 <div class="paramsSub">
                   <div class="itemsParams">
-                    <mat-card-subtitle>Bénéfice</mat-card-subtitle>
-                    <p>{{!this.resultBeneficeFraisDeChantier ? 0 : this.resultBeneficeFraisDeChantier | number : '1.2-2'}} %</p>
+                    <mat-card-subtitle>Prix de vente</mat-card-subtitle>
+                    <p>{{!this.fraisDeChantier.prixVenteHT ? 0 : this.fraisDeChantier.prixVenteHT | number : '1.2-2'}} €</p>
                   </div>
                   <div class="itemsParams">
-                    <mat-card-subtitle>Aléas</mat-card-subtitle>
-                    <p>{{!this.resultAleasFraisDeChantier ? 0 : this.resultAleasFraisDeChantier | number : '1.2-2'}} %</p>
-                  </div>
-                </div>
-                <div class="paramsSub">
-                  <div class="itemsParams">
-                    <mat-card-subtitle>Total</mat-card-subtitle>
+                    <mat-card-subtitle>Total DBS</mat-card-subtitle>
                     <p>{{!this.lotFraisDeChantier.prix ? 0 : this.lotFraisDeChantier.prix | number : '1.2-2'}} €</p>
                   </div>
-                  <div class="itemsParams">
-                    <mat-card-subtitle>Bénéfice & Aléas</mat-card-subtitle>
-                    <p *ngIf="!this.resultAleasFraisDeChantier || !this.resultBeneficeFraisDeChantier; else other ">0 %</p>
-                    <ng-template #other>{{this.resultAleasFraisDeChantier + this.resultBeneficeFraisDeChantier  | number : '1.2-2'}} %</ng-template>
-                  </div>
                 </div>
+<!--                <div class="paramsSub">-->
+<!--                  <div class="itemsParams">-->
+<!--                    <mat-card-subtitle>Total</mat-card-subtitle>-->
+<!--                    <p>{{!this.lotFraisDeChantier.prix ? 0 : this.lotFraisDeChantier.prix | number : '1.2-2'}} €</p>-->
+<!--                  </div>-->
+<!--                  <div class="itemsParams">-->
+<!--                    <mat-card-subtitle>Bénéfice & Aléas</mat-card-subtitle>-->
+<!--                    <p *ngIf="!this.resultAleasFraisDeChantier || !this.resultBeneficeFraisDeChantier; else other ">0 %</p>-->
+<!--                    <ng-template #other>{{this.resultAleasFraisDeChantier + this.resultBeneficeFraisDeChantier  | number : '1.2-2'}} %</ng-template>-->
+<!--                  </div>-->
+<!--                </div>-->
 
               </div>
             </mat-card-content>

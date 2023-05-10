@@ -2,6 +2,10 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UserService} from "../../_service/user.service";
 import {User} from "../../_models/users";
 import {MatTableDataSource} from "@angular/material/table";
+import {Cout} from "../../_models/cout";
+import {FormCoutComponent} from "../../form-cout/form-cout.component";
+import {MatDialog} from "@angular/material/dialog";
+import {UserEditComponent} from "../user-edit/user-edit.component";
 
 @Component({
   selector: 'app-user-list',
@@ -17,7 +21,7 @@ export class UserListComponent implements OnInit {
   listUser !: User[];
 
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private dialog: MatDialog) {
 
   }
 
@@ -38,6 +42,7 @@ export class UserListComponent implements OnInit {
 
   getAll(): void {
     this.userService.getAll().subscribe(data => {
+      console.log(data,'45')
       this.dataSource = new MatTableDataSource(data);
       // Convert each user's avatar data from a Buffer to a base64-encoded string
       this.listUser = data.map((user: { avatarUrl: any; }) => {
@@ -52,4 +57,15 @@ export class UserListComponent implements OnInit {
       });
     });
   }
+  openDialogCreate(user: User | null) {
+    this.dialog.open(UserEditComponent, {
+      data:user,
+      width: '70%',
+      height: '78%'
+    }).afterClosed().subscribe(async result => {
+      this.ngOnInit()
+
+    });
+  }
+
 }

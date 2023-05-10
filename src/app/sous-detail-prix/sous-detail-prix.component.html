@@ -194,7 +194,7 @@
     </div>
 
 
-    <div *ngIf="this.currentOuvrage.CoutDuDevis">
+    <div *ngIf="this.currentOuvrage.CoutDuDevis && this.currentOuvrage.CoutDuDevis.length">
 
       <table *ngIf="currentOuvrage " mat-table [dataSource]="currentOuvrage.CoutDuDevis">
         <ng-container matColumnDef="type">
@@ -423,10 +423,81 @@
         <!--      </div>-->
       </div>
 
-
     </ng-container>
 
+    <!--    <mat-card class="cardMetre">-->
+    <!--      <mat-card-header>-->
+    <!--        <mat-card-title>Metre</mat-card-title>-->
+    <!--      </mat-card-header>-->
+    <!--      <hr>-->
+    <!--      <mat-card-content>-->
+
+    <!--        <form [formGroup]="formMetre">-->
+    <!--          <div formArrayName="metres">-->
+
+    <!--            <div class="row" *ngFor="let metre of metresControls ; let i = index"-->
+    <!--                 [formGroupName]="i">-->
+
+    <!--              <mat-form-field appearance="legacy">-->
+    <!--                <mat-label>Longueur</mat-label>-->
+    <!--&lt;!&ndash;                <input formControlName="longueur" matInput>&ndash;&gt;-->
+    <!--                <input matInput formControlName="longueur" placeholder="Email" autocomplete="email">-->
+    <!--              </mat-form-field>-->
+
+    <!--              <mat-form-field appearance="legacy">-->
+    <!--                <mat-label>Largeur</mat-label>-->
+    <!--                <input formControlName="largeur" matInput>-->
+    <!--              </mat-form-field>-->
+
+    <!--              <mat-form-field appearance="legacy">-->
+    <!--                <mat-label>Hauteur</mat-label>-->
+    <!--                <input formControlName="hauteur" matInput>-->
+    <!--              </mat-form-field>-->
+    <!--            <button (click)="addMetreFormGroup()"> test ajout</button>-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--        </form>-->
+
+
+    <!--      </mat-card-content>-->
+    <!--    </mat-card>-->
+
+    <!--  </div>-->
+
+
+    <!--</div>-->
+
+    <form class="basic-container" [formGroup]="formMetre" *ngIf="formMetre">
+      <div class="form-metre" formArrayName="metres">
+    <div class="row" *ngFor="let metre of this.formMetre.getRawValue().metres.length; let i = index" [formGroupName]="i">
+<!--        <div class="row" *ngFor="let metre of getValue(); let i = index"-->
+<!--             [formGroupName]="i">-->
+
+
+          <mat-form-field>
+            <input matInput formControlName="longueur">
+            <!--        <p>{{formMetre.get('longueur')?.value}}</p>-->
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput formControlName="largeur">
+          </mat-form-field>
+
+          <mat-form-field>
+            <input matInput formControlName="hauteur">
+          </mat-form-field>
+          <button class="float-left" mat-icon-button color="primary" aria-label="Add"
+                  (click)="addMetreFormGroup()" matTooltip="Add">
+            <mat-icon>add_circle_outline</mat-icon>
+          </button>
+        </div>
+
+        <!--      <div class="col-3">-->
+        <!--      </div>-->
+      </div>
+      <!--<p>{{this.formMetre.get('metres').value}}</p>-->
+      <button type="submit" (click)="valueFormMetre()"> test</button>
+    </form>
 
   </div>
-
 </div>

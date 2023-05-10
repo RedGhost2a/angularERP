@@ -37,9 +37,12 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log("ngOninit")
     if (this.user.role === 'Super Admin') {
+    console.log("ngOninit super admin")
       this.getPrixVenteHT();
     }else if (this.user.role === 'Admin'){
+    console.log("ngOninit admin")
       this.getIdEntreprise();
     }
 
@@ -47,6 +50,7 @@ export class DashboardComponent implements OnInit {
 
 
   getIdEntreprise() {
+    console.log("getIdEntreprise")
     this.userService.getById(this.user.id).subscribe(data => {
       this.entrepriseId = data.Entreprises.map((item: { id: any; }) => item.id);
       const id = this.entrepriseId[this.currentEntrepriseIndex];
@@ -71,6 +75,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getPrixVenteHT(){
+    console.log("getPrixVenteHT")
       this.devisService.getAll().subscribe(data=>{
         this.devis = data;
         this.frais =data.map((item: { debourseSecTotal: any; }) => item.debourseSecTotal);
@@ -87,6 +92,8 @@ export class DashboardComponent implements OnInit {
 
 
   getPrixVenteHTForAdmin() {
+    console.log("getPrixVenteHTForAdmin")
+
     const id = this.entrepriseId[this.currentEntrepriseIndex];
     this.devisService.getDevisByEnterprise(id).subscribe(data => {
       this.devis = data.Devis;
@@ -108,6 +115,7 @@ export class DashboardComponent implements OnInit {
 
 
   createChart() {
+    console.log("createChart")
     if (this.chart) {
       this.chart.destroy();
     }

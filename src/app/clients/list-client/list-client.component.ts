@@ -58,6 +58,8 @@ export class ListClientComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        console.log("result", result)
+        console.log("id", id)
         // Appeler la fonction de suppression ici
         this.clientService.deleteByID(id).subscribe((() => this.ngOnInit()))
       }
@@ -93,12 +95,12 @@ export class ListClientComponent implements OnInit {
 
   }
 
-  openDialogCreate(client: Client | null) {
+  openDialogCreate(client: Client | null, disable : boolean ) {
     console.log("data envoyer depuis list client", client)
     this.dialog.open(EditComponent, {
-      data: client,
+      data: [client, disable],
       width: '70%',
-      height: '78%'
+      height: '75%'
     }).afterClosed().subscribe(async result => {
       this.ngOnInit()
 
