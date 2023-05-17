@@ -1,16 +1,7 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  Injectable,
-  OnInit,
-  OnDestroy,
-  AfterViewInit,
-  ViewChild
-} from '@angular/core';
+import {ChangeDetectorRef, Component, Inject, Injectable, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LotService} from "../_service/lot.service"
-import {ActivatedRoute, Event, NavigationExtras, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {SousLotService} from "../_service/sous-lot.service";
 import {DevisService} from "../_service/devis.service";
@@ -32,15 +23,10 @@ import {Devis} from "../_models/devis";
 import {DevisExport} from "../_models/devisExport";
 import {FormOuvrageComponent} from "../form-ouvrage/form-ouvrage.component";
 import {transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
-import {text} from "@fortawesome/fontawesome-svg-core";
-import {OuvrageDuDevis} from "../_models/ouvrage-du-devis";
-import {da} from "date-fns/locale";
 import {Client} from "../_models/client";
 import {Entreprise} from "../_models/entreprise";
 import {DialogLotComponent} from "../dialog-lot/dialog-lot.component";
 import {DialogSouslotComponent} from "../dialog-souslot/dialog-souslot.component";
-import {Log} from "../_models/log";
-import {MatTabChangeEvent, MatTabGroup} from "@angular/material/tabs";
 
 // import {Json2CsvTransform} from "json2csv";
 
@@ -90,7 +76,7 @@ export class CreateDevisComponent implements OnInit {
     }
     ,
   };
-  selectedIndex !:number;
+  selectedIndex !: number;
 
 
 //TODO ON NE PEUT METTRE QUE UN SEUL ET MEME OUVRAGE PAR SOUS_LOT; //
@@ -119,10 +105,9 @@ export class CreateDevisComponent implements OnInit {
   }
 
 
-
   ngOnInit() {
 
-    console.log('url',this.router.url)
+    console.log('url', this.router.url)
     transformVirguletoPoint()
     this.route.params.subscribe(params => {
       this.devis.id = +params['id'];
@@ -130,7 +115,7 @@ export class CreateDevisComponent implements OnInit {
       this.sharedData.deviId = this.devisId;
       this.devisService.getById(this.devisId).subscribe(data => {
           this.devis.percentFraisGeneraux = data.percentFraisGeneraux;
-    this.formFraisGeneraux()
+          this.formFraisGeneraux()
         }
       )
       this.form = new FormGroup({
@@ -147,10 +132,9 @@ export class CreateDevisComponent implements OnInit {
     this.dataLoad = false;
 
     this.getDevisExport()
-   this.setSelectedIndex()
+    this.setSelectedIndex()
 
   }
-
 
 
   ngOnDestroy() {
@@ -164,14 +148,16 @@ export class CreateDevisComponent implements OnInit {
     devisBDD.prixCalcHT += this.fraisDeChantier.prixCalcHT
     this.devisService.update(devisBDD, this.devisId).subscribe()
   }
-  onTabChanged(index:number) {
+
+  onTabChanged(index: number) {
     localStorage.setItem("index", index.toString())
   }
-  setSelectedIndex(){
-    setTimeout(()=>{
+
+  setSelectedIndex() {
+    setTimeout(() => {
       const index = localStorage.getItem("index")
       this.selectedIndex = parseInt(index ?? "0")
-    },200)
+    }, 200)
   }
 
   fraisGeneraux(): void {
@@ -179,7 +165,7 @@ export class CreateDevisComponent implements OnInit {
       this.devis.fraisGeneraux = (this.lotFraisDeChantier.prix + this.devis.debourseSecTotal) * (this.myFormFraisGeneraux.get('percentFraisGeneraux')?.value / 100)
       this.coutTotal();
       this.totalDepense()
-    }else{
+    } else {
       this.devis.fraisGeneraux = this.devis.debourseSecTotal * (this.myFormFraisGeneraux.get('percentFraisGeneraux')?.value / 100)
       this.coutTotal();
       this.totalDepense()
@@ -215,9 +201,9 @@ export class CreateDevisComponent implements OnInit {
   coutTotal(): void {
     if (this.lotFraisDeChantier.prix !== undefined) {
       this.devis.coutTotal = this.lotFraisDeChantier.prix + this.devis.debourseSecTotal + this.devis.fraisGeneraux
-      console.log("cout total debourse fonction",this.devis.fraisGeneraux)
+      console.log("cout total debourse fonction", this.devis.fraisGeneraux)
       this.coefEquilibre()
-    }else{
+    } else {
       this.devis.coutTotal = this.devis.debourseSecTotal + this.devis.fraisGeneraux
       this.coefEquilibre()
     }
@@ -392,13 +378,13 @@ export class CreateDevisComponent implements OnInit {
   }
 
   allCalculOuvrageFraisDeChantier(): void {
-     this.fraisDeChantier.prixVenteHT = 0;
+    this.fraisDeChantier.prixVenteHT = 0;
 
     this.lotFraisDeChantier.SousLots.forEach(sousLot => {
       sousLot.OuvrageDuDevis.forEach(async ouvrageDuDevis => {
         if (ouvrageDuDevis.SousLotOuvrage) {
           ouvrageDuDevis.SousLotOuvrage.prixVenteHT = ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT * ouvrageDuDevis.SousLotOuvrage.quantityOuvrage
-           this.fraisDeChantier.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixVenteHT
+          this.fraisDeChantier.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixVenteHT
         }
       })
 
@@ -675,7 +661,7 @@ export class CreateDevisComponent implements OnInit {
 
   openDialogCreate(sousLotId: number) {
     this.dialog.open(FormOuvrageComponent, {
-      data: sousLotId,
+      data: {sousLotId: sousLotId, devisId: this.devisId},
       width: '90%',
       height: '40%'
     }).afterClosed().subscribe(() => {

@@ -28,12 +28,12 @@ export class DetailDevisComponent implements OnInit {
   detailStatus: string[] = ['Initialisation', 'En attente', 'Accepté', 'Refusé', "Cloturer", 'Je ne sais pas'];
   selectedStatus!: string;
   validityTime!: number;
-  isEditMode:boolean=false;
-  isEditMode2:boolean=false;
-  isEditMode3:boolean=false;
-  isEditMode4:boolean=false;
-  beneficeInPercent!:number;
-  aleasInPercent!:number;
+  isEditMode: boolean = false;
+  isEditMode2: boolean = false;
+  isEditMode3: boolean = false;
+  isEditMode4: boolean = false;
+  beneficeInPercent!: number;
+  aleasInPercent!: number;
 
 
   constructor(private devisService: DevisService,
@@ -42,8 +42,7 @@ export class DetailDevisComponent implements OnInit {
               private lotService: LotService,
               @Inject(TOASTR_TOKEN) private toastr: Toastr,
               private formBuilder: FormBuilder,
-              private ouvrageService:OuvrageService) {
-
+              private ouvrageService: OuvrageService) {
 
 
   }
@@ -82,7 +81,7 @@ export class DetailDevisComponent implements OnInit {
   updateAleasDevis() {
     this.devisService.update({aleasInPercent: this.aleasInPercent}, this.devisID).subscribe(() => {
       this.toastr.success('Succes', 'Le statut a été mis à jour.');
-     this.updateBenefAndAleasDevis()
+      this.updateBenefAndAleasDevis()
       this.getById();
     }, error => {
       this.toastr.error('Error', 'Une erreur est survenue lors de la mise à jour du statut.');
@@ -91,11 +90,13 @@ export class DetailDevisComponent implements OnInit {
   }
 
   updateBenefAndAleasDevis() {
+    console.log("startd")
     // récupérer le devis en cours de modification
     this.devisService.getOuvrages(this.devisID).subscribe(devis => {
-      const ouvrages = devis[1];
-
+      const ouvrages = devis[0];
+      console.log(devis)
       // stocker les ids des ouvrages dont alteredBenefOrAleas est false
+
       const ouvragesIds: number[] = [];
       ouvrages.forEach((ouvrage: any) => {
         if (!ouvrage.alteredBenefOrAleas) {
@@ -108,7 +109,8 @@ export class DetailDevisComponent implements OnInit {
         benefice: this.beneficeInPercent,
         aleas: this.aleasInPercent
       };
-     for (let i=0;i < ouvragesIds.length;i++) {
+      for (let i = 0; i < ouvragesIds.length; i++) {
+        console.log("loop")
         this.ouvrageService.updateOuvrageDuDevis(updatedOuvrage, [ouvragesIds[i]]).subscribe(() => {
           this.toastr.success('Succes', 'Les champs benefice et aleas ont été mis à jour.');
           this.getById();
@@ -122,12 +124,8 @@ export class DetailDevisComponent implements OnInit {
   }
 
 
-
-
-
-
   updateValidityDevis() {
-    this.devisService.update({validityTime:this.validityTime}, this.devisID).subscribe(() => {
+    this.devisService.update({validityTime: this.validityTime}, this.devisID).subscribe(() => {
       this.toastr.success('Succes', 'La durée a été mis à jour.');
       this.getById();
     }, error => {

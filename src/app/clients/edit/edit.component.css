@@ -1,18 +1,3 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  color: #334E68;
-  overflow: hidden;
-}
-.container h3 {
-  font-size: 1.2rem;
-  font-weight: 500;
-}
-.container p {
-  margin-top: 2%;
-  font-size: 1rem;
-}
-
 #input-denomination {
   width: 300px;
 }
@@ -23,23 +8,6 @@
 
 #input-adresse {
   width: 40%;
-}
-
-.inputs {
-  margin-bottom: 2%;
-  display: flex;
-  justify-content: space-between;
-}
-
-.input {
-  display: flex;
-  flex-direction: column;
-}
-
-.buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 3%;
 }
 
 /*# sourceMappingURL=edit.component.css.map */

@@ -7,9 +7,6 @@ import {MatDialog} from "@angular/material/dialog";
 import {EditDevisComponent} from "../edit-devis/edit-devis.component";
 import {UserService} from "../../_service/user.service";
 import {MatTableDataSource} from "@angular/material/table";
-import {da, de} from "date-fns/locale";
-import _default from "chart.js/dist/plugins/plugin.tooltip";
-import numbers = _default.defaults.animations.numbers;
 import {EditComponent} from "../../clients/edit/edit.component";
 
 @Component({
@@ -21,13 +18,13 @@ export class ListDevisComponent implements OnInit {
   @Input() devis!: Devis;
   @Output() deleteDevis: EventEmitter<any> = new EventEmitter()
 
-  displayedColumns: string[] = ['nDevis','client', 'nomDevis', 'dateDevis',  'status', 'referent', 'prixVenteHT','benefice','aleas', 'boutons'];
+  displayedColumns: string[] = ['nDevis', 'client', 'nomDevis', 'dateDevis', 'status', 'referent', 'prixVenteHT', 'benefice', 'aleas', 'boutons'];
   // displayedColumns: string[] = ['Devis n°', 'Nom', 'Client', "Status", "Action"];
   clickedRows = new Set<Client>();
 
 
   entrepriseID: number[] = [];
-  dataSource :any;
+  dataSource: any;
 
   constructor(private devisService: DevisService,
               private dialog: MatDialog,
@@ -67,10 +64,10 @@ export class ListDevisComponent implements OnInit {
       const name = data.name.toLowerCase();
       const date = data.createdAt.toLowerCase();
       const status = data.status.toLowerCase();
-       const referentFN = data.Users[0].firstName.toLowerCase();
-       const referentLN = data.Users[0].lastName.toLowerCase();
-      const valuesToSearch = [client, name,date,
-        status,referentFN,referentLN];
+      const referentFN = data.Users[0].firstName.toLowerCase();
+      const referentLN = data.Users[0].lastName.toLowerCase();
+      const valuesToSearch = [client, name, date,
+        status, referentFN, referentLN];
       return valuesToSearch.some(value => value.includes(searchText));
     };
   }
@@ -86,7 +83,7 @@ export class ListDevisComponent implements OnInit {
     if (this.userService.userValue.role === 'Super Admin') {
       this.devisService.getAll().subscribe(data => {
         this.dataSource = new MatTableDataSource(data)
-        // console.log(data)
+        console.log(data)
       })
     } else {
       this.userService.getById(this.userService.userValue.id).subscribe(data => {
@@ -121,6 +118,7 @@ export class ListDevisComponent implements OnInit {
 
     });
   }
+
   openDialogCreateClient() {
     this.dialog.open(EditComponent, {
       width: '90%',

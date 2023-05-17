@@ -1,38 +1,5 @@
-.mat-form-field {
-  padding: 20px;
-  text-align: center;
-}
-
-.form-group {
-  width: 60%;
-  margin: auto;
-  margin-top: 20px;
-}
-.form-group-header {
-  text-align: center;
-}
-
-.form {
-  margin: 60px;
-  color: rgb(8, 31, 44);
-}
-
-.form-row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-evenly;
-}
-
-.button {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  align-items: center;
-  text-align: center;
-  align-content: center;
-  justify-content: center;
-  flex-wrap: wrap;
+#input-email {
+  width: 300px;
 }
 
 /*# sourceMappingURL=user-edit.component.css.map */

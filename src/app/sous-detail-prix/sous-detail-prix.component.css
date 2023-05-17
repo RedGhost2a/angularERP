@@ -93,4 +93,13 @@ table {
   margin-bottom: 2%;
 }
 
+.cardMetre {
+  width: 90%;
+}
+
+.form-metre {
+  display: flex;
+  justify-content: space-around;
+}
+
 /*# sourceMappingURL=sous-detail-prix.component.css.map */
