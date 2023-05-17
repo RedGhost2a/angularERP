@@ -121,7 +121,7 @@
             </mat-panel-title>
             <mat-panel-title>{{note.title|uppercase}}</mat-panel-title>
             <mat-panel-description>{{note.typeError}} {{note?.optionsTypeError}}</mat-panel-description>
-            <mat-panel-description>Le: {{note.createdAt |date:'dd/MM/yyyy HH:mm:ss'}}</mat-panel-description>
+            <mat-panel-description>Le: {{note.createdAt | date:'dd/MM/yyyy HH:mm:ss'}}</mat-panel-description>
             <mat-panel-description *ngIf="note.errorLogs && note.errorLogs.length > 0" matBadge="!"
                                    matBadgePosition="before"
                                    matBadgeColor="accent" matBadgeOverlap="false">Log

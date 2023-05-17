@@ -1,4 +1,4 @@
-<div class="testcontainer">
+<div class="testcontainer ">
 
   <div class="container">
 
@@ -98,7 +98,7 @@
               <mat-card-subtitle>PU DS HT</mat-card-subtitle>
               <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
                 <!--            <p>{{this.prixUnitaireHT(this.currentOuvrage.SousLots[0].SousLotOuvrage?.prixOuvrage,this.currentOuvrage.SousLots[0].SousLotOuvrage?.quantityOuvrage)  | number : '1.2-2'}} €</p>-->
-                <p>{{this.currentOuvrage.SousLotOuvrage?.prixUniHT | number : '1.2-2'}} € OK</p>
+                <p>{{this.currentOuvrage.SousLotOuvrage?.prixUniHT | number : '1.2-2'}} € </p>
               </div>
               <mat-card-subtitle>Débousé sec HT</mat-card-subtitle>
               <div class="itemsParams" *ngIf="this.currentOuvrage.SousLots !== undefined">
@@ -463,41 +463,61 @@
     <!--    </mat-card>-->
 
     <!--  </div>-->
+  </div>
 
 
-    <!--</div>-->
+  <!--</div>-->
 
-    <form class="basic-container" [formGroup]="formMetre" *ngIf="formMetre">
-      <div class="form-metre" formArrayName="metres">
-    <div class="row" *ngFor="let metre of this.formMetre.getRawValue().metres.length; let i = index" [formGroupName]="i">
-<!--        <div class="row" *ngFor="let metre of getValue(); let i = index"-->
-<!--             [formGroupName]="i">-->
+    <mat-card class="card-metre">
+      <div class="global-form-container container-card" [formGroup]="formMetre" >
+        <mat-card-header>
+          <mat-card-title>Métré</mat-card-title>
+        </mat-card-header>
+          <hr>
+
+        <div formArrayName="metres">
+          <!--        <div >-->
+          <div class="global-inputs inputs" *ngFor="let metre of tableau; let i = index" [formGroupName]="i">
+            <mat-form-field appearance="legacy">
+              <mat-label>Longueur</mat-label>
+              <input (ngModelChange)="displayResultMetre()" matInput formControlName="longueur" type="number">
+            </mat-form-field>
 
 
-          <mat-form-field>
-            <input matInput formControlName="longueur">
-            <!--        <p>{{formMetre.get('longueur')?.value}}</p>-->
-          </mat-form-field>
+            <mat-form-field appearance="legacy"
+                            *ngIf="this.currentOuvrage.unite === 'm3' || this.currentOuvrage.unite === 'm2'">
+              <mat-label>Largeur</mat-label>
+              <input (ngModelChange)="displayResultMetre()" matInput formControlName="largeur" type="number">
+            </mat-form-field>
 
-          <mat-form-field>
-            <input matInput formControlName="largeur">
-          </mat-form-field>
+            <mat-form-field appearance="legacy" *ngIf="this.currentOuvrage.unite === 'm3'">
+              <mat-label>Hauteur</mat-label>
+              <input (ngModelChange)="displayResultMetre()" matInput formControlName="hauteur" type="number">
+            </mat-form-field>
+            <p class="p-resultI" *ngIf="displayArrayResultMetre(this.resultMetre[i])">{{this.resultMetre[i] | number : '1.2-2'}} {{this.currentOuvrage.unite}}</p>
 
-          <mat-form-field>
-            <input matInput formControlName="hauteur">
-          </mat-form-field>
+          </div>
           <button class="float-left" mat-icon-button color="primary" aria-label="Add"
-                  (click)="addMetreFormGroup()" matTooltip="Add">
+                  (click)="addMetreFormGroup()" matTooltip="Ajouter une nouvelle ligne de calcul">
             <mat-icon>add_circle_outline</mat-icon>
           </button>
+<!--          <button class="float-left" mat-icon-button color="primary" aria-label="Add"-->
+<!--                  (click)="displayResultMetre()" matTooltip="Add">-->
+<!--            btn-->
+<!--          </button>-->
         </div>
-
-        <!--      <div class="col-3">-->
-        <!--      </div>-->
       </div>
-      <!--<p>{{this.formMetre.get('metres').value}}</p>-->
-      <button type="submit" (click)="valueFormMetre()"> test</button>
-    </form>
+          <div class="container-detail-metre" >
+            <mat-card-header>
+              <mat-card-title>Détail des métrés</mat-card-title>
+            </mat-card-header>
+            <hr>
+
+<!--            <p class="p-detail">fds</p>-->
+            <h3 class="title-detail" *ngIf="displayArrayResultMetre(this.resultTotalMetre)">Quantité métré : {{this.resultTotalMetre | number : '1.2-2'}} {{this.currentOuvrage.unite}}</h3>
+            <p class="p-detail">{{this.resultCalculMetre}}</p>
+          </div>
+    </mat-card>
 
   </div>
-</div>
+

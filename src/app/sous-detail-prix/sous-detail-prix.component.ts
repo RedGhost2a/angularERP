@@ -26,6 +26,8 @@ import {UniteForForm} from "../_models/uniteForForm";
 import {OuvrageCout} from "../_models/ouvrageCout";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {UniteForFormService} from "../_service/uniteForForm.service";
+import { Observable} from "rxjs";
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sous-detail-prix',
@@ -63,16 +65,20 @@ export class SousDetailPrixComponent implements OnInit {
   categories: any[] = [];
   typeCout !: TypeCout[];
   uniteList!: UniteForForm[];
-
   currentUser !: User
   listCout !: Cout[]
   listFournisseur!: Fournisseur[]
   listTypeCout!: TypeCout []
   formCout!: FormGroup;
   formMetre !: FormGroup;
+  // formMetre !: FormGroup;
   formOuvrage!: FormGroup;
   ouvrageCoutDuDevis!: OuvrageCoutDuDevis
   textButtonBack: string = "Retour au devis";
+  tableau: any = []
+  resultCalculMetre !: string;
+  resultMetre: number [] = [];
+  resultTotalMetre: number = 0;
 
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute,
               public dataSharingService: DataSharingService, private coutService: CoutService, private userService: UserService,
@@ -82,16 +88,20 @@ export class SousDetailPrixComponent implements OnInit {
               private formBuilder: FormBuilder
   ) {
     transformVirguletoPoint()
-    this.createFormCout2()
-    this.createFormCout();
-    this.createFormOuvrage()
-    this.dynamicFormMetre()
+    // this.createFormCout2()
+    // this.createFormCout();
+    // this.createFormOuvrage()
+    console.log('constr')
+
 
   }
 
   ngOnInit(): void {
-    // this.dynamicFormMetre()
+    this.initCalculAndFormMetre()
 
+  }
+
+  initialCalcul(){
     this.createFormCout();
     this.createFormOuvrage()
     // this.createFormMetre();
@@ -126,23 +136,56 @@ export class SousDetailPrixComponent implements OnInit {
         this.prixUnitaireCalculeHTCout()
         this.prixVenteHT()
         this.changeTextButton()
-
-        console.log("ngOninit", data)
+        console.log("dd finish initCalcul")
 
       })
     })
   }
 
-  metresControls() {
-    console.log((this.formMetre.get('metresS') as FormArray).controls)
-    return (this.formMetre.get('metres') as FormArray).controls;
-  }
+  initCalculAndFormMetre() {
+    // return new Observable((observer) => {
+      this.createFormCout();
+      this.createFormOuvrage()
+      // this.createFormMetre();
+      console.log("debut ngOninit")
+      this.route.params.subscribe(async params => {
+        this.ouvrageID = +params['id'];
+        await this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe(async data => {
+          console.log("this currentOuvrage ", data)
+          this.currentOuvrage = data;
+          this.dataSharingService.ouvrage = data;
+          // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = 10;
+          console.log(this.currentOuvrage)
+          if (this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage) {
+            // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = this.currentOuvrage.prix
+          }
+          if (data.SousLots) {
+            this.currentOuvrage.SousLotOuvrage = data.SousLots[0].SousLotOuvrage
+          }
+          await this.debousesSecTotalCout()
+          this.getCurrentUser()
+          await this.prixUnitaireHT()
+          this.prixEquilibreHT()
+          this.prixUnitaireEquilibreHT()
+          this.beneficePercentToEuro()
+          this.aleasPercentToEuro()
+          this.prixCalculeHT()
+          this.prixUnitaireCalculeHT()
+          this.quantityCout()
+          this.prixEquilibreHTCout()
+          this.prixUnitaireEquilibreHTCout()
+          this.prixCalculeHTCout()
+          this.prixUnitaireCalculeHTCout()
+          this.prixVenteHT()
+          this.changeTextButton()
+          console.log("dd finish initCalcul")
+          this.dynamicFormMetre()
 
-  toggleForm() {
-    this.isFormVisible = !this.isFormVisible;
-    //reinitialiser le formulaire
-
-
+        })
+      })
+      // observer.next();
+      // observer.complete();
+    // });
   }
 
 
@@ -165,7 +208,7 @@ export class SousDetailPrixComponent implements OnInit {
       if (coutDuDevis.id)
         this.ouvrageCoutService.updateOuvrageCoutDuDevis(coutDuDevis?.id, this.currentOuvrage.id, this.ouvrageCoutDuDevis).subscribe(() => {
           // this.getById()
-          this.ngOnInit()
+          this.initialCalcul()
         })
     }
   }
@@ -182,7 +225,7 @@ export class SousDetailPrixComponent implements OnInit {
       if (coutDuDevis.id)
         this.ouvrageCoutService.updateOuvrageCoutDuDevis(coutDuDevis?.id, this.currentOuvrage.id, this.ouvrageCoutDuDevis).subscribe(() => {
           // this.getById()
-          this.ngOnInit()
+          this.initialCalcul()
         })
     }
   }
@@ -193,7 +236,7 @@ export class SousDetailPrixComponent implements OnInit {
     if (this.formOuvrage.getRawValue().ratioOuvrage !== null) {
       this.ouvrageService.updateOuvrageDuDevis({ratio: this.formOuvrage.getRawValue().ratioOuvrage}, this.currentOuvrage.id).subscribe(() => {
         // this.getById()
-        this.ngOnInit()
+        this.initialCalcul()
       })
     }
   }
@@ -203,7 +246,7 @@ export class SousDetailPrixComponent implements OnInit {
     if (this.formOuvrage.getRawValue().benefice !== null) {
       this.ouvrageService.updateOuvrageDuDevis({benefice: this.formOuvrage.getRawValue().benefice,alteredBenefOrAleas:true}, this.currentOuvrage.id).subscribe(() => {
         // this.getById()
-        this.ngOnInit()
+        this.initialCalcul()
       })
     }
   }
@@ -214,7 +257,7 @@ export class SousDetailPrixComponent implements OnInit {
     if (this.formOuvrage.getRawValue().quantity !== null && this.currentOuvrage.SousLotOuvrage && this.currentOuvrage?.SousLotOuvrage.id) {
       this.currentOuvrage.SousLotOuvrage!.quantityOuvrage = this.formOuvrage.getRawValue().quantity
       this.sousLotOuvrageService.update(this.currentOuvrage.SousLotOuvrage.id, this.currentOuvrage.SousLotOuvrage).subscribe(() => {
-        this.ngOnInit()
+        this.initialCalcul()
       })
     }
   }
@@ -224,7 +267,7 @@ export class SousDetailPrixComponent implements OnInit {
     if (this.formOuvrage.getRawValue().aleas !== null) {
       this.ouvrageService.updateOuvrageDuDevis({aleas: this.formOuvrage.getRawValue().aleas,alteredBenefOrAleas:true}, this.currentOuvrage.id).subscribe(() => {
         // this.getById()
-        this.ngOnInit()
+        this.initialCalcul()
       })
     }
   }
@@ -247,48 +290,129 @@ export class SousDetailPrixComponent implements OnInit {
     })
   }
 
-  private createFormMetre(): FormGroup {
-    return new FormGroup({
-      longueur: new FormControl('s'),
-      largeur: new FormControl('DS'),
-      hauteur: new FormControl('DSDSDS  '),
-    })
+   createFormMetre(): FormGroup {
+    console.log("current ",this.currentOuvrage)
+    if (this.currentOuvrage.unite === "m3") {
+      console.log("m3?")
+      return this.formBuilder.group({
+        longueur: new FormControl("L", Validators.required),
+        largeur: new FormControl("l", Validators.required),
+        hauteur: new FormControl("H", Validators.required)
+      })
+    }
+    if (this.currentOuvrage.unite === "m2") {
+      console.log("m2?")
+      return this.formBuilder.group({
+        longueur: new FormControl("L", Validators.required),
+        largeur: new FormControl("l", Validators.required),
+      })
+    }
+    if (this.currentOuvrage.unite === "mL") {
+      return this.formBuilder.group({
+        longueur: new FormControl("L", Validators.required),
+      })
+    } else {
+      return this.formBuilder.group({})
+    }
   }
 
 
   dynamicFormMetre() {
+    console.log('dd dyna ?')
     this.formMetre = this.formBuilder.group({
-      metres: this.formBuilder.array([this.createFormMetre()])
+      metres: this.formBuilder.array([
+        this.createFormMetre()
+      ])
     })
+    console.log('dd dynaa?')
+    this.tableau.push(1)
   }
 
   public addMetreFormGroup() {
-    console.log('add metre form group')
-    // this.metresControls()
     const metres = this.formMetre.get('metres') as FormArray
-    metres.push(this.createFormMetre())
-    // console.log(this.formMetre.get('metres')?.value)
-    // console.log(this.formMetre.)
-  }
-
-  valueFormMetre() {
-    console.log(this.formMetre.getRawValue().metres.length)
-    const metresArray = this.formMetre.get('metres') as FormArray;
-
-// Parcourir le tableau "metres" et récupérer la valeur de chaque champ "longueur", "largeur" et "hauteur"
-    for (let i = 0; i < metresArray.length; i++) {
-      const metreFormGroup = metresArray.controls[i] as FormGroup;
-      const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
-      const largeurFormControl = metreFormGroup.controls['largeur'] as FormControl;
-      const hauteurFormControl = metreFormGroup.controls['hauteur'] as FormControl;
-
-      // Afficher la valeur de chaque champ dans la console
-      longueurFormControl.setValue('test')
-      console.log(`Valeur de longueur du metre ${i + 1} : ${longueurFormControl.value}`);
-      console.log(`Valeur de largeur du metre ${i + 1} : ${largeurFormControl.value}`);
-      console.log(`Valeur de hauteur du metre ${i + 1} : ${hauteurFormControl.value}`);
+    if (!metres.invalid) {
+      metres.push(this.createFormMetre())
+      this.tableau.push(1)
     }
   }
+
+  displayResultMetre() {
+    const metresArray = this.formMetre.get('metres') as FormArray;
+    console.log(this.formMetre)
+    for (let i = 0; i < metresArray.length; i++) {
+      const metreFormGroup = metresArray.controls[i] as FormGroup;
+      if (metreFormGroup.controls['longueur'] && !metreFormGroup.controls['largeur'] && !metreFormGroup.controls['hauteur']) {
+        const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
+        this.concatMetre(longueurFormControl.value, null, null, i)
+
+      }
+      if (metreFormGroup.controls['longueur'] && metreFormGroup.controls['largeur'] && !metreFormGroup.controls['hauteur']) {
+        const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
+        const largeurFormControl = metreFormGroup.controls['largeur'] as FormControl;
+        this.concatMetre(longueurFormControl.value, largeurFormControl.value, null, i)
+      }
+      if (metreFormGroup.controls['longueur'] && metreFormGroup.controls['largeur'] && metreFormGroup.controls['hauteur']) {
+        const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
+        const largeurFormControl = metreFormGroup.controls['largeur'] as FormControl;
+        const hauteurFormControl = metreFormGroup.controls['hauteur'] as FormControl;
+        this.concatMetre(longueurFormControl.value, largeurFormControl.value, hauteurFormControl.value, i)
+      }
+
+      // this.resultTotalMetre = this.resultMetre[i]
+      console.log("result metre", this.resultMetre[i])
+      this.resultTotalMetre = this.resultMetre.reduce((acc, cur) => acc + cur, 0);
+    }
+
+  }
+
+
+  concatMetre(longueur: string | null, largeur: string | null, hauteur: string | null, i: number) {
+    //m2
+    console.log("dimensions", longueur, largeur, hauteur)
+    if (longueur === null) longueur = "L"
+    if (largeur === null) largeur = "l"
+    if (hauteur === null) hauteur = "H"
+    if (this.currentOuvrage.unite === "m2") {
+      if (i === 0) {
+        this.resultCalculMetre = `(${longueur} x ${largeur})`
+      } else {
+        this.resultCalculMetre += ` + (${longueur} x ${largeur})`
+      }
+      const result = parseFloat(longueur) * parseFloat(largeur)
+      this.resultMetre[i] = result;
+
+    }
+    //mL
+    if (this.currentOuvrage.unite === "mL") {
+      console.log("mL ?")
+      if (i === 0) {
+        this.resultCalculMetre = `${longueur}`
+      } else {
+        this.resultCalculMetre += ` + ${longueur}`
+      }
+      const result = parseFloat(longueur)
+      this.resultMetre[i] = result;
+    }
+    //m3
+    if (this.currentOuvrage.unite === "m3") {
+      if (i === 0) {
+        this.resultCalculMetre = `(${longueur} x ${largeur} x ${hauteur})`
+      } else {
+        this.resultCalculMetre += ` + (${longueur} x ${largeur} x ${hauteur})`
+      }
+      const result = parseFloat(longueur) * parseFloat(largeur) * parseFloat(hauteur)
+      this.resultMetre[i] = result;
+    }
+  }
+
+  displayArrayResultMetre(value: number): boolean {
+    if (Number.isNaN(value)) {
+      return false
+    } else {
+      return true;
+    }
+  }
+
 
   getCurrentUser(): void {
     this.currentUser = this.userService.userValue;
@@ -456,7 +580,7 @@ export class SousDetailPrixComponent implements OnInit {
       width: '90%',
       height: '70%'
     }).afterClosed().subscribe(async result => {
-      this.ngOnInit()
+      this.initialCalcul()
 
     });
   }
@@ -467,7 +591,7 @@ export class SousDetailPrixComponent implements OnInit {
       width: '55%',
       height: '60%'
     }).afterClosed().subscribe(async result => {
-      this.ngOnInit()
+      this.initialCalcul()
 
     });
   }
@@ -478,7 +602,7 @@ export class SousDetailPrixComponent implements OnInit {
       width: '55%',
       height: '60%'
     }).afterClosed().subscribe(async result => {
-      this.ngOnInit()
+      this.initialCalcul()
 
     });
   }
@@ -489,7 +613,7 @@ export class SousDetailPrixComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Appeler la fonction de suppression ici
-        this.coutService.deleteCoutDuDevisByID(coutDuDeviId).subscribe(() => this.ngOnInit())
+        this.coutService.deleteCoutDuDevisByID(coutDuDeviId).subscribe(() => this.initialCalcul())
 
         // this.ouvrageCoutService.deleteCoutAndOuvrageDuDevis(coutDuDeviId, this.currentOuvrage.id).subscribe(() => this.ngOnInit())
       }
@@ -554,7 +678,7 @@ export class SousDetailPrixComponent implements OnInit {
           }
           this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCoutDuDevis).subscribe()
           this.myFormGroup.reset();
-          this.ngOnInit()
+          this.initialCalcul()
 
         }
       )
@@ -569,7 +693,7 @@ export class SousDetailPrixComponent implements OnInit {
           }
           this.ouvrageCoutService.createOuvrageCoutByDesignation(this.dataSharingService.ouvrage.id, ouvrageCout).subscribe()
           this.myFormGroup.reset();
-          this.ngOnInit()
+          this.initialCalcul()
         })
 
       }
@@ -589,7 +713,7 @@ export class SousDetailPrixComponent implements OnInit {
         console.log("ouvrage cout dans le ELSE", ouvrageCout)
         this.ouvrageCoutService.create(ouvrageCout).subscribe()
         this.myFormGroup.reset();
-        this.ngOnInit()
+        this.initialCalcul()
       })
     }
 
@@ -615,8 +739,6 @@ export class SousDetailPrixComponent implements OnInit {
     const unite = this.myFormGroup.get('unite')?.value
     this.myFormGroup.controls['uRatio'].setValue(`${unite}/h`)
   }
-
-
 
 
 }

@@ -43,15 +43,19 @@ export class EditComponent implements OnInit {
 
 
   ngOnInit(): void {
+    console.log("initial data",this.initialData)
     this.createFormClient()
     this.currentUser = this.userService.userValue;
     this.userService.getById(this.currentUser.id).subscribe(data => {
       this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id)
     })
 
-    if (this.initialData[0] !== null)
+    if (this.initialData[0] !== null){
+      console.log("if 1")
       this.generateFormUpdate();
+    }
     if(this.initialData[1] === true){
+      console.log("if 2")
        this.generateFormRead()
     }
 
@@ -68,7 +72,7 @@ export class EditComponent implements OnInit {
   }
 
   createFormClient(): void {
-    // console.log(entrepriseId)
+    console.log("create form client")
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
       firstName: new FormControl("",),

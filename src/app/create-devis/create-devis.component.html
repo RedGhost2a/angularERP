@@ -16,9 +16,7 @@
               afficher dans vos frais de chantier.
             </p>
 <!--            <button (click)="dynamicDownloadTxt()"> test CSV TXT </button>-->
-            <button (click)="dynamicDownloadTxt()"> test CSV TXT </button>
           </div>
-          <!--        <div class="cards">-->
 
 
           <mat-card class="card">
@@ -63,6 +61,7 @@
                     (click)="showForm = !showForm; isLot = true; curentLotId= lotFraisDeChantier.id">
               Créer un sous-lot
             </button>
+
 
           </mat-menu>
         </div>
@@ -171,6 +170,7 @@
                     class="designation-ouvrage-frais-chantier">
                       <mat-form-field [formGroup]="myFormGroup" id="prix-arrondi-frais-chantier">
                                             <input type="number" formControlName="quantityOuvrage" matInput required
+
                                                    placeholder="{{ouvrage.SousLotOuvrage.prixUniVenteHT.toString() | number: '1.2-2'}}"
                                                    (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">
                                           </mat-form-field>
@@ -281,7 +281,7 @@
 
 
         <div>
-          <button class="button" mat-flat-button (click)="showForm = true; isLot=false">Créer un lot</button>
+          <button class="button" mat-raised-button color="primary" (click)="showForm = true; isLot=false">Créer un lot</button>
         </div>
 
         <form [formGroup]="form" (ngSubmit)="onSubmit()" [hidden]="!showForm">
@@ -645,6 +645,14 @@
       </div>
     </mat-tab>
 
+
+    <mat-tab disabled label="Export" *ngIf="lotFraisDeChantier !== undefined && devis !== undefined">
+      <ng-template mat-tab-label>
+        <button  mat-raised-button color="primary" (click)="dynamicDownloadTxt()" >
+          Exporter l'étude de prix au format CSV
+        </button>
+      </ng-template>
+    </mat-tab>
 
   </mat-tab-group>
 
