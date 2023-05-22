@@ -480,19 +480,19 @@
           <div class="global-inputs inputs" *ngFor="let metre of tableau; let i = index" [formGroupName]="i">
             <mat-form-field appearance="legacy">
               <mat-label>Longueur</mat-label>
-              <input (ngModelChange)="displayResultMetre()" matInput formControlName="longueur" type="number">
+              <input (keydown.enter)="displayResultMetre();testpush(i)"  matInput formControlName="longueur" type="number">
             </mat-form-field>
 
 
             <mat-form-field appearance="legacy"
                             *ngIf="this.currentOuvrage.unite === 'm3' || this.currentOuvrage.unite === 'm2'">
               <mat-label>Largeur</mat-label>
-              <input (ngModelChange)="displayResultMetre()" matInput formControlName="largeur" type="number">
+              <input (keydown.enter)="displayResultMetre();testpush(i)" matInput formControlName="largeur" type="number">
             </mat-form-field>
 
             <mat-form-field appearance="legacy" *ngIf="this.currentOuvrage.unite === 'm3'">
               <mat-label>Hauteur</mat-label>
-              <input (ngModelChange)="displayResultMetre()" matInput formControlName="hauteur" type="number">
+              <input (keydown.enter)="displayResultMetre();testpush(i)" (keydown.entrer)="testpush(i)" matInput formControlName="hauteur" type="number">
             </mat-form-field>
             <p class="p-resultI" *ngIf="displayArrayResultMetre(this.resultMetre[i])">{{this.resultMetre[i] | number : '1.2-2'}} {{this.currentOuvrage.unite}}</p>
 
@@ -501,6 +501,10 @@
                   (click)="addMetreFormGroup()" matTooltip="Ajouter une nouvelle ligne de calcul">
             <mat-icon>add_circle_outline</mat-icon>
           </button>
+<!--          <button class="float-left" mat-icon-button color="primary" aria-label="Add"-->
+<!--                  (click)="getMetreByOuvrage()" matTooltip="">-->
+<!--            TEST-->
+<!--          </button>-->
 <!--          <button class="float-left" mat-icon-button color="primary" aria-label="Add"-->
 <!--                  (click)="displayResultMetre()" matTooltip="Add">-->
 <!--            btn-->
