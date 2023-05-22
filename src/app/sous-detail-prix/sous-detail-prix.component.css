@@ -97,9 +97,53 @@ table {
   width: 90%;
 }
 
-.form-metre {
+.card-metre {
+  color: #334E68;
+  width: 95vw;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 1.5%;
+  margin-top: 2%;
+}
+
+.metre-inputs {
   display: flex;
   justify-content: space-around;
+}
+
+.container-detail-metre {
+  display: flex;
+  flex-direction: column;
+  width: 35%;
+}
+
+.container-card {
+  width: 50%;
+}
+
+.p-detail {
+  text-align: center;
+}
+
+.p-resultI {
+  margin-top: 3.5%;
+}
+
+hr {
+  border: 0;
+  clear: both;
+  display: block;
+  width: 96%;
+  background-color: #334e68;
+  height: 0.5px;
+}
+
+.title-detail {
+  margin-left: 2%;
+}
+
+.inputs {
+  margin-left: 2%;
 }
 
 /*# sourceMappingURL=sous-detail-prix.component.css.map */

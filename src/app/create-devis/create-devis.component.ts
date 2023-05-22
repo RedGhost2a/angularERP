@@ -716,7 +716,9 @@ export class CreateDevisComponent implements OnInit {
       //recupere les ouvrages grace a leurs id
       this.ouvrageService.getById(ouvrageId).subscribe(data => {
         //creer un ouvrageDuDevis avec les données de l'ouvrage
-        this.ouvrageService.createOuvrageDuDevis(data).subscribe(response => {
+        const allDataOuvrageDevis = {...data,alteredBenefOrAleas:true}
+        this.ouvrageService.createOuvrageDuDevis(allDataOuvrageDevis).subscribe(response => {
+          console.log(data)
           //recupere l'id de l'ouvrageDuDevis qui viens d'etre creer, et
           // data.OuvrageDuDeviId = response.OuvrageDuDevis?.id
           //boucle sur tous les couts qui appartiennent au ouvrage
