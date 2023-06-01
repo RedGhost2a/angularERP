@@ -3,7 +3,7 @@ import {Adresse} from "./adresse";
 
 export class Entreprise {
 
-  id!: string;
+  id!: number;
   commercialName!: string;
   denomination!: string;
   formeJuridique!: string;
