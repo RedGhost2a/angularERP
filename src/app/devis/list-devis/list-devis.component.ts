@@ -7,10 +7,12 @@ import {MatDialog} from "@angular/material/dialog";
 import {EditDevisComponent} from "../edit-devis/edit-devis.component";
 import {UserService} from "../../_service/user.service";
 import {MatTableDataSource} from "@angular/material/table";
-import {da, de} from "date-fns/locale";
-import _default from "chart.js/dist/plugins/plugin.tooltip";
-import numbers = _default.defaults.animations.numbers;
 import {EditComponent} from "../../clients/edit/edit.component";
+import {Observable} from "rxjs";
+import {User} from "../../_models/users";
+import {Entreprise} from "../../_models/entreprise";
+import {tap} from "rxjs/operators";
+import {ClientService} from "../../_service/client.service";
 
 @Component({
   selector: 'app-list-devis',
@@ -18,46 +20,28 @@ import {EditComponent} from "../../clients/edit/edit.component";
   styleUrls: ['./list-devis.component.scss']
 })
 export class ListDevisComponent implements OnInit {
-  @Input() devis!: Devis;
-  @Output() deleteDevis: EventEmitter<any> = new EventEmitter()
-
   displayedColumns: string[] = ['nDevis', 'client', 'nomDevis', 'dateDevis', 'status', 'referent', 'prixVenteHT', 'benefice', 'aleas', 'boutons'];
-  // displayedColumns: string[] = ['Devis n°', 'Nom', 'Client', "Status", "Action"];
   clickedRows = new Set<Client>();
+  dataSource!: MatTableDataSource<Devis> ;
 
-
-  entrepriseID: number[] = [];
-  dataSource :any;
-
-  constructor(private devisService: DevisService,
-              private dialog: MatDialog,
-              public userService: UserService) {
+  constructor(private devisService: DevisService, private dialog: MatDialog, public userService: UserService,
+              private clientService: ClientService) {
   }
 
   ngOnInit(): void {
-
-    this.getDeviswithRole()
+    this.getDeviswithRole().subscribe()
   }
 
-  delete(id: any): void {
-    this.devisService.deleteByID(id).subscribe((() => this.ngOnInit()))
-  }
 
   deleteItem(id: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Appeler la fonction de suppression ici
-        this.devisService.deleteByID(id).subscribe((() => this.ngOnInit()))
+        this.devisService.deleteByID(id).subscribe((() => this.getDeviswithRole().subscribe()))
       }
     });
   }
 
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-  //   this.dataSource.filter = filterValue;
-  // }
 
   private getFilterPredicate(): (data: any, filter: string) => boolean {
     return (data: any, filter: string) => {
@@ -66,10 +50,10 @@ export class ListDevisComponent implements OnInit {
       const name = data.name.toLowerCase();
       const date = data.createdAt.toLowerCase();
       const status = data.status.toLowerCase();
-       const referentFN = data.Users[0].firstName.toLowerCase();
-       const referentLN = data.Users[0].lastName.toLowerCase();
-      const valuesToSearch = [client, name,date,
-        status,referentFN,referentLN];
+      const referentFN = data.Users[0].firstName.toLowerCase();
+      const referentLN = data.Users[0].lastName.toLowerCase();
+      const valuesToSearch = [client, name, date,
+        status, referentFN, referentLN];
       return valuesToSearch.some(value => value.includes(searchText));
     };
   }
@@ -81,53 +65,41 @@ export class ListDevisComponent implements OnInit {
   }
 
 
-  getDeviswithRole() {
-    if (this.userService.userValue.role === 'Super Admin') {
-      this.devisService.getAll().subscribe(data => {
-        this.dataSource = new MatTableDataSource(data)
-        // console.log(data)
-      })
+  getDeviswithRole(): Observable<any> {
+    if (this.userService.isSuperAdmin()) {
+      return this.devisService.getAll().pipe(
+        tap((data) => {
+          this.dataSource = new MatTableDataSource(data);
+        })
+      );
     } else {
-      this.userService.getById(this.userService.userValue.id).subscribe(data => {
-        console.log(data)
-        this.entrepriseID = data.Entreprises.map((item: { id: any }) => item.id)
-        console.log("tabl", this.entrepriseID)
-        this.getDevisByEntreprise()
-      })
-
-
+      return this.userService.getById(this.userService.currentUser.id).pipe(
+        tap((data) => {
+          this.userService.currentUser.Entreprise = data.Entreprises;
+          this.getDevisByEntreprise();
+        })
+      );
     }
   }
 
   getDevisByEntreprise() {
-    this.entrepriseID.forEach(entrepriseID => {
-      console.log("entrepriseID", entrepriseID)
-      this.devisService.getDevisByEnterprise(entrepriseID).subscribe(data => {
-        console.log("devis ", data)
-        this.dataSource = new MatTableDataSource(data)
-        console.log(this.dataSource.data)
-      })
+    this.userService.currentUser.Entreprise.forEach((entreprise: Entreprise) => {
+      this.devisService.getDevisByEnterprise(entreprise.id).subscribe((listDevis: Devis[]) => {
+        this.devisService.devis = this.devisService.devis.concat(listDevis);
+        this.dataSource = new MatTableDataSource(this.devisService.devis);
+      });
+    });
+  }
 
+  openDialogCreateDevis() {
+    this.devisService.openDialogCreateDevis(null,()=>{
+      this.getDeviswithRole().subscribe()
     })
   }
+  openDialogCreateClient(client: Client | null, disable: boolean){
+    this.clientService.openDialogCreateClient(client,disable,()=>{
+    })
 
-  openDialogCreate() {
-    this.dialog.open(EditDevisComponent, {
-      width: '70%',
-      height: '37%'
-    }).afterClosed().subscribe(async result => {
-      this.ngOnInit()
-
-    });
   }
-  openDialogCreateClient(client: Client | null, disable : boolean ) {
-    this.dialog.open(EditComponent, {
-      data: [client, disable],
-      width: '90%',
-      height: '80%'
-    }).afterClosed().subscribe(async result => {
-      this.ngOnInit()
 
-    });
-  }
 }
