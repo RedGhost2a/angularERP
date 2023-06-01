@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from '../../environments/environment';
+import {Devis} from "../_models/devis";
+import {EditDevisComponent} from "../devis/edit-devis/edit-devis.component";
+import {MatDialog} from "@angular/material/dialog";
 
 const baseUrl = 'http://localhost:4000/devis';
 
@@ -10,9 +13,10 @@ const baseUrl = 'http://localhost:4000/devis';
 })
 export class DevisService {
   // public devis !: Observable<Devis>;
+  devis : Devis[] = [];
 
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,private dialog: MatDialog) {
   }
 
   getAll(): Observable<any> {
@@ -29,6 +33,7 @@ export class DevisService {
   }
 
   deleteByID(id: any): Observable<any> {
+    this.devis = [];
     return this.http.delete(`${environment.apiUrl}/devis/${id}`)
   }
 
@@ -46,10 +51,12 @@ export class DevisService {
   }
 
   getDevisByEnterprise(id: any): Observable<any> {
+
     return this.http.get(`${environment.apiUrl}/devis/byEntreprise/${id}`)
   }
 
   create(data: any): Observable<any> {
+    this.devis = [];
     return this.http.post(`${environment.apiUrl}/devis/new`, data)
   }
 
@@ -60,5 +67,19 @@ export class DevisService {
   getOuvrages(id: number): Observable<any> {
     return this.http.get(`${environment.apiUrl}/devis/ouvrages/${id}`)
   }
+
+  //utilisé pour la creation d'un devis depuis la liste des devis
+  openDialogCreateDevis(ClientId : number | null ,refreshData:any) {
+    this.dialog.open(EditDevisComponent, {
+      width: '70%',
+      height: '37%',
+      data: {ClientId: ClientId}
+    }).afterClosed().subscribe(async result => {
+      refreshData()
+    });
+  }
+
+
+
 }
 
