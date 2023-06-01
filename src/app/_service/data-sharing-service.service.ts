@@ -83,6 +83,10 @@ export class DataSharingService {
     // if(sousLotOuvrage.prixUniVenteHT === 0 && sousLotOuvrage.prixUniVenteHT !== sousLotOuvrage.prixUniCalcHT){
     // }
   }
+  applyFilter(event: Event, dataSource: any) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
 
 
