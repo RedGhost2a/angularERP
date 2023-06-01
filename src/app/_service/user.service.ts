@@ -15,6 +15,7 @@ export class UserService {
   private userSubject!: BehaviorSubject<User>;
   private user !: Observable<User>;
   role !: any
+  currentUser!:User;
   // private user: any = null;
 
 
@@ -32,6 +33,9 @@ export class UserService {
       this.userSubject = new BehaviorSubject<User>(new User());
     }
     this.user = this.userSubject.asObservable();
+    this.user.subscribe((user) =>{
+      this.currentUser = user
+    })
   }
   // public static getInstance(): UserService {
   //   if (!!UserService.instance) {
@@ -45,8 +49,15 @@ export class UserService {
     return this.userSubject.value;
   }
 
+  public isSuperAdmin():boolean{
+    if(this.currentUser.role === 'Super Admin') return true
+    else return false
+  }
+
+
 
   login(email: string, password: string) {
+    console.log('mot de passe ',password)
     return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, {email, password})
       .pipe(map(user => {
 
