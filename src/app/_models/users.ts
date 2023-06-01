@@ -1,6 +1,8 @@
 import {Adresse} from "./adresse";
 import {Entreprise} from "./entreprise";
 
+
+
 export class User {
   id!: string;
   title!: string;
@@ -12,10 +14,14 @@ export class User {
   avatarUrl: any;
   createdAt!: Date;
   EntrepriseId!: number;
-  AdresseId?: number;
   token!: string;
   Adresse!: Adresse;
   Entreprises!: Entreprise;
 
+  Entreprise : Entreprise[] = [];
+
+
+
 
 }
+
