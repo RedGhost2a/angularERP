@@ -8,7 +8,7 @@
         <input matInput (keyup)="applyFilter($event)" placeholder="Ex. cim..." #input>
       </mat-form-field>
       <div class="global-button-add">
-        <button (click)="openDialogCreate(null, false)" mat-raised-button color="primary">Ajouter un client</button>
+        <button (click)="openDialogCreateClient(null, false)" mat-raised-button color="primary">Ajouter un client</button>
       </div>
   </div>
 
@@ -20,21 +20,21 @@
            class="mat-elevation-z8 global-table">
             <ng-container matColumnDef="lastname">
               <th class="global-th" mat-header-cell *matHeaderCellDef>Nom</th>
-              <td class="global-td" (click)="openDialogCreate(client, true)" mat-cell *matCellDef="let client">{{client.firstName}}</td>
+              <td class="global-td" (click)="openDialogCreateClient(client, true)" mat-cell *matCellDef="let client">{{client.firstName}}</td>
             </ng-container>
 
             <ng-container matColumnDef="firstname">
               <th class="global-th"  mat-header-cell *matHeaderCellDef>Prénom</th>
-              <td class="global-td" (click)="openDialogCreate(client, true)" mat-cell *matCellDef="let client">{{client.lastName}}</td>
+              <td class="global-td" (click)="openDialogCreateClient(client, true)" mat-cell *matCellDef="let client">{{client.lastName}}</td>
             </ng-container>
 
             <ng-container matColumnDef="adresse">
               <th class="global-th" mat-header-cell *matHeaderCellDef>Adresse</th>
-              <td class="global-td" (click)="openDialogCreate(client, true)" mat-cell *matCellDef="let client">{{client.Adresse.adresses}}</td>
+              <td class="global-td" (click)="openDialogCreateClient(client, true)" mat-cell *matCellDef="let client">{{client.Adresse.adresses}}</td>
             </ng-container>
             <ng-container matColumnDef="city">
               <th class="global-th" mat-header-cell *matHeaderCellDef>Ville</th>
-              <td class="global-td" (click)="openDialogCreate(client, true)" mat-cell *matCellDef="let client">{{client.Adresse.city}}</td>
+              <td class="global-td" (click)="openDialogCreateClient(client, true)" mat-cell *matCellDef="let client">{{client.Adresse.city}}</td>
             </ng-container>
             <ng-container matColumnDef="boutons">
               <th mat-header-cell *matHeaderCellDef></th>
@@ -43,7 +43,7 @@
                 <mat-icon [matMenuTriggerFor]="boutonCout">more_vert</mat-icon>
                 <mat-menu class="menuBoutonCout" #boutonCout>
                   <!--          <button [routerLink]="['/cout', cout.id]" mat-button color="primary" >-->
-                  <button (click)="openDialogCreate(client, false)" mat-button color="primary">
+                  <button (click)="openDialogCreateClient(client, false)" mat-button color="primary">
                     <mat-icon>create</mat-icon>
                     Modifier
                   </button>
@@ -67,10 +67,10 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let client; columns: displayedColumns;"
-          class="global-td-hover"
-          [class.example-expanded-row]="expandedElement === client"
-          (click)="expandedElement = expandedElement === client ? null : client"
-          >>
+          class="global-td-hover">
+<!--          [class.example-expanded-row]="expandedElement === client"-->
+<!--          (click)="expandedElement = expandedElement === client ? null : client"-->
+<!--          >>-->
       </tr>
     </table>
 

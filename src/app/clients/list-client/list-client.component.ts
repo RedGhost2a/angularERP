@@ -9,111 +9,69 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 import {User} from "../../_models/users";
 import {UserService} from "../../_service/user.service";
 import {EditDevisComponent} from "../../devis/edit-devis/edit-devis.component";
+import {Devis} from "../../_models/devis";
+import {Entreprise} from "../../_models/entreprise";
+import {DevisService} from "../../_service/devis.service";
+import _default from "chart.js/dist/plugins/plugin.tooltip";
+import numbers = _default.defaults.animations.numbers;
+import {DataSharingService} from "../../_service/data-sharing-service.service";
 
 @Component({
   selector: 'app-list-client',
   templateUrl: './list-client.component.html',
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
   styleUrls: ['./list-client.component.scss']
 })
 export class ListClientComponent implements OnInit {
-  @Input() client!: Client;
-
-  @Output() deleteClient: EventEmitter<any> = new EventEmitter()
-  public listClient!: Client[];
-  dataSource !: any
+  dataSource !: MatTableDataSource<Client>
   displayedColumns: string[] = ['lastname', 'firstname', 'adresse', "city", "boutons"];
-  clickedRows = new Set<Client>();
-  public values!: string;
 
-  columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
-  expandedElement: any | null;
-  currentUser!: User;
-
-  constructor(private clientService: ClientService, private dialog: MatDialog, private userService:UserService) {
+  constructor(private clientService: ClientService, private dialog: MatDialog, private userService: UserService,
+              private devisService: DevisService, private dataSharingService:DataSharingService) {
   }
 
   ngOnInit(): void {
-    this.currentUser = this.userService.userValue;
-    this.userService.getById(this.currentUser.id).subscribe(data => {
-      console.log("user by id ", data)
-      this.getAll(data.Entreprises[0].id)
+    this.getCurrentUser()
+  }
+
+  getCurrentUser() {
+    this.userService.getById(this.userService.currentUser.id).subscribe(data => {
+      data.Entreprises.forEach((entreprise: Entreprise) => {
+        this.getAll(entreprise.id)
+      })
     })
-    //TODO TERMINER LA FONCTION DE RECHERCHE
-    console.log(this.dataSource)
   }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSharingService.applyFilter(event,this.dataSource)
   }
 
   deleteItem(id: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log("result", result)
-        console.log("id", id)
-        // Appeler la fonction de suppression ici
         this.clientService.deleteByID(id).subscribe((() => this.ngOnInit()))
       }
     });
   }
 
-  //creer devis pour le client
 
-  openDialogCreateDevis(ClientId: string) {
-    this.dialog.open(EditDevisComponent, {
-      width: '70%',
-      height: '37%',
-      data: {ClientId: ClientId}
-    }).afterClosed().subscribe(async result => {
-      this.ngOnInit()
-
-    });
+  openDialogCreateDevis(ClientId:number | null){
+    this.devisService.openDialogCreateDevis(ClientId ,()=>{})
   }
 
-  delete(id: any): void {
-    this.clientService.deleteByID(id).subscribe((() => this.ngOnInit()))
-  }
-
-  getAll(entrepriseId:number): void {
-    this.clientService.getAllByEntreprise(entrepriseId).subscribe((data:any) => {
-        console.log(entrepriseId)
-        this.listClient = data
-        // this.dataSource = this.listClient
-        this.dataSource = new MatTableDataSource(this.listClient);
+  getAll(entrepriseId: number): void {
+    this.clientService.getAllByEntreprise(entrepriseId).subscribe((listClient: Client[]) => {
+        this.clientService.clients = this.clientService.clients.concat(listClient);
+        this.dataSource = new MatTableDataSource(this.clientService.clients);
 
       }
     )
-
   }
 
-  openDialogCreate(client: Client | null, disable : boolean ) {
-    console.log("data envoyer depuis list client", client)
-    this.dialog.open(EditComponent, {
-      data: [client, disable],
-      width: '70%',
-      height: '75%'
-    }).afterClosed().subscribe(async result => {
-      this.ngOnInit()
-
-    });
+  openDialogCreateClient(client: Client | null, disable: boolean) {
+    this.clientService.openDialogCreateClient(client, disable, () => {
+      this.getCurrentUser()
+    })
   }
 
-  // onKey($event: KeyboardEvent) {
-  //   // @ts-ignore
-  //   this.values += event.target.value + ' | ';
-  //   // this.dataSource.filter = this.values;
-  //   return this.values;
-  //
-  //   // console.log(this.values);
-  //
-  // }
 }
