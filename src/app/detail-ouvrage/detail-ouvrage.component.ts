@@ -17,6 +17,16 @@ import {Fournisseur} from "../_models/fournisseur";
 import {TypeCout} from "../_models/type-cout";
 import {TypeCoutService} from "../_service/typeCout.service";
 import {FournisseurService} from "../_service/fournisseur.service";
+import {OuvrageElementaireService} from "../_service/ouvrage-elementaire.service";
+import {OuvrageElementaire} from "../_models/ouvrage-elementaire";
+import {
+  OuvrageElementaireAddCoutComponent
+} from "../ouvrage-elementaire-add-cout/ouvrage-elementaire-add-cout.component";
+import {
+  OuvrageElementaireAddOuvrageComponent
+} from "../ouvrage-elementaire-add-ouvrage/ouvrage-elementaire-add-ouvrage.component";
+import {OuvrageOuvragesElementairesService} from "../_service/ouvrage-ouvrages-elementaires.service";
+import {FormOuvrageElementaireComponent} from "../form-ouvrage-elementaire/form-ouvrage-elementaire.component";
 
 @Component({
   selector: 'app-detail-ouvrage',
@@ -37,15 +47,23 @@ export class DetailOuvrageComponent implements OnInit {
   listFournisseur !: Fournisseur[]
   listTypeCout !: TypeCout []
   columnsToDisplayCout = ["type", "categorie", "designation", "ratio", "uRatio", "unite", "prixUnitaire", "fournisseur", "boutons"];
+  ouvrageElementaire:OuvrageElementaire[]=[];
+  columnsToDisplayOuvrageElem = ["designation",
+    "proportion",
+    "unite",
+    "prix", "boutons"
+  ]
 
 
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute, private coutService: CoutService,
               private ouvrageCoutService: OuvrageCoutService, private dialog: MatDialog, private typeCoutService : TypeCoutService,
-              private fournisseurService : FournisseurService) {
+              private fournisseurService : FournisseurService,
+              private ouvrageElemnentaireService:OuvrageOuvragesElementairesService) {
   }
 
   ngOnInit(): void {
     this.getById();
+
     // this.getPriceOuvrage()
 
     // this.formGroupOuvrage()
@@ -92,6 +110,8 @@ export class DetailOuvrageComponent implements OnInit {
         this.getAllCout(data.EntrepriseId)
         this.getAllTypeCouts(data.EntrepriseId)
         this.getAllFournisseurs(data.EntrepriseId)
+        // this.addOuvrageElementaireToOuvrage(data.EntrepriseId)
+
         // this.ouvrage.fournisseur = data.Couts[0].Fournisseurs[0].commercialName
         // console.log("FOURNISSEUR",this.ouvrage.fournisseur)
       })
@@ -158,6 +178,16 @@ export class DetailOuvrageComponent implements OnInit {
       }
     });
   }
+  deleteOuvrageElem(id: number) {
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Appeler la fonction de suppression ici
+        this.ouvrageElemnentaireService.deleteByID(id, this.ouvrage.id).subscribe(() => this.ngOnInit())
+
+      }
+    });
+  }
 
   openDialogCreate(cout: Cout | null) {
     this.dialog.open(FormCoutComponent, {
@@ -174,6 +204,17 @@ export class DetailOuvrageComponent implements OnInit {
   openDialogCreateCout() {
     this.dialog.open(DialogFormCoutComponent, {
       data: [ this.listTypeCout, this.listFournisseur, this.ouvrage],
+      width: '55%',
+      height: '60%'
+    }).afterClosed().subscribe(async result => {
+      this.ngOnInit()
+
+    });
+  }
+
+  openDialogCreateOuvrElem() {
+    this.dialog.open(FormOuvrageElementaireComponent, {
+      data: this.ouvrage,
       width: '55%',
       height: '60%'
     }).afterClosed().subscribe(async result => {
@@ -215,6 +256,24 @@ export class DetailOuvrageComponent implements OnInit {
       this.listTypeCout = typeCouts;
     })
   }
+  // addOuvrageElementaireToOuvrage(entrepriseId:number):void
+  // {
+  //   this.ouvrageElemnentaireService.getAll(entrepriseId).subscribe(data=>{
+  //     this.ouvrageElementaire=data
+  //     console.log("OuvrageElementaire",this.ouvrageElementaire)
+  //   })
+  // }
+  openDialogImportOuvrageElementaire() {
+    this.dialog.open(OuvrageElementaireAddOuvrageComponent, {
+      panelClass:"test",
+      data: this.ouvrage,
+      width: '90%',
+      height: '70%'
+    }).afterClosed().subscribe(async result => {
+      console.log("result", result)
+      // this.uRatio(this.ouvrage,)
+      this.getById()
 
-
+    });
+  }
 }

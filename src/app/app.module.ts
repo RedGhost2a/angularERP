@@ -88,6 +88,13 @@ import { DialogLotComponent } from './dialog-lot/dialog-lot.component';
 import { DialogSouslotComponent } from './dialog-souslot/dialog-souslot.component';
 import { DialogUniteForFormComponent } from './dialog-unite-for-form/dialog-unite-for-form.component';
 import { ListComponentComponent } from './list-component/list-component.component';
+import { ListOuvrageElementaireComponent } from './list-ouvrage-elementaire/list-ouvrage-elementaire.component';
+import { FormOuvrageElementaireComponent } from './form-ouvrage-elementaire/form-ouvrage-elementaire.component';
+import { DetailOuvrageElementaireComponent } from './detail-ouvrage-elementaire/detail-ouvrage-elementaire.component';
+import { OuvrageElementaireAddCoutComponent } from './ouvrage-elementaire-add-cout/ouvrage-elementaire-add-cout.component';
+import { OuvrageElementaireAddOuvrageComponent } from './ouvrage-elementaire-add-ouvrage/ouvrage-elementaire-add-ouvrage.component';
+import { DialogListOuvrageElementaireComponent } from './dialog-list-ouvrage-elementaire/dialog-list-ouvrage-elementaire.component';
+import { DetailOuvrageElementaireDuDevisComponent } from './detail-ouvrage-elementaire-du-devis/detail-ouvrage-elementaire-du-devis.component';
 
 
 const appRoutes: Routes = [];
@@ -144,6 +151,13 @@ declare const toastr: Toastr;
     DialogSouslotComponent,
     DialogUniteForFormComponent,
     ListComponentComponent,
+    ListOuvrageElementaireComponent,
+    FormOuvrageElementaireComponent,
+    DetailOuvrageElementaireComponent,
+    OuvrageElementaireAddCoutComponent,
+    OuvrageElementaireAddOuvrageComponent,
+    DialogListOuvrageElementaireComponent,
+    DetailOuvrageElementaireDuDevisComponent,
 
 
   ],

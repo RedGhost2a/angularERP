@@ -10,6 +10,7 @@ import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {addDays, differenceInDays, format} from 'date-fns';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {OuvrageService} from "../_service/ouvrage.service";
+import {SousLotService} from "../_service/sous-lot.service";
 
 @Component({
   selector: 'app-detail-devis',
@@ -42,6 +43,7 @@ export class DetailDevisComponent implements OnInit {
               private lotService: LotService,
               @Inject(TOASTR_TOKEN) private toastr: Toastr,
               private formBuilder: FormBuilder,
+              private sousLotService: SousLotService,
               private ouvrageService: OuvrageService) {
 
 
@@ -52,7 +54,7 @@ export class DetailDevisComponent implements OnInit {
       this.devisID = +params['id'];
       this.getById();
     })
-
+    this.createHiddenSousLot()
   }
 
 
@@ -93,7 +95,7 @@ export class DetailDevisComponent implements OnInit {
     console.log("startd")
     // récupérer le devis en cours de modification
     this.devisService.getOuvrages(this.devisID).subscribe(devis => {
-      const ouvrages = devis[0];
+      const ouvrages = devis[1];
       console.log(devis)
       // stocker les ids des ouvrages dont alteredBenefOrAleas est false
 
@@ -172,13 +174,34 @@ export class DetailDevisComponent implements OnInit {
       });
   }
 
-  // success(message: string): void {
-  //   this.toastr.success(message, "Succès");
-  // }
-  //
-  // warning(message: string): void {
-  //   this.toastr.warning(message, "Attention");
-  // }
+  createHiddenSousLot() {
+    let createdIds: any[] = []; // tableau pour stocker les identifiants créés
+
+    let dataForLot = {
+      designation: `Hidden Lot  n°: ${this.devisID}`,
+      devisId: this.devisID
+    }
+    this.lotService.createHiddenLot(dataForLot).subscribe((data) => {
+      console.log("data.lot.lotId",data.lot.lotId)
+      this.devisService.setLotId(data.lot.lotId)
+      createdIds.push(data.lot.lotId); // ajouter l'identifiant du lot au tableau
+
+      let dataForSousLot = {
+        designation: `Hidden Sous Lot  n°: ${this.devisID}`,
+        devisId: this.devisID
+      }
+      this.sousLotService.createHiddenSouslot(dataForSousLot,data.lot.lotId).subscribe((sousLotData) => {
+        this.devisService.setSousLotId(sousLotData.sousLot.id)
+        createdIds.push(sousLotData.sousLot.id); // ajouter l'identifiant du sous-lot au tableau
+        console.log("sousLotData.sousLot.sousLotId)",sousLotData.sousLot.id)
+        console.log("lot et souslot id",createdIds);
+      }, (error) => {
+        console.error('Erreur lors de la création du sous-lot: ', error);
+      })
+    }, (error) => {
+      console.error('Erreur lors de la création du lot: ', error);
+    });
+  }
 
 
 }

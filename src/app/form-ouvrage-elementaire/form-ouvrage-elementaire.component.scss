@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  color: #334E68;
+  //margin-top: 3%;
+
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+
+  p {
+    font-size: 1rem;
+
+  }
+
+}
+
+.inputs {
+  display: flex;
+  justify-content: space-between;
+  color: #334E68;
+  margin-top: 2%;
+}
+.buttons{
+  display: flex;
+  justify-content: space-between;
+  margin-top:2%;
+}

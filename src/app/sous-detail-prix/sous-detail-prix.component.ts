@@ -28,6 +28,14 @@ import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {UniteForFormService} from "../_service/uniteForForm.service";
 import { Observable} from "rxjs";
 import { delay } from 'rxjs/operators';
+import {
+  OuvrageElementaireAddOuvrageComponent
+} from "../ouvrage-elementaire-add-ouvrage/ouvrage-elementaire-add-ouvrage.component";
+import {
+  DialogListOuvrageElementaireComponent
+} from "../dialog-list-ouvrage-elementaire/dialog-list-ouvrage-elementaire.component";
+import {FormOuvrageElementaireComponent} from "../form-ouvrage-elementaire/form-ouvrage-elementaire.component";
+import {OuvrageElementaireService} from "../_service/ouvrage-elementaire.service";
 
 @Component({
   selector: 'app-sous-detail-prix',
@@ -38,6 +46,15 @@ export class SousDetailPrixComponent implements OnInit {
   ouvrageID!: number;
   currentOuvrage !: Ouvrage;
   isFormVisible = false;
+  columnsToDisplayOuvrageElem = ["designation",
+    "proportion",
+    "unite",
+    "prix",
+    "uniteproportionOE",
+    "remarques",
+    "boutons"
+  ]
+
 
   columnsToDisplay = [
     "type",
@@ -80,12 +97,14 @@ export class SousDetailPrixComponent implements OnInit {
   resultMetre: number [] = [];
   resultTotalMetre: number = 0;
 
+
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute,
               public dataSharingService: DataSharingService, private coutService: CoutService, private userService: UserService,
               public dialog: MatDialog, private sousLotOuvrageService: SousLotOuvrageService, private fournisseurService: FournisseurService,
               private typeCoutService: TypeCoutService, private ouvrageCoutService: OuvrageCoutService,
               private router: Router, private uniteForFormService: UniteForFormService, @Inject(TOASTR_TOKEN) private toastr: Toastr,
-              private formBuilder: FormBuilder
+              private formBuilder: FormBuilder,
+              private ouvrageElementaireService:OuvrageElementaireService
   ) {
     transformVirguletoPoint()
     // this.createFormCout2()
@@ -585,6 +604,31 @@ export class SousDetailPrixComponent implements OnInit {
     });
   }
 
+
+  openDialogImportOuvragesElem(ouvragDuDevisId: number) {
+    console.log(this.ouvrageID)
+    this.dialog.open(DialogListOuvrageElementaireComponent, {
+      panelClass: 'test',
+       data: this.ouvrageID,
+      width: '90%',
+      height: '70%'
+    }).afterClosed().subscribe(async result => {
+      this.initialCalcul()
+
+    });
+  }
+  openDialogCreateOuvrageElem(ouvrage: Ouvrage | null) {
+    this.dialog.open(FormOuvrageElementaireComponent, {
+      data: this.ouvrageID,
+      width: '70%',
+      height: '35%'
+    }).afterClosed().subscribe(async result => {
+      console.log( "result",result)
+      this.ngOnInit()
+
+    });
+  }
+
   openDialogCreate(ouvragDuDevisId: number) {
     this.dialog.open(DialogFormCoutComponent, {
       data: [this.listTypeCout, this.listFournisseur],
@@ -616,6 +660,16 @@ export class SousDetailPrixComponent implements OnInit {
         this.coutService.deleteCoutDuDevisByID(coutDuDeviId).subscribe(() => this.initialCalcul())
 
         // this.ouvrageCoutService.deleteCoutAndOuvrageDuDevis(coutDuDeviId, this.currentOuvrage.id).subscribe(() => this.ngOnInit())
+      }
+    });
+  }
+
+  deleteOuvrageElem(id: number) {
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Appeler la fonction de suppression ici
+        this.ouvrageElementaireService.deleteOuvrageElemDuDevisByID(id).subscribe(() => this.ngOnInit())
       }
     });
   }

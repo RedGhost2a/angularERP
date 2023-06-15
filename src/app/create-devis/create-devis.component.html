@@ -280,10 +280,20 @@
         </div>
 
 
+        <div class="flex-row">
+          <button class="button" mat-raised-button color="primary" (click)="showForm = true; isLot=false">Lot</button>
+
         <div>
-          <button class="button" mat-raised-button color="primary" (click)="showForm = true; isLot=false">Créer un lot</button>
+          <button class="button" (click)="this.createHiddenLotForSousLotButton();hidden=true; isLot = true; curentLotId= this.hiddenLotId2" mat-raised-button color="primary" >Sous-lots</button>
         </div>
 
+          <div>
+          <button class="button" (click)="openDialogCreate(this.hiddenSousLotId)" mat-raised-button color="primary" >Ouvrage</button>
+        </div>
+        <div>
+          <button class="button" (click)="this.createHiddenLotAndSousLotAndOvrage()" mat-raised-button color="primary" >Cout</button>
+        </div>
+        </div>
         <form [formGroup]="form" (ngSubmit)="onSubmit()" [hidden]="!showForm">
           <!-- Formulaire avec champ de saisie et bouton de validation -->
           <mat-form-field appearance="outline" color="primary">
@@ -295,7 +305,7 @@
 
 
         <div class="container-lot" *ngFor="let lot of testLots">
-          <div class="lot-frais-chantier">
+          <div class="lot-frais-chantier" *ngIf="!lot.designation.startsWith('Hidden')">
             <button class="btn" *ngIf="lot.SousLots && lot.SousLots.length"
                     (click)="setExpandedLotId(lot.id)">
 
@@ -327,7 +337,7 @@
           <div class="container-sous-lot-frais-chantier" *ngFor="let sublot of lot.SousLots">
 
 
-            <div class="sous-lot-frais-chantier">
+            <div class="sous-lot-frais-chantier" *ngIf="!sublot.designation.startsWith('Hidden')">
               <button class="btn">
                 <mat-icon>expand_more</mat-icon>
                 <span class="designation-sous-lot-frais-chantier">id {{ sublot.id | number }}</span>
@@ -367,7 +377,7 @@
 
             <div class="container-ouvrage-frais-chantier" *ngFor="let ouvrage of sublot.OuvrageDuDevis"
                  [hidden]="hiddenChildren.get(sublot.id)">
-              <div>
+              <div *ngIf="!ouvrage.designation.startsWith('Hidden')">
                 <div class="ouvrage-frais-chantier" *ngIf="ouvrage.SousLotOuvrage">
                   <div class="detail-ouvrage-frais-chantier">
                     <span class="designation-ouvrage-frais-chantier-td">Id</span>
@@ -481,13 +491,123 @@
                 </div>
               </div>
             </div>
+
+
+
+
+
           </div>
 
 
         </div>
 
-
       </div>
+<!--        <div *ngFor="let cout of hiddenCout" class="detail-ouvrage-frais-chantier">-->
+<!--          <span class="designation-ouvrage-frais-chantier-td">Désignation</span>-->
+<!--          <span class="designation-ouvrage-frais-chantier">{{cout.designation}}</span>-->
+<!--        </div>-->
+<!--      <table  *ngIf="hiddenCout " mat-table [dataSource]="hiddenCout">-->
+
+<!--        <ng-container matColumnDef="type">-->
+<!--          <th mat-header-cell *matHeaderCellDef> Type</th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.type}} </td>-->
+<!--          <td routerLink="/ouvrageDetail/{{ouvrage.id}}" mat-cell-->
+<!--              *matCellDef="let ouvrage"> {{ouvrage.designation}} </td>-->
+<!--        </ng-container>-->
+<!--        <ng-container matColumnDef="categorie">-->
+<!--          <th mat-header-cell *matHeaderCellDef> Catégorie</th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.categorie}} </td>-->
+<!--          &lt;!&ndash;      <td routerLink="/ouvrageDetail/{{ouvrage.id}}" mat-cell *matCellDef="let ouvrage"> {{ouvrage.designation}} </td>&ndash;&gt;-->
+<!--        </ng-container>-->
+<!--        <ng-container matColumnDef="designation">-->
+<!--          <th mat-header-cell *matHeaderCellDef> Désignation</th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.designation}} </td>-->
+<!--          &lt;!&ndash;      <td mat-cell routerLink="/ouvrageDetail/{{ouvrage.id}}" *matCellDef="let ouvrage"> {{ouvrage.benefice}} </td>&ndash;&gt;-->
+<!--        </ng-container>-->
+<!--        <ng-container matColumnDef="unite">-->
+<!--          <th mat-header-cell *matHeaderCellDef> U</th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.unite}} </td>-->
+
+<!--          &lt;!&ndash;      <td mat-cell routerLink="/ouvrageDetail/{{ouvrage.id}}" *matCellDef="let ouvrage"> {{ouvrage.aleas}} </td>&ndash;&gt;-->
+<!--        </ng-container>-->
+<!--        <ng-container matColumnDef="uRatio">-->
+<!--          <th mat-header-cell *matHeaderCellDef> U/Ratio</th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.OuvrageCoutDuDevis.uRatio}} </td>-->
+<!--          <td routerLink="/ouvrageDetail/{{ouvrage.id}}" mat-cell-->
+<!--              *matCellDef="let ouvrage"> {{ouvrage.designation}} </td>-->
+<!--        </ng-container>-->
+<!--        <ng-container matColumnDef="ratio">-->
+<!--          <th mat-header-cell *matHeaderCellDef> Ratio</th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis">-->
+<!--            <mat-form-field appearance="legacy"  style="width: 30px">-->
+<!--              <input type="number"  formControlName="ratio" matInput required-->
+<!--                     [placeholder]="coutDuDevis.OuvrageCoutDuDevis.ratio">-->
+<!--            </mat-form-field>-->
+<!--          </td>-->
+<!--        </ng-container>-->
+
+<!--        <ng-container matColumnDef="efficience">-->
+<!--          <th mat-header-cell *matHeaderCellDef> Efficience</th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis">-->
+<!--            <mat-form-field appearance="legacy"  style="width: 30px">-->
+<!--              <input type="number"  formControlName="efficience" matInput-->
+<!--                     required-->
+<!--                     [placeholder]="coutDuDevis.OuvrageCoutDuDevis.efficience">-->
+<!--            </mat-form-field>-->
+<!--          </td>-->
+<!--        </ng-container>-->
+
+
+
+<!--        <ng-container matColumnDef="quantite" >-->
+<!--          <th mat-header-cell *matHeaderCellDef> Quantité</th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.quantite}} </td>-->
+<!--        </ng-container>-->
+<!--        <ng-container matColumnDef="prixUnitaireHT">-->
+<!--          <th mat-header-cell *matHeaderCellDef> PU HT</th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixUnitaire| number : '1.2-2'}} €</td>-->
+<!--        </ng-container>-->
+<!--        <ng-container matColumnDef="DSTotal" >-->
+<!--          <th mat-header-cell *matHeaderCellDef> DS Total</th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.debourseSecTotal | number : '1.2-2'}} €</td>-->
+<!--        </ng-container>-->
+<!--        <ng-container matColumnDef="PUHTEquilibre" >-->
+<!--          <th mat-header-cell *matHeaderCellDef> PU HT équilibre</th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixUnitaireEquiHT | number : '1.2-2'}} €</td>-->
+<!--        </ng-container>-->
+<!--        <ng-container matColumnDef="prixHTEquilibre" >-->
+<!--          <th mat-header-cell *matHeaderCellDef> Prix HT équilibre</th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixEquiHT | number : '1.2-2' }} €</td>-->
+<!--        </ng-container>-->
+<!--        <ng-container matColumnDef="PUHTCalcule" >-->
+<!--          <th mat-header-cell *matHeaderCellDef>PU HT calculé</th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixUnitaireCalcHT | number : '1.2-2'}} €</td>-->
+<!--        </ng-container>-->
+<!--        <ng-container matColumnDef="prixHTCalcule" >-->
+<!--          <th mat-header-cell *matHeaderCellDef>Prix HT calculé</th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixCalcHT | number : '1.2-2'}} €</td>-->
+<!--        </ng-container>-->
+<!--        <ng-container matColumnDef="boutons" >-->
+<!--          <th mat-header-cell *matHeaderCellDef></th>-->
+<!--          <td mat-cell *matCellDef="let coutDuDevis"> <span class="designation-ouvrage-frais-chantier">-->
+<!--                  <mat-icon [matMenuTriggerFor]="boutonOuv">more_vert</mat-icon>-->
+<!--                <mat-menu class="menuBoutonSl" #boutonOuv>-->
+<!--&lt;!&ndash;                  <button mat-button color="primary" (click)="openDialogUpdateCout(coutDuDevis)">&ndash;&gt;-->
+<!--&lt;!&ndash;                    Modifier le composant&ndash;&gt;-->
+<!--&lt;!&ndash;                  </button>&ndash;&gt;-->
+<!--&lt;!&ndash;                  <button mat-button color="warn" (click)="deleteItem(coutDuDevis.id)">&ndash;&gt;-->
+<!--&lt;!&ndash;                    Effacer le composant&ndash;&gt;-->
+<!--&lt;!&ndash;                  </button>&ndash;&gt;-->
+<!--                </mat-menu>-->
+
+<!--                  </span>-->
+<!--          </td>-->
+<!--        </ng-container>-->
+<!--        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>-->
+<!--        &lt;!&ndash;    <tr mat-header-row *matHeaderRowDef="columnsToDisplay" style="font-weight: normal;font-style: oblique" ></tr>&ndash;&gt;-->
+<!--        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>-->
+<!--      </table>-->
+
 
     </mat-tab>
 

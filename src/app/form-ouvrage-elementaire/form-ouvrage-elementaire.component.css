@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  color: #334E68;
+}
+.container h3 {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.container p {
+  font-size: 1rem;
+}
+
+.inputs {
+  display: flex;
+  justify-content: space-between;
+  color: #334E68;
+  margin-top: 2%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2%;
+}
+
+/*# sourceMappingURL=form-ouvrage-elementaire.component.css.map */

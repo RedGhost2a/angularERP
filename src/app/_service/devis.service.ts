@@ -10,11 +10,26 @@ const baseUrl = 'http://localhost:4000/devis';
 })
 export class DevisService {
   // public devis !: Observable<Devis>;
-
+  private HiddenlotId!: number;
+  private HiddensousLotId!: number;
 
   constructor(private http: HttpClient) {
   }
+  setLotId(id: number) {
+    this.HiddenlotId = id;
+  }
 
+  getLotId() {
+    return this.HiddenlotId;
+  }
+
+  setSousLotId(id: number) {
+    this.HiddensousLotId = id;
+  }
+
+  getSousLotId() {
+    return this.HiddensousLotId;
+  }
   getAll(): Observable<any> {
     return this.http.get(`${environment.apiUrl}/devis`);
   }

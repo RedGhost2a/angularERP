@@ -33,6 +33,14 @@ import {LogsComponent} from "./logs/logs.component";
 import {FormOuvrageComponent} from "./form-ouvrage/form-ouvrage.component";
 import {AideComponent} from "./aide/aide.component";
 import {UserService} from "./_service/user.service";
+import {ListOuvrageElementaireComponent} from "./list-ouvrage-elementaire/list-ouvrage-elementaire.component";
+import {DetailOuvrageElementaireComponent} from "./detail-ouvrage-elementaire/detail-ouvrage-elementaire.component";
+import {
+  OuvrageElementaireAddCoutComponent
+} from "./ouvrage-elementaire-add-cout/ouvrage-elementaire-add-cout.component";
+import {
+  DetailOuvrageElementaireDuDevisComponent
+} from "./detail-ouvrage-elementaire-du-devis/detail-ouvrage-elementaire-du-devis.component";
 
 const routes: Routes = [
   {
@@ -68,6 +76,12 @@ const routes: Routes = [
   {path: 'ouvrage/:id', canActivate: [AuthGuard], component: FormComponent},
   {path: 'devisDetail/:id', canActivate: [AuthGuard], component: DetailDevisComponent},
   {path: 'devisCreate/:id', canActivate: [AuthGuard], component: CreateDevisComponent},
+
+
+  {path: 'ouvrages-elementaires', canActivate: [AuthGuard], component: ListOuvrageElementaireComponent,},
+  {path: 'ouvrages-elementaires-du-devis/:id', canActivate: [AuthGuard], component: DetailOuvrageElementaireDuDevisComponent,},
+  {path: 'ouvrages-elementaires-detail/:id', canActivate: [AuthGuard], component: DetailOuvrageElementaireComponent,},
+  {path: 'ouvrages-elementaires-detail/add/:id', canActivate: [AuthGuard], component: OuvrageElementaireAddCoutComponent,},
 
 
   {path: 'dashboard', canActivate: [AuthGuard], component: DashboardComponent, data: {title: 'Dashboard'}},

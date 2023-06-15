@@ -1,0 +1,66 @@
+<div class="container">
+  <div class="subContainer">
+    <h1>Ajout d'un ou plusieurs ouvrage élémentaire à  l'ouvrage</h1>
+    <p>Veuillez sélectionner un ou plusieurs ouvrage élémentaire à associer à l'ouvrage.</p>
+    <mat-form-field appearance="legacy">
+      <mat-label>Rechercher un ouvrage élémentaire</mat-label>
+      <input matInput placeholder="Ex: Ciment">
+    </mat-form-field>
+  </div>
+  <div class="tableCout">
+    <table mat-table [dataSource]="ouvrageElementaire">
+      <ng-container matColumnDef="checkBox">
+        <th mat-header-cell *matHeaderCellDef> Id </th>
+        <td mat-cell *matCellDef="let ouvrageElem">
+          <mat-checkbox [id]="ouvrageElem.id" (change)="onCheck(ouvrageElem.id)" class="example-margin"> {{ouvrageElem.id}}</mat-checkbox>
+        </td>
+      </ng-container>
+      <!--      <ng-container matColumnDef="type">-->
+      <!--        <th mat-header-cell *matHeaderCellDef> Type </th>-->
+      <!--        <td mat-cell *matCellDef="let cout"> {{cout.TypeCout.type}} </td>-->
+      <!--      </ng-container>-->
+      <!--      <ng-container matColumnDef="categorie">-->
+      <!--        <th mat-header-cell *matHeaderCellDef> Categorie </th>-->
+      <!--        <td mat-cell *matCellDef="let cout"> {{cout.TypeCout.categorie}} </td>-->
+      <!--      </ng-container>-->
+      <ng-container matColumnDef="designation">
+        <th mat-header-cell *matHeaderCellDef> Désignation </th>
+        <td mat-cell *matCellDef="let ouvrageElem"> {{ouvrageElem.designation}} </td>
+      </ng-container>
+      <ng-container matColumnDef="proportion">
+        <th mat-header-cell *matHeaderCellDef> Proportion </th>
+        <td mat-cell *matCellDef="let ouvrageElem"> {{ouvrageElem.proportion}} </td>
+      </ng-container>
+      <ng-container matColumnDef="unite">
+        <th mat-header-cell *matHeaderCellDef> Unité </th>
+        <td mat-cell *matCellDef="let ouvrageElem"> {{ouvrageElem.unite}} </td>
+      </ng-container>
+      <ng-container matColumnDef="prix">
+        <th mat-header-cell *matHeaderCellDef>Prix</th>
+        <td mat-cell *matCellDef="let ouvrageElem"> {{ouvrageElem.prix}} </td>
+        <th mat-header-cell *matHeaderCellDef>  </th>
+      </ng-container>
+      <ng-container matColumnDef="uniteproportionOE">
+        <th mat-header-cell *matHeaderCellDef>Unite proportion OE</th>
+        <td mat-cell *matCellDef="let ouvrageElem"> {{ouvrageElem.uniteproportionOE}} </td>
+        <th mat-header-cell *matHeaderCellDef>  </th>
+      </ng-container>
+      <ng-container matColumnDef="remarques">
+        <th mat-header-cell *matHeaderCellDef>Remarques</th>
+        <td mat-cell *matCellDef="let ouvrageElem"> {{ouvrageElem.remarques}} </td>
+        <th mat-header-cell *matHeaderCellDef>  </th>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+    </table>
+
+  </div>
+  <div class="divButton">
+    <button class="btnBack" routerLink="/listOuvrage" mat-stroked-button color="primary" >Retour</button>
+    <button  class='button' (click)="createOuvrageElementaireDuDevis();closeDialog()" mat-raised-button color="primary" [disabled]="selectedOuvrageElemIds.length === 0 ? true : false" [innerHTML]="selectedOuvrageElemIds.length > 1 ? 'Importer ces ouvrages élementaires' : 'Importer cette ouvrage élementaire'">Importer ce composant </button>
+    <!--    <button  class='button' routerLink="/ouvrageDetail/{{ouvrageId}}" (click)="addCoutOuvrage()" mat-raised-button color="primary">Valider </button>-->
+
+
+  </div>
+</div>

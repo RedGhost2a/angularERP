@@ -1,0 +1,80 @@
+<ng-container [formGroup]="this.myFormGroup">
+
+  <div class="container">
+    <h3>{{titleModal}}</h3>
+    <p>L'ajout d'un ouvrage élementaires au sein de la bibliothèque permet de l'utiliser ultérieurement lors de la création
+      de devis</p>
+    <div class="inputs">
+
+      <mat-form-field appearance="legacy" style="width: 250px">
+        <mat-label>Désignation</mat-label>
+        <!--        <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm" style="width: 200px">-->
+        <textarea formControlName="designation" matInput
+                  cdkTextareaAutosize
+                  #autosize="cdkTextareaAutosize"
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"></textarea>
+        <mat-error *ngIf="this.myFormGroup.get('designation')?.hasError('required')">
+          Vous devez entrer une designation.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="legacy" id="input-unite" style="width: 120px">
+        <mat-label>Proportion</mat-label>
+        <input type="string" formControlName="proportion" matInput placeholder="Ex: 10%">
+        <mat-error *ngIf="this.myFormGroup.get('proportion')?.hasError('required')">
+          Vous devez entrer une proportion.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="legacy" style="width: 120px">
+        <mat-label>Prix</mat-label>
+        <input type="number" formControlName="unite" matInput placeholder="Ex: 5%">
+        <mat-error *ngIf="this.myFormGroup.get('prix')?.hasError('required')">
+          Vous devez entrer un prix.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="legacy" style="width: 120px">
+        <mat-label>Unité</mat-label>
+        <select formControlName="unite" matNativeControl required >
+          <option *ngFor="let unite of uniteList" value="{{unite.name}}"> {{unite.name}}</option>
+        </select>
+        <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
+          Vous devez entrer une unité.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="legacy" id="uniteproportionOE" style="width: 120px">
+        <mat-label>Unite proportion OE</mat-label>
+        <input type="string" formControlName="uniteproportionOE" matInput placeholder="Ex: m3/h">
+        <mat-error *ngIf="this.myFormGroup.get('uniteproportionOE')?.hasError('required')">
+          Vous devez entrer une unite proportion OE.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="legacy" id="remarques" style="width: 250px">
+        <mat-label>Remarques</mat-label>
+        <input type="string" formControlName="remarques" matInput placeholder="Ex: Beton pour dalle 10cm">
+        <mat-error *ngIf="this.myFormGroup.get('remarques')?.hasError('required')">
+          Vous devez entrer une remarques.
+        </mat-error>
+      </mat-form-field>
+
+      <span>
+        <mat-icon style="
+    color: deepskyblue;
+    margin-left: 20px;
+;
+" (click)="openUniteForFormDialog()">+</mat-icon>
+</span>
+
+
+    </div>
+
+
+    <div class="buttons">
+
+      <button mat-stroked-button color="primary" (click)="closeDialog()">Retour</button>
+      <button mat-raised-button color="primary" (click)="this.createOuvrageElementaire()" >Ajouter cet ouvrage élémentaires</button>
+    </div>
+  </div>
+
+</ng-container>
+

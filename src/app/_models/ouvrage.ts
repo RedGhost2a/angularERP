@@ -2,10 +2,11 @@ import {Cout} from "./cout";
 import {SousLotOuvrage} from "./sousLotOuvrage";
 import {OuvrageCout} from "./ouvrageCout";
 import {SousLot} from "./sous-lot";
+import {OuvrageElementaire} from "./ouvrage-elementaire";
 
 export interface Ouvrage {
   // cout: any;
-  id:any;
+  id?:any;
   designation: string;
   benefice: number;
   aleas: number;
@@ -20,4 +21,6 @@ export interface Ouvrage {
   OuvrageDuDevis?:Ouvrage
   Couts?:Cout[]
   SousLots?:SousLot[];
+  OuvragesElementaires?:OuvrageElementaire[];
+  OuvrElemDuDevis?:[]
 }

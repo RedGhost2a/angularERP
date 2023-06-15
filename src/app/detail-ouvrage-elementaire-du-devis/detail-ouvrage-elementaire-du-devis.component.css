@@ -1,0 +1,95 @@
+.btnBack {
+  margin-left: 30px;
+}
+
+.container {
+  background-color: #F0F4F8;
+  display: flex;
+  flex-direction: column;
+  color: #334E68;
+}
+.container .example-card {
+  color: #334E68;
+  width: 70%;
+  margin-left: auto;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  margin-right: auto;
+}
+.container .example-card .group {
+  display: flex;
+  flex-direction: column;
+}
+.container .example-card .detailList {
+  display: flex;
+  justify-content: space-between;
+}
+.container .example-card .detailList .subTitle {
+  margin-top: 0;
+  margin-left: 40px;
+}
+.container .card-no-cout {
+  margin: 1% 5% 0 5%;
+  color: #334E68;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.container .card-no-cout :first-child {
+  font-size: 1.2rem;
+}
+.container .detail {
+  width: 100%;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.container .detail p {
+  min-height: 30px;
+  padding-left: 40px;
+}
+.container .bouton {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header-table-button {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 6%;
+  margin-right: 6%;
+  margin-top: 4%;
+  align-items: center;
+}
+.header-table-button h4 {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.header {
+  display: flex;
+  width: 50%;
+  margin: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+.header p {
+  font-size: 1.4rem;
+  margin-bottom: 0;
+  margin-left: 1%;
+  font-weight: 500;
+}
+
+table {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  width: 90%;
+  margin-top: 1%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.div-button :first-child {
+  margin-right: 30px;
+}
+
+/*# sourceMappingURL=detail-ouvrage-elementaire-du-devis.component.css.map */

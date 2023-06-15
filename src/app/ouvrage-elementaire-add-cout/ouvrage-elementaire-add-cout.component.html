@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="subContainer">
+    <h1>Ajout d'un ou plusieurs composant a l'ouvrage</h1>
+    <p>Veuillez sélectionner un ou plusieurs composant à associer à l'ouvrage. Le déboursé de l'ouvrage sera
+      modifié lors de cet ajout dans la bibliothèque de prix. Les devis existants ne seront pas impactés.</p>
+    <mat-form-field appearance="legacy">
+      <mat-label>Rechercher un cout</mat-label>
+      <input matInput placeholder="Ex: Ciment">
+    </mat-form-field>
+  </div>
+  <div class="tableCout">
+    <table mat-table [dataSource]="listCout">
+      <ng-container matColumnDef="checkBox">
+        <th mat-header-cell *matHeaderCellDef> Id </th>
+        <td mat-cell *matCellDef="let cout">
+          <mat-checkbox [id]="cout.id" (change)="onCheck(cout.id)" class="example-margin"> {{cout.id}}</mat-checkbox>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let cout"> {{cout.TypeCout.type}} </td>
+      </ng-container>
+      <ng-container matColumnDef="categorie">
+        <th mat-header-cell *matHeaderCellDef> Categorie </th>
+        <td mat-cell *matCellDef="let cout"> {{cout.TypeCout.categorie}} </td>
+      </ng-container>
+      <ng-container matColumnDef="designation">
+        <th mat-header-cell *matHeaderCellDef> Désignation </th>
+        <td mat-cell *matCellDef="let cout"> {{cout.designation}} </td>
+      </ng-container>
+      <ng-container matColumnDef="unite">
+        <th mat-header-cell *matHeaderCellDef> Unité </th>
+        <td mat-cell *matCellDef="let cout"> {{cout.unite}} </td>
+      </ng-container>
+      <ng-container matColumnDef="prixUnitaire">
+        <th mat-header-cell *matHeaderCellDef> PU HT </th>
+        <td mat-cell *matCellDef="let cout"> {{cout.prixUnitaire}} </td>
+        <th mat-header-cell *matHeaderCellDef>  </th>
+      </ng-container>
+      <ng-container matColumnDef="fournisseur">
+        <th mat-header-cell *matHeaderCellDef> Fournisseur </th>
+        <td mat-cell *matCellDef="let cout"> {{cout.Fournisseur.commercialName}} </td>
+        <th mat-header-cell *matHeaderCellDef>  </th>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+      <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+    </table>
+
+  </div>
+  <div class="divButton">
+    <button class="btnBack" routerLink="/listOuvrage" mat-stroked-button color="primary" >Retour</button>
+    <button  class='button' (click)="addCoutOuvrage();closeDialog()" mat-raised-button color="primary" [disabled]="coutChecked.length === 0 ? true : false" [innerHTML]="coutChecked.length > 1 ? 'Importer ces composants' : 'Importer ce composant'">Importer ce composant </button>
+    <!--    <button  class='button' routerLink="/ouvrageDetail/{{ouvrageId}}" (click)="addCoutOuvrage()" mat-raised-button color="primary">Valider </button>-->
+
+
+  </div>
+</div>

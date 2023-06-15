@@ -53,6 +53,12 @@ export const navbarDataAdmin = [
     label: 'Bibliothèque',
     children: [
       {
+        routeLink: '/ouvrages-elementaires',
+        icon: faBook,
+        label: "Ouvrages élémentaires",
+        visible: true
+      },
+      {
         routeLink: '/listOuvrage',
         label: "Ouvrages",
         visible: true
