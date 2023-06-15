@@ -145,7 +145,9 @@ export class FormOuvrageComponent implements OnInit {
   }
 
   getAleasBenefFromDevis() {
+    // console.log('initial data',this.initialData)
     this.devisService.getById(this.initialData.devisId).subscribe(data => {
+      console.log('data', data)
       this.beneficeInPercent = data.beneficeInPercent
       this.aleasInPercent = data.aleasInPercent
       console.log("data.aleasInPercent", data.aleasInPercent)

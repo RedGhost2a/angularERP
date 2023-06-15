@@ -52,7 +52,9 @@ export class UserService {
 
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         let string = JSON.stringify(user)
+        console.log("user",user)
         let encryptUser = this.storageService.encrypt(string)
+        console.log("encrypt",encryptUser)
         localStorage.setItem('user', encryptUser);
         localStorage.setItem('coef', String(1));
         this.userSubject.next(user);
