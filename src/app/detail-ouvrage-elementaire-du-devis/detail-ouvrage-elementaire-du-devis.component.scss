@@ -1,0 +1,115 @@
+.btnBack {
+  margin-left: 30px;
+}
+
+.container {
+  background-color: #F0F4F8;
+  //width: 100vw;
+  //height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: #334E68;
+
+
+  .example-card {
+    //display: flex;
+    color: #334E68;
+    width: 70%;
+    margin-left: auto;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    margin-right: auto;
+
+    .group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detailList {
+      display: flex;
+      justify-content: space-between;
+
+
+      .subTitle {
+        margin-top: 0;
+        margin-left: 40px;
+      }
+
+    }
+  }
+  .card-no-cout{
+    margin:1% 5% 0 5%;
+    color: #334E68;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    :first-child{
+      font-size: 1.2rem;
+    }
+  }
+
+  .detail {
+    width: 100%;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    p {
+      min-height: 30px;
+      padding-left: 40px;
+    }
+
+  }
+
+  .bouton {
+    display: flex;
+    justify-content: space-between;
+  }
+
+}
+
+.header-table-button {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 6%;
+  margin-right: 6%;
+  margin-top: 4%;
+  align-items: center;
+
+  h4 {
+
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin: 0;
+  }
+}
+
+.header {
+  display: flex;
+  width: 50%;
+  margin: 20px;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    font-size: 1.4rem;
+    margin-bottom: 0;
+    margin-left: 1%;
+    font-weight: 500;
+  }
+}
+
+table {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  width: 90%;
+  margin-top: 1%;
+
+  margin-left: auto;
+  margin-right: auto;
+  //margin-left: 2%;
+  //margin-right: 2%;
+}
+.div-button{
+  :first-child{
+    margin-right: 30px;
+  }
+}

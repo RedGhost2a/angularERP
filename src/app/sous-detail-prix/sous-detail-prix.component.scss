@@ -5,10 +5,15 @@
 
 th, td {
   color: #334E68;
+
 }
 
-.container {
+th {
+  background-color: #0582bb4d;
+
+
 }
+
 
 .valid-form {
   display: flex;
@@ -16,7 +21,20 @@ th, td {
   justify-content: space-around;
   align-items: flex-start;
 }
+.titre{
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-left: 6%;
+  //margin-top: 4%;
 
+}
+.titre2{
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-left: 6%;
+  margin-top: 2%;
+
+}
 .cardParams {
   color: #334E68;
   width: 13%;

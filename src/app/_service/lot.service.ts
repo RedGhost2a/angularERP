@@ -26,6 +26,11 @@ export class LotService {
     return this.http.post(`${baseUrl}/newFraisDeChantier`, data);
   }
 
+  createHiddenLot(data:any):Observable<any> {
+    console.log('console log create lot service hidden : ', data)
+    return this.http.post(`${baseUrl}/newHiddenLot`, data);
+  }
+
   update(lot: Lot, id: any): Observable<any> {
     return this.http.put(`${baseUrl}/${id}`, lot)
   }

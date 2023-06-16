@@ -145,7 +145,7 @@
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.uRatio}}</span>
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier-td">Rendement</span>
+                  <span class="designation-ouvrage-frais-chantier-td">Ratio</span>
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.ratio}}</span>
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
@@ -280,11 +280,21 @@
         </div>
 
 
+        <div class="flex-row">
+          <button class="button" mat-raised-button color="primary" (click)="showForm = true; isLot=false">Lot</button>
+
         <div>
-          <button class="button" mat-raised-button color="primary" (click)="autoFocus();isLot = false;">Créer un lot</button>
+          <button class="button" (click)="this.createHiddenLotForSousLotButton();hidden=true; isLot = true; curentLotId= this.hiddenLotId2" mat-raised-button color="primary" >Sous-lots</button>
         </div>
 
-        <form [formGroup]="form"  (ngSubmit)="onSubmit()" [hidden]="!showForm" >
+          <div>
+          <button class="button" (click)="openDialogCreate(this.hiddenSousLotId)" mat-raised-button color="primary" >Ouvrage</button>
+        </div>
+        <div>
+          <button class="button" (click)="this.createHiddenLotAndSousLotAndOvrage()" mat-raised-button color="primary" >Cout</button>
+        </div>
+        </div>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" [hidden]="!showForm">
           <!-- Formulaire avec champ de saisie et bouton de validation -->
           <mat-form-field appearance="outline" color="primary">
             <mat-label>Designation</mat-label>
@@ -295,7 +305,7 @@
 
 
         <div class="container-lot" *ngFor="let lot of testLots">
-          <div class="lot-frais-chantier">
+          <div class="lot-frais-chantier" *ngIf="!lot.designation.startsWith('Hidden')">
             <button class="btn" *ngIf="lot.SousLots && lot.SousLots.length"
                     (click)="setExpandedLotId(lot.id)">
 
@@ -327,7 +337,7 @@
           <div class="container-sous-lot-frais-chantier" *ngFor="let sublot of lot.SousLots">
 
 
-            <div class="sous-lot-frais-chantier">
+            <div class="sous-lot-frais-chantier" *ngIf="!sublot.designation.startsWith('Hidden')">
               <button class="btn">
                 <mat-icon>expand_more</mat-icon>
                 <span class="designation-sous-lot-frais-chantier">id {{ sublot.id | number }}</span>
@@ -367,7 +377,7 @@
 
             <div class="container-ouvrage-frais-chantier" *ngFor="let ouvrage of sublot.OuvrageDuDevis"
                  [hidden]="hiddenChildren.get(sublot.id)">
-              <div>
+              <div *ngIf="!ouvrage.designation.startsWith('Hidden')">
                 <div class="ouvrage-frais-chantier" *ngIf="ouvrage.SousLotOuvrage">
                   <div class="detail-ouvrage-frais-chantier">
                     <span class="designation-ouvrage-frais-chantier-td">Id</span>

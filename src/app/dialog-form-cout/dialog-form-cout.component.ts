@@ -16,6 +16,8 @@ import {TypeCout} from "../_models/type-cout";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {UniteForForm} from "../_models/uniteForForm";
 import {UniteForFormService} from "../_service/uniteForForm.service";
+import {Router} from "@angular/router";
+import {OuvrageElementaireCoutService} from "../_service/ouvrage-elementaire-cout.service";
 
 @Component({
   selector: 'app-dialog-form-cout',
@@ -32,6 +34,7 @@ export class DialogFormCoutComponent implements OnInit {
   regexDetailOuvrage = new RegExp(`^/ouvrageDetail`)
   categories: any[] = [];
   typeCout !: TypeCout[];
+  isCout: boolean = true;
   uniteList!:UniteForForm[];
 
 
@@ -45,10 +48,11 @@ export class DialogFormCoutComponent implements OnInit {
               private ouvrageCoutService: OuvrageCoutService,
               private typeCoutService: TypeCoutService,
               private uniteForFormService: UniteForFormService,
-              @Inject(TOASTR_TOKEN) private toastr: Toastr
+              @Inject(TOASTR_TOKEN) private toastr: Toastr,
+              private router:Router,
+              private ouvrageElementaireCoutService: OuvrageElementaireCoutService
   ) {
     this.initialData = this.data;
-    console.log('this data', this.data)
     transformVirguletoPoint()
     this.createFormCout()
 
@@ -61,6 +65,8 @@ export class DialogFormCoutComponent implements OnInit {
       this.isInDevis = false;
     }
 
+    // this.createFormCout()
+    console.log("entreprise ID :", this.dataSharingService.entrepriseId)
   }
 
   getUniteByEnteprise(id:number):void {
@@ -89,6 +95,7 @@ export class DialogFormCoutComponent implements OnInit {
 
   checked() {
     this.isChecked = !this.isChecked;
+    console.log(this.isChecked)
   }
 
   createCoutDuDevis(): void {
@@ -113,6 +120,19 @@ export class DialogFormCoutComponent implements OnInit {
 
 
       this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe(responseCout => {
+
+
+        if (this.router.url.includes('/ouvrages-elementaires-du-devis')){
+          console.log("responseCout",responseCout)
+          const ouvrageCout = {
+            OuvrElemDuDeviId: this.initialData[2].id,
+            CoutDuDeviId: responseCout?.id,
+
+          }
+          this.ouvrageElementaireCoutService.createOuvrageElemCoutDuDevis(ouvrageCout).subscribe(this.ngOnInit)
+          // this.cout = this.myFormGroup.getRawValue();
+
+        }
         this.myFormGroup.markAllAsTouched();
         if (this.myFormGroup.invalid) {
           // Form is invalid, show error message

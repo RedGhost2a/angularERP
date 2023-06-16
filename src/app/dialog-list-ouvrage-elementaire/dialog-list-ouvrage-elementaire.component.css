@@ -1,0 +1,39 @@
+.container .subContainer {
+  color: #334E68;
+  margin-left: 2%;
+  margin-top: 2%;
+}
+.container table {
+  width: 100%;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.container .tableCout {
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.mat-row:hover {
+  background-color: #EEF9FF;
+}
+
+.divButton {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #FFFFFF;
+  width: 100%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  margin-top: 1.5%;
+}
+.divButton .btnBack {
+  margin-left: 2%;
+}
+.divButton .button {
+  margin-right: 2%;
+}
+
+/*# sourceMappingURL=dialog-list-ouvrage-elementaire.component.css.map */

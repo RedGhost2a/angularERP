@@ -1,0 +1,70 @@
+<div class="global-height">
+
+  <div class="big-container global-big-container">
+
+    <h1 class="title global-title">Bibliothèque d'ouvrages élémentaires</h1>
+
+
+    <div class="header global-header">
+      <mat-form-field class="global-search-input">
+        <mat-label >Recherche d'un composant</mat-label>
+        <input matInput  placeholder="Ex. cim..." #input>
+      </mat-form-field>
+      <div class="global-button-add">
+        <button (click)="openDialogCreate(null)"  mat-raised-button color="primary">Ajouter un ouvrages élémentaires</button>
+      </div>
+    </div>
+    <div class="container global-container">
+      <table mat-table [dataSource]="dataSource"
+             class="mat-elevation-z8 global-table">
+        <ng-container matColumnDef="designation">
+          <th class="global-th" mat-header-cell *matHeaderCellDef> Désignation</th>
+          <td class="global-td global-td-hover-designation" routerLink="/ouvrages-elementaires-detail/{{ouvrage.id}}" mat-cell *matCellDef="let ouvrage"> {{ouvrage.designation}} </td>
+          <!--    <td mat-cell *matCellDef="let ouvrage"> {{ouvrage.cout[0].prixUnitaire}} </td>-->
+        </ng-container>
+        <ng-container matColumnDef="unite">
+          <th class="global-th" mat-header-cell *matHeaderCellDef> Unité</th>
+          <td class="global-td" mat-cell routerLink="/ouvrages-elementaires-detail/{{ouvrage.id}}" *matCellDef="let ouvrage"> {{ouvrage.unite}} </td>
+        </ng-container>
+        <ng-container matColumnDef="proportion">
+          <th class="global-th" mat-header-cell *matHeaderCellDef> Proportion</th>
+          <td class="global-td " mat-cell routerLink="/ouvrages-elementaires-detail/{{ouvrage.id}}" *matCellDef="let ouvrage"> {{ouvrage.proportion}} </td>
+        </ng-container>
+        <ng-container matColumnDef="prix">
+          <th class="global-th" mat-header-cell *matHeaderCellDef> Prix</th>
+          <td class="global-td " mat-cell routerLink="/ouvrages-elementaires-detail/{{ouvrage.id}}" *matCellDef="let ouvrage"> {{ouvrage.prix}} </td>
+        </ng-container>
+        <ng-container matColumnDef="uniteProportionOE">
+          <th class="global-th" mat-header-cell *matHeaderCellDef> Unite proportion OE</th>
+          <td class="global-td " mat-cell routerLink="/ouvrages-elementaires-detail/{{ouvrage.id}}" *matCellDef="let ouvrage"> {{ouvrage.uniteproportionOE}} </td>
+        </ng-container>
+        <ng-container matColumnDef="remarques">
+          <th class="global-th" mat-header-cell *matHeaderCellDef>Remarques</th>
+          <td class="global-td " mat-cell routerLink="/ouvrages-elementaires-detail/{{ouvrage.id}}" *matCellDef="let ouvrage"> {{ouvrage.remarques}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="boutons">
+          <th class="global-th" mat-header-cell *matHeaderCellDef></th>
+          <td class="global-td " mat-cell *matCellDef="let ouvrage">
+
+            <mat-icon [matMenuTriggerFor]="boutonOuvrage">more_vert</mat-icon>
+            <mat-menu class="menuBoutonCout" #boutonOuvrage>
+              <button (click)="deleteItem(ouvrage.id)" mat-button color="warn">
+                <mat-icon>clear</mat-icon>
+                Supprimer
+              </button>
+            </mat-menu>
+
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+        <tr mat-row class="global-td-hover" *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+      </table>
+    </div>
+  </div>
+
+
+</div>
+

@@ -6,11 +6,28 @@ th, td {
   color: #334E68;
 }
 
+th {
+  background-color: rgba(5, 130, 187, 0.3019607843);
+}
+
 .valid-form {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: flex-start;
+}
+
+.titre {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-left: 6%;
+}
+
+.titre2 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-left: 6%;
+  margin-top: 2%;
 }
 
 .cardParams {

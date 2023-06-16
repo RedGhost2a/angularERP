@@ -40,6 +40,11 @@ export const navbarData = [
     label: 'Bibliothèque',
     children: [
       {
+        routeLink: '/ouvrages-elementaires',
+        icon: faBook,
+        label: "Ouvrages élémentaires",
+        visible: true
+      }, {
         routeLink: '/listOuvrage',
         icon: faBook,
         label: "Ouvrages",

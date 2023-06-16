@@ -21,7 +21,10 @@ export class SousLotService {
     return this.http.get(`${baseUrl}/${id}`);
 
   }
-
+  createHiddenSouslot(data:any,id:any):Observable<any> {
+    console.log('console log create Souslot service hidden : ', data)
+    return this.http.post(`${baseUrl}/newHiddenSousLot/${id}`, data);
+  }
   create(data: any, id: any): Observable<any> {
     console.log(`Valeur de lotId : ${id}`);
     return this.http.post(`${baseUrl}/new/${id}`, data);

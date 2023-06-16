@@ -184,19 +184,98 @@
         Importer un composant
       </button>
 
+      <button mat-raised-button color="primary" (click)="openDialogImportOuvragesElem(this.currentOuvrage.id)">
+        Importer un ouvrage élémentaire
+      </button>
+
 
       <button mat-stroked-button color="primary" (click)="openDialogCreate(this.currentOuvrage.id)">
         Creer un composant
+      </button>
+      <button mat-stroked-button color="primary" (click)="openDialogCreateOuvrageElem(this.currentOuvrage.id)">
+        Creer un  ouvrage élémentaire
       </button>
       <div (click)="isFormVisible = !isFormVisible">
         <mat-icon color="primary">add_circle</mat-icon>
       </div>
     </div>
+    <ng-container *ngIf="currentOuvrage.OuvrElemDuDevis && currentOuvrage.OuvrElemDuDevis.length ; then someContent2 else otherContentForOuvrageElem"></ng-container>
+    <!--    <ng-container *ngIf="cout && cout.length ; then someContent else otherContent"></ng-container>-->
 
+    <!--              <button routerLink="/ajoutCout/{{ouvrage.id}}" mat-raised-button>Importer un composant</button>-->
+    <ng-template #someContent2>
+      <h5 class="titre">Ouvrages élémentaires</h5>
+
+      <table  mat-table [dataSource]="currentOuvrage.OuvrElemDuDevis" *ngIf="currentOuvrage.OuvrElemDuDevis">
+
+
+        <ng-container matColumnDef="designation" >
+          <th mat-header-cell  *matHeaderCellDef> Désignation </th>
+          <td mat-cell routerLink="/ouvrages-elementaires-du-devis/{{ouvrageElem.id}}" *matCellDef="let ouvrageElem"> {{ouvrageElem.designation}} </td>
+        </ng-container>
+        <ng-container matColumnDef="proportion">
+          <th mat-header-cell *matHeaderCellDef> Proportion d'OE/U d'ouvrage </th>
+          <td mat-cell routerLink="/ouvrages-elementaires-du-devis/{{ouvrageElem.id}}" *matCellDef="let ouvrageElem"> {{ouvrageElem.proportion}} </td>
+        </ng-container>
+        <ng-container matColumnDef="unite">
+          <th mat-header-cell *matHeaderCellDef> Unité OE </th>
+          <td mat-cell routerLink="/ouvrages-elementaires-du-devis/{{ouvrageElem.id}}" *matCellDef="let ouvrageElem"> {{ouvrageElem.unite}} </td>
+        </ng-container>
+        <ng-container matColumnDef="prix">
+          <th mat-header-cell *matHeaderCellDef>Prix unitaire</th>
+          <td mat-cell routerLink="/ouvrages-elementaires-du-devis/{{ouvrageElem.id}}" *matCellDef="let ouvrageElem"> {{ouvrageElem.prix}} </td>
+          <th mat-header-cell *matHeaderCellDef>  </th>
+        </ng-container>
+        <ng-container matColumnDef="uniteproportionOE">
+          <th mat-header-cell *matHeaderCellDef>Unite proportion OE</th>
+          <td mat-cell routerLink="/ouvrages-elementaires-du-devis/{{ouvrageElem.id}}" *matCellDef="let ouvrageElem"> {{ouvrageElem.uniteproportionOE}} </td>
+          <th mat-header-cell *matHeaderCellDef>  </th>
+        </ng-container>
+        <ng-container matColumnDef="remarques">
+          <th mat-header-cell *matHeaderCellDef>Remarques</th>
+          <td mat-cell routerLink="/ouvrages-elementaires-du-devis/{{ouvrageElem.id}}" *matCellDef="let ouvrageElem"> {{ouvrageElem.remarques}} </td>
+          <th mat-header-cell *matHeaderCellDef>  </th>
+        </ng-container>
+        <ng-container  matColumnDef="boutons">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let ouvrageElem">
+
+            <mat-icon style="margin-right: -15px;" [matMenuTriggerFor]="boutonCout">more_vert</mat-icon>
+            <mat-menu class="menuBoutonCout" #boutonCout>
+              <!--          <button [routerLink]="['/cout', cout.id]" mat-button color="primary" >-->
+<!--              <button (click)="openDialogCreate(ouvrageElem)" mat-button color="primary">-->
+<!--                <mat-icon>create</mat-icon>-->
+<!--                Modifier-->
+<!--              </button>-->
+<!--              <br>-->
+              <button (click)="deleteOuvrageElem(ouvrageElem.id)" mat-button color="warn">
+                <mat-icon>clear</mat-icon>
+                Supprimer
+              </button>
+            </mat-menu>
+
+          </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplayOuvrageElem" style="background-color: #FFFFFF"></tr>
+        <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplayOuvrageElem"></tr>
+      </table>
+    </ng-template>
+    <ng-template #otherContentForOuvrageElem>
+      <mat-card class="card-no-cout">
+        <mat-card-title-group class="group">
+          <mat-card-title>Aucun ouvrage élémentaire dans cet ouvrage</mat-card-title>
+        </mat-card-title-group>
+      </mat-card>
+
+    </ng-template>
 
     <div *ngIf="this.currentOuvrage.CoutDuDevis && this.currentOuvrage.CoutDuDevis.length">
 
-      <table *ngIf="currentOuvrage " mat-table [dataSource]="currentOuvrage.CoutDuDevis">
+        <h5 class="titre2">Composant de l'ouvrage</h5>
+      <table  *ngIf="currentOuvrage " mat-table [dataSource]="currentOuvrage.CoutDuDevis">
+
         <ng-container matColumnDef="type">
           <th mat-header-cell *matHeaderCellDef> Type</th>
           <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.type}} </td>

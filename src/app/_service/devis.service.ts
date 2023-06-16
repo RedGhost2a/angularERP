@@ -13,15 +13,27 @@ const baseUrl = 'http://localhost:4000/devis';
 })
 export class DevisService {
   // public devis !: Observable<Devis>;
-  devis : Devis[] = [];
-  currentDevis !: Devis;
-
+  private HiddenlotId!: number;
+  private HiddensousLotId!: number;
 
   constructor(private http: HttpClient,private dialog: MatDialog) {
   }
+  setLotId(id: number) {
+    this.HiddenlotId = id;
+  }
 
+  getLotId() {
+    return this.HiddenlotId;
+  }
+
+  setSousLotId(id: number) {
+    this.HiddensousLotId = id;
+  }
+
+  getSousLotId() {
+    return this.HiddensousLotId;
+  }
   getAll(): Observable<any> {
-    console.log("test")
     return this.http.get(`${environment.apiUrl}/devis`);
   }
 
@@ -57,7 +69,6 @@ export class DevisService {
   }
 
   getDevisByEnterprise(id: any): Observable<any> {
-
     return this.http.get(`${environment.apiUrl}/devis/byEntreprise/${id}`)
   }
 
