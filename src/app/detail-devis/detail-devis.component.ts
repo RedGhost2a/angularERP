@@ -10,6 +10,8 @@ import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {addDays, differenceInDays, format} from 'date-fns';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {OuvrageService} from "../_service/ouvrage.service";
+import {SousLotService} from "../_service/sous-lot.service";
+import {Ouvrage} from "../_models/ouvrage";
 
 @Component({
   selector: 'app-detail-devis',
@@ -57,7 +59,7 @@ export class DetailDevisComponent implements OnInit {
 
 
   updateStatusDevis() {
-    this.devisService.update({status: this.selectedStatus}, this.devisID).subscribe(() => {
+    this.devisService.update({status: this.selectedStatus}, this.devisService.currentDevis.id).subscribe(() => {
       this.toastr.success('Succes', 'Le statut a été mis à jour.');
       this.getById(this.devisService.currentDevis.id);
     }, error => {
@@ -79,10 +81,10 @@ export class DetailDevisComponent implements OnInit {
   }
 
   updateAleasDevis() {
-    this.devisService.update({aleasInPercent: this.aleasInPercent}, this.devisID).subscribe(() => {
+    this.devisService.update({aleasInPercent: this.aleasInPercent}, this.devisService.currentDevis.id).subscribe(() => {
       this.toastr.success('Succes', 'Le statut a été mis à jour.');
       this.updateBenefAndAleasDevis()
-      this.getById();
+      this.getById(this.devisService.currentDevis.id);
     }, error => {
       this.toastr.error('Error', 'Une erreur est survenue lors de la mise à jour du statut.');
     });
@@ -161,8 +163,8 @@ export class DetailDevisComponent implements OnInit {
     let createdIds: any[] = []; // tableau pour stocker les identifiants créés
 
     let dataForLot = {
-      designation: `Hidden Lot  n°: ${this.devisID}`,
-      devisId: this.devisID
+      designation: `Hidden Lot  n°: ${this.devisService.currentDevis.id}`,
+      devisId: this.devisService.currentDevis.id
     }
     this.lotService.createHiddenLot(dataForLot).subscribe((data) => {
       console.log("data.lot.lotId",data.lot.lotId)
@@ -170,8 +172,8 @@ export class DetailDevisComponent implements OnInit {
       createdIds.push(data.lot.lotId); // ajouter l'identifiant du lot au tableau
 
       let dataForSousLot = {
-        designation: `Hidden Sous Lot  n°: ${this.devisID}`,
-        devisId: this.devisID
+        designation: `Hidden Sous Lot  n°: ${this.devisService.currentDevis.id}`,
+        devisId: this.devisService.currentDevis.id
       }
       this.sousLotService.createHiddenSouslot(dataForSousLot,data.lot.lotId).subscribe((sousLotData) => {
         this.devisService.setSousLotId(sousLotData.sousLot.id)

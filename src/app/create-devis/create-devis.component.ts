@@ -6,9 +6,9 @@ import {
   OnInit,
   OnDestroy,
   AfterViewInit,
-  ViewChild
+  ViewChild, ElementRef
 } from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import {LotService} from "../_service/lot.service"
 import {ActivatedRoute, Event, NavigationExtras, Router} from "@angular/router";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
@@ -95,6 +95,12 @@ export class CreateDevisComponent implements OnInit {
     ,
   };
   selectedIndex !:number;
+  hiddenLotId2 !: number;
+  hiddenCout : Cout [] = [];
+  @ViewChild('aForm') aForm !: ElementRef;
+  @ViewChild('f') f !: NgForm;
+  hidden : boolean = false;
+  hiddenSousLotId !: number;
 
 
 //TODO ON NE PEUT METTRE QUE UN SEUL ET MEME OUVRAGE PAR SOUS_LOT; //

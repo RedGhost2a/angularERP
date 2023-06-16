@@ -13,6 +13,9 @@ const baseUrl = 'http://localhost:4000/devis';
 })
 export class DevisService {
   // public devis !: Observable<Devis>;
+  devis: Devis [] = [];
+  currentDevis !: Devis;
+
   private HiddenlotId!: number;
   private HiddensousLotId!: number;
 

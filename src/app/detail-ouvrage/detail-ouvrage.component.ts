@@ -61,7 +61,7 @@ export class DetailOuvrageComponent implements OnInit {
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute, private coutService: CoutService,
               private ouvrageCoutService: OuvrageCoutService, private dialog: MatDialog, private typeCoutService : TypeCoutService,
               private fournisseurService : FournisseurService,
-              private ouvrageElemnentaireService:OuvrageOuvragesElementairesService) {
+              private ouvrageElemnentaireService:OuvrageOuvragesElementairesService, private uniteForFormService : UniteForFormService) {
   }
 
   ngOnInit(): void {
@@ -98,9 +98,9 @@ export class DetailOuvrageComponent implements OnInit {
         this.getPriceOuvrage()
         this.formGroupOuvrage(ouvrage)
         this.formRatioOuvrageCout()
-        this.getAllCout(data.EntrepriseId)
-        this.getAllTypeCouts(data.EntrepriseId)
-        this.getAllFournisseurs(data.EntrepriseId)
+        this.getAllCout(ouvrage.EntrepriseId)
+        this.getAllTypeCouts(ouvrage.EntrepriseId)
+        this.getAllFournisseurs(ouvrage.EntrepriseId)
         // this.ouvrage.fournisseur = data.Couts[0].Fournisseurs[0].commercialName
         // console.log("FOURNISSEUR",this.ouvrage.fournisseur)
       })
@@ -174,7 +174,6 @@ export class DetailOuvrageComponent implements OnInit {
   openDialogCreate(cout: Cout | null) {
     this.coutService.openDialogCreate(cout, () => {
       this.getById()
-      console.log("result ? list cout: ", result)
 
 
     });

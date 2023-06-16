@@ -38,11 +38,8 @@ import {FormOuvrageElementaireComponent} from "../form-ouvrage-elementaire/form-
 import {OuvrageElementaireService} from "../_service/ouvrage-elementaire.service";
 import {MetreService} from "../_service/metre.service";
 import {Metre} from "../_models/metre";
-import {Observable} from "rxjs";
 
-import {concatMap} from 'rxjs/operators';
 import {isNumber} from "chart.js/helpers";
-import {da} from "date-fns/locale";
 
 @Component({
   selector: 'app-sous-detail-prix',
