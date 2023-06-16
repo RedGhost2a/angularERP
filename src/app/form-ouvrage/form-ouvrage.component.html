@@ -5,6 +5,16 @@
     <p>L'ajout d'un ouvrage au sein de la bibliothèque de prix permet de l'utiliser ultérieurement lors de la création
       de devis</p>
     <div class="inputs">
+      <mat-form-field appearance="legacy" *ngIf="isOuvrage">
+        <mat-label>Entreprise</mat-label>
+        <mat-select formControlName="EntrepriseId"  (ngModelChange)="selectUniteByEntreprise()">
+          <mat-option [value]=+entreprise.id
+                      *ngFor="let entreprise of this.currentEntreprise">{{entreprise.denomination}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="this.myFormGroup.get('EntrepriseId')?.hasError('required')">
+          Vous devez choisir une entreprise.
+        </mat-error>
+      </mat-form-field>
 
       <mat-form-field appearance="legacy">
         <mat-label>Désignation</mat-label>
@@ -36,12 +46,22 @@
       <mat-form-field appearance="legacy">
 
         <mat-label>Unité</mat-label>
-        <select formControlName="unite" matNativeControl required (blur)="setValueURatio()">
-          <option *ngFor="let unite of uniteList" value="{{unite.name}}"> {{unite.name}}</option>
-        </select>
+
+        <mat-select formControlName="unite" (blur)="setValueURatio()" >
+          <mat-option [value]=unite.name
+                      *ngFor="let unite of this.uniteList">{{unite.name}}</mat-option>
+        </mat-select>
         <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
           Vous devez entrer une unité.
         </mat-error>
+
+
+<!--        <select formControlName="unite" matNativeControl required (blur)="setValueURatio()">-->
+<!--          <option *ngFor="let unite of uniteList" value="{{unite.name}}"> {{unite.name}}</option>-->
+<!--        </select>-->
+<!--        <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">-->
+<!--          Vous devez entrer une unité.-->
+<!--        </mat-error>-->
 
       </mat-form-field>
 
@@ -73,6 +93,10 @@
         <mat-label>Prix</mat-label>
         <input type="number" formControlName="prix" matInput placeholder="Ex: 9,2">
       </mat-form-field>
+
+
+
+
 
     </div>
     <div *ngIf="!isOuvrage">

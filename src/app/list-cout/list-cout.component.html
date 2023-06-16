@@ -19,7 +19,7 @@
 
   <div class="container global-container">
 
-    <table mat-table [dataSource]="dataSource" *ngIf="listCout"
+    <table mat-table [dataSource]="dataSource"
            class="mat-elevation-z8 global-table">
       <ng-container matColumnDef="type">
         <th class="global-th" mat-header-cell *matHeaderCellDef> Type</th>
@@ -49,6 +49,10 @@
       <ng-container matColumnDef="fournisseur">
         <th class="global-th" mat-header-cell *matHeaderCellDef> Fournisseur</th>
         <td class="global-td" mat-cell *matCellDef="let cout"> {{cout.Fournisseur.commercialName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="entreprise">
+        <th class="global-th" mat-header-cell *matHeaderCellDef> Entreprise</th>
+        <td class="global-td" mat-cell *matCellDef="let cout"> {{cout.Entreprise.denomination}}</td>
       </ng-container>
       <ng-container matColumnDef="boutons">
         <th class="global-th" mat-header-cell *matHeaderCellDef></th>

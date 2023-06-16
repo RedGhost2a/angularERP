@@ -3,6 +3,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {Cout} from "../_models/cout";
 import {MatTableDataSource} from "@angular/material/table";
+import {Client} from "../_models/client";
+import {Ouvrage} from "../_models/ouvrage";
 
 
 @Component({
@@ -22,7 +24,7 @@ export class DialogComponent implements OnInit {
 
   panelOpenState = false;
   selectedOuvrageIds: number[] = [];
-  dataSource!: any;
+  dataSource !: MatTableDataSource<Ouvrage>
   initialData!: any[]; // Déclarez la variable initialData comme étant un tableau de type any
   columnsToDisplay = [
     "checkBox",
@@ -35,7 +37,7 @@ export class DialogComponent implements OnInit {
 
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogComponent>) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Ouvrage [], private dialogRef: MatDialogRef<DialogComponent>) {
     this.initialData = this.data;
 
   }

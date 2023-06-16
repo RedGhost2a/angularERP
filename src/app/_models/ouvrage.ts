@@ -16,8 +16,9 @@ export interface Ouvrage {
   prix:number;
   CoutDuDevis?: Cout[]
   SousLotOuvrage?:SousLotOuvrage
-  //EntrepriseId?:number;
+  EntrepriseId:number;
   OuvrageDuDevis?:Ouvrage
   Couts?:Cout[]
   SousLots?:SousLot[];
+  alteredBenefOrAleas : boolean;
 }

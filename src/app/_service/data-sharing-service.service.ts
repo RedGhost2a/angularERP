@@ -3,6 +3,7 @@ import {SousDetailPrixService} from "./sous-detail-prix.service";
 import {SousLotOuvrageService} from "./sous-lot-ouvrage.service";
 import {SousLotOuvrage} from "../_models/sousLotOuvrage";
 import {Ouvrage} from "../_models/ouvrage";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,14 @@ export class DataSharingService {
     sousLotOuvrage.prixUniHT = sousLotOuvrage.prixOuvrage / sousLotOuvrage.quantityOuvrage
     console.log("prix unitaire", sousLotOuvrage.prixUniHT, sousLotOuvrage.id)
   }
+  // prixUnitaireHT(sousLotOuvrage: SousLotOuvrage): Observable<number> {
+  //   return new Observable<number>((observer) => {
+  //     const prixUniHT = sousLotOuvrage.prixOuvrage / sousLotOuvrage.quantityOuvrage;
+  //     sousLotOuvrage.prixUniHT = prixUniHT;
+  //     observer.next(prixUniHT);
+  //     observer.complete();
+  //   });
+  // }
 
   async prixEquilibreHT(sousLotOuvrage: SousLotOuvrage) {
     this.coefEqui = Number(localStorage.getItem("coef"));
@@ -60,7 +69,6 @@ export class DataSharingService {
 
   async aleasPercentToEuro(sousLotOuvrage: SousLotOuvrage, aleas: number) {
     sousLotOuvrage.aleasInEuro = sousLotOuvrage.prixEquiHT * (aleas / 100)
-
   }
 
   async prixCalculeHT(sousLotOuvrage: SousLotOuvrage, benefice: number, aleas: number) {
@@ -70,12 +78,19 @@ export class DataSharingService {
   async prixUnitaireCalculeHT(sousLotOuvrage: SousLotOuvrage) {
     sousLotOuvrage.prixUniCalcHT = sousLotOuvrage.prixCalcHT / sousLotOuvrage.quantityOuvrage
   }
+
   async prixVenteHT(sousLotOuvrage : SousLotOuvrage){
     console.log("prix de vente ?",sousLotOuvrage.prixUniVenteHT)
-    // if(sousLotOuvrage.prixUniVenteHT === 0 ){
-    //   sousLotOuvrage.prixVenteHT = sousLotOuvrage.prixUniVenteHT * sousLotOuvrage.quantityOuvrage
+    console.log("prix de vente ?",sousLotOuvrage.id)
+    // sousLotOuvrage.prixUniVenteHT = 0;
+    // sousLotOuvrage.prixUniVenteHT = sousLotOuvrage.prixUniCalcHT * sousLotOuvrage.qua
+    // if(sousLotOuvrage.prixUniVenteHT === sousLotOuvrage.prixUniCalcHT ){
+    //
+    // // if(sousLotOuvrage.prixUniVenteHT === 0 ){
+    // //   sousLotOuvrage.prixVenteHT = sousLotOuvrage.prixUniCalcHT * sousLotOuvrage.quantityOuvrage
     // }else{
-    // sousLotOuvrage.prixVenteHT = sousLotOuvrage.prixUniVenteHT * sousLotOuvrage.quantityOuvrage
+    //   sousLotOuvrage.prixUniVenteHT = sousLotOuvrage.prixUniCalcHT * sousLotOuvrage.quantityOuvrage
+    // // sousLotOuvrage.prixVenteHT = sousLotOuvrage.prixUniVenteHT * sousLotOuvrage.quantityOuvrage
     // }
   }
   async prixUniVente(sousLotOuvrage:SousLotOuvrage){

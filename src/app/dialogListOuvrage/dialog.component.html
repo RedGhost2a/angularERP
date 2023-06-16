@@ -193,59 +193,35 @@
             {{ element.Couts.length >= 1 ? "Composant de l'ouvrage" : "Aucun composant dans cet ouvrage" }}
           </p>
         </div>
-        <div class="cout-designation" *ngFor="let cout of element.Couts">
+        <div class="cout-designation" *ngFor="let cout of element.Couts; let isFirst = first">
           <div class="cout-detail">
-            <div class="cout-detail-header">
-              Désignation
-            </div>
-            <div>
+              <p class="cout-detail-header" *ngIf="isFirst"> Désignation</p>
               {{cout.designation}}
-            </div>
           </div>
           <div class="cout-detail" >
-            <div class="cout-detail-header">
-              Unité
-            </div>
-            <div>
+              <p class="cout-detail-header" *ngIf="isFirst"> Unité</p>
               {{cout.unite}}
-            </div>
           </div>
           <div class="cout-detail">
-            <div class="cout-detail-header">
-              Prix unitaire
-            </div>
-            <div>
+              <p class="cout-detail-header" *ngIf="isFirst"> Prix unitaire</p>
               {{cout.prixUnitaire}}
-            </div>
-          </div >
+            </div >
           <div class="cout-detail">
-            <div class="cout-detail-header">
-              Type
-            </div>
-            <div>
+              <p class="cout-detail-header" *ngIf="isFirst"> Type</p>
               {{cout.TypeCout.type}}
-            </div>
           </div>
           <div class="cout-detail">
-            <div class="cout-detail-header">
-              Catégorie
-            </div>
-            <div>
+              <p class="cout-detail-header" *ngIf="isFirst"> Catégorie</p>
               {{cout.TypeCout.categorie}}
-            </div>
           </div>
           <div class="cout-detail">
-            <div class="cout-detail-header">
-              Fournisseur
-            </div>
-            <div>
+              <p class="cout-detail-header" *ngIf="isFirst"> Fournisseur</p>
               {{cout.Fournisseur.commercialName}}
-            </div>
           </div>
         </div>
         <!--        <div class="example-element-description">-->
         <!--          {{element.designation}}-->
-        <!--          <span class="example-element-description-attribution"> &#45;&#45; Wikipedia </span>-->
+        <!--          <span class="example-element-description-attribution"> -- Wikipedia </span>-->
         <!--        </div>-->
       </div>
     </td>
@@ -254,8 +230,7 @@
   <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
   <tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
       class="example-element-row"
-      [class.example-expanded-row]="expandedElement === element"
-  >
+      [class.example-expanded-row]="expandedElement === element">
   </tr>
   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
 </table>

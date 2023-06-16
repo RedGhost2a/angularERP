@@ -7,6 +7,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {UserService} from "../_service/user.service";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
+import {Entreprise} from "../_models/entreprise";
 
 
 @Component({
@@ -19,9 +20,8 @@ export class FormFournisseurComponent implements OnInit {
   textButton: string = "Ajouter le fournisseur";
   titreForm: string = "Création d'un fournisseur";
   textForm: string = "L'ajout d'un fournissseur permet de l'associer aux composants."
-  fournisseurs!: Fournisseur;
   initialData: Fournisseur;
-  userId = this.userService.userValue.id;
+  currentEntreprise: Entreprise [] = []
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Fournisseur,
               private formBuilder: FormBuilder,
@@ -42,7 +42,6 @@ export class FormFournisseurComponent implements OnInit {
   }
 
   createFormFournisseur(): void {
-
     this.myFormGroup = new FormGroup({
       id: new FormControl(),
       commercialName: new FormControl('', Validators.required),
@@ -53,25 +52,20 @@ export class FormFournisseurComponent implements OnInit {
 
 
   getUserById(): void {
-    this.userService.getById(this.userId).subscribe(data => {
-      this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id);
-    })
+    this.currentEntreprise = this.userService.currentUser.Entreprises
   }
 
 
   createAndUpdate(): void {
     this.myFormGroup.markAllAsTouched();
     if (this.myFormGroup.invalid) {
-      // Form is invalid, show error message
       this.toastr.error("Le formulaire est invalide.", "Erreur !");
       return;
     }
     if (this.initialData === null) {
-      this.fournisseurService.createFournisseur(this.myFormGroup.getRawValue()).subscribe(data => {
-        this.closeDialog()
-      });
+      this.fournisseurService.createFournisseur(this.myFormGroup.getRawValue()).subscribe(() => this.closeDialog() );
     } else {
-      this.fournisseurService.updateFournisseur(this.initialData.id, this.myFormGroup.getRawValue()).subscribe();
+      this.fournisseurService.updateFournisseur(this.initialData.id, this.myFormGroup.getRawValue()).subscribe(()=> this.closeDialog());
     }
   }
 

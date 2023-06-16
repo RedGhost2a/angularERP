@@ -4,6 +4,13 @@ import {Observable} from 'rxjs';
 import {Cout} from "../_models/cout";
 import {CoutDuDevis} from "../_models/cout-du-devis";
 import {environment} from '../../environments/environment';
+import {OuvrageAddCoutComponent} from "../ouvrage-add-cout/ouvrage-add-cout.component";
+import {MatDialog} from "@angular/material/dialog";
+import {Ouvrage} from "../_models/ouvrage";
+import {DialogFormCoutComponent} from "../dialog-form-cout/dialog-form-cout.component";
+import {TypeCout} from "../_models/type-cout";
+import {Fournisseur} from "../_models/fournisseur";
+import {FormCoutComponent} from "../form-cout/form-cout.component";
 
 
 const baseUrl = `http://localhost:4000/couts`;
@@ -14,11 +21,19 @@ const baseUrl = `http://localhost:4000/couts`;
 })
 
 export class CoutService {
-  constructor(private http: HttpClient) {
+  couts : Cout [] = [];
+  constructor(private http: HttpClient, private dialog: MatDialog) {
   }
 
   getAll(entrepriseId: number): Observable<Cout[]> {
     return this.http.get<Cout[]>(`${environment.apiUrl}/couts`, {
+      params: {
+        EntrepriseId: entrepriseId
+      }
+    });
+  }
+  getAllForList(entrepriseId: number): Observable<Cout[]> {
+    return this.http.get<Cout[]>(`${environment.apiUrl}/couts/listCout`, {
       params: {
         EntrepriseId: entrepriseId
       }
@@ -30,14 +45,17 @@ export class CoutService {
   }
 
   create(data: Cout): Observable<Cout> {
+    this.couts = []
     return this.http.post<Cout>(`${environment.apiUrl}/couts/new`, data);
   }
 
   update(data: Cout, id: number): Observable<Cout> {
+    this.couts = []
     return this.http.put<Cout>(`${environment.apiUrl}/couts/${id}`, data)
   }
 
   deleteByID(id: number): Observable<Cout> {
+    this.couts = []
     return this.http.delete<Cout>(`${environment.apiUrl}/couts/${id}`)
   }
   deleteCoutDuDevisByID(id: number): Observable<CoutDuDevis> {
@@ -59,6 +77,27 @@ export class CoutService {
   }
   updateCoutDuDevis(data: Cout, id: number): Observable<CoutDuDevis> {
     return this.http.put<CoutDuDevis>(`${environment.apiUrl}/coutsDuDevis/${id}`, data)
+  }
+
+
+  openDialogCreateCout(typeCouts : TypeCout [], fournisseurs: Fournisseur [], ouvrage: Ouvrage, refreshData : any) {
+    this.dialog.open(DialogFormCoutComponent, {
+      data: [typeCouts, fournisseurs, ouvrage],
+      width: '55%',
+      height: '60%'
+    }).afterClosed().subscribe(async result => {
+      refreshData()
+    });
+  }
+
+  openDialogCreate(cout: Cout | null, refreshData : any) {
+    this.dialog.open(FormCoutComponent, {
+      data: cout,
+      width: '70%',
+      height: '40%'
+    }).afterClosed().subscribe(async result => {
+      refreshData()
+    });
   }
 
 

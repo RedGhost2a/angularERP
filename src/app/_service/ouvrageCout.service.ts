@@ -4,6 +4,9 @@ import {Observable} from "rxjs";
 import {OuvrageCout} from "../_models/ouvrageCout";
 import {environment} from '../../environments/environment';
 import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
+import {Ouvrage} from "../_models/ouvrage";
+import {OuvrageAddCoutComponent} from "../ouvrage-add-cout/ouvrage-add-cout.component";
+import {MatDialog} from "@angular/material/dialog";
 
 const baseUrl = `${environment.apiUrl}/ouvragesCouts`;
 
@@ -12,7 +15,7 @@ const baseUrl = `${environment.apiUrl}/ouvragesCouts`;
 })
 export class OuvrageCoutService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,private dialog: MatDialog) {
   }
 
   getAll(): Observable<any> {
@@ -61,6 +64,16 @@ export class OuvrageCoutService {
 
   deleteCoutAndOuvrageDuDevis(CoutDuDeviId: number,OuvrageDuDeviId:number ):Observable<any>{
     return this.http.delete(`${baseUrl}DuDevis/${CoutDuDeviId}/${OuvrageDuDeviId}`)
+  }
+  openDialogImport(ouvrage: Ouvrage, refreshData : any) {
+    this.dialog.open(OuvrageAddCoutComponent, {
+      panelClass:"test",
+      data: ouvrage,
+      width: '90%',
+      height: '70%'
+    }).afterClosed().subscribe(async result => {
+      refreshData()
+    });
   }
 
 }

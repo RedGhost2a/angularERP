@@ -36,6 +36,10 @@
               <th class="global-th" mat-header-cell *matHeaderCellDef>Ville</th>
               <td class="global-td" (click)="openDialogCreateClient(client, true)" mat-cell *matCellDef="let client">{{client.Adresse.city}}</td>
             </ng-container>
+            <ng-container matColumnDef="entreprise">
+              <th class="global-th" mat-header-cell *matHeaderCellDef>Entreprise</th>
+              <td class="global-td" (click)="openDialogCreateClient(client, true)" mat-cell *matCellDef="let client">{{client.Entreprise.denomination}}</td>
+            </ng-container>
             <ng-container matColumnDef="boutons">
               <th mat-header-cell *matHeaderCellDef></th>
               <td mat-cell *matCellDef="let client">

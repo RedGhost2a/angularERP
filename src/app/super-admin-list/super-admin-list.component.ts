@@ -7,6 +7,7 @@ import {DevisService} from "../_service/devis.service";
 import {ClientService} from "../_service/client.service";
 import {UniquePipe} from "../_helpers/FiltreUnique";
 import {User} from "../_models/users";
+import {da} from "date-fns/locale";
 
 @Component({
   selector: "app-super-admin-list",
@@ -58,6 +59,7 @@ export class SuperAdminListComponent implements OnInit {
   getClientByEntreprise(id: number) {
     this.entrepriseService.getClientByEntreprise(id).subscribe((data) => {
       this.client = data.Devis;
+      console.log("data client", data)
       this.client = this.client.filter(
         (item: any, index: any, array: string | any[]) =>
           array.indexOf(item) === index

@@ -5,6 +5,8 @@ import {User} from "../_models/users";
 import {BehaviorSubject, map, Observable} from "rxjs";
 import {StorageService} from "./storage.service";
 import {environment} from '../../environments/environment';
+import {UserEditComponent} from "../parametres/user-edit/user-edit.component";
+import {MatDialog} from "@angular/material/dialog";
 
 
 @Injectable({
@@ -16,14 +18,15 @@ export class UserService {
   private user !: Observable<User>;
   role !: any
   currentUser!:User;
-  // private user: any = null;
+  users:User [] = []
 
 
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private storageService: StorageService,
-  ) {
+  constructor(private router: Router,private http: HttpClient, private storageService: StorageService,
+              private dialog: MatDialog) {
+    this.setInLocalStorage()
+  }
+
+  setInLocalStorage(){
     const string = localStorage.getItem('user');
     if (string) {
       const decryptUser = this.storageService.decrypt(string);
@@ -37,13 +40,6 @@ export class UserService {
       this.currentUser = user
     })
   }
-  // public static getInstance(): UserService {
-  //   if (!!UserService.instance) {
-  //     UserService.instance = new UserService( );
-  //   }
-  //   return UserService.instance;
-  // }
-
 
   public get userValue(): User {
     return this.userSubject.value;
@@ -89,6 +85,7 @@ export class UserService {
   }
 
   register(user: User): Observable<any> {
+    this.users = []
     return this.http.post(`${environment.apiUrl}/users/new`, user);
   }
 
@@ -97,11 +94,13 @@ export class UserService {
   }
 
   getAll(): Observable<any> {
+    this.users = []
     return this.http.get(`${environment.apiUrl}/users`)
 
   }
 
   update(user: User, id: any): Observable<any> {
+    this.users = []
     return this.http.put(`${environment.apiUrl}/users/${id}`, user)
   }
 
@@ -110,7 +109,18 @@ export class UserService {
   }
 
   deleteByID(id: any): Observable<any> {
+    this.users = []
     return this.http.delete(`${environment.apiUrl}/users/${id}`)
+  }
+
+  openDialogCreate(user: User | null, refreshData : any) {
+    this.dialog.open(UserEditComponent, {
+      data:user,
+      width: '70%',
+      height: '78%'
+    }).afterClosed().subscribe(async result => {
+      refreshData()
+    });
   }
 
 

@@ -29,7 +29,7 @@
               <div class="detail">
                 <mat-card-subtitle class="subTitle">Client</mat-card-subtitle>
                 <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
-                <p>{{client.denomination}}</p>
+                <p>{{devis.Client.denomination}}</p>
               </div>
             </div>
           </div>
@@ -43,7 +43,8 @@
 
               <div class="detail">
                 <mat-card-subtitle class="subTitle">Réferent</mat-card-subtitle>
-                <p>{{user.firstName + ' ' + user.lastName}}</p>
+<!--                <p>{{user.firstName + ' ' + user.lastName}}</p>-->
+                <p *ngFor="let user of this.devis.Users">{{user.lastName}} {{user.firstName}} <br></p>
               </div>
             </div>
           </div>  <div class="group2">
@@ -55,7 +56,7 @@
                   <p style="color: green" (click)="isEditMode = true">{{devis.beneficeInPercent}} %</p>
                 </ng-container>
                 <ng-template #editModeTemplate>
-                  <input matInput type="number" [(ngModel)]="beneficeInPercent" (ngModelChange)="updateBenefDevis()" (blur)="isEditMode = false">
+                  <input matInput type="number" [(ngModel)]="this.devis.beneficeInPercent" (ngModelChange)="updateBenefDevis()" (blur)="isEditMode = false">
                 </ng-template>
               </div>
 
@@ -66,7 +67,7 @@
                   <p style="color: red" (click)="isEditMode2 = true">{{devis.aleasInPercent}} %</p>
                 </ng-container>
                 <ng-template #editModeTemplate2>
-                  <input matInput type="number" [(ngModel)]="aleasInPercent" (ngModelChange)="updateAleasDevis()" (blur)="isEditMode2 = false">
+                  <input matInput type="number" [(ngModel)]="this.devis.aleasInPercent" (ngModelChange)="updateAleasDevis()" (blur)="isEditMode2 = false">
                 </ng-template>
               </div>
             </div>
@@ -112,11 +113,11 @@
               <div class="detail">
                 <mat-card-subtitle class="subTitle">Durée validité<mat-icon style="margin-bottom: -7px" >info</mat-icon></mat-card-subtitle>
                   <ng-container *ngIf="!isEditMode4; else editModeTemplate4">
-                    <p class="sous-detail"(click)="isEditMode4 = true">{{validityTime}}</p>
+                    <p class="sous-detail"(click)="isEditMode4 = true">{{devis.validityTime}}</p>
                   </ng-container>
                   <ng-template #editModeTemplate4>
                     <mat-form-field>
-                    <input matInput [(ngModel)]="validityTime"
+                    <input matInput [(ngModel)]="devis.validityTime"
                          (ngModelChange)="updateValidityDevis()" (blur)="isEditMode4 = false">
                 </mat-form-field>
                   </ng-template>

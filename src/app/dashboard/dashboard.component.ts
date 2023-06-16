@@ -101,6 +101,7 @@ export class DashboardComponent implements OnInit {
 
       console.log("DATA : ", data)
       this.frais = data.Devis.map((item: { debourseSecTotal: any; }) => item.debourseSecTotal);
+      console.log('test get prix vente')
       console.log("DATA : ", this.frais)
       this.nomDevis = data.Devis.map((item: { name: any; }) => item.name);
       this.prixVenteHT = data.Devis.map((item: { prixVenteHT: any; }) => item.prixVenteHT);
@@ -138,7 +139,7 @@ export class DashboardComponent implements OnInit {
         ]
       },
       options: {
-        aspectRatio: 3.9
+        aspectRatio: 2
       }
     });
   }}

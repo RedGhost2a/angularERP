@@ -3,8 +3,8 @@
 
 <div class="container">
   <div class="header">
-    <button mat-flat-button class="btn">
-      <mat-icon [routerLink]="'/listOuvrage'">keyboard_arrow_left</mat-icon>
+    <button mat-flat-button class="btn" [routerLink]="'/listOuvrage'">
+      <mat-icon >keyboard_arrow_left</mat-icon>
     </button>
     <h1 style="font-weight: 500">Ouvrage : {{ouvrage.designation}}</h1>
   </div>
@@ -54,7 +54,7 @@
         <!--        </div>-->
 
         <mat-form-field appearance="legacy" style="width: 60px">
-          <mat-label style="font-size: 1.1rem">Ratio</mat-label>
+          <mat-label style="font-size: 1.1rem">Rendement</mat-label>
           <input type="number" (blur)="updateOuvrageOnChange()" formControlName="ratio" matInput>
         </mat-form-field>
         <!--        <div class="detail">-->
@@ -121,7 +121,7 @@
           <!--          {{cout.OuvrageCout.ratio}}-->
           <mat-form-field appearance="legacy" [formGroup]="myFormGroup" style="width: 60px">
             <input [placeholder]="cout.OuvrageCout.ratio" formControlName="ratioCout" matInput required
-                   (blur)="ratioChange(cout)">
+                   (keyup.enter)="ratioChange(cout)">
           </mat-form-field>
         </td>
       </ng-container>

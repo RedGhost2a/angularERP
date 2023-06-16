@@ -3,13 +3,12 @@ import {OuvrageService} from "../_service/ouvrage.service";
 import {Ouvrage} from "../_models/ouvrage";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {UserService} from "../_service/user.service";
-import {User} from "../_models/users";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
 import {MatDialog} from "@angular/material/dialog";
-import {Cout} from "../_models/cout";
-import {FormOuvrageComponent} from "../form-ouvrage/form-ouvrage.component";
 import {MatTableDataSource} from "@angular/material/table";
-import {DialogUniteForFormComponent} from "../dialog-unite-for-form/dialog-unite-for-form.component";
+import {DataSharingService} from "../_service/data-sharing-service.service";
+import {Entreprise} from "../_models/entreprise";
+import {UniteForFormService} from "../_service/uniteForForm.service";
 
 
 @Component({
@@ -18,84 +17,54 @@ import {DialogUniteForFormComponent} from "../dialog-unite-for-form/dialog-unite
   styleUrls: ['./list-ouvrage.component.scss']
 })
 export class ListOuvrageComponent implements OnInit {
-  listOuvrage!: Ouvrage[];
-  currentUser!: User;
-  dataSource!: any;
-  columnsToDisplay = ["designation", "benefice", "aleas", "unite", "ratio", "uRatio", "prixUnitaire", "boutons"];
+  dataSource!: MatTableDataSource<Ouvrage>;
+  columnsToDisplay = ["designation", "benefice", "aleas", "unite", "rendement", "uRatio", "prixUnitaire","entreprise", "boutons"];
 
-  constructor(private ouvrageService: OuvrageService, private ouvrageCoutService: OuvrageCoutService,
-              private dialog: MatDialog, private userService: UserService) {
+  constructor(private ouvrageService: OuvrageService, private ouvrageCoutService: OuvrageCoutService, private uniteForFormService: UniteForFormService,
+              private dialog: MatDialog, private userService: UserService, private dataSharingService: DataSharingService) {
   }
 
   ngOnInit(): void {
-    this.currentUser = this.userService.userValue;
-    this.userService.getById(this.currentUser.id).subscribe(data => {
-      console.log("user by id ", data)
-      this.getAll(data.Entreprises[0].id)
-    })
+    this.getCurrentUser()
+  }
+
+  getCurrentUser() {
+    this.userService.currentUser.Entreprises.forEach((entreprise: Entreprise) => {
+      this.ouvrageService.getAll(entreprise.id).subscribe((listOuvrage: Ouvrage []) => {
+        console.log("listouvrage",listOuvrage)
+        this.ouvrageService.ouvrages = this.ouvrageService.ouvrages.concat(listOuvrage);
+        this.dataSource = new MatTableDataSource(this.ouvrageService.ouvrages);
+        this.getPriceOuvrage()
+      })
+    });
+  }
+
+  getPriceOuvrage() {
+    this.ouvrageService.getPriceOuvrages()
   }
 
   applyFilter(event: Event) {
-    console.log(event)
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSharingService.applyFilter(event, this.dataSource)
   }
+
   openUniteForFormDialog(): void {
-    const dialogRef = this.dialog.open(DialogUniteForFormComponent, {
-      width: '80%',
-      // data: { form: this.importForm }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
-  getAll(entrepriseId: number): void {
-    this.ouvrageService.getAll(entrepriseId).subscribe(data => {
-      this.listOuvrage = data;
-      console.log(data)
-      this.dataSource = new MatTableDataSource(this.listOuvrage);
-      data.forEach((ouvrage: Ouvrage) => {
-        // if (!ouvrage.prix) {
-        if (ouvrage.Couts)
-          if (ouvrage.Couts?.length >= 1) {
-            ouvrage.prix = 0;
-            ouvrage.Couts?.forEach((cout: Cout) => {
-              if (cout.OuvrageCout?.ratio)
-                ouvrage.prix += cout.prixUnitaire * cout.OuvrageCout?.ratio
-            })
-          }
-      })
-    })
-  }
-
-  delete(id: number): void {
-    this.ouvrageService.deleteByID(id).subscribe(() => this.ngOnInit())
+    this.uniteForFormService.openCreateUniteForFormDialog()
   }
 
   deleteItem(id: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Appeler la fonction de suppression ici
         this.ouvrageService.deleteByID(id).subscribe(() => this.ngOnInit())
       }
     });
   }
 
 
-  openDialogCreate(ouvrage: Ouvrage | null) {
-    this.dialog.open(FormOuvrageComponent, {
-      data: ouvrage,
-      width: '70%',
-      height: '35%'
-    }).afterClosed().subscribe(async result => {
-      console.log("result ? list cout: ", result)
-      // this.ngOnInit()
-      this.ngOnInit()
-
-    });
+  openDialogCreateOuvrage(ouvrage:  null) {
+    this.ouvrageService.openDialogCreate(ouvrage, () => {
+      this.getCurrentUser()
+    })
   }
-
 
 }

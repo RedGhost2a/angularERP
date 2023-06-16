@@ -12,6 +12,9 @@ import {UniteForForm} from "../_models/uniteForForm";
 import {UniteForFormService} from "../_service/uniteForForm.service";
 import {DialogUniteForFormComponent} from "../dialog-unite-for-form/dialog-unite-for-form.component";
 import {DevisService} from "../_service/devis.service";
+import {Devis} from "../_models/devis";
+import {Entreprise} from "../_models/entreprise";
+import {Unit} from "chart.js/dist/scales/scale.time";
 
 @Component({
   selector: 'app-form-ouvrage',
@@ -20,7 +23,6 @@ import {DevisService} from "../_service/devis.service";
 })
 export class FormOuvrageComponent implements OnInit {
   public myFormGroup!: FormGroup;
-  private currentUser!: User;
   initialData: { sousLotId: number, devisId: number };
   sousLotOuvrageDuDevis !: SousLotOuvrage;
   isChecked: boolean = false;
@@ -28,10 +30,8 @@ export class FormOuvrageComponent implements OnInit {
   regexOuvrage = new RegExp(`^/listOuvrage`)
   isOuvrage: boolean = true;
   titleModal: string = "Ajout d'un ouvrage dans la bibliothèque de prix";
-  entrepriseId!: number;
   uniteList!: UniteForForm[];
-  beneficeInPercent!: number;
-  aleasInPercent!: number;
+  currentEntreprise: Entreprise [] = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { sousLotId: number, devisId: number },
               private formBuilder: FormBuilder,
@@ -50,35 +50,36 @@ export class FormOuvrageComponent implements OnInit {
   ngOnInit(): void {
     this.createFormOuvrage()
     this.getUserById();
-    if (this.regexSousDetail.test(window.location.pathname))
+    if (this.regexSousDetail.test(window.location.pathname)) {
       this.isOuvrage = false;
+      this.getAleasBenefFromDevis()
+    }
+    if(this.isOuvrage){
+      this.selectUniteByEntreprise()
+    }
     this.titleModal = "Ajout d'un ouvrage";
-    console.log("initialDta", this.initialData)
-    this.getAleasBenefFromDevis()
-
-
   }
+
+  selectUniteByEntreprise() {
+    if (this.myFormGroup.controls['EntrepriseId'].value !== "") {
+      this.myFormGroup.controls['unite'].enable()
+      this.getUniteByEnteprise(this.myFormGroup.controls['EntrepriseId'].value)
+    } else {
+      this.myFormGroup.controls['unite'].disable()
+    }
+  }
+
 
   openUniteForFormDialog(): void {
-    const dialogRef = this.dialog.open(DialogUniteForFormComponent, {
-      width: '800px',
-      // data: { form: this.importForm }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    this.uniteForForm.openCreateUniteForFormDialog()
   }
 
+
+
   createOuvrage(): void {
-    console.log(this.myFormGroup.getRawValue())
-    if (this.myFormGroup.controls['prix'].value === '') {
-      this.myFormGroup.controls['prix'].setValue(0);
-    }
-    console.log("value du form", this.myFormGroup.getRawValue())
+    this.setPriceOuvrage()
     this.myFormGroup.markAllAsTouched();
     if (this.myFormGroup.invalid) {
-      // Form is invalid, show error message
       this.toastr.error("Le formulaire est invalide.", "Erreur !");
       return;
     }
@@ -93,27 +94,26 @@ export class FormOuvrageComponent implements OnInit {
           this.closeDialog()
         })
       }
-      console.log("dans le if ", this.initialData)
       this.createOuvrageDuDevis();
       this.closeDialog()
     }
   }
 
+  setPriceOuvrage() {
+    if (this.myFormGroup.controls['prix'].value === '') {
+      this.myFormGroup.controls['prix'].setValue(0);
+    }
+  }
+
   checked() {
     this.isChecked = !this.isChecked;
-    console.log(this.isChecked)
   }
 
   createOuvrageDuDevis(): void {
-    console.log(this.myFormGroup.controls['prix'].value)
-    if (this.myFormGroup.controls['benefice'].value !== this.beneficeInPercent || this.myFormGroup.controls['aleas'].value !== this.aleasInPercent) {
+    if (this.myFormGroup.controls['benefice'].value !== this.devisService.currentDevis.beneficeInPercent || this.myFormGroup.controls['aleas'].value !== this.devisService.currentDevis.aleasInPercent) {
       this.myFormGroup.controls['alteredBenefOrAleas'].setValue(true);
     }
-
-
     this.ouvrageService.createOuvrageDuDevis(this.myFormGroup.getRawValue()).subscribe(response => {
-      console.log("response ouvrage cout du devis ", response)
-      // const prixOuvrage =
       this.sousLotOuvrageDuDevis = {
         SousLotId: this.initialData.sousLotId,
         OuvrageDuDeviId: response.OuvrageDuDevis?.id,
@@ -129,40 +129,31 @@ export class FormOuvrageComponent implements OnInit {
         prixCalcHT: 0,
         prixUniCalcHT: 0
       }
-      console.log("sous lot ouvrage du devis", this.sousLotOuvrageDuDevis)
-
       this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe((data) => {
-        console.log("console", data)
-        // this.closeDialog()
       })
     })
-
   }
 
   closeDialog() {
-    // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
     this.dialogRef.close();
   }
 
   getAleasBenefFromDevis() {
-    // console.log('initial data',this.initialData)
-    this.devisService.getById(this.initialData.devisId).subscribe(data => {
-      console.log('data', data)
-      this.beneficeInPercent = data.beneficeInPercent
-      this.aleasInPercent = data.aleasInPercent
-      console.log("data.aleasInPercent", data.aleasInPercent)
-      this.myFormGroup.controls['benefice'].setValue(this.beneficeInPercent);
-      this.myFormGroup.controls['aleas'].setValue(this.aleasInPercent);
-      this.myFormGroup.controls['alteredBenefOrAleas '].setValue(false);
-
+    this.devisService.getById(this.initialData.devisId).subscribe((devis: Devis) => {
+      this.devisService.currentDevis = devis
+      this.myFormGroup.controls['benefice'].setValue(this.devisService.currentDevis.beneficeInPercent);
+      this.myFormGroup.controls['aleas'].setValue(this.devisService.currentDevis.aleasInPercent);
+      this.myFormGroup.controls['EntrepriseId'].setValue(this.devisService.currentDevis.EntrepriseId)
+      this.getUniteByEnteprise(devis.EntrepriseId)
     })
   }
+
 
   createFormOuvrage(): void {
     this.myFormGroup = new FormGroup({
       designation: new FormControl('', Validators.required),
-      benefice: new FormControl(this.beneficeInPercent, Validators.required),
-      aleas: new FormControl(this.aleasInPercent, Validators.required),
+      benefice: new FormControl('', Validators.required),
+      aleas: new FormControl('', Validators.required),
       unite: new FormControl('', Validators.required),
       ratio: new FormControl('', Validators.required),
       uRatio: new FormControl('', Validators.required),
@@ -171,6 +162,7 @@ export class FormOuvrageComponent implements OnInit {
       EntrepriseId: new FormControl('', Validators.required),
     });
   }
+
 
   setValueURatio() {
     const unite = this.myFormGroup.get('unite')?.value
@@ -184,20 +176,12 @@ export class FormOuvrageComponent implements OnInit {
   }
 
   getUserById(): void {
-    this.currentUser = this.userService.userValue;
-    this.userService.getById(this.currentUser.id).subscribe(data => {
-      this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id)
-      this.entrepriseId = data.Entreprises[0].id
-      if (this.entrepriseId) {
-        this.getUniteByEnteprise();
-      }
-    })
+    this.currentEntreprise = this.userService.currentUser.Entreprises
   }
 
-  getUniteByEnteprise(): void {
-    this.uniteForForm.getUniteByEntreprise(this.entrepriseId).subscribe(data => {
-      this.uniteList = data
-
+  getUniteByEnteprise(entrepriseId: number): void {
+    this.uniteForForm.getUniteByEntreprise(entrepriseId).subscribe((listUnite: UniteForForm []) => {
+      this.uniteList = listUnite
     })
   }
 

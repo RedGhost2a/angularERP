@@ -14,12 +14,14 @@ const baseUrl = 'http://localhost:4000/devis';
 export class DevisService {
   // public devis !: Observable<Devis>;
   devis : Devis[] = [];
+  currentDevis !: Devis;
 
 
   constructor(private http: HttpClient,private dialog: MatDialog) {
   }
 
   getAll(): Observable<any> {
+    console.log("test")
     return this.http.get(`${environment.apiUrl}/devis`);
   }
 
@@ -39,6 +41,10 @@ export class DevisService {
 
   getById(id: any): Observable<any> {
     return this.http.get(`${environment.apiUrl}/devis/${id}`)
+  }
+
+  getByIdForDetail(id:number): Observable<any>{
+    return this.http.get(`${environment.apiUrl}/devis/detail/${id}`)
   }
 
   getByIdExceptFrais(id: any): Observable<any> {
@@ -65,7 +71,7 @@ export class DevisService {
   }
 
   getOuvrages(id: number): Observable<any> {
-    return this.http.get(`${environment.apiUrl}/devis/ouvrages/${id}`)
+    return this.http.get(`${environment.apiUrl}/devis/detail/ouvrages/${id}`)
   }
 
   //utilisé pour la creation d'un devis depuis la liste des devis

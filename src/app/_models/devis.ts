@@ -8,12 +8,12 @@ export class Devis {
   name!: string;
   status!: string;
   EntrepriseId!: number;
-  Entreprise?:Entreprise;
+  Entreprise!:Entreprise;
   createdAt?: Date;
   Client!: Client;
   adresse!: Adresse;
   ClientId!: number;
-  user!: User;
+  Users!: User [];
   percentFraisGeneraux!:number;
 
   fraisGeneraux!: number;
@@ -25,7 +25,7 @@ export class Devis {
   moyenneAleas !: number;
   moyenneBeneficeAleas !: number;
   coeffEquilibre !: number;
-  prixEquiHT!: number;
+  prixEquiHT: number = 0;
   beneficeInEuro!: number;
   aleasInEuro!: number;
   prixCalcHT!: number;

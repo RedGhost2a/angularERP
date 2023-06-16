@@ -20,7 +20,7 @@ import {ClientService} from "../../_service/client.service";
   styleUrls: ['./list-devis.component.scss']
 })
 export class ListDevisComponent implements OnInit {
-  displayedColumns: string[] = ['nDevis', 'client', 'nomDevis', 'dateDevis', 'status', 'referent', 'prixVenteHT', 'benefice', 'aleas', 'boutons'];
+  displayedColumns: string[] = ['nDevis', 'client', 'nomDevis', 'dateDevis', 'status', 'referent', 'prixVenteHT', 'benefice', 'aleas','entreprise', 'boutons'];
   clickedRows = new Set<Client>();
   dataSource!: MatTableDataSource<Devis> ;
 
@@ -29,7 +29,7 @@ export class ListDevisComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getDeviswithRole().subscribe()
+    this.getDeviswithRole()
   }
 
 
@@ -37,7 +37,7 @@ export class ListDevisComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.devisService.deleteByID(id).subscribe((() => this.getDeviswithRole().subscribe()))
+        this.devisService.deleteByID(id).subscribe((() => this.getDeviswithRole()))
       }
     });
   }
@@ -65,25 +65,21 @@ export class ListDevisComponent implements OnInit {
   }
 
 
-  getDeviswithRole(): Observable<any> {
+  getDeviswithRole() {
     if (this.userService.isSuperAdmin()) {
-      return this.devisService.getAll().pipe(
-        tap((data) => {
-          this.dataSource = new MatTableDataSource(data);
-        })
-      );
+      this.devisService.getAll().subscribe((listDevis : Devis [])=>{
+          this.dataSource = new MatTableDataSource(listDevis);
+        console.log(listDevis)
+      })
     } else {
-      return this.userService.getById(this.userService.currentUser.id).pipe(
-        tap((data) => {
-          this.userService.currentUser.Entreprise = data.Entreprises;
-          this.getDevisByEntreprise();
-        })
-      );
+       this.getDevisByEntreprise();
+
     }
   }
 
+
   getDevisByEntreprise() {
-    this.userService.currentUser.Entreprise.forEach((entreprise: Entreprise) => {
+    this.userService.currentUser.Entreprises.forEach((entreprise: Entreprise) => {
       this.devisService.getDevisByEnterprise(entreprise.id).subscribe((listDevis: Devis[]) => {
         this.devisService.devis = this.devisService.devis.concat(listDevis);
         this.dataSource = new MatTableDataSource(this.devisService.devis);
@@ -93,7 +89,7 @@ export class ListDevisComponent implements OnInit {
 
   openDialogCreateDevis() {
     this.devisService.openDialogCreateDevis(null,()=>{
-      this.getDeviswithRole().subscribe()
+      this.getDeviswithRole()
     })
   }
   openDialogCreateClient(client: Client | null, disable: boolean){

@@ -8,6 +8,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {map, Observable, startWith} from "rxjs";
+import {Entreprise} from "../_models/entreprise";
 
 @Component({
   selector: 'app-form-type-cout',
@@ -21,10 +22,10 @@ export class FormTypeCoutComponent implements OnInit {
   textForm: string = "L'ajout d'un type de cout permet de l'associer à un composant"
   initialData: TypeCout
   typeCout!: TypeCout;
-  userId = this.userService.userValue.id;
   options: string [] = []
   // Déclare une propriété pour stocker les options filtrées
   filteredOptions!: Observable<string[]>;
+  currentEntreprise : Entreprise [] = []
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: TypeCout,
@@ -39,7 +40,7 @@ export class FormTypeCoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.createFormTypeCout();
-    this.getUserById();
+    this.getUserEntreprise();
     if (this.initialData !== null)
       this.generateFormUpdate();
     this.filteredOptions = this.myFormGroup.get('type')!.valueChanges
@@ -55,7 +56,7 @@ export class FormTypeCoutComponent implements OnInit {
       id: new FormControl(),
       type: new FormControl("", Validators.required),
       categorie: new FormControl("", Validators.required),
-      EntrepriseId: new FormControl(),
+      EntrepriseId: new FormControl("",Validators.required),
     });
   }
 
@@ -74,14 +75,12 @@ export class FormTypeCoutComponent implements OnInit {
       });
     } else {
       this.typeCoutService.updateTypeCout(this.initialData.id, this.myFormGroup.getRawValue()).subscribe();
+        this.closeDialog()
     }
   }
 
-  getUserById(): void {
-    this.userService.getById(this.userId).subscribe(data => {
-      this.getAllTypeCouts(data.Entreprises[0].id)
-      this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id)
-    })
+  getUserEntreprise(): void {
+    this.currentEntreprise = this.userService.currentUser.Entreprises;
   }
 
 

@@ -32,7 +32,9 @@ export class LotService {
 
   deleteByID(id: any): Observable<any> {
     return this.http.delete(`${baseUrl}/${id}`)
-
+  }
+  getSousLotByLotId(id:number):Observable<any>{
+    return this.http.get(`${baseUrl}/sousLots/${id}`)
   }
 
   getLotFraisDeChantier(deviID: number): Observable<any> {

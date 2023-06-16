@@ -16,9 +16,9 @@ export class User {
   EntrepriseId!: number;
   token!: string;
   Adresse!: Adresse;
-  Entreprises!: Entreprise;
+  // Entreprises!: Entreprise;
 
-  Entreprise : Entreprise[] = [];
+  Entreprises: Entreprise[] = [];
 
 
 

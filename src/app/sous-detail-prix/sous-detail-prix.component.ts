@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {OuvrageService} from "../_service/ouvrage.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DataSharingService} from "../_service/data-sharing-service.service";
@@ -85,6 +85,7 @@ export class SousDetailPrixComponent implements OnInit {
   resultMetre: number [] = [];
   resultTotalMetre: number = 0;
   metre !: Metre []
+  @ViewChild('aForm') aForm !: ElementRef;
 
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute,
               public dataSharingService: DataSharingService, private coutService: CoutService, private userService: UserService,
@@ -397,6 +398,9 @@ export class SousDetailPrixComponent implements OnInit {
     if (!metres.invalid) {
       metres.push(this.createFormMetre())
       this.tableau.push(1)
+      setTimeout(() => {
+        this.aForm.nativeElement.children[(this.tableau.length - 1)].children[0].children[0].children[0].children[0].children[0].focus();
+      }, 100)
     }
   }
 
@@ -427,88 +431,88 @@ export class SousDetailPrixComponent implements OnInit {
 
   testpush(index: number) {
     // setTimeout(() => {
-      console.log("value input", index)
-      const metresArray = this.formMetre.get('metres') as FormArray;
-      const metreFormGroup = metresArray.controls[index] as FormGroup;
-      if (metreFormGroup.controls['longueur'] && !metreFormGroup.controls['largeur'] && !metreFormGroup.controls['hauteur']) {
-        const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
-        const metreIdFormControl = metreFormGroup.controls['metreId'] as FormControl;
-        console.log("metre id fotm control", metreIdFormControl.value)
-        if (metreIdFormControl.value === '') {
-          let metrePush: Metre = {
-            id: 0,
-            longueur: longueurFormControl.value,
-            OuvrageDuDeviId: this.currentOuvrage.id
-          }
-          this.metreService.createMetre(metrePush).subscribe()
-        } else {
-          let metrePush: Metre = {
-            id: metreIdFormControl.value,
-            longueur: longueurFormControl.value,
-            OuvrageDuDeviId: this.currentOuvrage.id
-          }
-          this.metreService.updateMetre(metrePush, metrePush.id).subscribe()
+    console.log("value input", index)
+    const metresArray = this.formMetre.get('metres') as FormArray;
+    const metreFormGroup = metresArray.controls[index] as FormGroup;
+    if (metreFormGroup.controls['longueur'] && !metreFormGroup.controls['largeur'] && !metreFormGroup.controls['hauteur']) {
+      const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
+      const metreIdFormControl = metreFormGroup.controls['metreId'] as FormControl;
+      console.log("metre id fotm control", metreIdFormControl.value)
+      if (metreIdFormControl.value === '') {
+        let metrePush: Metre = {
+          id: 0,
+          longueur: longueurFormControl.value,
+          OuvrageDuDeviId: this.currentOuvrage.id
         }
+        this.metreService.createMetre(metrePush).subscribe()
+      } else {
+        let metrePush: Metre = {
+          id: metreIdFormControl.value,
+          longueur: longueurFormControl.value,
+          OuvrageDuDeviId: this.currentOuvrage.id
+        }
+        this.metreService.updateMetre(metrePush, metrePush.id).subscribe()
       }
-      if (metreFormGroup.controls['longueur'] && metreFormGroup.controls['largeur'] && !metreFormGroup.controls['hauteur']) {
-        const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
-        const largeurFormControl = metreFormGroup.controls['largeur'] as FormControl;
-        let metreIdFormControl = metreFormGroup.controls['metreId'] as FormControl;
+    }
+    if (metreFormGroup.controls['longueur'] && metreFormGroup.controls['largeur'] && !metreFormGroup.controls['hauteur']) {
+      const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
+      const largeurFormControl = metreFormGroup.controls['largeur'] as FormControl;
+      let metreIdFormControl = metreFormGroup.controls['metreId'] as FormControl;
 
-        if (metreIdFormControl.value === '' && isNumber(longueurFormControl.value)  && isNumber(largeurFormControl.value)) {
-          let metrePush: Metre = {
-            id: 0,
-            longueur: longueurFormControl.value,
-            largeur: largeurFormControl.value,
-            OuvrageDuDeviId: this.currentOuvrage.id
-          }
-          this.metreService.createMetre(metrePush).subscribe((data:any)=>{
-            console.log('retour de create ', data)
-            metreFormGroup.controls['metreId'].setValue(data.id)
-
-            // metreIdFormControl.value = data.metre.id
-          })
+      if (metreIdFormControl.value === '' && isNumber(longueurFormControl.value) && isNumber(largeurFormControl.value)) {
+        let metrePush: Metre = {
+          id: 0,
+          longueur: longueurFormControl.value,
+          largeur: largeurFormControl.value,
+          OuvrageDuDeviId: this.currentOuvrage.id
         }
-        if (metreIdFormControl.value !== '' && isNumber(longueurFormControl.value)  && isNumber(largeurFormControl.value)) {
+        this.metreService.createMetre(metrePush).subscribe((data: any) => {
+          console.log('retour de create ', data)
+          metreFormGroup.controls['metreId'].setValue(data.id)
 
-          let metrePush: Metre = {
-            id: metreIdFormControl.value,
-            longueur: longueurFormControl.value,
-            largeur: largeurFormControl.value,
-            OuvrageDuDeviId: this.currentOuvrage.id
-          }
-          this.metreService.updateMetre(metrePush, metrePush.id).subscribe()
-        }
+          // metreIdFormControl.value = data.metre.id
+        })
       }
-      if (metreFormGroup.controls['longueur'] && metreFormGroup.controls['largeur'] && metreFormGroup.controls['hauteur']) {
-        const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
-        const largeurFormControl = metreFormGroup.controls['largeur'] as FormControl;
-        const hauteurFormControl = metreFormGroup.controls['hauteur'] as FormControl;
-        const metreIdFormControl = metreFormGroup.controls['metreId'] as FormControl;
+      if (metreIdFormControl.value !== '' && isNumber(longueurFormControl.value) && isNumber(largeurFormControl.value)) {
 
-        if (metreIdFormControl.value === '') {
-          let metrePush: Metre = {
-            id: 0,
-            longueur: longueurFormControl.value,
-            largeur: largeurFormControl.value,
-            hauteur: hauteurFormControl.value,
-            OuvrageDuDeviId: this.currentOuvrage.id
-          }
-          this.metreService.createMetre(metrePush).subscribe((data)=>{
-            console.log('retour de create ', data)
-          })
-        } else {
-          let metrePush: Metre = {
-            id: metreIdFormControl.value,
-            longueur: longueurFormControl.value,
-            largeur: largeurFormControl.value,
-            hauteur: hauteurFormControl.value,
-
-            OuvrageDuDeviId: this.currentOuvrage.id
-          }
-          this.metreService.updateMetre(metrePush, metrePush.id).subscribe()
+        let metrePush: Metre = {
+          id: metreIdFormControl.value,
+          longueur: longueurFormControl.value,
+          largeur: largeurFormControl.value,
+          OuvrageDuDeviId: this.currentOuvrage.id
         }
+        this.metreService.updateMetre(metrePush, metrePush.id).subscribe()
       }
+    }
+    if (metreFormGroup.controls['longueur'] && metreFormGroup.controls['largeur'] && metreFormGroup.controls['hauteur']) {
+      const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
+      const largeurFormControl = metreFormGroup.controls['largeur'] as FormControl;
+      const hauteurFormControl = metreFormGroup.controls['hauteur'] as FormControl;
+      const metreIdFormControl = metreFormGroup.controls['metreId'] as FormControl;
+
+      if (metreIdFormControl.value === '') {
+        let metrePush: Metre = {
+          id: 0,
+          longueur: longueurFormControl.value,
+          largeur: largeurFormControl.value,
+          hauteur: hauteurFormControl.value,
+          OuvrageDuDeviId: this.currentOuvrage.id
+        }
+        this.metreService.createMetre(metrePush).subscribe((data) => {
+          console.log('retour de create ', data)
+        })
+      } else {
+        let metrePush: Metre = {
+          id: metreIdFormControl.value,
+          longueur: longueurFormControl.value,
+          largeur: largeurFormControl.value,
+          hauteur: hauteurFormControl.value,
+
+          OuvrageDuDeviId: this.currentOuvrage.id
+        }
+        this.metreService.updateMetre(metrePush, metrePush.id).subscribe()
+      }
+    }
 
     // }, 100)
   }
@@ -615,7 +619,7 @@ export class SousDetailPrixComponent implements OnInit {
   }
 
   prixEquilibreHT(): void {
-    // console.log("ouvrage", this.currentOuvrage)
+    console.log("ouvrage", this.currentOuvrage)
     if (this.currentOuvrage.SousLotOuvrage) {
       // console.log("prixEquilibreHT")
       this.dataSharingService.prixEquilibreHT(this.currentOuvrage.SousLotOuvrage)
@@ -735,10 +739,11 @@ export class SousDetailPrixComponent implements OnInit {
 
   openDialogCreate(ouvragDuDevisId: number) {
     this.dialog.open(DialogFormCoutComponent, {
-      data: [this.listTypeCout, this.listFournisseur],
+      data: [this.listTypeCout, this.listFournisseur, this.currentOuvrage],
       width: '55%',
       height: '60%'
     }).afterClosed().subscribe(async result => {
+      console.log("fqjopqkqkfdqskl")
       this.initialCalcul()
 
     });

@@ -5,9 +5,13 @@ import {MatTableDataSource} from "@angular/material/table";
 import {UserService} from "../_service/user.service";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
 import {MatDialog} from "@angular/material/dialog";
-import {Cout} from "../_models/cout";
-import {FormFournisseurComponent} from "../form-fournisseur/form-fournisseur.component";
 import {FormTypeCoutComponent} from "../form-type-cout/form-type-cout.component";
+import {Entreprise} from "../_models/entreprise";
+import {Data} from "@angular/router";
+import {DataSharingService} from "../_service/data-sharing-service.service";
+import {Fournisseur} from "../_models/fournisseur";
+import _default from "chart.js/dist/plugins/plugin.tooltip";
+import type = _default.defaults.animations.numbers.type;
 
 
 @Component({
@@ -16,13 +20,12 @@ import {FormTypeCoutComponent} from "../form-type-cout/form-type-cout.component"
   styleUrls: ['./list-type-cout.component.scss']
 })
 export class ListTypeCoutComponent implements OnInit {
-  listTypeCout!: TypeCout[];
-  dataSource!: any;
-  columnsToDisplay = ["type", "categorie", "boutons"];
-  userId = this.userService.userValue.id;
+  dataSource!:  MatTableDataSource<TypeCout>;
+  columnsToDisplay = ["type", "categorie","entreprise", "boutons"];
 
 
-  constructor(private typeCoutService: TypeCoutService, private userService: UserService, private dialog: MatDialog) {
+  constructor(private typeCoutService: TypeCoutService, private userService: UserService, private dialog: MatDialog,
+              private dataSharingService : DataSharingService) {
   }
 
   ngOnInit(): void {
@@ -31,14 +34,14 @@ export class ListTypeCoutComponent implements OnInit {
 
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSharingService.applyFilter(event, this.dataSource)
   }
 
   getAllTypeCouts(entrepriseId: number): void {
-    this.typeCoutService.getAllTypeCouts(entrepriseId).subscribe(data => {
-      this.listTypeCout = data;
-      this.dataSource = new MatTableDataSource(this.listTypeCout);
+    this.typeCoutService.getAllForList(entrepriseId).subscribe((listTypeCout: TypeCout[]) => {
+      this.typeCoutService.typeCouts = this.typeCoutService.typeCouts.concat(listTypeCout)
+      this.dataSource = new MatTableDataSource(this.typeCoutService.typeCouts);
+      console.log(listTypeCout)
     })
   }
 
@@ -46,30 +49,23 @@ export class ListTypeCoutComponent implements OnInit {
 
   deleteItem(id: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Appeler la fonction de suppression ici
         this.typeCoutService.deleteTypeCoutById(id).subscribe(() => this.ngOnInit())
       }
     });
   }
 
   getUserEntreprise(): void {
-    this.userService.getById(this.userId).subscribe(data => {
-      this.getAllTypeCouts(data.Entreprises[0].id)
+    this.userService.currentUser.Entreprises.forEach((entreprise: Entreprise) =>{
+      this.getAllTypeCouts(entreprise.id)
     })
   }
 
   openDialogCreate(typeCout:TypeCout | null) {
-    this.dialog.open(FormTypeCoutComponent, {
-      data: typeCout,
-      width: '70%',
-      height: '37%'
-    }).afterClosed().subscribe(async result => {
-      this.ngOnInit()
-
-    });
+  this.typeCoutService.openDialogCreate(typeCout, ()=>{
+    this.getUserEntreprise()
+  })
   }
 
 

@@ -39,6 +39,14 @@
           <th class="global-th" mat-header-cell *matHeaderCellDef>Role</th>
           <td class="global-td" mat-cell *matCellDef="let element"> {{element.role}} </td>
         </ng-container>
+        <ng-container matColumnDef="entreprise">
+          <th class="global-th" mat-header-cell *matHeaderCellDef>Entreprises</th>
+          <td class="global-td" mat-cell *matCellDef="let element">
+            <ng-container *ngFor="let entreprise of element.Entreprises">
+              {{ entreprise.denomination }} <br>
+            </ng-container>
+          </td>
+        </ng-container>
         <ng-container matColumnDef="boutons">
           <th class="global-th" mat-header-cell *matHeaderCellDef>Boutons</th>
           <td class="global-td" mat-cell *matCellDef="let element">

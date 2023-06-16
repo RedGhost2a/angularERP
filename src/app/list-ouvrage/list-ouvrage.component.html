@@ -11,7 +11,7 @@
       </mat-form-field>
       <div class="global-button-add custom-button-add">
         <button  mat-stroked-button color="primary" (click)="openUniteForFormDialog()">Creer une unité</button>
-        <button (click)="openDialogCreate(null)" mat-raised-button color="primary">Creer un ouvrage</button>
+        <button (click)="openDialogCreateOuvrage(null)" mat-raised-button color="primary">Creer un ouvrage</button>
       </div>
 
     </div>
@@ -36,8 +36,8 @@
         <th class="global-th" mat-header-cell *matHeaderCellDef> Unité</th>
         <td class="global-td " mat-cell routerLink="/ouvrageDetail/{{ouvrage.id}}" *matCellDef="let ouvrage"> {{ouvrage.unite}} </td>
       </ng-container>
-      <ng-container matColumnDef="ratio">
-        <th class="global-th" mat-header-cell *matHeaderCellDef> Ratio</th>
+      <ng-container matColumnDef="rendement">
+        <th class="global-th" mat-header-cell *matHeaderCellDef>Rendement</th>
         <td class="global-td " mat-cell routerLink="/ouvrageDetail/{{ouvrage.id}}" *matCellDef="let ouvrage"> {{ouvrage.ratio}} </td>
       </ng-container>
       <ng-container matColumnDef="uRatio">
@@ -51,7 +51,13 @@
       <ng-container matColumnDef="prixUnitaire">
         <th class="global-th" mat-header-cell *matHeaderCellDef> PU HT</th>
         <td class="global-td " mat-cell routerLink="/ouvrageDetail/{{ouvrage.id}}"
-            *matCellDef="let ouvrage">{{ouvrage.prix}}</td>
+            *matCellDef="let ouvrage">{{ouvrage.prix | number: '1.2-2'}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="entreprise">
+        <th class="global-th" mat-header-cell *matHeaderCellDef> Entreprise</th>
+        <td class="global-td " mat-cell routerLink="/ouvrageDetail/{{ouvrage.id}}"
+            *matCellDef="let ouvrage">{{ouvrage.Entreprise.denomination}}</td>
       </ng-container>
 
       <ng-container matColumnDef="boutons">

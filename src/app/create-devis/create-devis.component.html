@@ -145,7 +145,7 @@
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.uRatio}}</span>
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
-                  <span class="designation-ouvrage-frais-chantier-td">Ratio</span>
+                  <span class="designation-ouvrage-frais-chantier-td">Rendement</span>
                   <span class="designation-ouvrage-frais-chantier">{{ouvrage.ratio}}</span>
                 </div>
                 <div class="detail-ouvrage-frais-chantier">
@@ -281,14 +281,14 @@
 
 
         <div>
-          <button class="button" mat-raised-button color="primary" (click)="showForm = true; isLot=false">Créer un lot</button>
+          <button class="button" mat-raised-button color="primary" (click)="autoFocus();isLot = false;">Créer un lot</button>
         </div>
 
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" [hidden]="!showForm">
+        <form [formGroup]="form"  (ngSubmit)="onSubmit()" [hidden]="!showForm" >
           <!-- Formulaire avec champ de saisie et bouton de validation -->
           <mat-form-field appearance="outline" color="primary">
             <mat-label>Designation</mat-label>
-            <input matInput formControlName="designation" placeholder="Entrer le nom."/>
+            <input id="designationLotSousLot" matInput  formControlName="designation" placeholder="Entrer le nom."#aForm/>
           </mat-form-field>
           <button mat-flat-button type="submit">Valider</button>
         </form>
@@ -314,7 +314,7 @@
               <br>
 
               <button mat-button color="primary" *ngIf="lotFraisDeChantier"
-                      (click)="showForm = !showForm; isLot = true; curentLotId= lot.id">
+                      (click)="autoFocus(); isLot = true; curentLotId= lot.id">
                 Créer un sous-lot
               </button>
 
@@ -405,7 +405,7 @@
                     <span class="designation-ouvrage-frais-chantier">{{ouvrage.uRatio}}</span>
                   </div>
                   <div class="detail-ouvrage-frais-chantier">
-                    <span class="designation-ouvrage-frais-chantier-td">Ratio</span>
+                    <span class="designation-ouvrage-frais-chantier-td">Rendement</span>
                     <span class="designation-ouvrage-frais-chantier">{{ouvrage.ratio}}</span>
                   </div>
 

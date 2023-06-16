@@ -20,11 +20,7 @@ import {map, Observable, startWith} from "rxjs";
 })
 export class EditDevisComponent implements OnInit {
   public myFormGroup!: FormGroup;
-  // @ts-ignore
-  // userId = JSON.parse(localStorage.getItem('user'))
-
   userId = this.userService.userValue.id;
-  submitted = false;
   listClient !: Client[];
   listEntreprise !: Entreprise[];
   @Input() entreprise!: Entreprise;
@@ -34,7 +30,6 @@ export class EditDevisComponent implements OnInit {
   textForm = "Afin de créer un devis, veuillez renseigner les champs suivants.";
   textButton = "Créer ce devis";
   curentUserEntreprise!: any[];
-  userEntreprise!: any[];
   clientId!: number;
   filteredOptions!: Observable<string[]>;
   options: string[] = [];
@@ -53,14 +48,6 @@ export class EditDevisComponent implements OnInit {
               private route: ActivatedRoute,
               private dialog: MatDialog,) {
     this.initialData = data;
-    // this.myFormGroup = this.formBuilder.group({
-    //   name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    //   status: [],
-    //   ClientId: [],
-    //   EntrepriseId: [],
-    //   UserId: this.userId,
-    // });
-    // console.log(this.currentUser)
 
   }
 
@@ -72,14 +59,10 @@ export class EditDevisComponent implements OnInit {
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    console.log(this.options.filter(option => option.toLowerCase().includes(filterValue)))
-
     return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
-  clientSelected() {
-    console.log(this.myFormGroup.get('ClientId'))
-  }
+
 
   createFormDevis(): void {
     const currentUrl = this.router.url;
@@ -145,11 +128,6 @@ export class EditDevisComponent implements OnInit {
 
 
   }
-
-  // get f() {
-  //   return this.myFormGroup.controls;
-  // }
-
   getAllClient(entrepriseId: number): void {
     this.clientService.getAllByEntreprise(entrepriseId).subscribe((data: any) => {
       this.listClient = data

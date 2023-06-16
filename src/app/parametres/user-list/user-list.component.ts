@@ -6,6 +6,8 @@ import {Cout} from "../../_models/cout";
 import {FormCoutComponent} from "../../form-cout/form-cout.component";
 import {MatDialog} from "@angular/material/dialog";
 import {UserEditComponent} from "../user-edit/user-edit.component";
+import {DataSharingService} from "../../_service/data-sharing-service.service";
+import {Devis} from "../../_models/devis";
 
 @Component({
   selector: 'app-user-list',
@@ -13,15 +15,11 @@ import {UserEditComponent} from "../user-edit/user-edit.component";
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
-
-  @Input() user!: User;
-  @Output() deleteUser: EventEmitter<any> = new EventEmitter()
-  displayedColumns: string[] = ['id', 'title', 'firstName', 'lastName', 'email', 'role', 'boutons'];
-  dataSource!: any;
-  listUser !: User[];
+  displayedColumns: string[] = ['id', 'title', 'firstName', 'lastName', 'email', 'role','entreprise', 'boutons'];
+  dataSource!: MatTableDataSource<User> ;
 
 
-  constructor(private userService: UserService, private dialog: MatDialog) {
+  constructor(private userService: UserService, private dialog: MatDialog, private dataShingService: DataSharingService) {
 
   }
 
@@ -30,42 +28,26 @@ export class UserListComponent implements OnInit {
   }
 
   delete(id: any): void {
-    this.userService.deleteByID(id).subscribe(() => this.ngOnInit())
+    this.userService.deleteByID(id).subscribe(() => this.getAll())
   }
   update(user: User, id: number): void {
-    this.userService.update(user, id).subscribe(() => this.ngOnInit())
+    this.userService.update(user, id).subscribe(() => this.getAll())
   }
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataShingService.applyFilter(event,this.dataSource)
   }
 
   getAll(): void {
-    this.userService.getAll().subscribe(data => {
-      console.log(data,'45')
-      this.dataSource = new MatTableDataSource(data);
-      // Convert each user's avatar data from a Buffer to a base64-encoded string
-      this.listUser = data.map((user: { avatarUrl: any; }) => {
-        // Check if avatarUrl is null or undefined
-        // if (user.avatarUrl && user.avatarUrl.data) {
-        //   // Convert avatarUrl.data to a Buffer object and then to a base64-encoded string
-        //   const avatarUrlString = Buffer.from(user.avatarUrl.data).toString('base64');
-        //   user.avatarUrl = 'data:image/jpeg;base64,' + avatarUrlString;
-        // }
-        console.log(user)
-        return user;
-      });
+    this.userService.getAll().subscribe(listUsers => {
+      this.dataSource = new MatTableDataSource(listUsers);
+      console.log(listUsers)
     });
   }
   openDialogCreate(user: User | null) {
-    this.dialog.open(UserEditComponent, {
-      data:user,
-      width: '70%',
-      height: '78%'
-    }).afterClosed().subscribe(async result => {
-      this.ngOnInit()
+    this.userService.openDialogCreate(user, ()=>{
+      this.getAll()
+    })
 
-    });
   }
 
 }

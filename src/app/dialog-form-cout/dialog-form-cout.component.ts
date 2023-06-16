@@ -32,7 +32,6 @@ export class DialogFormCoutComponent implements OnInit {
   regexDetailOuvrage = new RegExp(`^/ouvrageDetail`)
   categories: any[] = [];
   typeCout !: TypeCout[];
-  isCout: boolean = true;
   uniteList!:UniteForForm[];
 
 
@@ -49,21 +48,19 @@ export class DialogFormCoutComponent implements OnInit {
               @Inject(TOASTR_TOKEN) private toastr: Toastr
   ) {
     this.initialData = this.data;
+    console.log('this data', this.data)
     transformVirguletoPoint()
     this.createFormCout()
 
   }
 
   ngOnInit(): void {
-    this.getAllTypeCouts(this.dataSharingService.entrepriseId)
-    console.log(this.data[2])
-    this.getUniteByEnteprise(this.dataSharingService.entrepriseId)
+    this.getAllTypeCouts(this.initialData[2].EntrepriseId)
+    this.getUniteByEnteprise(this.initialData[2].EntrepriseId)
     if (this.regexDetailOuvrage.test(window.location.pathname)) {
       this.isInDevis = false;
     }
 
-    // this.createFormCout()
-    console.log("entreprise ID :", this.dataSharingService.entrepriseId)
   }
 
   getUniteByEnteprise(id:number):void {
@@ -92,7 +89,6 @@ export class DialogFormCoutComponent implements OnInit {
 
   checked() {
     this.isChecked = !this.isChecked;
-    console.log(this.isChecked)
   }
 
   createCoutDuDevis(): void {
@@ -103,7 +99,7 @@ export class DialogFormCoutComponent implements OnInit {
       return;
     }
     if (this.isInDevis) {
-      this.myFormGroup.controls["EntrepriseId"].setValue(this.dataSharingService.entrepriseId)
+      this.myFormGroup.controls["EntrepriseId"].setValue(this.initialData[2].EntrepriseId)
       this.coutDuDevis = this.myFormGroup.getRawValue();
       this.coutDuDevis.fournisseur = this.myFormGroup.getRawValue().FournisseurId[0]
       this.coutDuDevis.remarque !== null ? this.myFormGroup.getRawValue().FournisseurId[1] : ""
@@ -150,7 +146,9 @@ export class DialogFormCoutComponent implements OnInit {
       this.myFormGroup.controls["EntrepriseId"].setValue(this.data[2].EntrepriseId)
       this.cout = this.myFormGroup.getRawValue();
       this.cout.FournisseurId = this.myFormGroup.getRawValue().FournisseurId[2]
-      this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[2]
+      console.log("cout ?", this.cout)
+      this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[0]
+      console.log("cout type cout ",this.myFormGroup.getRawValue().TypeCoutId)
 
       this.coutService.create(this.cout).subscribe((res: any) => {
         const ouvrageCout: OuvrageCout = {
@@ -161,6 +159,7 @@ export class DialogFormCoutComponent implements OnInit {
         }
         console.log("ouvrage cout dans le ELSE",ouvrageCout)
         this.ouvrageCoutService.create(ouvrageCout).subscribe()
+        this.closeDialog()
       })
     }
 

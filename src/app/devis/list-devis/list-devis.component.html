@@ -63,6 +63,12 @@
               *matCellDef="let devis">{{devis.aleasInPercent | number: '1.2-2'}} %
           </td>
         </ng-container>
+        <ng-container matColumnDef="entreprise">
+          <th class="global-th" mat-header-cell *matHeaderCellDef>Entreprise</th>
+          <td class="global-td" routerLink="/devisDetail/{{devis.id}}" mat-cell
+              *matCellDef="let devis">{{devis.Entreprise.denomination}}
+          </td>
+        </ng-container>
         <ng-container matColumnDef="boutons">
           <th class="global-th" mat-header-cell *matHeaderCellDef></th>
           <td class="global-td" mat-cell *matCellDef="let cout">

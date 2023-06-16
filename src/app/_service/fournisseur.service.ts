@@ -3,22 +3,34 @@ import {Fournisseur} from '../_models/fournisseur'
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {environment} from '../../environments/environment';
+import {FormFournisseurComponent} from "../form-fournisseur/form-fournisseur.component";
+import {MatDialog} from "@angular/material/dialog";
 
 const baseUrl = `${environment.apiUrl}/fournisseurs`;
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class FournisseurService {
+  fournisseurs: Fournisseur [] = [];
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private dialog: MatDialog) {
   }
 
   getAllFournisseurs(entrepriseId: number): Observable<Fournisseur[]> {
+    this.fournisseurs = []
     return this.http.get<Fournisseur[]>(`${baseUrl}`, {
       params: {
         EntrepriseId: entrepriseId
-
+      }
+    })
+  }
+  getAllForList(entrepriseId: number): Observable<Fournisseur[]> {
+    this.fournisseurs = []
+    return this.http.get<Fournisseur[]>(`${baseUrl}/listFournisseur`, {
+      params: {
+        EntrepriseId: entrepriseId
       }
     })
   }
@@ -28,14 +40,17 @@ export class FournisseurService {
   }
 
   deleteFournisseurById(id: number): Observable<Fournisseur> {
+    this.fournisseurs = []
     return this.http.delete<Fournisseur>(`${baseUrl}/${id}`)
   }
 
   createFournisseur(data: Fournisseur): Observable<Fournisseur> {
+    this.fournisseurs = []
     return this.http.post<Fournisseur>(`${baseUrl}/new`, data)
   }
 
   updateFournisseur(id: number, data: Fournisseur): Observable<Fournisseur> {
+    this.fournisseurs = []
     return this.http.put<Fournisseur>(`${baseUrl}/${id}`, data)
   }
 
@@ -53,9 +68,14 @@ export class FournisseurService {
     return this.http.put<any>(`${baseUrl}Couts/${CoutId}/${FournisseurId}`, data)
   }
 
-  // update(data:Cout, id:number):Observable<Cout>{
-  //   return this.http.put<Cout>(`${baseUrl}/${id}`, data)
-  // }
-//http://localhost:8080/fournisseursCouts/33/3
-//http://localhost:4000/fournisseursCouts/33/3
+  openDialogCreate(fournisseur:Fournisseur | null, refreshData :  any) {
+    this.dialog.open(FormFournisseurComponent, {
+      data: fournisseur,
+      width: '70%',
+      height: '37%'
+    }).afterClosed().subscribe(async result => {
+      refreshData();
+
+    });
+  }
 }

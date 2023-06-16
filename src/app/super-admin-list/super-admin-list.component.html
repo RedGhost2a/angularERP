@@ -12,6 +12,7 @@
 
     <mat-accordion>
       <mat-expansion-panel *ngFor="let cl of client| unique:'Client.id'" [expanded]="false">
+        <p>{{cl.Client.denomination}}</p>
         <mat-expansion-panel-header>
           <mat-panel-title>
             N°:{{ cl.id | number }}

@@ -4,10 +4,9 @@ import {Fournisseur} from "../_models/fournisseur";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatDialog} from "@angular/material/dialog";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
-import {User} from "../_models/users";
 import {UserService} from "../_service/user.service";
-import {Cout} from "../_models/cout";
-import {FormFournisseurComponent} from "../form-fournisseur/form-fournisseur.component";
+import {Entreprise} from "../_models/entreprise";
+import {DataSharingService} from "../_service/data-sharing-service.service";
 
 
 @Component({
@@ -16,58 +15,45 @@ import {FormFournisseurComponent} from "../form-fournisseur/form-fournisseur.com
   styleUrls: ['./list-fournisseur.component.scss']
 })
 export class ListFournisseurComponent implements OnInit {
-  listFournisseur !: Fournisseur[];
-  columnsToDisplay = ["commercialName", "remarque", "boutons"];
-  dataSource!: any;
-  user!:User
+  columnsToDisplay = ["commercialName", "remarque", "entreprise", "boutons"];
+  dataSource!: MatTableDataSource<Fournisseur>;
 
   constructor(private fournisseurService: FournisseurService, private dialog: MatDialog,
-              private userService : UserService) {
+              private userService : UserService, private dataSharingService : DataSharingService) {
   }
 
   ngOnInit(): void {
-    this.getUser()
-    // this.getAllFournisseur()
+    this.getAllFournisseur()
   }
-  getUser():void{
-    console.log(this.userService.userValue)
-    this.userService.getById(this.userService.userValue.id).subscribe( data=>{
-      this.getAllFournisseur(data.Entreprises[0].id)
-    })
-  }
+
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSharingService.applyFilter(event, this.dataSource)
   }
 
-  getAllFournisseur(entrepriseId:number): void {
-    this.fournisseurService.getAllFournisseurs(entrepriseId).subscribe(data => {
-      this.listFournisseur = data;
-      this.dataSource = new MatTableDataSource(this.listFournisseur);
+  getAllFournisseur(): void {
+    this.userService.currentUser.Entreprises.forEach((entreprise : Entreprise) =>{
+    this.fournisseurService.getAllForList(entreprise.id).subscribe((listFournisseur : Fournisseur []) => {
+      this.fournisseurService.fournisseurs = this.fournisseurService.fournisseurs.concat(listFournisseur)
+      this.dataSource = new MatTableDataSource(this.fournisseurService.fournisseurs);
+    })
+
     })
   }
 
   deleteItem(id: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Appeler la fonction de suppression ici
         this.fournisseurService.deleteFournisseurById(id).subscribe(() => this.ngOnInit())
       }
     });
   }
 
   openDialogCreate(fournisseur:Fournisseur | null) {
-    this.dialog.open(FormFournisseurComponent, {
-      data: fournisseur,
-      width: '70%',
-      height: '37%'
-    }).afterClosed().subscribe(async result => {
-      this.ngOnInit()
-
-    });
+    this.fournisseurService.openDialogCreate(fournisseur, ()=>{
+      this.getAllFournisseur()
+    })
   }
 
 }
