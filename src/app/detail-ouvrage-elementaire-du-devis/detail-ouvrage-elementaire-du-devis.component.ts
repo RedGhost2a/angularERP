@@ -16,6 +16,15 @@ import {TypeCout} from "../_models/type-cout";
 import {Cout} from "../_models/cout";
 import {DataSharingService} from "../_service/data-sharing-service.service";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
+import {FormControl, FormGroup} from "@angular/forms";
+import {OuvrageService} from "../_service/ouvrage.service";
+import {OuvrageCout} from "../_models/ouvrageCout";
+import {Ouvrage} from "../_models/ouvrage";
+import {firstValueFrom} from "rxjs";
+import {CoutDuDevis} from "../_models/cout-du-devis";
+import {OuvrageElementaireCout} from "../_models/ouvrage-elementaire-cout";
+import {OuvrageElementaireCoutService} from "../_service/ouvrage-elementaire-cout.service";
+import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 
 @Component({
   selector: 'app-detail-ouvrage-elementaire-du-devis',
@@ -27,24 +36,83 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
   ouvrageElementaire!:OuvrageElementaire;
   listFournisseur !: Fournisseur[]
   listTypeCout !: TypeCout []
-  columnsToDisplayCout = ["type", "categorie", "designation", "ratio", "uRatio", "unite", "prixUnitaire", "fournisseur", "boutons"];
+  formCout!: FormGroup;
+  totalDBS = {
+    prixOuvrage: 0
+  };
+  columnsToDisplayCout = ["type", "categorie", "designation","quantite", "ratio", "uRatio","efficience", "unite", "prixUnitaire", "DSTotal", "PUHTEquilibre", "prixHTEquilibre","PUHTCalcule",
+    "prixHTCalcule" ,"fournisseur", "boutons"];
+
+  // columnsToDisplayCout = [
+  //   "type",
+  //   "categorie",
+  //   "designation",
+  //   "unite",
+  //   "uRatio",
+  //   "ratio",
+  //   "efficience",
+  //   "quantite", "prixUnitaireHT",
+  //   "DSTotal", "PUHTEquilibre", "prixHTEquilibre",
+  //   "PUHTCalcule",
+  //   "prixHTCalcule", "boutons"
+  // ];
   coutOfOuvrageElem!:Cout[]
+   ouvrageId!: number;
+  currentOuvrage!: Ouvrage;
+  ouvrageCoutDuDevis!: OuvrageCoutDuDevis;
 
   constructor(private route: ActivatedRoute,
               private coutService: CoutService,
               private ouvrageElementaireService: OuvrageElementaireService,
+              private ouvrageElementaireCoutService: OuvrageElementaireCoutService,
               private dialog: MatDialog, private typeCoutService : TypeCoutService,
               private fournisseurService : FournisseurService,
               private location:Location,
               private router: Router,
-              private dataSharingService:DataSharingService ) {
+              private dataSharingService:DataSharingService,
+              private ouvrageService: OuvrageService) {
+    this.formCout = new FormGroup({
+      ratio: new FormControl(),
+      efficience: new FormControl()
+    })
 
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
 
-    this.getByIdForDevis()
-    this.getAllFournissuer()
+    const params = await firstValueFrom(this.route.params);
+    this.ouvrageElementaireID = +params['id'];
+    const data = await firstValueFrom(this.ouvrageElementaireService.getOuvrageDuDevisById(this.ouvrageElementaireID));
+    this.ouvrageElementaire = data;
+    this.coutOfOuvrageElem = data.CoutDuDevis
+    // this.ouvrageId = data.OuvrageDuDevis[0].OuvrOuvrElemDuDevis.OuvrageDuDeviId
+    console.log("datza", this.ouvrageElementaire.OuvrageDuDevis[0].benefice)
+
+    await this.calculEtMiseAjourCoutTotal();
+
+
+  }
+
+  async calculCout(): Promise<void> {
+    await this.getAllFournissuer();
+    this.coutOfOuvrageElem.forEach((coutDuDevis: any) => {
+      let ratio = coutDuDevis.OuvragesElementairesCoutsDuDevis?.ratio;
+      let quantite = this.ouvrageElementaire?.quantite;
+      let coef = Number(localStorage.getItem("coef"));
+      if (ratio && quantite) {
+        coutDuDevis.quantite = ratio * quantite;
+        coutDuDevis.debourseSecTotal = coutDuDevis.prixUnitaire * coutDuDevis.quantite;
+        coutDuDevis.totalDBS = coutDuDevis.debourseSecTotal ;
+        console.log("toto",coutDuDevis)
+
+        // calculate prixEquiHT and prixUnitaireEquiHT
+        coutDuDevis.prixEquiHT = coutDuDevis.debourseSecTotal * coef;
+        coutDuDevis.prixUnitaireEquiHT = coutDuDevis.prixEquiHT / quantite;
+
+        // calculate prixCalcHT and prixUnitaireCalcHT
+        coutDuDevis.prixCalcHT = coutDuDevis.prixEquiHT * (1 + (this.ouvrageElementaire.OuvrageDuDevis[0].benefice / 100) + (this.ouvrageElementaire.OuvrageDuDevis[0].aleas / 100));
+        coutDuDevis.prixUnitaireCalcHT = coutDuDevis.prixCalcHT / quantite;
+      }    });
   }
 
 
@@ -52,6 +120,47 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
     this.location.back();
   }
 
+  ratioChange(coutDuDevis: number) {
+      // console.log("form",this.formCout.getRawValue())
+    if (this.formCout.getRawValue().ratio !== null) {
+
+      this.ouvrageCoutDuDevis = {
+        // OuvrElemDuDeviId: this.currentOuvrage.id,
+        // CoutDuDeviId: coutDuDevis,
+        ratio: +this.formCout.getRawValue().ratio,
+
+      }
+    console.log(this.ouvrageCoutDuDevis.OuvrElemDuDeviId)
+    console.log(this.ouvrageCoutDuDevis.CoutDuDeviId)
+    console.log(this.ouvrageCoutDuDevis.CoutDuDeviId)
+      if (coutDuDevis)
+        this.ouvrageElementaireCoutService.updateOuvrageCoutDuDevis(coutDuDevis, this.ouvrageElementaireID, this.ouvrageCoutDuDevis).subscribe(() => this.ngOnInit())
+    }
+  }
+  efficienceChange(coutDuDevis: number) {
+    console.log("efficience", this.formCout.getRawValue().efficience)
+    if (this.formCout.getRawValue().efficience !== null) {
+
+      this.ouvrageCoutDuDevis = {
+        // OuvrElemDuDeviId: this.currentOuvrage.id,
+        // CoutDuDeviId: coutDuDevis.id,
+        efficience: +this.formCout.getRawValue().efficience,
+      }
+      if (coutDuDevis)
+        this.ouvrageElementaireCoutService.updateOuvrageCoutDuDevis(coutDuDevis, this.ouvrageElementaireID, this.ouvrageCoutDuDevis).subscribe(() => this.ngOnInit())
+    }
+  }
+
+
+  async calculEtMiseAjourCoutTotal(): Promise<void> {
+    await this.calculCout();
+    let total = this.coutOfOuvrageElem.reduce((sum, current) => {
+      return current.debourseSecTotal ? sum + current.debourseSecTotal : sum;
+    }, 0);
+    total = parseFloat(total.toFixed(2))
+    // console.log(total)
+    await this.ouvrageElementaireService.updateOuvrageDuDevis({ prix: total },this.ouvrageElementaireID ).subscribe();
+  }
 
 
   getAllFournissuer(){
@@ -70,7 +179,18 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
     });
   }
 
-
+  // quantityCoutOE(): void {
+  //   if (this.coutOfOuvrageElem) {
+  //     console.log('aaaa', this.coutOfOuvrageElem);
+  //
+  //     this.coutOfOuvrageElem.forEach((coutDuDevis: any) => {
+  //       if (coutDuDevis.OuvragesElementairesCoutsDuDevis?.ratio && this.ouvrageElementaire.quantite) {
+  //          coutDuDevis.quantite = coutDuDevis.OuvragesElementairesCoutsDuDevis?.ratio * this.ouvrageElementaire?.quantite
+  //
+  //       }
+  //
+  //     })
+  //   }}
 
   openDialogCreateCout() {
     this.dialog.open(DialogFormCoutComponent, {
@@ -78,7 +198,8 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
       width: '55%',
       height: '60%'
     }).afterClosed().subscribe(async result => {
-      this.ngOnInit()
+      await this.ngOnInit()
+
 
     });
   }
@@ -92,23 +213,66 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
     }).afterClosed().subscribe(async result => {
       console.log("result", result)
       // this.uRatio(this.ouvrage,)
-      this.getByIdForDevis()
+      await this.ngOnInit()
+      // this.calculateCout();
+
 
     });
   }
-  getByIdForDevis(){
-    // if  (this.previousUrl.includes('/sousDetailPrix/')) {
-    //   console.log("valeur",this.previousUrl)
-    this.route.params.subscribe(params => {
-      this.ouvrageElementaireID = +params['id'];
-      this.ouvrageElementaireService.getOuvrageDuDevisById(this.ouvrageElementaireID).subscribe(data => {
-        this.ouvrageElementaire = data;
-        this.coutOfOuvrageElem=data.CoutDuDevis
-        console.log("datza",data.CoutDuDevis)
-        // this.getAllCout(data.EntrepriseId)
-        // this.getAllTypeCouts(data.EntrepriseId)
-        // this.getAllFournisseurs(data.EntrepriseId)
-      })
-    })
-  }
-}
+
+
+  //
+  //  debousesSecTotalCout() {
+  //   this.totalDBS.prixOuvrage = 0;
+  //     this.coutOfOuvrageElem.forEach((coutDuDevis: any) => {
+  //   if (coutDuDevis.OuvragesElementairesCoutsDuDevis?.ratio && this.ouvrageElementaire.quantite) {
+  //     if (coutDuDevis.OuvragesElementairesCoutsDuDevis?.ratio && this.ouvrageElementaire?.quantite) {
+  //       coutDuDevis.debourseSecTotal = coutDuDevis.prixUnitaire * (coutDuDevis.OuvragesElementairesCoutsDuDevis?.ratio * this.ouvrageElementaire?.quantite)
+  //       this.totalDBS.prixOuvrage += coutDuDevis.debourseSecTotal
+  //
+  //     }
+  //   }
+  //     })
+  //     }
+  //
+  // prixEquilibreHTCout(): void {
+  //   if (this.coutOfOuvrageElem) {
+  //     this.coutOfOuvrageElem.forEach(coutDuDevis => {
+  //       if (coutDuDevis.debourseSecTotal)
+  //         coutDuDevis.prixEquiHT = coutDuDevis.debourseSecTotal * this.dataSharingService.coefEqui
+  //     })
+  //   }
+  // }
+  // prixUnitaireEquilibreHTCout(): void {
+  //     this.coutOfOuvrageElem.forEach(coutDuDevis => {
+  //       if (coutDuDevis.prixEquiHT &&  this.ouvrageElementaire?.quantite)
+  //         coutDuDevis.prixUnitaireEquiHT = coutDuDevis.prixEquiHT /  this.ouvrageElementaire?.quantite
+  //     })
+  //   }
+  //
+  // prixCalculeHTCout(): void {
+  //   if (this.coutOfOuvrageElem) {
+  //     this.coutOfOuvrageElem.forEach(coutDuDevis => {
+  //       if (coutDuDevis.prixEquiHT)
+  //         coutDuDevis.prixCalcHT = coutDuDevis.prixEquiHT * (1 + (this.ouvrageElementaire.OuvrageDuDevis[0].benefice / 100) + (this.ouvrageElementaire.OuvrageDuDevis[0].aleas / 100))
+  //       console.log("coutDuDevis.prixCalculeHTCout",coutDuDevis.prixCalcHT)
+  //     })
+  //   }
+  // }
+  //
+  //
+  // prixUnitaireCalculeHTCout(): void {
+  //   if (this.coutOfOuvrageElem) {
+  //     this.coutOfOuvrageElem.forEach(coutDuDevis => {
+  //       if (coutDuDevis.prixCalcHT &&  this.ouvrageElementaire?.quantite)
+  //         coutDuDevis.prixUnitaireCalcHT = coutDuDevis.prixCalcHT /  this.ouvrageElementaire?.quantite
+  //       console.log("coutDuDevis.prixUnitaireCalculeHTCout",coutDuDevis.prixUnitaireCalcHT)
+  //     })
+  //   }
+  // }
+
+
+
+
+
+      }

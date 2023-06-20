@@ -23,4 +23,5 @@ export interface Ouvrage {
   SousLots?:SousLot[];
   OuvragesElementaires?:OuvrageElementaire[];
   OuvrElemDuDevis?:[]
+
 }

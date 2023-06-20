@@ -26,7 +26,6 @@ import {UniteForForm} from "../_models/uniteForForm";
 import {OuvrageCout} from "../_models/ouvrageCout";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {UniteForFormService} from "../_service/uniteForForm.service";
-import { Observable} from "rxjs";
 import { delay } from 'rxjs/operators';
 import {
   OuvrageElementaireAddOuvrageComponent
@@ -38,11 +37,10 @@ import {FormOuvrageElementaireComponent} from "../form-ouvrage-elementaire/form-
 import {OuvrageElementaireService} from "../_service/ouvrage-elementaire.service";
 import {MetreService} from "../_service/metre.service";
 import {Metre} from "../_models/metre";
-import {Observable} from "rxjs";
 
-import {concatMap} from 'rxjs/operators';
 import {isNumber} from "chart.js/helpers";
-import {da} from "date-fns/locale";
+import {OuvrageDuDevis} from "../_models/ouvrage-du-devis";
+import {OuvrageElementaire} from "../_models/ouvrage-elementaire";
 
 @Component({
   selector: 'app-sous-detail-prix',
@@ -54,6 +52,7 @@ export class SousDetailPrixComponent implements OnInit {
   currentOuvrage !: Ouvrage;
   isFormVisible = false;
   columnsToDisplayOuvrageElem = ["designation",
+    "quantite",
     "proportion",
     "unite",
     "prix",
@@ -125,7 +124,8 @@ export class SousDetailPrixComponent implements OnInit {
 
   ngOnInit(): void {
     this.initCalculAndFormMetre()
-
+    this.calculQUantiteOE()
+    // this.quantityCoutOE()
 
   }
 
@@ -141,7 +141,7 @@ export class SousDetailPrixComponent implements OnInit {
         this.currentOuvrage = data;
         this.dataSharingService.ouvrage = data;
         // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = 10;
-        console.log(this.currentOuvrage)
+        console.log("OE",this.currentOuvrage)
         if (this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage) {
           // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = this.currentOuvrage.prix
         }
@@ -164,6 +164,8 @@ export class SousDetailPrixComponent implements OnInit {
         this.prixUnitaireCalculeHTCout()
         this.prixVenteHT()
         this.changeTextButton()
+        this.calculQUantiteOE()
+
         console.log("dd finish initCalcul")
 
       })
@@ -183,7 +185,7 @@ export class SousDetailPrixComponent implements OnInit {
         this.currentOuvrage = data;
         this.dataSharingService.ouvrage = data;
         // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = 10;
-        console.log(this.currentOuvrage)
+        console.log("aaaazaz",this.currentOuvrage)
         if (this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage) {
           // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = this.currentOuvrage.prix
         }
@@ -327,16 +329,28 @@ export class SousDetailPrixComponent implements OnInit {
     }
   }
 
-  quantityChange() {
-    console.log(this.formOuvrage.getRawValue().quantity)
-    console.log(this.currentOuvrage)
-    if (this.formOuvrage.getRawValue().quantity !== null && this.currentOuvrage.SousLotOuvrage && this.currentOuvrage?.SousLotOuvrage.id) {
-      this.currentOuvrage.SousLotOuvrage!.quantityOuvrage = this.formOuvrage.getRawValue().quantity
+  quantityChange(id:number|null) {
+    const quantite = this.formOuvrage.getRawValue().quantity;
+
+    if (quantite !== null && this.currentOuvrage.SousLotOuvrage && this.currentOuvrage?.SousLotOuvrage.id) {
+      this.currentOuvrage.SousLotOuvrage!.quantityOuvrage = quantite;
       this.sousLotOuvrageService.update(this.currentOuvrage.SousLotOuvrage.id, this.currentOuvrage.SousLotOuvrage).subscribe(() => {
-        this.initialCalcul()
-      })
+        this.initialCalcul();
+        this.calculQUantiteOE();
+      });
+    }
+    else if (quantite !== null && this.currentOuvrage.OuvrElemDuDevis) {
+      const ouvrElemDuDevis = this.currentOuvrage.OuvrElemDuDevis.find((oe:any) => oe.id === id);
+
+      if(ouvrElemDuDevis) {
+        this.ouvrageElementaireService.updateOuvrageDuDevis(quantite, id).subscribe(() => {
+          this.initialCalcul();
+          this.calculQUantiteOE();
+        });
+      }
     }
   }
+
 
   aleasChange() {
     console.log(this.formOuvrage.getRawValue().aleas)
@@ -679,14 +693,37 @@ export class SousDetailPrixComponent implements OnInit {
     }
   }
 
+  // quantityCoutOE(): void {
+  //   if (this.currentOuvrage.OuvrElemDuDevis) {
+  //     this.currentOuvrage.OuvrElemDuDevis.forEach(CoutDuDevis => {
+  //       console.log('coutDuDevis',CoutDuDevis)
+  //       //   if (coutDuDevis.OuvrageCoutDuDevis?.ratio && this.currentOuvrage.SousLotOuvrage)
+  //       //     coutDuDevis.quantite = coutDuDevis.OuvrageCoutDuDevis?.ratio * this.currentOuvrage.SousLotOuvrage?.quantityOuvrage
+  //       // })
+  //     })
+  //   }
+  // }
+
+
+
+
   async debousesSecTotalCout() {
-    this.totalDBS.prixOuvrage = 0;
+    this.totalDBS.prixOuvrage = 0
+    if (this.currentOuvrage.OuvrElemDuDevis) {
+      this.currentOuvrage.OuvrElemDuDevis.forEach((coutDuDevis: CoutDuDevis)  => {
+        console.log("zzzz", coutDuDevis)
+        if (coutDuDevis.prix !== undefined && coutDuDevis.prix !== null) {
+
+          this.totalDBS.prixOuvrage += coutDuDevis.prix
+        }
+      })
+    }
     if (this.currentOuvrage.CoutDuDevis) {
       this.currentOuvrage.CoutDuDevis.forEach(coutDuDevis => {
         if (coutDuDevis.OuvrageCoutDuDevis?.ratio && this.currentOuvrage.SousLotOuvrage) {
           coutDuDevis.debourseSecTotal = coutDuDevis.prixUnitaire * (coutDuDevis.OuvrageCoutDuDevis?.ratio * this.currentOuvrage.SousLotOuvrage?.quantityOuvrage)
           this.totalDBS.prixOuvrage += coutDuDevis.debourseSecTotal
-          console.log(this.totalDBS)
+          console.log(coutDuDevis)
         }
       })
       console.log("TOTAL", this.totalDBS)
@@ -740,6 +777,30 @@ export class SousDetailPrixComponent implements OnInit {
       })
     }
   }
+  calculQUantiteOE() {
+    if (this.currentOuvrage.OuvrElemDuDevis) {
+      console.log("OE", this.currentOuvrage.OuvrElemDuDevis);
+
+      const updatePromises = this.currentOuvrage.OuvrElemDuDevis.map((OuvrageElementaire:OuvrageElementaire) => {
+        if ( this.currentOuvrage.SousLotOuvrage) {
+          OuvrageElementaire.quantite = this.currentOuvrage.SousLotOuvrage.quantityOuvrage * OuvrageElementaire.proportion;
+          console.log("apres calcul, quantite:", OuvrageElementaire.quantite);
+        }
+
+        console.log(OuvrageElementaire.quantite);
+        return this.ouvrageElementaireService.updateOuvrageDuDevis({quantite: OuvrageElementaire.quantite}, OuvrageElementaire.id).toPromise();
+      });
+
+      Promise.all(updatePromises)
+        .then(responses => {
+          console.log('all good', responses);
+        })
+        .catch(error => {
+          console.error('Error  OuvrageElementaire:', error);
+        });
+    }
+  }
+
 
 
   openDialogImport(ouvragDuDevisId: number) {
@@ -775,6 +836,7 @@ export class SousDetailPrixComponent implements OnInit {
     }).afterClosed().subscribe(async result => {
       console.log( "result",result)
       this.ngOnInit()
+      this.initialCalcul()
 
     });
   }

@@ -6,4 +6,6 @@ export class OuvrageCoutDuDevis {
   ratio?:number;
   uRatio?:string;
   efficience?:number;
+  OuvrElemDuDeviId?:number;
+
 }

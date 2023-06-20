@@ -19,5 +19,9 @@ export class CoutDuDevis {
   prixUnitaireEquiHT?:number;
   prixCalcHT?:number;
   prixUnitaireCalcHT?:number;
+  totalDBS?:number;
+  prix?:number;
+
+
 
 }

@@ -11,6 +11,7 @@ import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 import {CoutDuDevis} from "../_models/cout-du-devis";
 import {CoutService} from "../_service/cout.service";
 import {OuvrageElementaireCoutService} from "../_service/ouvrage-elementaire-cout.service";
+import {DataSharingService} from "../_service/data-sharing-service.service";
 
 @Component({
   selector: 'app-dialog-list-ouvrage-elementaire',
@@ -42,6 +43,7 @@ export class DialogListOuvrageElementaireComponent implements OnInit {
               private coutService: CoutService,
               @Inject(MAT_DIALOG_DATA) public data: any,
               private ouvrageElementaireCoutService : OuvrageElementaireCoutService
+    , private dataSharingService: DataSharingService,
   ) {this.currentOuvrageId= this.data
   }
 
@@ -115,10 +117,14 @@ export class DialogListOuvrageElementaireComponent implements OnInit {
               this.coutDuDevis.categorie = cout.TypeCout.categorie
             //   //creer le coutDuDevis
               this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe(responseCout => {
-            //     //creer l'OuvrageCoutDuDevis grace au reponse des requetes de creation des couts et de l'ouvrage
+                const uRatio = `${cout.unite}/${this.dataSharingService.ouvrage.unite}`
+
+                //     //creer l'OuvrageCoutDuDevis grace au reponse des requetes de creation des couts et de l'ouvrage
                 const ouvrageCout = {
                   OuvrElemDuDeviId: response.OuvrageDuDevis?.id,
                   CoutDuDeviId: responseCout?.id,
+                  ratio: 1,
+                  uRatio: uRatio,
 
                 }
 

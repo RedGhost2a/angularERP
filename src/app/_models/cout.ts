@@ -21,5 +21,8 @@ OuvrageCout?:OuvrageCout
   prixUnitaireEquiHT?:number;
   prixCalcHT?:number;
   prixUnitaireCalcHT?:number;
+  totalDBS?:number;
+
+
   //Fournisseurs: Fournisseur;
 }
