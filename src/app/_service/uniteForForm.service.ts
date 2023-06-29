@@ -20,6 +20,11 @@ export class UniteForFormService {
   getById(id: string): Observable<any> {
     return this.http.get(`${baseUrl}/${id}`);
   }
+
+  getUniteByType(id: number): Observable<string[]> {
+    return this.http.get<string[]>(`${baseUrl}/type/${id}`);
+  }
+
   getUniteByEntreprise(id: number): Observable<any> {
     return this.http.get(`${baseUrl}/entreprise/${id}`);
   }

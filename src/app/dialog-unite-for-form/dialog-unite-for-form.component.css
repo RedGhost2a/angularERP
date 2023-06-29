@@ -1,3 +1,20 @@
+h3 {
+  margin: 30px;
+  text-align: center;
+  font-size: 22px;
+}
 
+.row-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  align-content: space-between;
+  flex-direction: column;
+  margin: 31px;
+}
+
+.mat-card-subtitle {
+  color: #000000;
+}
 
 /*# sourceMappingURL=dialog-unite-for-form.component.css.map */
