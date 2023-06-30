@@ -15,15 +15,15 @@ export class DataSharingService {
   ouvrage!: Ouvrage
   entrepriseId!: number;
   options = [
-    { value: 'F', label: 'Forfait' },
-    { value: 'm', label: 'Mètres' },
-    { value: 'm²', label: 'Mètres carrés' },
-    { value: 'm³', label: 'Mètres cubes' },
-    { value: 'Kg', label: 'Kilogrammes' },
-    { value: 'Tn', label: 'Tonnes' }
+    {value: 'F', label: 'Forfait'},
+    {value: 'm', label: 'Mètres'},
+    {value: 'm²', label: 'Mètres carrés'},
+    {value: 'm³', label: 'Mètres cubes'},
+    {value: 'Kg', label: 'Kilogrammes'},
+    {value: 'Tn', label: 'Tonnes'}
   ];
-  deviId!:number;
-  selectedIndex!:number
+  deviId!: number;
+  selectedIndex!: number
 
 
   constructor(private sousDetailPrixService: SousDetailPrixService,
@@ -64,26 +64,29 @@ export class DataSharingService {
   }
 
   async prixCalculeHT(sousLotOuvrage: SousLotOuvrage, benefice: number, aleas: number) {
+
     sousLotOuvrage.prixCalcHT = sousLotOuvrage.prixEquiHT * (1 + (benefice / 100) + (aleas / 100))
+    console.log("prixcalc", sousLotOuvrage.prixCalcHT)
   }
 
   async prixUnitaireCalculeHT(sousLotOuvrage: SousLotOuvrage) {
     sousLotOuvrage.prixUniCalcHT = sousLotOuvrage.prixCalcHT / sousLotOuvrage.quantityOuvrage
   }
-  async prixVenteHT(sousLotOuvrage : SousLotOuvrage){
-    console.log("prix de vente ?",sousLotOuvrage.prixUniVenteHT)
+
+  async prixVenteHT(sousLotOuvrage: SousLotOuvrage) {
+    console.log("prix de vente ?", sousLotOuvrage.prixUniVenteHT)
     // if(sousLotOuvrage.prixUniVenteHT === 0 ){
     //   sousLotOuvrage.prixVenteHT = sousLotOuvrage.prixUniVenteHT * sousLotOuvrage.quantityOuvrage
     // }else{
     // sousLotOuvrage.prixVenteHT = sousLotOuvrage.prixUniVenteHT * sousLotOuvrage.quantityOuvrage
     // }
   }
-  async prixUniVente(sousLotOuvrage:SousLotOuvrage){
+
+  async prixUniVente(sousLotOuvrage: SousLotOuvrage) {
     sousLotOuvrage.prixUniVenteHT = sousLotOuvrage.prixUniCalcHT
     // if(sousLotOuvrage.prixUniVenteHT === 0 && sousLotOuvrage.prixUniVenteHT !== sousLotOuvrage.prixUniCalcHT){
     // }
   }
-
 
 
 }

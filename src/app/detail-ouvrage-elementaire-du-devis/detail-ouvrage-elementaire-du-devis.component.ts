@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {CoutService} from "../_service/cout.service";
 import {OuvrageElementaireService} from "../_service/ouvrage-elementaire.service";
@@ -18,11 +18,8 @@ import {DataSharingService} from "../_service/data-sharing-service.service";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
 import {FormControl, FormGroup} from "@angular/forms";
 import {OuvrageService} from "../_service/ouvrage.service";
-import {OuvrageCout} from "../_models/ouvrageCout";
 import {Ouvrage} from "../_models/ouvrage";
 import {firstValueFrom} from "rxjs";
-import {CoutDuDevis} from "../_models/cout-du-devis";
-import {OuvrageElementaireCout} from "../_models/ouvrage-elementaire-cout";
 import {OuvrageElementaireCoutService} from "../_service/ouvrage-elementaire-cout.service";
 import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 
@@ -32,16 +29,19 @@ import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
   styleUrls: ['./detail-ouvrage-elementaire-du-devis.component.scss']
 })
 export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
-  ouvrageElementaireID!:number;
-  ouvrageElementaire!:OuvrageElementaire;
+  ouvrageElementaireID!: number;
+  ouvrageElementaire!: OuvrageElementaire;
   listFournisseur !: Fournisseur[]
   listTypeCout !: TypeCout []
   formCout!: FormGroup;
   totalDBS = {
     prixOuvrage: 0
   };
-  columnsToDisplayCout = ["type", "categorie", "designation","quantite", "ratio", "uRatio","efficience", "unite", "prixUnitaire", "DSTotal", "PUHTEquilibre", "prixHTEquilibre","PUHTCalcule",
-    "prixHTCalcule" ,"fournisseur", "boutons"];
+  columnsToDisplayCout = ["type", "categorie", "designation", "quantite",
+    "ratio", "uRatio", "efficience", "unite", "prixUnitaire", "DSTotal",
+    "PUHTEquilibre", "prixHTEquilibre", "PUHTCalcule",
+    "prixHTCalcule", "fournisseur", "boutons"
+  ];
 
   // columnsToDisplayCout = [
   //   "type",
@@ -56,8 +56,8 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
   //   "PUHTCalcule",
   //   "prixHTCalcule", "boutons"
   // ];
-  coutOfOuvrageElem!:Cout[]
-   ouvrageId!: number;
+  coutOfOuvrageElem!: Cout[]
+  ouvrageId!: number;
   currentOuvrage!: Ouvrage;
   ouvrageCoutDuDevis!: OuvrageCoutDuDevis;
 
@@ -65,11 +65,11 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
               private coutService: CoutService,
               private ouvrageElementaireService: OuvrageElementaireService,
               private ouvrageElementaireCoutService: OuvrageElementaireCoutService,
-              private dialog: MatDialog, private typeCoutService : TypeCoutService,
-              private fournisseurService : FournisseurService,
-              private location:Location,
+              private dialog: MatDialog, private typeCoutService: TypeCoutService,
+              private fournisseurService: FournisseurService,
+              private location: Location,
               private router: Router,
-              private dataSharingService:DataSharingService,
+              private dataSharingService: DataSharingService,
               private ouvrageService: OuvrageService) {
     this.formCout = new FormGroup({
       ratio: new FormControl(),
@@ -86,7 +86,7 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
     this.ouvrageElementaire = data;
     this.coutOfOuvrageElem = data.CoutDuDevis
     // this.ouvrageId = data.OuvrageDuDevis[0].OuvrOuvrElemDuDevis.OuvrageDuDeviId
-    console.log("datza", this.ouvrageElementaire.OuvrageDuDevis[0].benefice)
+    console.log("datza", this.coutOfOuvrageElem)
 
     await this.calculEtMiseAjourCoutTotal();
 
@@ -96,14 +96,15 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
   async calculCout(): Promise<void> {
     await this.getAllFournissuer();
     this.coutOfOuvrageElem.forEach((coutDuDevis: any) => {
-      let ratio = coutDuDevis.OuvragesElementairesCoutsDuDevis?.ratio;
+      let ratio = coutDuDevis.OuvrElemCoutsDuDevis.ratio;
       let quantite = this.ouvrageElementaire?.quantite;
+      console.log("quantite", ratio)
       let coef = Number(localStorage.getItem("coef"));
+      console.log("toto", coutDuDevis.quantite)
       if (ratio && quantite) {
         coutDuDevis.quantite = ratio * quantite;
         coutDuDevis.debourseSecTotal = coutDuDevis.prixUnitaire * coutDuDevis.quantite;
-        coutDuDevis.totalDBS = coutDuDevis.debourseSecTotal ;
-        console.log("toto",coutDuDevis)
+        coutDuDevis.totalDBS = coutDuDevis.debourseSecTotal;
 
         // calculate prixEquiHT and prixUnitaireEquiHT
         coutDuDevis.prixEquiHT = coutDuDevis.debourseSecTotal * coef;
@@ -112,7 +113,9 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
         // calculate prixCalcHT and prixUnitaireCalcHT
         coutDuDevis.prixCalcHT = coutDuDevis.prixEquiHT * (1 + (this.ouvrageElementaire.OuvrageDuDevis[0].benefice / 100) + (this.ouvrageElementaire.OuvrageDuDevis[0].aleas / 100));
         coutDuDevis.prixUnitaireCalcHT = coutDuDevis.prixCalcHT / quantite;
-      }    });
+        console.log(coutDuDevis)
+      }
+    });
   }
 
 
@@ -121,7 +124,7 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
   }
 
   ratioChange(coutDuDevis: number) {
-      // console.log("form",this.formCout.getRawValue())
+    // console.log("form",this.formCout.getRawValue())
     if (this.formCout.getRawValue().ratio !== null) {
 
       this.ouvrageCoutDuDevis = {
@@ -130,13 +133,12 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
         ratio: +this.formCout.getRawValue().ratio,
 
       }
-    console.log(this.ouvrageCoutDuDevis.OuvrElemDuDeviId)
-    console.log(this.ouvrageCoutDuDevis.CoutDuDeviId)
-    console.log(this.ouvrageCoutDuDevis.CoutDuDeviId)
+
       if (coutDuDevis)
         this.ouvrageElementaireCoutService.updateOuvrageCoutDuDevis(coutDuDevis, this.ouvrageElementaireID, this.ouvrageCoutDuDevis).subscribe(() => this.ngOnInit())
     }
   }
+
   efficienceChange(coutDuDevis: number) {
     console.log("efficience", this.formCout.getRawValue().efficience)
     if (this.formCout.getRawValue().efficience !== null) {
@@ -159,16 +161,17 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
     }, 0);
     total = parseFloat(total.toFixed(2))
     // console.log(total)
-    await this.ouvrageElementaireService.updateOuvrageDuDevis({ prix: total },this.ouvrageElementaireID ).subscribe();
+    await this.ouvrageElementaireService.updateOuvrageDuDevis({prix: total}, this.ouvrageElementaireID).subscribe();
   }
 
 
-  getAllFournissuer(){
-    this.fournisseurService.getAllFournisseurs(this.dataSharingService.entrepriseId).subscribe(data=>{
+  getAllFournissuer() {
+    this.fournisseurService.getAllFournisseurs(this.dataSharingService.entrepriseId).subscribe(data => {
       this.listFournisseur = data
     })
 
   }
+
   deleteCoutFromOuvElem(id: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
     dialogRef.afterClosed().subscribe(result => {
@@ -194,7 +197,7 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
 
   openDialogCreateCout() {
     this.dialog.open(DialogFormCoutComponent, {
-      data: [ this.listTypeCout, this.listFournisseur, this.ouvrageElementaire],
+      data: [this.listTypeCout, this.listFournisseur, this.ouvrageElementaire],
       width: '55%',
       height: '60%'
     }).afterClosed().subscribe(async result => {
@@ -206,7 +209,7 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
 
   openDialogImport() {
     this.dialog.open(OuvrageElementaireAddCoutComponent, {
-      panelClass:"test",
+      panelClass: "test",
       data: this.ouvrageElementaire,
       width: '90%',
       height: '70%'
@@ -272,7 +275,4 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
   // }
 
 
-
-
-
-      }
+}

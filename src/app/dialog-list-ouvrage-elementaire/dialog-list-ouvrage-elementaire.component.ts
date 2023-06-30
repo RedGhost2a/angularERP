@@ -7,7 +7,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {OuvrageElementaire} from "../_models/ouvrage-elementaire";
 import {User} from "../_models/users";
-import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 import {CoutDuDevis} from "../_models/cout-du-devis";
 import {CoutService} from "../_service/cout.service";
 import {OuvrageElementaireCoutService} from "../_service/ouvrage-elementaire-cout.service";
@@ -34,7 +33,6 @@ export class DialogListOuvrageElementaireComponent implements OnInit {
   coutDuDevis!: CoutDuDevis;
 
 
-
   constructor(private ouvrageElemnentaireService: OuvrageElementaireService,
               private ouvrageOuvrageElemService: OuvrageOuvragesElementairesService,
               private route: ActivatedRoute,
@@ -42,9 +40,10 @@ export class DialogListOuvrageElementaireComponent implements OnInit {
               private dialogRef: MatDialogRef<DialogComponent>,
               private coutService: CoutService,
               @Inject(MAT_DIALOG_DATA) public data: any,
-              private ouvrageElementaireCoutService : OuvrageElementaireCoutService
+              private ouvrageElementaireCoutService: OuvrageElementaireCoutService
     , private dataSharingService: DataSharingService,
-  ) {this.currentOuvrageId= this.data
+  ) {
+    this.currentOuvrageId = this.data
   }
 
   ngOnInit(): void {
@@ -52,7 +51,7 @@ export class DialogListOuvrageElementaireComponent implements OnInit {
       console.log("params", params)
       // this.currentOuvrageId = +params['id']
     })
-       console.log("current ouvrage id ",this.data)
+    console.log("current ouvrage id ", this.data)
     this.currentUser = this.userService.userValue;
     this.userService.getById(this.currentUser.id).subscribe(data => {
       console.log("user by id ", data)
@@ -92,13 +91,13 @@ export class DialogListOuvrageElementaireComponent implements OnInit {
         const allDataOuvrageDevis = {...data}
         this.ouvrageElemnentaireService.createOuvrageElementaireDuDevis(allDataOuvrageDevis).subscribe(response => {
           //recupere l'id de l'ouvrageElemDuDevis qui viens d'etre creer, et
-           data.OuvrageDuDeviId = response.OuvrageDuDevis?.id
+          data.OuvrageDuDeviId = response.OuvrageDuDevis?.id
           console.log(data.OuvrageDuDeviId)
           const ouvrageOuvrageElemDuDevis = {
             OuvrageDuDeviId: this.currentOuvrageId,
             OuvrElemDuDeviId: data.OuvrageDuDeviId,
           }
-          console.log("OUVRAGECOUT",ouvrageOuvrageElemDuDevis)
+          console.log("OUVRAGECOUT", ouvrageOuvrageElemDuDevis)
           this.ouvrageElementaireCoutService.createOuvrageOuvrageElemDuDevis(ouvrageOuvrageElemDuDevis).subscribe()
 
           //boucle sur tous les couts qui appartiennent au ouvrage
@@ -108,37 +107,38 @@ export class DialogListOuvrageElementaireComponent implements OnInit {
             //   prixOuvrage += cout.prixUnitaire * (cout.OuvrageCout.ratio)
             //   console.log("prix de l'ouvrage ", prixOuvrage)
             //
-               this.coutDuDevis = cout;
-              this.coutDuDevis.fournisseur = cout.Fournisseur.commercialName
-              this.coutDuDevis.remarque = cout.Fournisseur.remarque !== null ? cout.Fournisseur.remarque : ""
-              //donne comme valeur undefined a l'id sinon le coutDuDevis sera creer avec l'id du Cout
-              this.coutDuDevis.id = undefined
-              this.coutDuDevis.type = cout.TypeCout.type
-              this.coutDuDevis.categorie = cout.TypeCout.categorie
+            this.coutDuDevis = cout;
+            this.coutDuDevis.fournisseur = cout.Fournisseur.commercialName
+            this.coutDuDevis.remarque = cout.Fournisseur.remarque !== null ? cout.Fournisseur.remarque : ""
+            //donne comme valeur undefined a l'id sinon le coutDuDevis sera creer avec l'id du Cout
+            this.coutDuDevis.id = undefined
+            this.coutDuDevis.type = cout.TypeCout.type
+            this.coutDuDevis.categorie = cout.TypeCout.categorie
             //   //creer le coutDuDevis
-              this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe(responseCout => {
-                const uRatio = `${cout.unite}/${this.dataSharingService.ouvrage.unite}`
+            this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe(responseCout => {
+              const uRatio = `${cout.unite}/${this.dataSharingService.ouvrage.unite}`
 
-                //     //creer l'OuvrageCoutDuDevis grace au reponse des requetes de creation des couts et de l'ouvrage
-                const ouvrageCout = {
-                  OuvrElemDuDeviId: response.OuvrageDuDevis?.id,
-                  CoutDuDeviId: responseCout?.id,
-                  ratio: 1,
-                  uRatio: uRatio,
+              //     //creer l'OuvrageCoutDuDevis grace au reponse des requetes de creation des couts et de l'ouvrage
+              const ouvrageCout = {
+                OuvrElemDuDeviId: response.OuvrageDuDevis?.id,
+                CoutDuDeviId: responseCout?.id,
+                ratio: 1,
+                uRatio: uRatio,
 
-                }
+              }
 
-            //     //creer l'ouvrageCoutDuDevis
+              //     //creer l'ouvrageCoutDuDevis
+              console.log("ouvrageCout", ouvrageCout)
               this.ouvrageElementaireCoutService.createOuvrageElemCoutDuDevis(ouvrageCout).subscribe()
 
+            })
           })
+
         })
 
+
       })
-
-
     })
-  })
   }
 
   closeDialog() {

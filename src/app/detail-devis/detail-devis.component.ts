@@ -54,7 +54,7 @@ export class DetailDevisComponent implements OnInit {
       this.devisID = +params['id'];
       this.getById();
     })
-    this.createHiddenSousLot()
+    // this.createHiddenSousLot()
   }
 
 
@@ -69,6 +69,7 @@ export class DetailDevisComponent implements OnInit {
   }
 
   updateBenefDevis() {
+
     this.devisService.update({beneficeInPercent: this.beneficeInPercent}, this.devisID).subscribe(() => {
       this.toastr.success('Succes', 'Le statut a été mis à jour.');
       this.getById();
@@ -182,7 +183,7 @@ export class DetailDevisComponent implements OnInit {
       devisId: this.devisID
     }
     this.lotService.createHiddenLot(dataForLot).subscribe((data) => {
-      console.log("data.lot.lotId",data.lot.lotId)
+      console.log("data.lot.lotId", data.lot.lotId)
       this.devisService.setLotId(data.lot.lotId)
       createdIds.push(data.lot.lotId); // ajouter l'identifiant du lot au tableau
 
@@ -190,11 +191,11 @@ export class DetailDevisComponent implements OnInit {
         designation: `Hidden Sous Lot  n°: ${this.devisID}`,
         devisId: this.devisID
       }
-      this.sousLotService.createHiddenSouslot(dataForSousLot,data.lot.lotId).subscribe((sousLotData) => {
+      this.sousLotService.createHiddenSouslot(dataForSousLot, data.lot.lotId).subscribe((sousLotData) => {
         this.devisService.setSousLotId(sousLotData.sousLot.id)
         createdIds.push(sousLotData.sousLot.id); // ajouter l'identifiant du sous-lot au tableau
-        console.log("sousLotData.sousLot.sousLotId)",sousLotData.sousLot.id)
-        console.log("lot et souslot id",createdIds);
+        console.log("sousLotData.sousLot.sousLotId)", sousLotData.sousLot.id)
+        console.log("lot et souslot id", createdIds);
       }, (error) => {
         console.error('Erreur lors de la création du sous-lot: ', error);
       })
