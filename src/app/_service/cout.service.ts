@@ -43,6 +43,9 @@ export class CoutService {
   getById(id: number): Observable<any> {
     return this.http.get(`${environment.apiUrl}/couts/${id}`);
   }
+  getCoutDuDevisById(id: number): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/coutsDuDevis/${id}`);
+  }
 
   create(data: Cout): Observable<Cout> {
     this.couts = []

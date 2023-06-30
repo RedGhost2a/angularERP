@@ -48,6 +48,7 @@ export class FormOuvrageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('initial data ',this.initialData)
     this.createFormOuvrage()
     this.getUserById();
     if (this.regexSousDetail.test(window.location.pathname)) {
@@ -129,7 +130,9 @@ export class FormOuvrageComponent implements OnInit {
         prixCalcHT: 0,
         prixUniCalcHT: 0
       }
+      console.log("sous lot ouvrage du devis : ", this.sousLotOuvrageDuDevis)
       this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe((data) => {
+        console.log('data create sous lot ouvrage for devis', data)
       })
     })
   }

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {OuvrageService} from "../_service/ouvrage.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DataSharingService} from "../_service/data-sharing-service.service";
@@ -99,6 +99,7 @@ export class SousDetailPrixComponent implements OnInit {
   resultMetre: number [] = [];
   resultTotalMetre: number = 0;
   metre !: Metre []
+  @ViewChild('aForm') aForm !: ElementRef;
 
 
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute,
@@ -132,8 +133,9 @@ export class SousDetailPrixComponent implements OnInit {
     console.log("debut ngOninit")
     this.route.params.subscribe(async params => {
       this.ouvrageID = +params['id'];
-      await this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe(async data => {
+      await this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe(async (data:any) => {
         console.log("this currentOuvrage ", data)
+        this.dataSharingService.deviId = data.SousLots[0].Lots[0].Devis[0].id
         this.currentOuvrage = data;
         this.dataSharingService.ouvrage = data;
         // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = 10;
@@ -177,8 +179,9 @@ export class SousDetailPrixComponent implements OnInit {
     console.log("debut ngOninit")
     this.route.params.subscribe(async params => {
       this.ouvrageID = +params['id'];
-      await this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe(async data => {
-        console.log("this currentOuvrage ", data)
+      await this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe(async (data:any) => {
+        // console.log("this currentOuvrage ", data.SousLots[0].Lots[0].Devis[0].id)
+        // this.dataSharingService.deviId = data.SousLots[0].Lots[0].Devis[0].id
         this.currentOuvrage = data;
         this.dataSharingService.ouvrage = data;
         // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = 10;
@@ -439,6 +442,9 @@ export class SousDetailPrixComponent implements OnInit {
     if (!metres.invalid) {
       metres.push(this.createFormMetre())
       this.tableau.push(1)
+      setTimeout(() => {
+        this.aForm.nativeElement.children[(this.tableau.length - 1)].children[0].children[0].children[0].children[0].children[0].focus();
+      }, 100)
     }
   }
 
@@ -811,7 +817,7 @@ export class SousDetailPrixComponent implements OnInit {
   openDialogImport(ouvragDuDevisId: number) {
     this.dialog.open(DialogListCoutComponent, {
       panelClass: 'test',
-      data: this.listCout,
+      data: [this.listCout],
       width: '90%',
       height: '70%'
     }).afterClosed().subscribe(async result => {

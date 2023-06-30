@@ -13,7 +13,6 @@ export interface Ouvrage {
   unite:string;
   ratio: number;
   uRatio: string;
-  fournisseur:string;
   prix:number;
   CoutDuDevis?: Cout[]
   SousLotOuvrage?:SousLotOuvrage

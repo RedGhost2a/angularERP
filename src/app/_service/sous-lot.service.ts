@@ -37,5 +37,11 @@ export class SousLotService {
   deleteByID(id: any): Observable<any> {
     return this.http.delete(`${baseUrl}/${id}`)
   }
+  getSousLotHiddenForOuvrage(deviId:number):Observable<any>{
+    return this.http.get(`${baseUrl}/sousLotHiddenForOuvrage/${deviId}`)
+  }
+  getSousLotHiddenForCout(deviId:number):Observable<any>{
+    return this.http.get(`${baseUrl}/sousLotHiddenForCout/${deviId}`)
+  }
 
 }

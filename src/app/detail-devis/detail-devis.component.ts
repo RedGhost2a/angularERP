@@ -47,14 +47,16 @@ export class DetailDevisComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   this.getRouteParams()
+    this.getRouteParams()
 
   }
-  getRouteParams(){
+
+  getRouteParams() {
     this.route.params.subscribe(params => {
       this.getById(+params['id']);
     })
-    this.createHiddenSousLot()
+    this.createLotAndSousLotHiddenForOuvrage()
+    this.createLotAndSousLotHiddenForCout()
   }
 
 
@@ -98,8 +100,8 @@ export class DetailDevisComponent implements OnInit {
         benefice: this.devis.beneficeInPercent,
         aleas: this.devis.aleasInPercent
       };
-      ouvrages.forEach((ouvrage: Ouvrage) =>{
-        if(!ouvrage.alteredBenefOrAleas){
+      ouvrages.forEach((ouvrage: Ouvrage) => {
+        if (!ouvrage.alteredBenefOrAleas) {
           this.ouvrageService.updateOuvrageDuDevis(updatedOuvrage, ouvrage.id).subscribe(() => {
             this.toastr.success('Succes', 'Les champs benefice et aleas ont été mis à jour.');
             this.getById(this.devisService.currentDevis.id);
@@ -123,16 +125,16 @@ export class DetailDevisComponent implements OnInit {
     });
   }
 
-  getById(id:number): void {
+  getById(id: number): void {
     this.devisService.getByIdForDetail(id).subscribe((devis: Devis) => {
-      console.log("devis get by id",devis)
+      console.log("devis get by id", devis)
       this.devis = devis;
       this.devisService.currentDevis = devis;
       this.validityDevis(devis)
     })
   }
 
-  validityDevis(devis: Devis){
+  validityDevis(devis: Devis) {
     const today = new Date();
     if (devis && devis.createdAt) {
       const createdAt = new Date(devis.createdAt);
@@ -159,27 +161,47 @@ export class DetailDevisComponent implements OnInit {
       });
   }
 
-  createHiddenSousLot() {
+  createLotAndSousLotHiddenForOuvrage() {
     let createdIds: any[] = []; // tableau pour stocker les identifiants créés
 
     let dataForLot = {
-      designation: `Hidden Lot  n°: ${this.devisService.currentDevis.id}`,
+      designation: `LotHiddenForOuvrageDuDevis${this.devisService.currentDevis.id}`,
       devisId: this.devisService.currentDevis.id
     }
     this.lotService.createHiddenLot(dataForLot).subscribe((data) => {
-      console.log("data.lot.lotId",data.lot.lotId)
       this.devisService.setLotId(data.lot.lotId)
       createdIds.push(data.lot.lotId); // ajouter l'identifiant du lot au tableau
 
       let dataForSousLot = {
-        designation: `Hidden Sous Lot  n°: ${this.devisService.currentDevis.id}`,
+        designation: `SousLotHiddenForOuvrageDuDevis${this.devisService.currentDevis.id}`,
         devisId: this.devisService.currentDevis.id
       }
-      this.sousLotService.createHiddenSouslot(dataForSousLot,data.lot.lotId).subscribe((sousLotData) => {
+      this.sousLotService.createHiddenSouslot(dataForSousLot, data.lot.lotId).subscribe((sousLotData) => {
         this.devisService.setSousLotId(sousLotData.sousLot.id)
         createdIds.push(sousLotData.sousLot.id); // ajouter l'identifiant du sous-lot au tableau
-        console.log("sousLotData.sousLot.sousLotId)",sousLotData.sousLot.id)
-        console.log("lot et souslot id",createdIds);
+      }, (error) => {
+        console.error('Erreur lors de la création du sous-lot: ', error);
+      })
+    }, (error) => {
+      console.error('Erreur lors de la création du lot: ', error);
+    });
+  }
+
+  createLotAndSousLotHiddenForCout() {
+
+    let dataForLot = {
+      designation: `LotHiddenForCoutDuDevis${this.devisService.currentDevis.id}`,
+      devisId: this.devisService.currentDevis.id
+    }
+    this.lotService.createHiddenLot(dataForLot).subscribe((data) => {
+      this.devisService.setLotId(data.lot.lotId)
+
+      let dataForSousLot = {
+        designation: `SousLotHiddenForCoutDuDevis${this.devisService.currentDevis.id}`,
+        devisId: this.devisService.currentDevis.id
+      }
+      this.sousLotService.createHiddenSouslot(dataForSousLot, data.lot.lotId).subscribe((sousLotData) => {
+        this.devisService.setSousLotId(sousLotData.sousLot.id)
       }, (error) => {
         console.error('Erreur lors de la création du sous-lot: ', error);
       })

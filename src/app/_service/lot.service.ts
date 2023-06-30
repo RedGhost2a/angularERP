@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {HttpClient} from "@angular/common/http";
 import {Lot} from "../_models/lot";
 import {environment} from '../../environments/environment';
+import {de} from "date-fns/locale";
 
 const baseUrl = `${environment.apiUrl}/lots`;
 
@@ -48,5 +49,11 @@ export class LotService {
         DeviId: deviID
       }
     })
+  }
+  getLotHiddenForOuvrage(deviId:number):Observable<any>{
+    return this.http.get(`${baseUrl}/lotHiddenForOuvrage/${deviId}`)
+  }
+  getLotHiddenForCout(deviId:number):Observable<any>{
+    return this.http.get(`${baseUrl}/lotHiddenForCout/${deviId}`)
   }
 }

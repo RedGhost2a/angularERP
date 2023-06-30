@@ -93,6 +93,11 @@
       background-color: #FFFFFF;
     }
 
+    .container-cout {
+      background-color: #FFFFFF;
+      margin-left: 5%;
+    }
+
     .ouvrage-frais-chantier {
       display: flex;
       justify-content: space-around;
@@ -123,7 +128,8 @@
           font-size: 14px;
           font-weight: 400;
         }
-        .designation-ouvrage-frais-chantier-td{
+
+        .designation-ouvrage-frais-chantier-td {
           font-size: 12px;
           color: #334E68;
           font-weight: 500
@@ -135,7 +141,7 @@
 
     }
 
-    #quantity-ouvrage-frias-de-chantier, #quantity-ouvrage-frias {
+    #quantity-ouvrage-frias-de-chantier, #quantity-ouvrage-frias, #quantity-cout {
       position: relative;
       bottom: 12px;
       width: 60px;
@@ -144,12 +150,14 @@
     }
   }
 }
-#prix-arrondi-devis, #prix-arrondi-frais-chantier{
+
+#prix-arrondi-devis, #prix-arrondi-frais-chantier, #prix-arrondi-ouvrage-devis {
   position: relative;
   bottom: 12px;
   width: 100px;
 }
-.container-lot{
+
+.container-lot {
   display: flex;
   flex-direction: column;
 }
@@ -354,8 +362,6 @@
 }
 
 
-
-
 .sous-lot-headers {
   display: flex;
   flex-direction: row;
@@ -383,10 +389,12 @@
   margin: 5px;
   padding: 5px;
 }
-#input-fraisGeneraux{
+
+#input-fraisGeneraux {
   width: 40px;
 }
-#designation-ouvrage-fraisDeChantier, #designation-ouvrage-devis{
+
+#designation-ouvrage-fraisDeChantier, #designation-ouvrage-devis, #designation-cout {
   width: 400px;
   height: 130px;
 }
@@ -397,7 +405,7 @@
 }
 
 .bigContainerParams {
-  background-color: #F0F4F8 ;
+  background-color: #F0F4F8;
   height: 90vh;
   display: flex;
   flex-direction: column;

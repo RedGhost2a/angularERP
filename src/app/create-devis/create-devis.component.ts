@@ -45,6 +45,11 @@ import {first, switchMap} from "rxjs";
 import {FormCoutComponent} from "../form-cout/form-cout.component";
 import {DialogFormCoutComponent} from "../dialog-form-cout/dialog-form-cout.component";
 import {Cout} from "../_models/cout";
+import {FournisseurService} from "../_service/fournisseur.service";
+import {TypeCoutService} from "../_service/typeCout.service";
+import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
+import {log10} from "chart.js/helpers";
+import {DialogListCoutComponent} from "../dialog-list-cout/dialog-list-cout.component";
 
 // import {Json2CsvTransform} from "json2csv";
 
@@ -67,6 +72,7 @@ export class CreateDevisComponent implements OnInit {
   curentLotId!: number;
   currentSousLotId!: number;
   listOuvrage!: Ouvrage[];
+  listCout!: Cout[];
   listOuvrageFraisDeChantier!: Ouvrage[];
   selectedOuvrageIds: number [] = [];
   hiddenChildren = new Map<number, boolean>();
@@ -76,6 +82,7 @@ export class CreateDevisComponent implements OnInit {
   myFormGroup!: FormGroup;
   myFormGroupPrix!: FormGroup;
   myFormFraisGeneraux!: FormGroup;
+  formBAOuvrageHidden!: FormGroup;
   sommeLot: { prixLot: any; idLot: any }[] = [];
   coutDuDevis!: CoutDuDevis;
   sousLotOuvrageDuDevis!: SousLotOuvrage
@@ -94,28 +101,15 @@ export class CreateDevisComponent implements OnInit {
     }
     ,
   };
-  selectedIndex !:number;
+  selectedIndex !: number;
   hiddenLotId2 !: number;
-  hiddenCout : Cout [] = [];
+  hiddenCout: Cout [] = [];
   @ViewChild('aForm') aForm !: ElementRef;
   @ViewChild('f') f !: NgForm;
-  hidden : boolean = false;
-  hiddenSousLotId !: number;
+  hidden: boolean = false;
+  hiddenSousLotForOuvrageId !: number;
+  hiddenSousLotForCoutId !: number;
 
-  hiddenLotId!: number;
-  columnsToDisplay = [
-    "type",
-    "categorie",
-    "designation",
-    "unite",
-    "uRatio",
-    "ratio",
-    "efficience",
-    "quantite", "prixUnitaireHT",
-    "DSTotal", "PUHTEquilibre", "prixHTEquilibre",
-    "PUHTCalcule",
-    "prixHTCalcule", "boutons"
-  ];
 
 //TODO ON NE PEUT METTRE QUE UN SEUL ET MEME OUVRAGE PAR SOUS_LOT; //
 
@@ -126,6 +120,7 @@ export class CreateDevisComponent implements OnInit {
               private sousLotOuvrageService: SousLotOuvrageService, public dialog: MatDialog,
               private coutService: CoutService, private sousDetailPrixService: SousDetailPrixService,
               private ouvrageCoutService: OuvrageCoutService, public sharedData: DataSharingService,
+              private fournisseurService: FournisseurService, private typeCoutService: TypeCoutService
   ) {
     this.expandedLotId = undefined;
     const storedIndex = localStorage.getItem("index");
@@ -136,13 +131,8 @@ export class CreateDevisComponent implements OnInit {
   }
 
 
-
   ngOnInit() {
 
-    console.log('url',this.router.url)
-    this.hiddenLotId = this.devisService.getLotId()
-    this.hiddenSousLotId = this.devisService.getSousLotId()
-    console.log("hiddenLotId", this.hiddenLotId, this.hiddenSousLotId)
     console.log('url', this.router.url)
     transformVirguletoPoint()
     this.route.params.subscribe(params => {
@@ -168,6 +158,7 @@ export class CreateDevisComponent implements OnInit {
         devisId: new FormControl(this.devisId)
       });
     });
+    this.formBeneAndAleasOuvrageHidden()
     this.formQuantityOuvrage()
     this.formPrixArrondiOuvrage()
     this.getLotFraisDeChantier();
@@ -177,14 +168,15 @@ export class CreateDevisComponent implements OnInit {
     this.dataLoad = false;
 
     this.getDevisExport()
-   this.setSelectedIndex()
+    this.setSelectedIndex()
+    this.getSousLotHiddenForOuvrageId()
+    this.getSousLotHiddenForCoutId()
   }
-
 
 
   ngOnDestroy() {
     // this.updateDevisOnDestroy()
-   this.updateDevisOnDestroy()
+    this.updateDevisOnDestroy()
   }
 
   updateDevisOnDestroy() {
@@ -197,49 +189,74 @@ export class CreateDevisComponent implements OnInit {
     devisBDD.prixCalcHT += this.fraisDeChantier.prixCalcHT
     this.devisService.update(devisBDD, this.devisId).subscribe()
   }
-  onTabChanged(index:number) {
+
+  onTabChanged(index: number) {
     localStorage.setItem("index", index.toString())
   }
-  setSelectedIndex(){
-    setTimeout(()=>{
+
+  setSelectedIndex() {
+    setTimeout(() => {
       const index = localStorage.getItem("index")
       this.selectedIndex = parseInt(index ?? "0")
-    },200)
+    }, 200)
   }
 
-createHiddenLotAndSousLotAndOvrage(){
-  let dataForLot = {
-    designation: `Hidden Lot pour sous lot   n°: ${this.devisId}`,
-    devisId: this.devisId
-  };
+  openDialogCreateCout(listTypeCout: any, listFournisseur: any, currentOuvrage: any, sousLotOuvrageDuDevisId: any) {
+    console.log("create cout fournisseurs ?,", this.fournisseurService.fournisseurs)
+    console.log("create cout type cout ?,", this.typeCoutService.typeCouts)
+    this.dialog.open(DialogFormCoutComponent, {
+      // data: 'test',
+      data: [listTypeCout, listFournisseur, currentOuvrage],
+      width: '55%',
+      height: '60%'
+    }).afterClosed().subscribe(async coutDuDevis => {
+      console.log("after close souslot ouvrage ID", sousLotOuvrageDuDevisId)
+      console.log("after close coutdu devis prix unitaire response", coutDuDevis)
+      console.log("after close coutdu devis ratio response", coutDuDevis)
+      let prixOuvrage = 0;
+      prixOuvrage += coutDuDevis.prixUnitaire * (coutDuDevis.ratio)
+      console.log("after close prix de l'ouvrage calculer", prixOuvrage)
 
-  let dataForSousLot = {
-    designation: `Hidden Sous Lot pour  lot   n°: ${this.devisId}`,
-    devisId: this.devisId
-  };
+      this.sousLotOuvrageService.updatedPrice(sousLotOuvrageDuDevisId, {prixOuvrage: prixOuvrage}).subscribe((response) => {
+        this.getAllLots()
+      })
 
-  let dataForOuvrage = {
-    designation: `Hidden Ouvrage pour  sous lot  g n°: ${this.devisId}`,
-    benefice:0,
-    aleas:0,
-    unite: 'hiddenUnite',
-    ratio: 1,
-    uRatio: 'hiddenUnite',
-    prix:0,
-    fournisseur:'HiddenFournisseur',
-    alteredBenefOrAleas: false,
-    EntrepriseId: this.sharedData.entrepriseId,
-  };
+    });
+  }
 
+  createSousLotHiddenForOuvrageInLot(lotId: number) {
+    let dataForSousLot = {
+      designation: `SousLotHiddenForOuvrageDuDevisInLot${this.devis.id}`,
+      devisId: this.devis.id
+    }
+    this.sousLotService.createHiddenSouslot(dataForSousLot, lotId).subscribe((sousLotData) => {
+      this.openDialogCreate(sousLotData.sousLot.id)
+    }, (error) => {
+      console.error('Erreur lors de la création du sous-lot: ', error);
+    })
 
-  this.lotService.create(dataForLot).subscribe((data) => {
-    console.log("data.lot.lotId",data.lot.lotId)
+  }
 
-    this.sousLotService.create(dataForSousLot,data.lot.lotId).subscribe((sousLotData) => {
-      console.log("sousLotData.sousLot.sousLotId)",sousLotData.sousLot.id)
+  createHiddenSousLotAndOuvrageForCoutInLot(lotId: number) {
+    let dataForSousLot = {
+      designation: `SousLotHiddenForCoutDuDevisInLot${this.devis.id}`,
+      devisId: this.devis.id
+    }
+    this.sousLotService.createHiddenSouslot(dataForSousLot, lotId).subscribe((sousLotData) => {
+
+      let dataForOuvrage = {
+        designation: `OuvrageHiddenForCoutInLot${this.devisId}`,
+        benefice: this.devis.beneficeInPercent,
+        aleas: this.devis.aleasInPercent,
+        unite: 'hiddenUnite',
+        ratio: 1,
+        uRatio: 'hiddenUnite',
+        prix: 0,
+        alteredBenefOrAleas: false,
+        EntrepriseId: this.sharedData.entrepriseId,
+      };
+
       this.ouvrageService.createOuvrageDuDevis(dataForOuvrage).subscribe(response => {
-        console.log("response ouvrage cout du devis ", response)
-        // const prixOuvrage =
         this.sousLotOuvrageDuDevis = {
           SousLotId: sousLotData.sousLot.id,
           OuvrageDuDeviId: response.OuvrageDuDevis?.id,
@@ -255,42 +272,157 @@ createHiddenLotAndSousLotAndOvrage(){
           prixCalcHT: 0,
           prixUniCalcHT: 0
         }
-        console.log("sous lot ouvrage du devis", this.sousLotOuvrageDuDevis)
 
         this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe((data) => {
-          console.log("console", data)
-          // this.closeDialog()
+          this.typeCoutService.getAllTypeCouts(this.sharedData.entrepriseId).subscribe(typeCouts => {
+            this.fournisseurService.getAllFournisseurs(this.sharedData.entrepriseId).subscribe(fournisseurs => {
+              this.openDialogCreateCout(typeCouts, fournisseurs, response.OuvrageDuDevis, data[0].id)
+            })
+          })
         })
-        this.router.navigate([`/sousDetailPrix/${this.sousLotOuvrageDuDevis.OuvrageDuDeviId}`]);
-        console.log("dataOvrage",data)
+
+      })
+    })
+
+
+  }
+
+  importOuvrageInLot(lotId: number) {
+    let dataForSousLot = {
+      designation: `SousLotHiddenForOuvrageDuDevisInLot${this.devis.id}`,
+      devisId: this.devis.id
+    }
+    this.sousLotService.createHiddenSouslot(dataForSousLot, lotId).subscribe((sousLotData) => {
+      this.openDialog(sousLotData.sousLot.id)
+    })
+  }
+
+
+
+  openDialogImportCouts(lotId:number | null,sousLotId:number | null) {
+    console.log("devis id ",this.devis.id)
+    this.dialog.open(DialogListCoutComponent, {
+
+      panelClass: 'test',
+      data: [this.listCout, lotId, sousLotId, this.devis.id],
+      width: '90%',
+      height: '70%'
+    }).afterClosed().subscribe(async result => {
+      //tableau d'id des ouvrages
+      console.log("result after close", result.selectedOuvrageIds)
+      this.getAllLots();
+
+    });
+  }
+
+  createHiddenOuvrageForCoutInSousLot(sousLotId: number) {
+    let dataForOuvrage = {
+      designation: `OuvrageHiddenForCoutInLot${this.devisId}`,
+      benefice: this.devis.beneficeInPercent,
+      aleas: this.devis.aleasInPercent,
+      unite: 'hiddenUnite',
+      ratio: 1,
+      uRatio: 'hiddenUnite',
+      prix: 0,
+      alteredBenefOrAleas: false,
+      EntrepriseId: this.sharedData.entrepriseId,
+    };
+    this.ouvrageService.createOuvrageDuDevis(dataForOuvrage).subscribe(response => {
+      this.sousLotOuvrageDuDevis = {
+        SousLotId: sousLotId,
+        OuvrageDuDeviId: response.OuvrageDuDevis?.id,
+        prixOuvrage: response.prix,
+        prixUniVenteHT: 0,
+        prixVenteHT: 0,
+        quantityOuvrage: 1,
+        prixUniHT: 0,
+        prixEquiHT: 0,
+        prixUniEquiHT: 0,
+        beneficeInEuro: 0,
+        aleasInEuro: 0,
+        prixCalcHT: 0,
+        prixUniCalcHT: 0
+      }
+      this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe((data) => {
+        console.log("console", data)
+        this.typeCoutService.getAllTypeCouts(this.sharedData.entrepriseId).subscribe(typeCouts => {
+          this.fournisseurService.getAllFournisseurs(this.sharedData.entrepriseId).subscribe(fournisseurs => {
+            this.openDialogCreateCout(typeCouts, fournisseurs, response.OuvrageDuDevis, data[0].id)
+          })
+        })
       })
 
-    }, (error) => {
-      console.error('Erreur lors de la création du sous-lot: ', error);
     })
-  }, (error) => {
-    console.error('Erreur lors de la création du lot: ', error);
-  });
-
-}
 
 
-createHiddenLotForSousLotButton() {
-  let dataForLot = {
-    designation: `Hidden Lot pour sous lot   n°: ${this.devisId}`,
-    devisId: this.devisId
-  };
-
-  this.lotService.create(dataForLot).subscribe((data) => {
-    console.log("data",data.lot.lotId)
-    this.hiddenLotId2 = data.lot.lotId;  // Stocker l'ID du lot
-    this.showForm = true;  // Afficher le formulaire
-  })
-}
+  }
 
 
+  createHiddenLotAndSousLotAndOvrage() {
+    console.log('this devis ', this.devis)
+    let dataForOuvrage = {
+      designation: `OuvrageHiddenForCout${this.devisId}`,
+      benefice: this.devis.beneficeInPercent,
+      aleas: this.devis.aleasInPercent,
+      unite: 'hiddenUnite',
+      ratio: 1,
+      uRatio: 'hiddenUnite',
+      prix: 0,
+      alteredBenefOrAleas: false,
+      EntrepriseId: this.sharedData.entrepriseId,
+    };
+
+    this.ouvrageService.createOuvrageDuDevis(dataForOuvrage).subscribe(response => {
+      console.log("response ouvrage cout du devis ", response)
+      // const prixOuvrage =
+      this.sousLotOuvrageDuDevis = {
+        SousLotId: this.hiddenSousLotForCoutId,
+        OuvrageDuDeviId: response.OuvrageDuDevis?.id,
+        prixOuvrage: response.prix,
+        prixUniVenteHT: 0,
+        prixVenteHT: 0,
+        quantityOuvrage: 1,
+        prixUniHT: 0,
+        prixEquiHT: 0,
+        prixUniEquiHT: 0,
+        beneficeInEuro: 0,
+        aleasInEuro: 0,
+        prixCalcHT: 0,
+        prixUniCalcHT: 0
+      }
+      console.log("sous lot ouvrage du devis", this.sousLotOuvrageDuDevis)
+
+      this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe((data) => {
+        console.log("console", data)
+        // this.closeDialog()
+        this.typeCoutService.getAllTypeCouts(this.sharedData.entrepriseId).subscribe(typeCouts => {
+          console.log("liste des type de couts : ", typeCouts)
+          this.fournisseurService.getAllFournisseurs(this.sharedData.entrepriseId).subscribe(fournisseurs => {
+            console.log("liste des fournisseurs: ", fournisseurs)
+            console.log("sous lot ouvrage ?: ", this.sousLotOuvrageDuDevis)
+            this.openDialogCreateCout(typeCouts, fournisseurs, response.OuvrageDuDevis, data[0].id)
+          })
+        })
+      })
+
+    })
 
 
+  }
+
+
+  createHiddenLotForSousLotButton() {
+    // let dataForLot = {
+    //   designation: `Hidden Lot pour sous lot   n°: ${this.devisId}`,
+    //   devisId: this.devisId
+    // };
+    //
+    // this.lotService.create(dataForLot).subscribe((data) => {
+    //   console.log("data", data.lot.lotId)
+    //   this.hiddenLotId2 = data.lot.lotId;  // Stocker l'ID du lot
+    //   this.showForm = true;  // Afficher le formulaire
+    // })
+  }
 
 
   fraisGeneraux(): void {
@@ -298,7 +430,7 @@ createHiddenLotForSousLotButton() {
       this.devis.fraisGeneraux = (this.lotFraisDeChantier.prix + this.devis.debourseSecTotal) * (this.myFormFraisGeneraux.get('percentFraisGeneraux')?.value / 100)
       this.coutTotal();
       this.totalDepense()
-    }else{
+    } else {
       this.devis.fraisGeneraux = this.devis.debourseSecTotal * (this.myFormFraisGeneraux.get('percentFraisGeneraux')?.value / 100)
       this.coutTotal();
       this.totalDepense()
@@ -334,16 +466,17 @@ createHiddenLotForSousLotButton() {
   coutTotal(): void {
     if (this.lotFraisDeChantier.prix !== undefined) {
       this.devis.coutTotal = this.lotFraisDeChantier.prix + this.devis.debourseSecTotal + this.devis.fraisGeneraux
-      console.log("cout total debourse fonction",this.devis.fraisGeneraux)
+      console.log("cout total debourse fonction", this.devis.fraisGeneraux)
       this.coefEquilibre()
-    }else{
+    } else {
       this.devis.coutTotal = this.devis.debourseSecTotal + this.devis.fraisGeneraux
       this.coefEquilibre()
     }
   }
 
   coefEquilibre(): void {
-    if (this.lotFraisDeChantier.prix !== 0 && this.testLots[0].prix !== 0 && this.testLots[0].prix !== NaN) {
+    // if (this.lotFraisDeChantier.prix !== 0 && this.testLots[0].prix !== 0 && this.testLots[0].prix !== NaN) {
+    if (this.lotFraisDeChantier.prix !== 0 && this.testLots[0].prix !== NaN) {
       this.devis.coeffEquilibre = this.devis.coutTotal / this.devis.debourseSecTotal
       localStorage.setItem("coef", this.devis.coeffEquilibre.toString())
     }
@@ -354,6 +487,48 @@ createHiddenLotForSousLotButton() {
     this.myFormGroup = new FormGroup({
       quantityOuvrage: new FormControl(),
     });
+  }
+
+  formBeneAndAleasOuvrageHidden(): void {
+    this.formBAOuvrageHidden = new FormGroup({
+      benefice: new FormControl(),
+      aleas: new FormControl()
+    })
+  }
+
+  beneficeChange(ouvrageId: number) {
+    if (this.formBAOuvrageHidden.getRawValue().benefice !== null) {
+      this.ouvrageService.updateOuvrageDuDevis({
+        benefice: this.formBAOuvrageHidden.getRawValue().benefice,
+        alteredBenefOrAleas: true
+      }, ouvrageId).subscribe(() => {
+        this.formBAOuvrageHidden.controls['benefice'].setValue("");
+        this.ngOnInit()
+      })
+    }
+  }
+
+  aleasChange(ouvrageId: number) {
+    if (this.formBAOuvrageHidden.getRawValue().aleas !== null) {
+      this.ouvrageService.updateOuvrageDuDevis({
+        aleas: this.formBAOuvrageHidden.getRawValue().aleas,
+        alteredBenefOrAleas: true
+      }, ouvrageId).subscribe(() => {
+        this.formBAOuvrageHidden.controls['aleas'].setValue("");
+        this.ngOnInit()
+      })
+    }
+  }
+
+  deleteCout(coutId: number, ouvrageId: number) {
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.coutService.deleteCoutDuDevisByID(coutId).subscribe(() => {
+          this.ouvrageService.deleteOuvrageDuDevisByID(ouvrageId).subscribe(() => this.ngOnInit())
+        })
+      }
+    })
   }
 
   formFraisGeneraux(): void {
@@ -511,14 +686,14 @@ createHiddenLotForSousLotButton() {
   }
 
   allCalculOuvrageFraisDeChantier(): void {
-     this.fraisDeChantier.prixVenteHT = 0;
+    this.fraisDeChantier.prixVenteHT = 0;
 
     this.lotFraisDeChantier.SousLots.forEach(sousLot => {
       sousLot.OuvrageDuDevis.forEach(async ouvrageDuDevis => {
         if (ouvrageDuDevis.SousLotOuvrage) {
-        await this.sharedData.prixUnitaireHT(ouvrageDuDevis.SousLotOuvrage)
+          await this.sharedData.prixUnitaireHT(ouvrageDuDevis.SousLotOuvrage)
           ouvrageDuDevis.SousLotOuvrage.prixVenteHT = ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT * ouvrageDuDevis.SousLotOuvrage.quantityOuvrage
-           this.fraisDeChantier.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixVenteHT
+          this.fraisDeChantier.prixVenteHT += ouvrageDuDevis.SousLotOuvrage.prixVenteHT
         }
       })
 
@@ -640,6 +815,7 @@ createHiddenLotForSousLotButton() {
           : ouvrage?.prix
 
       }));
+    console.log("get somme ouvrage ? ", this.prixOuvrage)
   }
 
   updateSousLots(sousLot: SousLot, id: number) {
@@ -663,22 +839,22 @@ createHiddenLotForSousLotButton() {
       };
 
       let nombreOuvrage = 0
-      this.resultBeneficeLots = 0;
-      this.resultAleasLots = 0;
+      this.devis.moyenneBenefice = 0;
+      this.devis.moyenneAleas = 0;
       this.testLots = data.Lots;
       this.testLots.forEach(lot => {
         lot.SousLots.forEach(sousLot => {
-          console.log("----------------->",sousLot)
+          console.log("----------------->", sousLot)
           sousLot.prix = 0;
           this.getSommeSousLot(sousLot, lot)
           sousLot.OuvrageDuDevis.forEach(ouvrage => {
             if (ouvrage.designation.startsWith('Hidden')) {
-              if (ouvrage.CoutDuDevis){
+              if (ouvrage.CoutDuDevis) {
                 ouvrage.CoutDuDevis.forEach(cout => this.hiddenCout.push(cout));
 
               }
             }
-            console.log("ouvrageHIDDEN",this.hiddenCout)
+            console.log("ouvrageHIDDEN", this.hiddenCout)
             nombreOuvrage++;
             this.devis.moyenneAleas += ouvrage.aleas
             this.devis.moyenneBenefice += ouvrage.benefice
@@ -690,11 +866,10 @@ createHiddenLotForSousLotButton() {
       this.devis.moyenneBenefice = this.devis.moyenneBenefice / nombreOuvrage
       this.sharedData.entrepriseId = data.EntrepriseId;
       this.getAllOuvrage(data.EntrepriseId);
+      this.getAllCouts(data.EntrepriseId)
       // this.getAllOuvrageFraisDeChantier(data.EntrepriseId)
       this.getSommeOuvrage()
       this.getSommeOuvrageFraisDeChantier()
-      this.moyenneAleas()
-      this.moyenneBenefice()
       this.moyenneBeneficeAleasTotal()
     })
   }
@@ -720,6 +895,12 @@ createHiddenLotForSousLotButton() {
     })
   }
 
+  getAllCouts(id: number) {
+    this.coutService.getAll(id).subscribe(data => {
+      this.listCout = data;
+    })
+  }
+
   createLOT(): void {
     this.lotService.create(this.form.getRawValue()).subscribe(() => {
       this.getAllLots()
@@ -736,9 +917,6 @@ createHiddenLotForSousLotButton() {
       this.getLotFraisDeChantier()
     })
   }
-
-
-
 
 
   deleteLot(id: number): void {
@@ -788,8 +966,19 @@ createHiddenLotForSousLotButton() {
     });
   }
 
-  openDialogCreate(sousLotId: number) {
+  getSousLotHiddenForOuvrageId() {
+    this.sousLotService.getSousLotHiddenForOuvrage(this.devis.id).subscribe(data => {
+      this.hiddenSousLotForOuvrageId = data.id
+    });
+  }
 
+  getSousLotHiddenForCoutId() {
+    this.sousLotService.getSousLotHiddenForCout(this.devis.id).subscribe(data => {
+      this.hiddenSousLotForCoutId = data.id
+    });
+  }
+
+  openDialogCreate(sousLotId: number) {
     this.dialog.open(FormOuvrageComponent, {
       data: {sousLotId: sousLotId, devisId: this.devisId},
       width: '90%',
@@ -797,9 +986,7 @@ createHiddenLotForSousLotButton() {
     }).afterClosed().subscribe(() => {
       this.getAllLots()
       this.getLotFraisDeChantier();
-
-
-    });
+    })
   }
 
 
@@ -824,7 +1011,6 @@ createHiddenLotForSousLotButton() {
     });
   }
 
-
   createOuvrageDuDevis(sousLotId: number) {
     let prixOuvrage = 0;
     //boucle sur tous les ouvrages selectionner dans la modal
@@ -832,7 +1018,7 @@ createHiddenLotForSousLotButton() {
       //recupere les ouvrages grace a leurs id
       this.ouvrageService.getById(ouvrageId).subscribe(data => {
         //creer un ouvrageDuDevis avec les données de l'ouvrage
-        const allDataOuvrageDevis = {...data,alteredBenefOrAleas:true}
+        const allDataOuvrageDevis = {...data, alteredBenefOrAleas: true}
         this.ouvrageService.createOuvrageDuDevis(allDataOuvrageDevis).subscribe(response => {
           console.log(data)
           //recupere l'id de l'ouvrageDuDevis qui viens d'etre creer, et
