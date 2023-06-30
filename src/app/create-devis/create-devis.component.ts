@@ -102,6 +102,20 @@ export class CreateDevisComponent implements OnInit {
   hidden : boolean = false;
   hiddenSousLotId !: number;
 
+  hiddenLotId!: number;
+  columnsToDisplay = [
+    "type",
+    "categorie",
+    "designation",
+    "unite",
+    "uRatio",
+    "ratio",
+    "efficience",
+    "quantite", "prixUnitaireHT",
+    "DSTotal", "PUHTEquilibre", "prixHTEquilibre",
+    "PUHTCalcule",
+    "prixHTCalcule", "boutons"
+  ];
 
 //TODO ON NE PEUT METTRE QUE UN SEUL ET MEME OUVRAGE PAR SOUS_LOT; //
 
@@ -126,6 +140,10 @@ export class CreateDevisComponent implements OnInit {
   ngOnInit() {
 
     console.log('url',this.router.url)
+    this.hiddenLotId = this.devisService.getLotId()
+    this.hiddenSousLotId = this.devisService.getSousLotId()
+    console.log("hiddenLotId", this.hiddenLotId, this.hiddenSousLotId)
+    console.log('url', this.router.url)
     transformVirguletoPoint()
     this.route.params.subscribe(params => {
       this.devis.id = +params['id'];
@@ -160,7 +178,6 @@ export class CreateDevisComponent implements OnInit {
 
     this.getDevisExport()
    this.setSelectedIndex()
-
   }
 
 
@@ -646,8 +663,8 @@ createHiddenLotForSousLotButton() {
       };
 
       let nombreOuvrage = 0
-      this.devis.moyenneBenefice = 0;
-      this.devis.moyenneAleas = 0;
+      this.resultBeneficeLots = 0;
+      this.resultAleasLots = 0;
       this.testLots = data.Lots;
       this.testLots.forEach(lot => {
         lot.SousLots.forEach(sousLot => {
@@ -676,6 +693,8 @@ createHiddenLotForSousLotButton() {
       // this.getAllOuvrageFraisDeChantier(data.EntrepriseId)
       this.getSommeOuvrage()
       this.getSommeOuvrageFraisDeChantier()
+      this.moyenneAleas()
+      this.moyenneBenefice()
       this.moyenneBeneficeAleasTotal()
     })
   }
@@ -717,6 +736,9 @@ createHiddenLotForSousLotButton() {
       this.getLotFraisDeChantier()
     })
   }
+
+
+
 
 
   deleteLot(id: number): void {
@@ -767,6 +789,7 @@ createHiddenLotForSousLotButton() {
   }
 
   openDialogCreate(sousLotId: number) {
+
     this.dialog.open(FormOuvrageComponent, {
       data: {sousLotId: sousLotId, devisId: this.devisId},
       width: '90%',
@@ -800,6 +823,7 @@ createHiddenLotForSousLotButton() {
 
     });
   }
+
 
   createOuvrageDuDevis(sousLotId: number) {
     let prixOuvrage = 0;

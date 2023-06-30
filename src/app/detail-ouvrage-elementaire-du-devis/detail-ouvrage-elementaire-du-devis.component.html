@@ -16,17 +16,17 @@
 
           <mat-form-field appearance="legacy" style="width: 400px">
             <mat-label style="font-size: 1.1rem">Désignation</mat-label>
-            <input formControlName="designation" matInput [value]="ouvrageElementaire.designation" >
+            <input formControlName="designation" matInput [value]="ouvrageElementaire.designation">
           </mat-form-field>
 
           <mat-form-field appearance="legacy" style="width: 60px">
             <mat-label style="font-size: 1.1rem">Proportion</mat-label>
-            <input type="number" [value]="ouvrageElementaire.proportion"  formControlName="proportion" matInput>
+            <input type="number" [value]="ouvrageElementaire.proportion" formControlName="proportion" matInput>
           </mat-form-field>
 
           <mat-form-field appearance="legacy" style="width: 60px">
             <mat-label style="font-size: 1.1rem">Quantité</mat-label>
-            <input type="number" [value]="ouvrageElementaire.quantite"  formControlName="proportion" matInput>
+            <input type="number" [value]="ouvrageElementaire.quantite" formControlName="proportion" matInput>
           </mat-form-field>
 
 
@@ -45,12 +45,6 @@
             <mat-label style="font-size: 1.1rem">Remarques</mat-label>
             <input formControlName="remarques" matInput [value]="ouvrageElementaire.remarques">
           </mat-form-field>
-
-
-
-
-
-
 
 
           <mat-form-field appearance="legacy" style="width: 120px">
@@ -74,7 +68,8 @@
 
     </div>
 
-    <ng-container *ngIf="this.coutOfOuvrageElem && this.coutOfOuvrageElem.length ; then someContent else otherContent"></ng-container>
+    <ng-container
+      *ngIf="this.coutOfOuvrageElem && this.coutOfOuvrageElem.length ; then someContent else otherContent"></ng-container>
     <!--    <ng-container *ngIf="cout && cout.length ; then someContent else otherContent"></ng-container>-->
 
     <!--              <button routerLink="/ajoutCout/{{ouvrage.id}}" mat-raised-button>Importer un composant</button>-->
@@ -104,10 +99,10 @@
         <ng-container matColumnDef="ratio">
           <th mat-header-cell *matHeaderCellDef> Ratio</th>
           <td mat-cell *matCellDef="let cout">
-<!--                      {{cout.OuvragesElementairesCoutsDuDevis.ratio}}-->
+            <!--                      {{cout.OuvragesElementairesCoutsDuDevis.ratio}}-->
             <mat-form-field appearance="legacy" [formGroup]="formCout" style="width: 30px">
               <input type="number" (keyup.enter)="ratioChange(cout.id)" formControlName="ratio" matInput required
-                     [placeholder]="cout.OuvragesElementairesCoutsDuDevis.ratio">
+                     [placeholder]="cout.OuvrElemCoutsDuDevis.ratio">
             </mat-form-field>
 
           </td>
@@ -115,7 +110,7 @@
         <ng-container matColumnDef="uRatio">
           <th mat-header-cell *matHeaderCellDef> U/Ratio</th>
           <td mat-cell *matCellDef="let cout">
-            {{cout.OuvragesElementairesCoutsDuDevis.uRatio}}
+            {{cout.OuvrElemCoutsDuDevis.uRatio}}
           </td>
 
         </ng-container>
@@ -123,11 +118,11 @@
         <ng-container matColumnDef="efficience">
           <th mat-header-cell *matHeaderCellDef>Efficience</th>
           <td mat-cell *matCellDef="let cout">
-<!--            {{cout.OuvragesElementairesCoutsDuDevis.efficience}}-->
+            <!--            {{cout.OuvragesElementairesCoutsDuDevis.efficience}}-->
             <mat-form-field appearance="legacy" [formGroup]="formCout" style="width: 30px">
               <input type="number" (keyup.enter)="efficienceChange(cout.id)" formControlName="efficience" matInput
                      required
-                     [placeholder]="cout.OuvragesElementairesCoutsDuDevis.efficience">
+                     [placeholder]="cout.OuvrElemCoutsDuDevis.efficience">
             </mat-form-field>
           </td>
         </ng-container>
@@ -139,15 +134,15 @@
           <td mat-cell *matCellDef="let cout"> {{cout.prixUnitaire}}
           </td>
         </ng-container>
-        <ng-container matColumnDef="DSTotal" >
+        <ng-container matColumnDef="DSTotal">
           <th mat-header-cell *matHeaderCellDef> DS Total</th>
           <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.debourseSecTotal | number : '1.2-2'}} €</td>
         </ng-container>
-        <ng-container matColumnDef="PUHTEquilibre" >
+        <ng-container matColumnDef="PUHTEquilibre">
           <th mat-header-cell *matHeaderCellDef> PU HT équilibre</th>
           <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixUnitaireEquiHT | number : '1.2-2'}} €</td>
         </ng-container>
-        <ng-container matColumnDef="prixHTEquilibre" >
+        <ng-container matColumnDef="prixHTEquilibre">
           <th mat-header-cell *matHeaderCellDef> Prix HT équilibre</th>
           <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixEquiHT | number : '1.2-2' }} €</td>
         </ng-container>
@@ -155,7 +150,7 @@
           <th mat-header-cell *matHeaderCellDef>PU HT calculé</th>
           <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixUnitaireCalcHT | number : '1.2-2'}} €</td>
         </ng-container>
-        <ng-container matColumnDef="prixHTCalcule" >
+        <ng-container matColumnDef="prixHTCalcule">
           <th mat-header-cell *matHeaderCellDef>Prix HT calculé</th>
           <td mat-cell *matCellDef="let coutDuDevis"> {{coutDuDevis.prixCalcHT | number : '1.2-2'}} €</td>
         </ng-container>
@@ -167,19 +162,19 @@
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let cout">
 
-                        <mat-icon [matMenuTriggerFor]="boutonCout">more_vert</mat-icon>
-                        <mat-menu class="menuBoutonCout" #boutonCout>
-                          <!--          <button [routerLink]="['/cout', cout.id]" mat-button color="primary" >-->
-<!--                          <button (click)="openDialogCreate(cout)" mat-button color="primary">-->
-<!--                            <mat-icon>create</mat-icon>-->
-<!--                            Modifier-->
-<!--                          </button>-->
-                          <br>
-                          <button (click)="deleteCoutFromOuvElem(cout.id)" mat-button color="warn">
-                            <mat-icon>clear</mat-icon>
-                            Supprimer
-                          </button>
-                        </mat-menu>
+            <mat-icon [matMenuTriggerFor]="boutonCout">more_vert</mat-icon>
+            <mat-menu class="menuBoutonCout" #boutonCout>
+              <!--          <button [routerLink]="['/cout', cout.id]" mat-button color="primary" >-->
+              <!--                          <button (click)="openDialogCreate(cout)" mat-button color="primary">-->
+              <!--                            <mat-icon>create</mat-icon>-->
+              <!--                            Modifier-->
+              <!--                          </button>-->
+              <br>
+              <button (click)="deleteCoutFromOuvElem(cout.id)" mat-button color="warn">
+                <mat-icon>clear</mat-icon>
+                Supprimer
+              </button>
+            </mat-menu>
 
           </td>
         </ng-container>

@@ -26,10 +26,6 @@ import {UniteForForm} from "../_models/uniteForForm";
 import {OuvrageCout} from "../_models/ouvrageCout";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {UniteForFormService} from "../_service/uniteForForm.service";
-import { delay } from 'rxjs/operators';
-import {
-  OuvrageElementaireAddOuvrageComponent
-} from "../ouvrage-elementaire-add-ouvrage/ouvrage-elementaire-add-ouvrage.component";
 import {
   DialogListOuvrageElementaireComponent
 } from "../dialog-list-ouvrage-elementaire/dialog-list-ouvrage-elementaire.component";
@@ -39,7 +35,6 @@ import {MetreService} from "../_service/metre.service";
 import {Metre} from "../_models/metre";
 
 import {isNumber} from "chart.js/helpers";
-import {OuvrageDuDevis} from "../_models/ouvrage-du-devis";
 import {OuvrageElementaire} from "../_models/ouvrage-elementaire";
 
 @Component({
@@ -96,6 +91,7 @@ export class SousDetailPrixComponent implements OnInit {
   formMetre !: FormGroup;
   // formMetre !: FormGroup;
   formOuvrage!: FormGroup;
+  formOuvrageOE!: FormGroup;
   ouvrageCoutDuDevis!: OuvrageCoutDuDevis
   textButtonBack: string = "Retour au devis";
   tableau: any = []
@@ -110,7 +106,7 @@ export class SousDetailPrixComponent implements OnInit {
               public dialog: MatDialog, private sousLotOuvrageService: SousLotOuvrageService, private fournisseurService: FournisseurService,
               private typeCoutService: TypeCoutService, private ouvrageCoutService: OuvrageCoutService, private metreService: MetreService,
               private router: Router, private uniteForFormService: UniteForFormService, @Inject(TOASTR_TOKEN) private toastr: Toastr,
-              private ouvrageElementaireService:OuvrageElementaireService,
+              private ouvrageElementaireService: OuvrageElementaireService,
               private formBuilder: FormBuilder, private cdr: ChangeDetectorRef
   ) {
     transformVirguletoPoint()
@@ -141,7 +137,7 @@ export class SousDetailPrixComponent implements OnInit {
         this.currentOuvrage = data;
         this.dataSharingService.ouvrage = data;
         // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = 10;
-        console.log("OE",this.currentOuvrage)
+        console.log("OE", this.currentOuvrage)
         if (this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage) {
           // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = this.currentOuvrage.prix
         }
@@ -176,6 +172,7 @@ export class SousDetailPrixComponent implements OnInit {
     // return new Observable((observer) => {
     this.createFormCout();
     this.createFormOuvrage()
+    this.createFormOuvrageELem()
     // this.createFormMetre();
     console.log("debut ngOninit")
     this.route.params.subscribe(async params => {
@@ -185,7 +182,7 @@ export class SousDetailPrixComponent implements OnInit {
         this.currentOuvrage = data;
         this.dataSharingService.ouvrage = data;
         // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = 10;
-        console.log("aaaazaz",this.currentOuvrage)
+        console.log("aaaazaz", this.currentOuvrage)
         if (this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage) {
           // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = this.currentOuvrage.prix
         }
@@ -329,7 +326,19 @@ export class SousDetailPrixComponent implements OnInit {
     }
   }
 
-  quantityChange(id:number|null) {
+  propChangeOuvrElem(id: number) {
+    const prop = this.formOuvrageOE.getRawValue().proportion;
+    console.log(prop)
+
+    this.ouvrageElementaireService.updateOuvrageDuDevis({proportion: prop}, id).subscribe(() => {
+      this.initialCalcul();
+      this.calculQUantiteOE();
+    });
+
+
+  }
+
+  quantityChange() {
     const quantite = this.formOuvrage.getRawValue().quantity;
 
     if (quantite !== null && this.currentOuvrage.SousLotOuvrage && this.currentOuvrage?.SousLotOuvrage.id) {
@@ -339,16 +348,7 @@ export class SousDetailPrixComponent implements OnInit {
         this.calculQUantiteOE();
       });
     }
-    else if (quantite !== null && this.currentOuvrage.OuvrElemDuDevis) {
-      const ouvrElemDuDevis = this.currentOuvrage.OuvrElemDuDevis.find((oe:any) => oe.id === id);
 
-      if(ouvrElemDuDevis) {
-        this.ouvrageElementaireService.updateOuvrageDuDevis(quantite, id).subscribe(() => {
-          this.initialCalcul();
-          this.calculQUantiteOE();
-        });
-      }
-    }
   }
 
 
@@ -380,6 +380,13 @@ export class SousDetailPrixComponent implements OnInit {
       aleas: new FormControl(),
       quantity: new FormControl(),
       alteredBenefOrAleas: new FormControl()
+    })
+  }
+
+  createFormOuvrageELem() {
+    this.formOuvrageOE = new FormGroup({
+      proportion: new FormControl(),
+      quantite: new FormControl(),
     })
   }
 
@@ -462,88 +469,88 @@ export class SousDetailPrixComponent implements OnInit {
 
   testpush(index: number) {
     // setTimeout(() => {
-      console.log("value input", index)
-      const metresArray = this.formMetre.get('metres') as FormArray;
-      const metreFormGroup = metresArray.controls[index] as FormGroup;
-      if (metreFormGroup.controls['longueur'] && !metreFormGroup.controls['largeur'] && !metreFormGroup.controls['hauteur']) {
-        const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
-        const metreIdFormControl = metreFormGroup.controls['metreId'] as FormControl;
-        console.log("metre id fotm control", metreIdFormControl.value)
-        if (metreIdFormControl.value === '') {
-          let metrePush: Metre = {
-            id: 0,
-            longueur: longueurFormControl.value,
-            OuvrageDuDeviId: this.currentOuvrage.id
-          }
-          this.metreService.createMetre(metrePush).subscribe()
-        } else {
-          let metrePush: Metre = {
-            id: metreIdFormControl.value,
-            longueur: longueurFormControl.value,
-            OuvrageDuDeviId: this.currentOuvrage.id
-          }
-          this.metreService.updateMetre(metrePush, metrePush.id).subscribe()
+    console.log("value input", index)
+    const metresArray = this.formMetre.get('metres') as FormArray;
+    const metreFormGroup = metresArray.controls[index] as FormGroup;
+    if (metreFormGroup.controls['longueur'] && !metreFormGroup.controls['largeur'] && !metreFormGroup.controls['hauteur']) {
+      const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
+      const metreIdFormControl = metreFormGroup.controls['metreId'] as FormControl;
+      console.log("metre id fotm control", metreIdFormControl.value)
+      if (metreIdFormControl.value === '') {
+        let metrePush: Metre = {
+          id: 0,
+          longueur: longueurFormControl.value,
+          OuvrageDuDeviId: this.currentOuvrage.id
         }
+        this.metreService.createMetre(metrePush).subscribe()
+      } else {
+        let metrePush: Metre = {
+          id: metreIdFormControl.value,
+          longueur: longueurFormControl.value,
+          OuvrageDuDeviId: this.currentOuvrage.id
+        }
+        this.metreService.updateMetre(metrePush, metrePush.id).subscribe()
       }
-      if (metreFormGroup.controls['longueur'] && metreFormGroup.controls['largeur'] && !metreFormGroup.controls['hauteur']) {
-        const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
-        const largeurFormControl = metreFormGroup.controls['largeur'] as FormControl;
-        let metreIdFormControl = metreFormGroup.controls['metreId'] as FormControl;
+    }
+    if (metreFormGroup.controls['longueur'] && metreFormGroup.controls['largeur'] && !metreFormGroup.controls['hauteur']) {
+      const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
+      const largeurFormControl = metreFormGroup.controls['largeur'] as FormControl;
+      let metreIdFormControl = metreFormGroup.controls['metreId'] as FormControl;
 
-        if (metreIdFormControl.value === '' && isNumber(longueurFormControl.value)  && isNumber(largeurFormControl.value)) {
-          let metrePush: Metre = {
-            id: 0,
-            longueur: longueurFormControl.value,
-            largeur: largeurFormControl.value,
-            OuvrageDuDeviId: this.currentOuvrage.id
-          }
-          this.metreService.createMetre(metrePush).subscribe((data:any)=>{
-            console.log('retour de create ', data)
-            metreFormGroup.controls['metreId'].setValue(data.id)
-
-            // metreIdFormControl.value = data.metre.id
-          })
+      if (metreIdFormControl.value === '' && isNumber(longueurFormControl.value) && isNumber(largeurFormControl.value)) {
+        let metrePush: Metre = {
+          id: 0,
+          longueur: longueurFormControl.value,
+          largeur: largeurFormControl.value,
+          OuvrageDuDeviId: this.currentOuvrage.id
         }
-        if (metreIdFormControl.value !== '' && isNumber(longueurFormControl.value)  && isNumber(largeurFormControl.value)) {
+        this.metreService.createMetre(metrePush).subscribe((data: any) => {
+          console.log('retour de create ', data)
+          metreFormGroup.controls['metreId'].setValue(data.id)
 
-          let metrePush: Metre = {
-            id: metreIdFormControl.value,
-            longueur: longueurFormControl.value,
-            largeur: largeurFormControl.value,
-            OuvrageDuDeviId: this.currentOuvrage.id
-          }
-          this.metreService.updateMetre(metrePush, metrePush.id).subscribe()
-        }
+          // metreIdFormControl.value = data.metre.id
+        })
       }
-      if (metreFormGroup.controls['longueur'] && metreFormGroup.controls['largeur'] && metreFormGroup.controls['hauteur']) {
-        const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
-        const largeurFormControl = metreFormGroup.controls['largeur'] as FormControl;
-        const hauteurFormControl = metreFormGroup.controls['hauteur'] as FormControl;
-        const metreIdFormControl = metreFormGroup.controls['metreId'] as FormControl;
+      if (metreIdFormControl.value !== '' && isNumber(longueurFormControl.value) && isNumber(largeurFormControl.value)) {
 
-        if (metreIdFormControl.value === '') {
-          let metrePush: Metre = {
-            id: 0,
-            longueur: longueurFormControl.value,
-            largeur: largeurFormControl.value,
-            hauteur: hauteurFormControl.value,
-            OuvrageDuDeviId: this.currentOuvrage.id
-          }
-          this.metreService.createMetre(metrePush).subscribe((data)=>{
-            console.log('retour de create ', data)
-          })
-        } else {
-          let metrePush: Metre = {
-            id: metreIdFormControl.value,
-            longueur: longueurFormControl.value,
-            largeur: largeurFormControl.value,
-            hauteur: hauteurFormControl.value,
-
-            OuvrageDuDeviId: this.currentOuvrage.id
-          }
-          this.metreService.updateMetre(metrePush, metrePush.id).subscribe()
+        let metrePush: Metre = {
+          id: metreIdFormControl.value,
+          longueur: longueurFormControl.value,
+          largeur: largeurFormControl.value,
+          OuvrageDuDeviId: this.currentOuvrage.id
         }
+        this.metreService.updateMetre(metrePush, metrePush.id).subscribe()
       }
+    }
+    if (metreFormGroup.controls['longueur'] && metreFormGroup.controls['largeur'] && metreFormGroup.controls['hauteur']) {
+      const longueurFormControl = metreFormGroup.controls['longueur'] as FormControl;
+      const largeurFormControl = metreFormGroup.controls['largeur'] as FormControl;
+      const hauteurFormControl = metreFormGroup.controls['hauteur'] as FormControl;
+      const metreIdFormControl = metreFormGroup.controls['metreId'] as FormControl;
+
+      if (metreIdFormControl.value === '') {
+        let metrePush: Metre = {
+          id: 0,
+          longueur: longueurFormControl.value,
+          largeur: largeurFormControl.value,
+          hauteur: hauteurFormControl.value,
+          OuvrageDuDeviId: this.currentOuvrage.id
+        }
+        this.metreService.createMetre(metrePush).subscribe((data) => {
+          console.log('retour de create ', data)
+        })
+      } else {
+        let metrePush: Metre = {
+          id: metreIdFormControl.value,
+          longueur: longueurFormControl.value,
+          largeur: largeurFormControl.value,
+          hauteur: hauteurFormControl.value,
+
+          OuvrageDuDeviId: this.currentOuvrage.id
+        }
+        this.metreService.updateMetre(metrePush, metrePush.id).subscribe()
+      }
+    }
 
     // }, 100)
   }
@@ -705,16 +712,14 @@ export class SousDetailPrixComponent implements OnInit {
   // }
 
 
-
-
   async debousesSecTotalCout() {
     this.totalDBS.prixOuvrage = 0
     if (this.currentOuvrage.OuvrElemDuDevis) {
-      this.currentOuvrage.OuvrElemDuDevis.forEach((coutDuDevis: CoutDuDevis)  => {
-        console.log("zzzz", coutDuDevis)
-        if (coutDuDevis.prix !== undefined && coutDuDevis.prix !== null) {
+      this.currentOuvrage.OuvrElemDuDevis.forEach((OE: CoutDuDevis) => {
+        console.log("zzzz", OE)
+        if (OE.prix !== undefined && OE.prix !== null) {
 
-          this.totalDBS.prixOuvrage += coutDuDevis.prix
+          this.totalDBS.prixOuvrage += OE.prix
         }
       })
     }
@@ -777,12 +782,13 @@ export class SousDetailPrixComponent implements OnInit {
       })
     }
   }
+
   calculQUantiteOE() {
     if (this.currentOuvrage.OuvrElemDuDevis) {
       console.log("OE", this.currentOuvrage.OuvrElemDuDevis);
 
-      const updatePromises = this.currentOuvrage.OuvrElemDuDevis.map((OuvrageElementaire:OuvrageElementaire) => {
-        if ( this.currentOuvrage.SousLotOuvrage) {
+      const updatePromises = this.currentOuvrage.OuvrElemDuDevis.map((OuvrageElementaire: OuvrageElementaire) => {
+        if (this.currentOuvrage.SousLotOuvrage) {
           OuvrageElementaire.quantite = this.currentOuvrage.SousLotOuvrage.quantityOuvrage * OuvrageElementaire.proportion;
           console.log("apres calcul, quantite:", OuvrageElementaire.quantite);
         }
@@ -802,7 +808,6 @@ export class SousDetailPrixComponent implements OnInit {
   }
 
 
-
   openDialogImport(ouvragDuDevisId: number) {
     this.dialog.open(DialogListCoutComponent, {
       panelClass: 'test',
@@ -820,7 +825,7 @@ export class SousDetailPrixComponent implements OnInit {
     console.log(this.ouvrageID)
     this.dialog.open(DialogListOuvrageElementaireComponent, {
       panelClass: 'test',
-       data: this.ouvrageID,
+      data: this.ouvrageID,
       width: '90%',
       height: '70%'
     }).afterClosed().subscribe(async result => {
@@ -828,13 +833,14 @@ export class SousDetailPrixComponent implements OnInit {
 
     });
   }
+
   openDialogCreateOuvrageElem(ouvrage: Ouvrage | null) {
     this.dialog.open(FormOuvrageElementaireComponent, {
       data: this.ouvrageID,
       width: '70%',
       height: '35%'
     }).afterClosed().subscribe(async result => {
-      console.log( "result",result)
+      console.log("result", result)
       this.ngOnInit()
       this.initialCalcul()
 
