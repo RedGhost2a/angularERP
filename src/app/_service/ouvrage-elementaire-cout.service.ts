@@ -3,6 +3,7 @@ import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {OuvrageElementaireCout} from "../_models/ouvrage-elementaire-cout";
+import {OuvrageCoutDuDevis} from "../_models/ouvrageCoutDuDevis";
 const baseUrl = `${environment.apiUrl}/ouvragesElementaireCouts`;
 
 @Injectable({
@@ -47,9 +48,10 @@ export class OuvrageElementaireCoutService {
     return this.http.put<OuvrageElementaireCout>(`${baseUrl}/${coutId}/${ouvrageId}`, ouvrageElemCout)
   }
 
-  // updateOuvrageCoutDuDevis(coutDuDeviId: number, ouvrageDuDeviId: number, ouvrageCoutDuDevis: OuvrageCoutDuDevis): Observable<OuvrageCoutDuDevis> {
-  //   return this.http.put<OuvrageCoutDuDevis>(`${baseUrl}DuDevis/${coutDuDeviId}/${ouvrageDuDeviId}`, ouvrageCoutDuDevis)
-  // }
+  updateOuvrageCoutDuDevis(coutDuDeviId: number, OuvrElemDuDeviId: number, ouvrageCoutDuDevis: OuvrageCoutDuDevis): Observable<OuvrageCoutDuDevis> {
+    console.log(coutDuDeviId,ouvrageCoutDuDevis,OuvrElemDuDeviId)
+    return this.http.put<OuvrageCoutDuDevis>(`${baseUrl}DuDevis/${coutDuDeviId}/${OuvrElemDuDeviId}`, ouvrageCoutDuDevis)
+  }
 
   //A voir pour remplacer la fonction updateOuvrageCoutDuDevis dans le component createdevis.ts
   createOuvrageElemCoutDuDevis(data: any): Observable<any> {

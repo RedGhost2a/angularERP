@@ -342,7 +342,7 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
 
   openUniteForFormDialog(): void {
     const dialogRef = this.dialog.open(DialogUniteForFormComponent, {
-      width: '500px',
+       height: '50%',
       // data: { form: this.importForm }
     });
 

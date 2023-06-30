@@ -33,7 +33,7 @@
               <div class="itemsParams" *ngIf="this.currentOuvrage.SousLotOuvrage !== undefined">
                 <!--            <p>{{this.currentOuvrage.SousLotOuvrage?.quantityOuvrage}}</p>-->
                 <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 80px">
-                  <input (keyup.enter)="quantityChange()" formControlName="quantity" matInput required
+                  <input (keyup.enter)="quantityChange(null)" formControlName="quantity" matInput required
                          [placeholder]="this.currentOuvrage.SousLotOuvrage.quantityOuvrage.toString()">
                 </mat-form-field>
                 <p>{{this.currentOuvrage.unite}}</p>
@@ -213,6 +213,16 @@
           <th mat-header-cell  *matHeaderCellDef> Désignation </th>
           <td mat-cell routerLink="/ouvrages-elementaires-du-devis/{{ouvrageElem.id}}" *matCellDef="let ouvrageElem"> {{ouvrageElem.designation}} </td>
         </ng-container>
+        <ng-container matColumnDef="quantite">
+          <th mat-header-cell *matHeaderCellDef> Quantite </th>
+          <td mat-cell  *matCellDef="let ouvrageElem">
+            <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 80px">
+              <input (keyup.enter)="quantityChange(ouvrageElem.id)" formControlName="quantity" matInput required
+                     [placeholder]="ouvrageElem.quantite">
+            </mat-form-field>
+<!--            {{ouvrageElem.quantite}}-->
+          </td>
+        </ng-container>
         <ng-container matColumnDef="proportion">
           <th mat-header-cell *matHeaderCellDef> Proportion d'OE/U d'ouvrage </th>
           <td mat-cell routerLink="/ouvrages-elementaires-du-devis/{{ouvrageElem.id}}" *matCellDef="let ouvrageElem"> {{ouvrageElem.proportion}} </td>
@@ -222,7 +232,7 @@
           <td mat-cell routerLink="/ouvrages-elementaires-du-devis/{{ouvrageElem.id}}" *matCellDef="let ouvrageElem"> {{ouvrageElem.unite}} </td>
         </ng-container>
         <ng-container matColumnDef="prix">
-          <th mat-header-cell *matHeaderCellDef>Prix unitaire</th>
+          <th mat-header-cell *matHeaderCellDef>Ds total</th>
           <td mat-cell routerLink="/ouvrages-elementaires-du-devis/{{ouvrageElem.id}}" *matCellDef="let ouvrageElem"> {{ouvrageElem.prix}} </td>
           <th mat-header-cell *matHeaderCellDef>  </th>
         </ng-container>

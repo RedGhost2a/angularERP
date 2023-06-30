@@ -12,6 +12,8 @@ export interface OuvrageElementaire {
   CoutDuDevis?:Cout[],
   uniteproportionOE:string;
   remarques:string;
+  quantite?:number;
+
 
 
 

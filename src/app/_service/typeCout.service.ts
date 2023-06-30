@@ -40,6 +40,11 @@ export class TypeCoutService {
     return this.http.get<string[]>(`${baseUrl}/type/${type}`);
   }
 
+  getAllForList(entrepriseId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${baseUrl}/listTypeCout`);
+  }
+
+
 
   getTypeCoutIdByLabel(categorie: string): Observable<any> {
     return this.http.get<any>(`${baseUrl}/categorie/${categorie}`);

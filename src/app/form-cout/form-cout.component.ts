@@ -44,7 +44,7 @@ export class FormCoutComponent implements OnInit {
   isCout: boolean = true;
   categories: any[] = [];
   types!:String;
-  uniteList!:UniteForForm[];
+  uniteList!:any[];
 
 
 
@@ -78,7 +78,12 @@ export class FormCoutComponent implements OnInit {
       this.generateFormUpdate();
   }
 
+  getUnitesByTypeCoutId(id:number){
+    this.uniteForFormService.getUniteByType(id).subscribe(data=>{
+      this.uniteList=data
 
+    })
+  }
 
   //Determine si c'est l'ajout d'un nouveau cout ou la modification d'un cout existant au click
   createAndUpdate(): void {

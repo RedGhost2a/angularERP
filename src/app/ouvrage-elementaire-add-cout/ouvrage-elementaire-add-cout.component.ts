@@ -15,6 +15,7 @@ import {OuvrageElementaireCoutService} from "../_service/ouvrage-elementaire-cou
 import {OuvrageElementaireCout} from "../_models/ouvrage-elementaire-cout";
 import {OuvrageElementaire} from "../_models/ouvrage-elementaire";
 import {OuvrageElementaireService} from "../_service/ouvrage-elementaire.service";
+import {DataSharingService} from "../_service/data-sharing-service.service";
 
 @Component({
   selector: 'app-ouvrage-elementaire-add-cout',
@@ -44,6 +45,7 @@ export class OuvrageElementaireAddCoutComponent implements OnInit {
               private router: Router,
               private ouvrageElementaireCoutService:OuvrageElementaireCoutService,
               private ouvrageElemnentaireService: OuvrageElementaireService,
+              private dataSharingService: DataSharingService,
               ) {
 
     this.initialData = this.data;
@@ -80,10 +82,10 @@ export class OuvrageElementaireAddCoutComponent implements OnInit {
       console.log("id de l'ouvrage courant", this.currentOuvrageId)
       this.coutChecked.forEach(cout => {
         console.log("valeur de cout", cout)
+
         this.ouvrageCout = {
           OuvragesElementaireId: this.initialData.id,
           CoutId: cout,
-          // uRatio: `${this.initialData.unite}`
         }
         console.log("this.ouvrageCout", this.ouvrageCout)
 
@@ -104,10 +106,14 @@ export class OuvrageElementaireAddCoutComponent implements OnInit {
         this.coutDuDevis.remarque = response.Fournisseur.remarque !== null ? response.Fournisseur.remarque : ""
         this.coutDuDevis.type = response.TypeCout.type
         this.coutDuDevis.categorie = response.TypeCout.categorie
+          const uRatio = `${this.coutDuDevis.unite}/${this.dataSharingService.ouvrage.unite}`
         this.coutService.createCoutDuDevis(response).subscribe(response=>{
+
           const ouvrageCout = {
                           OuvrElemDuDeviId: this.initialData.id,
                           CoutDuDeviId: response?.id,
+                          ratio: 1,
+                          uRatio: uRatio,
 
                         }
           this.ouvrageElementaireCoutService.createOuvrageElemCoutDuDevis(ouvrageCout).subscribe(this.ngOnInit)

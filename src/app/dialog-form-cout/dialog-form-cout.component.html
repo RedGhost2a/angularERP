@@ -10,31 +10,42 @@
 
       <div class="group">
         <mat-form-field appearance="legacy">
-          <mat-label>Désignation</mat-label>
-          <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm">
-          <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
-            Vous devez entrer une désignation.
+          <mat-label>Type du composant</mat-label>
+          <mat-select formControlName="type" (selectionChange)="getCategorieByType($event.value);">
+            <mat-option *ngFor="let item of typeCout |unique:'type'" [value]="item.type" (click)="getUnitesByTypeCoutId(item.id)">
+              {{item.type}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="this.myFormGroup.get('TypeCoutId')?.hasError('required')">
+            Vous devez entrer un type.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="legacy" >
+          <mat-label>Catégorie du composant</mat-label>
+          <mat-select formControlName="TypeCoutId">
+            <mat-option *ngFor="let item of categories" [value]="[item.id,item.categorie]">
+              {{item.categorie}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="this.myFormGroup.get('CategorieCout')?.hasError('required')">
+            Vous devez entrer une categorie.
           </mat-error>
         </mat-form-field>
 
 
+
         <mat-form-field appearance="legacy">
           <mat-label>Unité</mat-label>
-          <select formControlName="unite"  matNativeControl required  (blur)="setValueURatio()">
-            <option *ngFor="let unite of uniteList" value="{{unite.name}}"> {{unite.name}}</option>
-          </select>
+          <mat-select formControlName="unite"   required  (blur)="setValueURatio()">
+            <mat-option *ngFor="let unite of uniteList" value="{{unite.name}}"> {{unite.name}}</mat-option>
+          </mat-select>
           <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
             Vous devez entrer une unité.
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="legacy">
-          <mat-label>Prix Unitaire</mat-label>
-          <input type="number" formControlName="prixUnitaire" matInput placeholder="Ex: 9,2">
-          <mat-error *ngIf="this.myFormGroup.get('prixUnitaire')?.hasError('required')">
-            Vous devez entrer une nombre.
-          </mat-error>
-        </mat-form-field>
+
       </div>
 
 
@@ -65,26 +76,18 @@
       </div>
       <div class="selectPicker">
         <mat-form-field appearance="legacy">
-          <mat-label>Type du composant</mat-label>
-          <mat-select formControlName="type" (selectionChange)="getCategorieByType($event.value)">
-            <mat-option *ngFor="let item of typeCout |unique:'type'" [value]="item.type">
-              {{item.type}}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="this.myFormGroup.get('TypeCoutId')?.hasError('required')">
-            Vous devez entrer un type.
+          <mat-label>Désignation</mat-label>
+          <input formControlName="designation" matInput placeholder="Ex: Agglo de 10cm">
+          <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
+            Vous devez entrer une désignation.
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="legacy" >
-          <mat-label>Catégorie du composant</mat-label>
-          <mat-select formControlName="TypeCoutId">
-            <mat-option *ngFor="let item of categories" [value]="[item.id,item.categorie]">
-              {{item.categorie}}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="this.myFormGroup.get('CategorieCout')?.hasError('required')">
-            Vous devez entrer une categorie.
+        <mat-form-field appearance="legacy">
+          <mat-label>Prix Unitaire</mat-label>
+          <input type="number" formControlName="prixUnitaire" matInput placeholder="Ex: 9,2">
+          <mat-error *ngIf="this.myFormGroup.get('prixUnitaire')?.hasError('required')">
+            Vous devez entrer une nombre.
           </mat-error>
         </mat-form-field>
 
