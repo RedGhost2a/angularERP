@@ -184,8 +184,9 @@ export class SousDetailPrixComponent implements OnInit {
         // this.dataSharingService.deviId = data.SousLots[0].Lots[0].Devis[0].id
         this.currentOuvrage = data;
         this.dataSharingService.ouvrage = data;
+        this.dataSharingService.deviId = data.SousLots[0].Lots[0].Devis[0].id
         // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = 10;
-        console.log("aaaazaz", this.currentOuvrage)
+        console.log("aaaazaz", data)
         if (this.currentOuvrage.prix !== 0 && this.currentOuvrage.SousLotOuvrage) {
           // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = this.currentOuvrage.prix
         }
@@ -395,7 +396,7 @@ export class SousDetailPrixComponent implements OnInit {
 
   createFormMetre(): FormGroup {
     console.log("current ", this.currentOuvrage)
-    if (this.currentOuvrage.unite === "m3") {
+    if (this.currentOuvrage.unite.trim().toLowerCase() === "m3") {
       console.log("m3?")
       return this.formBuilder.group({
         longueur: new FormControl("L", Validators.required),
@@ -405,7 +406,7 @@ export class SousDetailPrixComponent implements OnInit {
 
       })
     }
-    if (this.currentOuvrage.unite === "m2") {
+    if (this.currentOuvrage.unite.trim().toLowerCase() === "m2") {
       console.log("m2?")
       return this.formBuilder.group({
         longueur: new FormControl("L", Validators.required),
@@ -414,7 +415,7 @@ export class SousDetailPrixComponent implements OnInit {
 
       })
     }
-    if (this.currentOuvrage.unite === "mL") {
+    if (this.currentOuvrage.unite.trim().toLowerCase() === "mL") {
       return this.formBuilder.group({
         longueur: new FormControl("L", Validators.required),
         metreId: new FormControl("")
@@ -854,8 +855,9 @@ export class SousDetailPrixComponent implements OnInit {
   }
 
   openDialogCreate(ouvragDuDevisId: number) {
+    console.log('ouvrage ? ',this.currentOuvrage)
     this.dialog.open(DialogFormCoutComponent, {
-      data: [this.listTypeCout, this.listFournisseur],
+      data: [this.listTypeCout, this.listFournisseur, this.currentOuvrage],
       width: '55%',
       height: '60%'
     }).afterClosed().subscribe(async result => {
