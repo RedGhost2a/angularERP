@@ -1,16 +1,7 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  Inject,
-  Injectable,
-  OnInit,
-  OnDestroy,
-  AfterViewInit,
-  ViewChild, ElementRef
-} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Inject, Injectable, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import {LotService} from "../_service/lot.service"
-import {ActivatedRoute, Event, NavigationExtras, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {SousLotService} from "../_service/sous-lot.service";
 import {DevisService} from "../_service/devis.service";
@@ -32,23 +23,15 @@ import {Devis} from "../_models/devis";
 import {DevisExport} from "../_models/devisExport";
 import {FormOuvrageComponent} from "../form-ouvrage/form-ouvrage.component";
 import {transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
-import {text} from "@fortawesome/fontawesome-svg-core";
-import {OuvrageDuDevis} from "../_models/ouvrage-du-devis";
-import {da} from "date-fns/locale";
 import {Client} from "../_models/client";
 import {Entreprise} from "../_models/entreprise";
 import {DialogLotComponent} from "../dialog-lot/dialog-lot.component";
 import {DialogSouslotComponent} from "../dialog-souslot/dialog-souslot.component";
-import {Log} from "../_models/log";
-import {MatTabChangeEvent, MatTabGroup} from "@angular/material/tabs";
-import {first, switchMap} from "rxjs";
-import {FormCoutComponent} from "../form-cout/form-cout.component";
 import {DialogFormCoutComponent} from "../dialog-form-cout/dialog-form-cout.component";
 import {Cout} from "../_models/cout";
 import {FournisseurService} from "../_service/fournisseur.service";
 import {TypeCoutService} from "../_service/typeCout.service";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
-import {log10} from "chart.js/helpers";
 import {DialogListCoutComponent} from "../dialog-list-cout/dialog-list-cout.component";
 
 // import {Json2CsvTransform} from "json2csv";
@@ -298,9 +281,8 @@ export class CreateDevisComponent implements OnInit {
   }
 
 
-
-  openDialogImportCouts(lotId:number | null,sousLotId:number | null) {
-    console.log("devis id ",this.devis.id)
+  openDialogImportCouts(lotId: number | null, sousLotId: number | null) {
+    console.log("devis id ", this.devis.id)
     this.dialog.open(DialogListCoutComponent, {
 
       panelClass: 'test',
@@ -967,8 +949,12 @@ export class CreateDevisComponent implements OnInit {
   }
 
   getSousLotHiddenForOuvrageId() {
+    console.log("toto", this.devis)
+
     this.sousLotService.getSousLotHiddenForOuvrage(this.devis.id).subscribe(data => {
+      console.log("tito", data)
       this.hiddenSousLotForOuvrageId = data.id
+
     });
   }
 

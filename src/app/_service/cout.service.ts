@@ -4,7 +4,6 @@ import {Observable} from 'rxjs';
 import {Cout} from "../_models/cout";
 import {CoutDuDevis} from "../_models/cout-du-devis";
 import {environment} from '../../environments/environment';
-import {OuvrageAddCoutComponent} from "../ouvrage-add-cout/ouvrage-add-cout.component";
 import {MatDialog} from "@angular/material/dialog";
 import {Ouvrage} from "../_models/ouvrage";
 import {DialogFormCoutComponent} from "../dialog-form-cout/dialog-form-cout.component";
@@ -21,7 +20,8 @@ const baseUrl = `http://localhost:4000/couts`;
 })
 
 export class CoutService {
-  couts : Cout [] = [];
+  couts: Cout [] = [];
+
   constructor(private http: HttpClient, private dialog: MatDialog) {
   }
 
@@ -32,6 +32,7 @@ export class CoutService {
       }
     });
   }
+
   getAllForList(entrepriseId: number): Observable<Cout[]> {
     return this.http.get<Cout[]>(`${environment.apiUrl}/couts/listCout`, {
       params: {
@@ -43,6 +44,7 @@ export class CoutService {
   getById(id: number): Observable<any> {
     return this.http.get(`${environment.apiUrl}/couts/${id}`);
   }
+
   getCoutDuDevisById(id: number): Observable<any> {
     return this.http.get(`${environment.apiUrl}/coutsDuDevis/${id}`);
   }
@@ -61,6 +63,7 @@ export class CoutService {
     this.couts = []
     return this.http.delete<Cout>(`${environment.apiUrl}/couts/${id}`)
   }
+
   deleteCoutDuDevisByID(id: number): Observable<CoutDuDevis> {
     return this.http.delete<CoutDuDevis>(`${environment.apiUrl}/coutsDuDevis/${id}`)
   }
@@ -78,12 +81,13 @@ export class CoutService {
     console.log('data cout service ', coutDuDevis)
     return this.http.post(`${environment.apiUrl}/coutsDuDevis/test/${ouvrageId}`, coutDuDevis)
   }
+
   updateCoutDuDevis(data: Cout, id: number): Observable<CoutDuDevis> {
     return this.http.put<CoutDuDevis>(`${environment.apiUrl}/coutsDuDevis/${id}`, data)
   }
 
 
-  openDialogCreateCout(typeCouts : TypeCout [], fournisseurs: Fournisseur [], ouvrage: Ouvrage, refreshData : any) {
+  openDialogCreateCout(typeCouts: TypeCout [], fournisseurs: Fournisseur [], ouvrage: Ouvrage, refreshData: any) {
     this.dialog.open(DialogFormCoutComponent, {
       data: [typeCouts, fournisseurs, ouvrage],
       width: '55%',
@@ -93,7 +97,7 @@ export class CoutService {
     });
   }
 
-  openDialogCreate(cout: Cout | null, refreshData : any) {
+  openDialogCreate(cout: Cout | null, refreshData: any) {
     this.dialog.open(FormCoutComponent, {
       data: cout,
       width: '70%',
@@ -104,4 +108,7 @@ export class CoutService {
   }
 
 
+  getCoutByLabel(designation: string) {
+    return this.http.get(`${environment.apiUrl}/designation/:designation`)
+  }
 }

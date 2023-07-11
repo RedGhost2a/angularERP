@@ -29,7 +29,7 @@
           </div>
 
           <div class="row">
-            <button class="btn" [routerLink]="'/users/new'">
+            <button class="btn" (click)="openDialogCreate(null)">
               <mat-icon class="icn">create</mat-icon>
             </button>
             <p>Ajouter un utilisateur</p>
@@ -43,7 +43,7 @@
           </div>
 
           <div class="row">
-            <button class="btn"  (click)="openUniteForFormDialog()">
+            <button class="btn" (click)="openUniteForFormDialog()">
               <mat-icon class="icn">playlist_add</mat-icon>
             </button>
             <p>Créer une unité</p>
@@ -245,11 +245,17 @@
           <button style="margin: 5px" mat-raised-button color="primary" (click)="openImportDialog()">Importer des
             données
           </button>
-          <button style="margin: 5px" mat-raised-button color="primary">Exporter des données</button>
-          <button style="margin: 5px" mat-raised-button color="accent">Extraire types</button>
-          <button style="margin: 5px" mat-raised-button color="accent" (click)="uploadData()">Extraire composants
+          <button style="margin: 5px" mat-raised-button color="accent" (click)="importType()">Extraire les
+            données
           </button>
-          <button style="margin: 5px" mat-raised-button color="accent">Extraire ouvrages</button>
+          <div *ngIf="visible" class="overlay">
+            <p class="clignote-text">Chargement en cours...</p>
+            <div class="progress-bar-container">
+              <div [style.width.%]="progressValue" class="progress-bar"></div>
+            </div>
+          </div>
+
+
         </div>
 
         <table mat-table [dataSource]="importedFiles" style="width: 33%">

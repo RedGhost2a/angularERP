@@ -38,7 +38,8 @@ export class DialogImportExcelComponent implements OnInit {
           const workbook: XLSX.WorkBook = XLSX.read(bstr, {type: 'binary'});
 
           // Récupérer le nom de la première feuille de calcul
-          const worksheetName: string = workbook.SheetNames[1];
+          const worksheetName: string = workbook.SheetNames[0];
+          console.log(worksheetName)
           // Récupérer la première feuille de calcul
           const worksheet: XLSX.WorkSheet = workbook.Sheets[worksheetName];
           // Convertir les données de la feuille de calcul en tableau de tableaux (matrice)

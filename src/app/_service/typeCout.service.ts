@@ -12,7 +12,7 @@ const baseUrl = `${environment.apiUrl}/typeCouts`;
   providedIn: 'root'
 })
 export class TypeCoutService {
-  typeCouts : TypeCout[] = [];
+  typeCouts: TypeCout[] = [];
 
   constructor(private http: HttpClient, private dialog: MatDialog) {
   }
@@ -24,6 +24,7 @@ export class TypeCoutService {
       }
     })
   }
+
   getAllForList(entrepriseId: number): Observable<TypeCout[]> {
     return this.http.get<TypeCout[]>(`${baseUrl}/listTypeCout`, {
       params: {
@@ -45,9 +46,12 @@ export class TypeCoutService {
   // }
 
 
-
   getTypeCoutIdByLabel(categorie: string): Observable<any> {
     return this.http.get<any>(`${baseUrl}/categorie/${categorie}`);
+  }
+
+  getTypeCoutIdByTypeAndCategorie(type: string, categorie: string): Observable<any> {
+    return this.http.get<any>(`${baseUrl}/type/${type}/categorie/${categorie}`);
   }
 
 
@@ -66,7 +70,7 @@ export class TypeCoutService {
     return this.http.post<TypeCout>(`${baseUrl}/new`, data)
   }
 
-  openDialogCreate(typeCout:TypeCout | null, refreshData:any) {
+  openDialogCreate(typeCout: TypeCout | null, refreshData: any) {
     this.dialog.open(FormTypeCoutComponent, {
       data: typeCout,
       width: '70%',
@@ -76,7 +80,6 @@ export class TypeCoutService {
 
     });
   }
-
 
 
 }
