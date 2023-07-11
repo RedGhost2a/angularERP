@@ -5,6 +5,18 @@
     <p>{{textForm}}</p>
     <div class="inputs">
       <mat-form-field appearance="legacy">
+        <mat-label>Entreprise</mat-label>
+        <mat-select formControlName="EntrepriseId" (selectionChange)="this.getUserById();">
+          <mat-option *ngFor="let entreprise of listEntreprise" [value]="entreprise.id">
+            {{entreprise.denomination}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="this.myFormGroup.get('TypeCoutId')?.hasError('required')">
+          Vous devez entrer un type.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="legacy">
         <mat-label>Type du composant</mat-label>
         <mat-select formControlName="type" (selectionChange)="getCategorieByType($event.value);">
           <mat-option *ngFor="let item of typeCout |unique:'type'" [value]="item.type" (click)="getUnitesByTypeCoutId(item.id)">

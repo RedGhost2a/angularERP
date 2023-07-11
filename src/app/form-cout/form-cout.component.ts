@@ -11,11 +11,13 @@ import {Cout} from "../_models/cout";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
-import{transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
+import {transformVirguletoPoint} from "../_helpers/transformVirguletoPoint"
 import {DataSharingService} from "../_service/data-sharing-service.service";
 import {UniteForFormService} from "../_service/uniteForForm.service";
 import {UniteForForm} from "../_models/uniteForForm";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
+import {da} from "date-fns/locale";
+import {Entreprise} from "../_models/entreprise";
 
 
 interface FournisseurCout {
@@ -43,9 +45,9 @@ export class FormCoutComponent implements OnInit {
   regexOuvrageDetail = new RegExp(`^/ouvrageDetail`)
   isCout: boolean = true;
   categories: any[] = [];
-  types!:String;
-  uniteList!:any[];
-
+  types!: String;
+  uniteList!: any[];
+  listEntreprise :Entreprise [] = [];
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Cout,
@@ -57,30 +59,36 @@ export class FormCoutComponent implements OnInit {
               private fournisseurService: FournisseurService,
               private typeCoutService: TypeCoutService,
               private uniteForFormService: UniteForFormService,
-              public datasharingService: DataSharingService, private ouvrageCoutService : OuvrageCoutService,
+              public datasharingService: DataSharingService, private ouvrageCoutService: OuvrageCoutService,
               @Inject(TOASTR_TOKEN) private toastr: Toastr) {
     this.initialData = this.data;
   }
 
 
   ngOnInit(): void {
-    console.log("67",this.initialData)
+    console.log("67", this.initialData)
     this.createFormCout();
     transformVirguletoPoint()
-    this.getUserById();
+    // this.getUserById();
     console.log("is cout ", this.isCout)
-    if (this.regexSousDetail.test(window.location.pathname) || this.regexOuvrageDetail.test(window.location.pathname)){
+    if (this.regexSousDetail.test(window.location.pathname) || this.regexOuvrageDetail.test(window.location.pathname)) {
       this.isCout = false;
       this.myFormGroup.addControl("uRatio", new FormControl())
       console.log("dans le if ?")
     }
     if (this.initialData !== null)
       this.generateFormUpdate();
-  }
 
-  getUnitesByTypeCoutId(id:number){
-    this.uniteForFormService.getUniteByType(id).subscribe(data=>{
-      this.uniteList=data
+    this.getEntrepriseByUser()
+  }
+getEntrepriseByUser(){
+    this.userService.currentUser.Entreprises.forEach((entreprise : Entreprise)=>{
+    this.listEntreprise.push(entreprise);
+    })
+}
+  getUnitesByTypeCoutId(id: number) {
+    this.uniteForFormService.getUniteByType(id).subscribe(data => {
+      this.uniteList = data
 
     })
   }
@@ -99,15 +107,15 @@ export class FormCoutComponent implements OnInit {
         this.closeDialog()
       });
     }
-    if (this.regexCout.test(window.location.pathname) ) {
-      console.log("form",this.myFormGroup.getRawValue())
-      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(()=>{
+    if (this.regexCout.test(window.location.pathname)) {
+      console.log("form", this.myFormGroup.getRawValue())
+      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(() => {
         this.closeDialog()
       });
     }
     if (this.regexOuvrageDetail.test(window.location.pathname) || this.regexSousDetail.test(window.location.pathname)) {
-      console.log("form",this.myFormGroup.getRawValue())
-      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(()=>{
+      console.log("form", this.myFormGroup.getRawValue())
+      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(() => {
         this.closeDialog()
       });
     }
@@ -118,17 +126,27 @@ export class FormCoutComponent implements OnInit {
   //Recupere l'id de l'entreprise de l'utilisateur courant, et creer le formulaire
   getUserById(): void {
     this.userService.getById(this.userId).subscribe(data => {
-      this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id),
-        this.getAllTypeCouts(data.Entreprises[0].id)
-      this.getAllFournisseur(data.Entreprises[0].id)
-      if (data.Entreprises[0].id) {
-        this.getUniteByEnteprise(data.Entreprises[0].id);
-      }
+      console.log("get value entreprise id", this.myFormGroup.controls["EntrepriseId"].value)
+      console.log("data user get by id ", data)
+      this.getAllTypeCouts(this.myFormGroup.controls["EntrepriseId"].value)
+      this.getAllFournisseur(this.myFormGroup.controls["EntrepriseId"].value)
+        this.getUniteByEnteprise(this.myFormGroup.controls["EntrepriseId"].value);
+
+      console.log('unite list ',this.uniteList)
+
+      // this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id),
+      //   this.getAllTypeCouts(data.Entreprises[0].id)
+      // this.getAllFournisseur(data.Entreprises[0].id)
+      // if (data.Entreprises[0].id) {
+      //   this.getUniteByEnteprise(data.Entreprises[0].id);
+      // }
     })
   }
-  getUniteByEnteprise(id : number):void {
-    this.uniteForFormService.getUniteByEntreprise(id).subscribe(data=>{
-      this.uniteList=data
+
+  getUniteByEnteprise(id: number): void {
+    this.uniteForFormService.getUniteByEntreprise(id).subscribe(data => {
+      this.uniteList = data
+      console.log("unités ?",data)
     })
   }
 
@@ -139,12 +157,11 @@ export class FormCoutComponent implements OnInit {
       unite: new FormControl("", Validators.required),
       prixUnitaire: new FormControl("", Validators.required),
       EntrepriseId: new FormControl(),
-      type : new FormControl(),
+      type: new FormControl(),
       TypeCoutId: new FormControl(""),
       FournisseurId: new FormControl(""),
     });
   }
-
 
 
 //Recupere tous les type de couts pour implementer le select picker du template
@@ -181,13 +198,15 @@ export class FormCoutComponent implements OnInit {
     this.textForm = "La modification de ce composant va impacter les ouvrages de la bibliothèque de prix associés. Les devis déjà existants ne seront pas modifiés."
     this.textButton = "Modifier ce composant"
     console.log(this.initialData)
-    if(!this.isCout)
+    if (!this.isCout)
       this.myFormGroup.controls["uRatio"].setValue(this.initialData.OuvrageCout.uRatio)
     this.myFormGroup.patchValue(this.initialData)
+    this.getUserById()
+    console.log("inital data", this.initialData);
     this.getCategorieByType(this.initialData.TypeCout.type)
     this.myFormGroup.controls["type"].setValue(this.initialData.TypeCout.type)
-  }
 
+  }
 
 
   closeDialog() {
