@@ -143,14 +143,14 @@ export class DialogFormCoutComponent implements OnInit {
           this.toastr.error("Le formulaire est invalide.", "Erreur !");
           return;
         }
+        console.log('initial data ', this.data[2])
           const ouvrageCoutDuDevis: OuvrageCoutDuDevis = {
-            OuvrageDuDeviId: this.dataSharingService.ouvrage.id,
+            OuvrageDuDeviId: this.data[2].id,
             CoutDuDeviId: responseCout?.id,
             ratio: this.myFormGroup.getRawValue().ratio,
             uRatio: this.myFormGroup.getRawValue().uRatio,
           }
-          this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCoutDuDevis).subscribe()
-        this.closeDialog()
+          this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCoutDuDevis).subscribe(()=> this.dialogRef.close())
         }
       )
       if (this.isChecked === false) {
@@ -164,6 +164,8 @@ export class DialogFormCoutComponent implements OnInit {
           }
           this.ouvrageCoutService.createOuvrageCoutByDesignation(this.dataSharingService.ouvrage.id, ouvrageCout).subscribe()
         })
+        this.closeDialog()
+
 
       }
     } else {
@@ -181,6 +183,8 @@ export class DialogFormCoutComponent implements OnInit {
         }
         console.log("ouvrage cout dans le ELSE",ouvrageCout)
         this.ouvrageCoutService.create(ouvrageCout).subscribe()
+        this.closeDialog()
+
       })
     }
 
