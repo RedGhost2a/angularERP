@@ -1,16 +1,31 @@
 <mat-tab-group mat-stretch-tabs style="  overflow: hidden;
 ">
-  <mat-tab >
+  <mat-tab>
     <ng-template mat-tab-label>
       <mat-icon class="example-tab-icon">settings</mat-icon>
       Création d'une unité
     </ng-template>
     <h3>Création</h3>
 
-    <mat-card-subtitle>Ceci est destiné à ajouter une "unité" spécifique en lien avec vos type et catégorie pour la création de vos différents composants ou bien ouvrage.</mat-card-subtitle>
+    <mat-card-subtitle>Ceci est destiné à ajouter une "unité" spécifique en lien avec vos type et catégorie pour la
+      création de vos différents composants ou bien ouvrage.
+    </mat-card-subtitle>
     <form [formGroup]="uniteForForm" class="row-item">
+
       <mat-form-field appearance="standard">
-        <mat-label>Désigantion de l'unité</mat-label>
+        <mat-label>Entreprise</mat-label>
+        <mat-select formControlName="EntrepriseId" (selectionChange)="this.getEntreprise();">
+          <mat-option *ngFor="let entreprise of listEntreprise" [value]="entreprise.id">
+            {{entreprise.denomination}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="this.uniteForForm.get('EntrepriseId')?.hasError('required')">
+          Vous devez sélectionner une entreprise.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="standard">
+        <mat-label>Désignation de l'unité</mat-label>
         <input matInput formControlName="name" required>
         <mat-error *ngIf="uniteForForm.get('name')?.hasError('required')">
           Le nom est obligatoire
@@ -32,7 +47,7 @@
       <mat-form-field appearance="legacy">
         <mat-label>Catégorie du composant</mat-label>
         <mat-select formControlName="TypeCoutId">
-          <mat-option *ngFor="let item of categories" [value]="item.id" >
+          <mat-option *ngFor="let item of categories" [value]="item.id">
             {{item.categorie}}
           </mat-option>
         </mat-select>
@@ -43,14 +58,13 @@
 
 
     </form>
-      <mat-card-actions>
-        <button style="width: 100%" mat-flat-button color="primary"
-                (click)="create()" >
-          Valider
-        </button>
-      </mat-card-actions>
+    <mat-card-actions>
+      <button style="width: 100%" mat-flat-button color="primary"
+              (click)="create()">
+        Valider
+      </button>
+    </mat-card-actions>
   </mat-tab>
-
 
 
   <mat-tab>
@@ -61,40 +75,52 @@
     </ng-template>
 
     <h3>Liste de vos unités</h3>
-      <mat-card-subtitle>Ceci est destiné à visualiser vos "unité" spécifique en lien avec vos type .</mat-card-subtitle>
+    <mat-card-subtitle>Ceci est destiné à visualiser vos "unité" spécifique en lien avec vos type .</mat-card-subtitle>
     <div class="row-item">
+      <form [formGroup]="uniteForForm" class="row-item">
+        <mat-form-field appearance="standard">
+          <mat-label>Entreprise</mat-label>
+          <mat-select formControlName="EntrepriseId" (selectionChange)="this.getEntreprise();">
+            <mat-option *ngFor="let entreprise of listEntreprise" [value]="entreprise.id">
+              {{entreprise.denomination}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="this.uniteForForm.get('EntrepriseId')?.hasError('required')">
+            Vous devez sélectionner une entreprise.
+          </mat-error>
+        </mat-form-field>
+      </form>
+      <mat-form-field appearance="legacy">
+        <mat-label>Type du composant</mat-label>
+        <mat-select (selectionChange)="getCategorieByType($event.value)">
+          <mat-option *ngFor="let item of typeCout |unique:'type'" [value]="item.type"
+                      (click)="getUnitesByTypeCoutId(item.id)">
+            {{item.type}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="this.uniteForForm.get('TypeCoutId')?.hasError('required')">
+          Vous devez entrer un type.
+        </mat-error>
+      </mat-form-field>
 
+      <mat-form-field appearance="legacy">
+        <mat-label>Catégorie du composant</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let item of categories" [value]="item.id">
+            {{item.categorie}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="this.uniteForForm.get('TypeCoutId')?.hasError('required')">
+          Vous devez entrer une categorie.
+        </mat-error>
+      </mat-form-field>
+      <mat-selection-list [(ngModel)]="selectedUnite">
+        <mat-list-option *ngFor="let unite of uniteListTypeCategorie" [value]="unite.id">
+          {{ unite.name }}
 
-    <mat-form-field appearance="legacy">
-      <mat-label>Type du composant</mat-label>
-      <mat-select (selectionChange)="getCategorieByType($event.value)">
-        <mat-option *ngFor="let item of typeCout |unique:'type'" [value]="item.type" (click)="getUnitesByTypeCoutId(item.id)">
-          {{item.type}}
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="this.uniteForForm.get('TypeCoutId')?.hasError('required')">
-        Vous devez entrer un type.
-      </mat-error>
-    </mat-form-field>
-
-<!--    <mat-form-field appearance="legacy">-->
-<!--      <mat-label>Catégorie du composant</mat-label>-->
-<!--      <mat-select >-->
-<!--        <mat-option *ngFor="let item of categories" [value]="item.id" >-->
-<!--          {{item.categorie}}-->
-<!--        </mat-option>-->
-<!--      </mat-select>-->
-<!--      <mat-error *ngIf="this.uniteForForm.get('TypeCoutId')?.hasError('required')">-->
-<!--        Vous devez entrer une categorie.-->
-<!--      </mat-error>-->
-<!--    </mat-form-field>-->
-    <mat-selection-list [(ngModel)]="selectedUnite">
-      <mat-list-option *ngFor="let unite of uniteListTypeCategorie" [value]="unite.id" >
-        {{ unite.name }}
-
-      </mat-list-option>
-    </mat-selection-list>
-    <button mat-raised-button color="warn" (click)="delete()">Supprimer</button>
+        </mat-list-option>
+      </mat-selection-list>
+      <button mat-raised-button color="warn" (click)="delete()">Supprimer</button>
     </div>
 
   </mat-tab>
