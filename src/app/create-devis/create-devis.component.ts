@@ -974,6 +974,7 @@ export class CreateDevisComponent implements OnInit {
 
   getSousLotHiddenForCoutId() {
     this.sousLotService.getSousLotHiddenForCout(this.devis.id).subscribe(data => {
+      console.log("data get sous lot hidden",data)
       this.hiddenSousLotForCoutId = data.id
     });
   }

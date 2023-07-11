@@ -191,7 +191,6 @@ export class DetailOuvrageComponent implements OnInit {
       height: '60%'
     }).afterClosed().subscribe(async result => {
       this.ngOnInit()
-
     });
   }
 

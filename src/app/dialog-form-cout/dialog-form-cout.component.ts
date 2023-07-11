@@ -61,7 +61,7 @@ export class DialogFormCoutComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("daaaataaa",this.data)
-    this.getAllTypeCouts(this.dataSharingService.entrepriseId)
+    this.getAllTypeCouts(this.data[2].EntrepriseId)
     console.log(this.data[2])
     // this.getUniteByEnteprise(this.dataSharingService.entrepriseId)
     if (this.regexDetailOuvrage.test(window.location.pathname)) {
