@@ -36,6 +36,7 @@ export class UserEditComponent implements OnInit {
     this.initialData = data;
   }
   ngOnInit(): void {
+    console.log("user com")
     this.getUserById()
     this.getEntrepriseForUser();
     this.createFormUser()

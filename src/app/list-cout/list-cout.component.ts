@@ -53,6 +53,7 @@ export class ListCoutComponent implements OnInit {
     this.coutService.getAllForList(entrepriseId).subscribe((listCout : Cout []) => {
       this.coutService.couts = this.coutService.couts.concat(listCout);
       this.dataSource = new MatTableDataSource(this.coutService.couts );
+      console.log(this.coutService.couts)
     });
   }
 
