@@ -22,7 +22,8 @@ import {FournisseurService} from "../_service/fournisseur.service";
 import {ImportExcel} from "../_models/importExcel";
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {DialogUniteForFormComponent} from "../dialog-unite-for-form/dialog-unite-for-form.component";
-import {Devis} from "../_models/devis";
+import {firstValueFrom} from "rxjs";
+import {UniteForFormService} from "../_service/uniteForForm.service";
 
 
 @Component({
@@ -69,6 +70,8 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
   data: any[] = [];
   importForm!: FormGroup;
   importedFiles!: ImportExcel[];
+  progressValue!: number;
+  visible: boolean = true;
 
 
   constructor(private entrepriseService: EntrepriseService,
@@ -82,6 +85,7 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
               private userService: UserService,
               private typeCoutService: TypeCoutService,
               private fournisseurService: FournisseurService,
+              private uniteService: UniteForFormService,
               @Inject(TOASTR_TOKEN) private toastr: Toastr,
   ) {
     this.dataSource = new MatTableDataSource<Log>();
@@ -130,7 +134,7 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
   getAll(): void {
     this.entrepriseService.getAll().subscribe((data: any) => {
         this.listEntreprise = data
-      this.dataSourceEntreprise = data;
+        this.dataSourceEntreprise = data;
         const nbDevisByCompany = this.listEntreprise.map((value: any, index) => {
           return value.Devis.length
         })
@@ -265,90 +269,270 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
   }
 
 
-
-
-  async uploadData(): Promise<void> {
+  async importType(): Promise<void> {
+    const NO_FILE_SELECTED = 'Aucun fichier sélectionné';
+    const NO_FILE_SELECTED_ERROR = 'Erreur';
     const file = this.importedFiles.find(f => f.checked);
+    const user = await firstValueFrom(this.userService.getById(this.userService.userValue.id));
+    let progress = 0;
     if (!file) {
-      console.log('Aucun fichier sélectionné');
-      this.toastr.error('Erreur', 'Aucun fichier sélectionné');
+      this.toastr.error(NO_FILE_SELECTED_ERROR, NO_FILE_SELECTED);
       return;
     }
-    console.log('Fichier sélectionné :', file);
-
-    this.importExcelService.getById(file.id).subscribe(async data => {
-      console.log('Données récupérées :', data);
-      for (let i = 1; i < data.data.length; i++) {
-        const ligne = data.data[i];
-        console.log('Ligne traitée :', ligne);
-        try {
-          this.fournisseurService.getFournisseurIdByName(ligne[5]).subscribe(fournisseurId => {
-            const fournId: number = fournisseurId;
-            console.log('ID du fournisseur trouvé :', fournId);
-
-            try {
-              this.typeCoutService.getTypeCoutIdByLabel(ligne[0]).subscribe(typeCout => {
-                const typeId: number = typeCout;
-                console.log('ID du type de coût trouvé :', typeId);
-
-                try {
-                  this.userService.getById(this.userService.userValue.id).subscribe(user => {
-                    const userId = user.id;
-                    console.log('ID de l\'utilisateur :', userId);
-
-                    const cout = {
-                      id: 0,
-                      TypeCoutId: typeId,
-                      designation: ligne[1],
-                      EntrepriseId: user.Entreprises[0].id,
-                      prixUnitaire: ligne[3],
-                      unite: ligne[4],
-                      FournisseurId: fournId
-                    };
-                    console.log('Nouveau coût à ajouter :', cout);
-
-                    this.coutService.create(cout).subscribe(
-                      () => {
-                        console.log('Le coût a été ajouté avec succès.');
-                        this.toastr.success('Parfait', 'Ajout à la bibliothèque réussie');
-                      },
-                      (error) => {
-                        console.error('Erreur lors de l\'ajout du coût :', error);
-                        this.toastr.error('Attention', 'Une erreur est survenue');
-                      }
-                    );
-                  });
-                } catch (error) {
-                  console.error('Erreur lors de la récupération de l\'utilisateur :', error);
-                  this.toastr.error('Attention', 'Une erreur est survenue');
-                }
-              });
-            } catch (error) {
-              console.error('Erreur lors de la récupération du type de coût :', error);
-              this.toastr.error('Attention', 'Une erreur est survenue');
-            }
-          });
-        } catch (error) {
-          console.error('Erreur lors de la récupération du fournisseur :', error);
-          this.toastr.error('Attention', 'Une erreur est survenue');
-        }
+    const data = await firstValueFrom(this.importExcelService.getById(file.id));
+    const total = data.data.length - 1; // Décompte total des éléments à traiter
+    for (let i = 1; i < data.data.length; i++) {
+      const ligne = data.data[i];
+      try {
+        const typeId = await this.getOrAddType(ligne, user); // Créer le type
+        const fournId = await this.getOrAddFournisseur(ligne, user); // Créer le fournisseur
+        const promises = [
+          this.getOrAddUnite(ligne, user, typeId),
+          this.getOrAddComposant(ligne, user, typeId, fournId)
+        ];
+        await Promise.all(promises);
+      } catch (error) {
+        console.error('Erreur lors de la création du type, du fournisseur, de l\'unité ou du coût:', error);
+        this.toastr.error("erreur", 'Erreur lors de la création du type, du fournisseur, de l\'unité ou du coût');
       }
-    }, error => {
-      console.error('Erreur lors de la récupération des données :', error);
-      this.toastr.error('Attention', 'Une erreur est survenue');
-    });
+      progress++;
+      this.updateProgressBar((progress / total) * 100);
+    }
+    this.visible = false;
+  }
+
+  updateProgressBar(value: number) {
+    this.visible = true;
+    this.progressValue = value;
+  }
+
+  async getOrAddFournisseur(ligne: any, user: any) {
+    let fournId;
+    try {
+      fournId = await firstValueFrom(this.fournisseurService.getFournisseurIdByName(ligne[3]));
+    } catch (error) {
+      const err = error as { status: number };
+      if (err.status === 404) {
+        fournId = await this.addFournisseur(ligne, user);
+      } else {
+        throw error;
+      }
+
+    }
+    return fournId;
+  }
+
+  async addFournisseur(ligne: any, user: any) {
+    const fourn = {
+      id: 0,
+      commercialName: ligne[3],
+      remarque: "Néant",
+      EntrepriseId: user.Entreprises[0].id,
+    }
+    const fournisseurResponse = await firstValueFrom(this.fournisseurService.createFournisseur(fourn));
+    return fournisseurResponse?.id;
+  }
+
+  async getOrAddType(ligne: any, user: any) {
+    let typeId;
+    try {
+      let type = encodeURIComponent(ligne[0]);
+      let categorie = encodeURIComponent(ligne[1]);
+      typeId = await firstValueFrom(this.typeCoutService.getTypeCoutIdByTypeAndCategorie(type, categorie));
+      console.log('ID du type de coût trouvé :', typeId);
+    } catch (error) {
+      const err = error as { status: number }; // assertion de type ici
+      if (err.status === 404) {
+        typeId = await this.addType(ligne, user)
+      } else {
+        throw error;
+      }
+    }
+    return typeId
+  }
+
+  async addType(ligne: any, user: any) {
+    const type = {
+      id: 0,
+      type: ligne[0],
+      categorie: ligne[1],
+      EntrepriseId: user.Entreprises[0].id,
+
+    }
+    const typeCoutResponse = await firstValueFrom(this.typeCoutService.createTypeCout(type));
+    console.log('Type de coût créé avec succès :', typeCoutResponse);
+    return typeCoutResponse?.id;
   }
 
 
+  async getOrAddUnite(ligne: any, user: any, typeId: number) {
+    let uniteId;
+    try {
+      uniteId = await firstValueFrom(this.uniteService.getUniteByLabel(ligne[5]));
+      console.log('ID du type de unite trouvé :', uniteId);
+    } catch (error) {
+      const err = error as { status: number };
+      if (err.status === 404) {
+        uniteId = await this.addUnite(ligne, user, typeId)
+      } else {
+        throw error;
+      }
+    }
+    return uniteId
+  }
+
+  async addUnite(ligne: any, user: any, typeId: number) {
+    console.log("========>", typeId)
+    const unite = {
+      id: 0,
+      name: ligne[5],
+      EntrepriseId: user.Entreprises[0].id,
+      TypeCoutId: typeId,
+
+
+    }
+    const uniteCoutResponse = await firstValueFrom(this.uniteService.create(unite));
+    console.log('Unite de coût créé avec succès id :', uniteCoutResponse.data.id);
+    return uniteCoutResponse?.id;
+  }
+
+  async getOrAddComposant(ligne: any, user: any, typeId: number, fournId: string) {
+    let coutId;
+    try {
+      coutId = await firstValueFrom(this.coutService.getCoutByLabel(ligne[3]))
+      console.log('ID du cout trouvé :', coutId);
+
+    } catch (error) {
+      const err = error as { status: number };
+      if (err.status === 404) {
+        coutId = await this.addCout(ligne, user, typeId, fournId)
+      } else {
+        throw error;
+      }
+    }
+    return coutId;
+  }
+
+  async addCout(ligne: any, user: any, typeId: number, fournId: any) {
+
+    const cout = {
+      id: 0,
+      TypeCoutId: typeId,
+      designation: ligne[2],
+      EntrepriseId: user.Entreprises[0].id,
+      prixUnitaire: ligne[6],
+      unite: ligne[5],
+      FournisseurId: fournId
+    };
+    console.log('Nouveau coût à ajouter :', cout);
+
+    await firstValueFrom(this.coutService.create(cout));
+    console.log('Le coût a été ajouté avec succès.');
+
+  }
+
+
+  // async uploadData(): Promise<void> {
+  //   const file = this.importedFiles.find(f => f.checked);
+  //   if (!file) {
+  //     console.log('Aucun fichier sélectionné');
+  //     this.toastr.error('Erreur', 'Aucun fichier sélectionné');
+  //     return;
+  //   }
+  //   console.log('Fichier sélectionné :', file);
+  //
+  //   try {
+  //     const data = await firstValueFrom(this.importExcelService.getById(file.id));
+  //     console.log('Données récupérées :', data);
+  //
+  //     for (let i = 1; i < data.data.length; i++) {
+  //       const ligne = data.data[i];
+  //       console.log('Ligne traitée :', ligne);
+  //
+  //       let fournId;
+  //       let user;
+  //       let typeId;
+  //       user = await firstValueFrom(this.userService.getById(this.userService.userValue.id));
+  //       const userId = user.id;
+  //       console.log('ID de l\'utilisateur :', userId);
+  //       try {
+  //         fournId = await firstValueFrom(this.fournisseurService.getFournisseurIdByName(ligne[3]));
+  //         console.log('ID du fournisseur trouvé :', fournId);
+  //       } catch (error) {
+  //         const err = error as { status: number }; // assertion de type ici
+  //         if (err.status === 404) { // vérifiez le champ correct pour le code d'erreur
+  //           const fourn = {
+  //             id: 0,
+  //             commercialName: ligne[3],
+  //             remarque: "Néant",
+  //             EntrepriseId: user.Entreprises[0].id,
+  //           }
+  //           const fournisseurResponse = await firstValueFrom(this.fournisseurService.createFournisseur(fourn));
+  //           console.log('Fournisseur créé avec succès :', fournisseurResponse);
+  //           fournId = fournisseurResponse?.id; // Suppose que la réponse contient le nouvel id
+  //         } else {
+  //           throw error;
+  //         }
+  //       }
+  //       try {
+  //         typeId = await firstValueFrom(this.typeCoutService.getTypeCoutIdByLabel(ligne[0]));
+  //         console.log('ID du type de coût trouvé :', typeId);
+  //       } catch (error) {
+  //         const err = error as { status: number }; // assertion de type ici
+  //
+  //         if (err.status === 404) {
+  //           const typeCout = {
+  //             id: 0,
+  //             type: ligne[0],
+  //             categorie: ligne[1],
+  //             EntrepriseId: user.Entreprises[0].id,
+  //           };
+  //           const typeCoutResponse = await firstValueFrom(this.typeCoutService.createTypeCout(typeCout));
+  //           console.log('Type de coût créé avec succès :', typeCoutResponse);
+  //           typeId = typeCoutResponse?.id; // Suppose que la réponse contient le nouvel id
+  //         } else {
+  //           throw error;
+  //         }
+  //       }
+  //
+  //
+  //       const cout = {
+  //         id: 0,
+  //         TypeCoutId: typeId,
+  //         designation: ligne[2],
+  //         EntrepriseId: user.Entreprises[0].id,
+  //         prixUnitaire: ligne[6],
+  //         unite: ligne[5],
+  //         FournisseurId: fournId
+  //       };
+  //       console.log('Nouveau coût à ajouter :', cout);
+  //
+  //       await firstValueFrom(this.coutService.create(cout));
+  //       console.log('Le coût a été ajouté avec succès.');
+  //       this.toastr.success('Parfait', 'Ajout à la bibliothèque réussie');
+  //     }
+  //   } catch (error) {
+  //     console.error('Erreur lors de l\'importation :', error);
+  //     this.toastr.error('Attention', 'Une erreur est survenue');
+  //   }
+  // }
+
   openUniteForFormDialog(): void {
     const dialogRef = this.dialog.open(DialogUniteForFormComponent, {
-       height: '50%',
+      height: '50%',
       // data: { form: this.importForm }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
+  }
+
+  openDialogCreate(user: User | null) {
+    this.userService.openDialogCreate(user, () => {
+      this.getAll()
+    })
+
   }
 
 

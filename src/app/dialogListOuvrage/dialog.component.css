@@ -133,6 +133,7 @@ tr.example-element-row:not(.example-expanded-row):active {
 .cout-detail {
   display: flex;
   flex-direction: column;
+  width: 200px;
 }
 
 .example-element-symbol {

@@ -1,14 +1,11 @@
 import {Component, Inject, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validator, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../_service/user.service";
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
 import {AlertService} from "../../_service/alert.service";
-import {ThemePalette} from "@angular/material/core";
 import {EntrepriseService} from "../../_service/entreprise.service";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {Fournisseur} from "../../_models/fournisseur";
-import {User} from "../../_models/users";
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {DialogComponent} from "../../dialogListOuvrage/dialog.component";
 
 
@@ -25,26 +22,28 @@ export class UserEditComponent implements OnInit {
   listEntreprise: any[] = [];
   avatarUrl: any;
   role!: string;
-  entrepriseId : number [] = [];
+  entrepriseId: number [] = [];
   initialData: any;
   userId = this.userService.userValue.id;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any,private userService: UserService, private formBuilder: FormBuilder, private alerteService: AlertService,
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private userService: UserService, private formBuilder: FormBuilder, private alerteService: AlertService,
               private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr, private entrepriseService: EntrepriseService,
-               private dialogRef: MatDialogRef<DialogComponent>) {
+              private dialogRef: MatDialogRef<DialogComponent>) {
 
     this.initialData = data;
   }
+
   ngOnInit(): void {
     console.log("user com")
     this.getUserById()
     this.getEntrepriseForUser();
     this.createFormUser()
-    if(this.initialData !== null){
+    if (this.initialData !== null) {
       console.log(this.initialData)
       this.generateFormUpdate()
     }
   }
+
   createFormUser(): void {
     console.log(this.userService.userValue.role)
     this.userForm = new FormGroup({
@@ -59,9 +58,10 @@ export class UserEditComponent implements OnInit {
       EntrepriseId: new FormControl('', Validators.required)
     });
   }
+
   generateFormUpdate(): void {
     this.titreForm = "Modification d'un utilisateur "
-    this.initialData.Entreprises.forEach((entreprise : any) =>{
+    this.initialData.Entreprises.forEach((entreprise: any) => {
       this.entrepriseId.push(entreprise.id)
 
     })
@@ -117,6 +117,7 @@ export class UserEditComponent implements OnInit {
       });
     }
   }
+
   closeDialog() {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
     this.dialogRef.close();
@@ -130,10 +131,11 @@ export class UserEditComponent implements OnInit {
     }
     reader.readAsDataURL(file);
   }
+
   getUserById(): void {
     this.userService.getById(this.userId).subscribe(data => {
       this.role = data.role;
-      console.log("getUser by id",this.entrepriseId)
+      console.log("getUser by id", this.entrepriseId)
     })
   }
 

@@ -12,9 +12,9 @@ const baseUrl = `${environment.apiUrl}/unite`;
   providedIn: 'root'
 })
 export class UniteForFormService {
-  unites : UniteForForm [] = []
+  unites: UniteForForm [] = []
 
-  constructor(private http: HttpClient,private dialog: MatDialog) {
+  constructor(private http: HttpClient, private dialog: MatDialog) {
   }
 
   getAll(): Observable<any> {
@@ -33,6 +33,10 @@ export class UniteForFormService {
     return this.http.get(`${baseUrl}/entreprise/${id}`);
   }
 
+  getUniteByLabel(name: string) {
+    return this.http.get(`${baseUrl}/bylabel/${name}`);
+  }
+
   create(data: any): Observable<any> {
     this.unites = [];
     return this.http.post(`${baseUrl}/new`, data);
@@ -48,6 +52,7 @@ export class UniteForFormService {
     return this.http.delete(`${baseUrl}/${id}`);
   }
 
+
   openCreateUniteForFormDialog(): void {
     const dialogRef = this.dialog.open(DialogUniteForFormComponent, {
       width: '80%',
@@ -55,4 +60,6 @@ export class UniteForFormService {
     dialogRef.afterClosed().subscribe(result => {
     });
   }
+
+
 }
