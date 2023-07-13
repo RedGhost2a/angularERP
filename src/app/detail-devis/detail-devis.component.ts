@@ -188,6 +188,7 @@ export class DetailDevisComponent implements OnInit {
   }
 
   createLotAndSousLotHiddenForCout() {
+    console.log("hidden for cout devis id ", this.devisService.currentDevis.id )
 
     let dataForLot = {
       designation: `LotHiddenForCoutDuDevis${this.devisService.currentDevis.id}`,

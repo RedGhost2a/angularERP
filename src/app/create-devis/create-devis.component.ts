@@ -152,8 +152,8 @@ export class CreateDevisComponent implements OnInit {
 
     this.getDevisExport()
     this.setSelectedIndex()
-    this.getSousLotHiddenForOuvrageId()
-    this.getSousLotHiddenForCoutId()
+    // this.getSousLotHiddenForOuvrageId()
+    // this.getSousLotHiddenForCoutId()
   }
 
 
@@ -853,6 +853,10 @@ export class CreateDevisComponent implements OnInit {
       this.getSommeOuvrage()
       this.getSommeOuvrageFraisDeChantier()
       this.moyenneBeneficeAleasTotal()
+
+      this.getSousLotHiddenForOuvrageId()
+      this.getSousLotHiddenForCoutId()
+
     })
   }
 
