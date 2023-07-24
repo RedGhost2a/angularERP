@@ -23,7 +23,7 @@ import {DataSharingService} from "../../_service/data-sharing-service.service";
 })
 export class ListClientComponent implements OnInit {
   dataSource !: MatTableDataSource<Client>
-  displayedColumns: string[] = ['lastname', 'firstname', 'adresse', 'city','entreprise', 'boutons'];
+  displayedColumns: string[] = ['denomination', 'adresse', 'city','entreprise', 'boutons'];
 
   constructor(private clientService: ClientService, private dialog: MatDialog, private userService: UserService,
               private devisService: DevisService, private dataSharingService:DataSharingService) {
@@ -61,6 +61,8 @@ export class ListClientComponent implements OnInit {
   getAll(entrepriseId: number): void {
     this.clientService.getAllByEntreprise(entrepriseId).subscribe((listClient: Client[]) => {
         this.clientService.clients = this.clientService.clients.concat(listClient);
+        //permet de trier les client par l'id (du plus recent au plus ancien)
+        this.clientService.clients.sort((a,b) => b.id - a.id)
         this.dataSource = new MatTableDataSource(this.clientService.clients);
 
 

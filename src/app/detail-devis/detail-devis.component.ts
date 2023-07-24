@@ -83,10 +83,10 @@ export class DetailDevisComponent implements OnInit {
   }
 
   updateAleasDevis() {
-    this.devisService.update({aleasInPercent: this.aleasInPercent}, this.devisService.currentDevis.id).subscribe(() => {
+    this.devisService.update({aleasInPercent: this.devis.aleasInPercent}, this.devisService.currentDevis.id).subscribe(() => {
       this.toastr.success('Succes', 'Le statut a été mis à jour.');
-      this.updateBenefAndAleasDevis()
       this.getById(this.devisService.currentDevis.id);
+      this.updateBenefAndAleasDevis()
     }, error => {
       this.toastr.error('Error', 'Une erreur est survenue lors de la mise à jour du statut.');
     });
@@ -95,6 +95,7 @@ export class DetailDevisComponent implements OnInit {
   updateBenefAndAleasDevis() {
     this.devisService.getOuvrages(this.devisService.currentDevis.id).subscribe(devis => {
       let ouvrages = devis[1];
+      console.log("devis, ", devis)
       ouvrages = ouvrages.concat(devis[0])
       const updatedOuvrage = {
         benefice: this.devis.beneficeInPercent,

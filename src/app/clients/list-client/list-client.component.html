@@ -18,16 +18,10 @@
     <table mat-table
            [dataSource]="dataSource" multiTemplateDataRows
            class="mat-elevation-z8 global-table">
-            <ng-container matColumnDef="lastname">
-              <th class="global-th" mat-header-cell *matHeaderCellDef>Nom</th>
-              <td class="global-td" (click)="openDialogCreateClient(client, true)" mat-cell *matCellDef="let client">{{client.firstName}}</td>
+            <ng-container matColumnDef="denomination">
+              <th class="global-th" mat-header-cell *matHeaderCellDef>Dénomination</th>
+              <td class="global-td" (click)="openDialogCreateClient(client, true)" mat-cell *matCellDef="let client">{{client.denomination}}{{client.id}}</td>
             </ng-container>
-
-            <ng-container matColumnDef="firstname">
-              <th class="global-th"  mat-header-cell *matHeaderCellDef>Prénom</th>
-              <td class="global-td" (click)="openDialogCreateClient(client, true)" mat-cell *matCellDef="let client">{{client.lastName}}</td>
-            </ng-container>
-
             <ng-container matColumnDef="adresse">
               <th class="global-th" mat-header-cell *matHeaderCellDef>Adresse</th>
               <td class="global-td" (click)="openDialogCreateClient(client, true)" mat-cell *matCellDef="let client">{{client.Adresse.adresses}}</td>
