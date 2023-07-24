@@ -30,6 +30,8 @@ export class ListDevisComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDeviswithRole()
+    this.dataSource.filterPredicate = this.getFilterPredicate();
+
   }
 
 
@@ -61,9 +63,7 @@ export class ListDevisComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    this.dataSource.filterPredicate = this.getFilterPredicate();
   }
-
 
   getDeviswithRole() {
     if (this.userService.isSuperAdmin()) {

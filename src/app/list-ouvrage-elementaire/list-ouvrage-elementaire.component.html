@@ -8,7 +8,7 @@
     <div class="header global-header">
       <mat-form-field class="global-search-input">
         <mat-label >Recherche d'un composant</mat-label>
-        <input matInput  placeholder="Ex. cim..." #input>
+        <input (keyup)="applyFilter($event)" matInput  placeholder="Ex. cim..." #input>
       </mat-form-field>
       <div class="global-button-add">
         <button (click)="openDialogCreate(null)"  mat-raised-button color="primary">Ajouter un ouvrages élémentaires</button>

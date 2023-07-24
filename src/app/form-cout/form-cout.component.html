@@ -19,7 +19,7 @@
       <mat-form-field appearance="legacy">
         <mat-label>Type du composant</mat-label>
         <mat-select formControlName="type" (selectionChange)="getCategorieByType($event.value);">
-          <mat-option *ngFor="let item of typeCout |unique:'type'" [value]="item.type" (click)="getUnitesByTypeCoutId(item.id)">
+          <mat-option *ngFor="let item of typeCout |unique:'type'" [value]="item.type" (click)="getUnitesByTypeCoutId(item.type)">
             {{item.type}}
           </mat-option>
         </mat-select>

@@ -37,6 +37,21 @@ export class ListOuvrageElementaireComponent implements OnInit {
     })
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    // console.log("dtasource",this.dataSource)
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const searchText = filter.trim().toLowerCase();
+      const designation = data.designation.toLowerCase();
+      // console.log(data)
+      const unite = data.unite.toLowerCase();
+      const valuesToSearch = [designation, unite];
+      return valuesToSearch.some(value => value.includes(searchText));
+    };
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    // console.log(this.ouvrageElementaire.filter)
+  }
+
   getAllOuvrageElementaire(entrepriseId:number){
     this.ouvrageElementaireService.getAll(entrepriseId).subscribe(data => {
       this.ouvrageElementaire = data;

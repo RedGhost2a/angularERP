@@ -9,6 +9,7 @@ import {TypeCoutService} from "../_service/typeCout.service";
 import {TypeCout} from "../_models/type-cout";
 import {DataSharingService} from "../_service/data-sharing-service.service";
 import {Entreprise} from "../_models/entreprise";
+import {map, Observable, startWith} from "rxjs";
 
 @Component({
   selector: 'app-dialog-unite-for-form',
@@ -26,6 +27,7 @@ export class DialogUniteForFormComponent implements OnInit {
   categories:any[]=[]
   uniteListTypeCategorie!: any[];
   listEntreprise : Entreprise [] = []
+  filteredUnits!: Observable<any[]>;
   constructor(private uniteForFormService:UniteForFormService,
               private typeCoutService: TypeCoutService,
               private form:FormBuilder,
@@ -48,24 +50,28 @@ export class DialogUniteForFormComponent implements OnInit {
   ngOnInit(): void {
     this.getId()
     this.getAll()
+    const nameControl = this.uniteForForm.get('name');
+    if (nameControl) {
+      this.filteredUnits = nameControl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterUnits(value))
+      );
+    } else {
+      console.error("Le contrôle de formulaire 'name' n'a pas été trouvé");
+    }
 
 
   }
+  private _filterUnits(value: string): string[] {
+    const filterValue = value.toLowerCase();
 
+    return this.unitelist.filter(unit => unit.name.toLowerCase().includes(filterValue));
+  }
 getId(): void {
   this.userService.getById(this.user).subscribe(data=>{
     data.Entreprises.forEach((entreprise: Entreprise) =>{
       this.listEntreprise.push(entreprise)
     })
-    // this.entrepriseId=data.Entreprises[0].id
-    // this.uniteForForm.controls['EntrepriseId'].setValue(this.entrepriseId);
-    // console.log(this.entrepriseId)
-    // this.getAllTypeCouts(this.entrepriseId)
-    // this.typeCoutService.getAllTypeCouts(this.entrepriseId).subscribe(data => {
-    //   this.type = data.map(item => item.type);
-    //   this.categorie = data.map(item => item.categorie);
-    //   console.log(this.type, this.categorie);
-    // });
   })
 
 }

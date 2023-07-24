@@ -71,7 +71,7 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
   importForm!: FormGroup;
   importedFiles!: ImportExcel[];
   progressValue!: number;
-  visible: boolean = true;
+  visible: boolean = false;
 
 
   constructor(private entrepriseService: EntrepriseService,
@@ -279,16 +279,23 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
       this.toastr.error(NO_FILE_SELECTED_ERROR, NO_FILE_SELECTED);
       return;
     }
-    const data = await firstValueFrom(this.importExcelService.getById(file.id));
-    const total = data.data.length - 1; // Décompte total des éléments à traiter
+    const rawData = await firstValueFrom(this.importExcelService.getById(file.id));
+    const data = JSON.parse(rawData);
+    // data.data.forEach((element: any)=>console.log(element))
+
+    const total = data.length - 1; // Décompte total des éléments à traiter
+    console.log("Avant  la boucle, i =");
+
     for (let i = 1; i < data.data.length; i++) {
+      console.log("Début de la boucle, i =", i);
       const ligne = data.data[i];
+      console.log("ligne",ligne)
       try {
         const typeId = await this.getOrAddType(ligne, user); // Créer le type
         const fournId = await this.getOrAddFournisseur(ligne, user); // Créer le fournisseur
         const promises = [
-          this.getOrAddUnite(ligne, user, typeId),
-          this.getOrAddComposant(ligne, user, typeId, fournId)
+          await this.getOrAddUnite(ligne, user, typeId),
+          await this.getOrAddComposant(ligne, user, typeId, fournId)
         ];
         await Promise.all(promises);
       } catch (error) {
@@ -338,6 +345,8 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
     try {
       let type = encodeURIComponent(ligne[0]);
       let categorie = encodeURIComponent(ligne[1]);
+      console.log("Dans getOrAddType, ligne =", ligne, "user =", user);
+
       typeId = await firstValueFrom(this.typeCoutService.getTypeCoutIdByTypeAndCategorie(type, categorie));
       console.log('ID du type de coût trouvé :', typeId);
     } catch (error) {
@@ -359,9 +368,9 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
       EntrepriseId: user.Entreprises[0].id,
 
     }
-    const typeCoutResponse = await firstValueFrom(this.typeCoutService.createTypeCout(type));
-    console.log('Type de coût créé avec succès :', typeCoutResponse);
-    return typeCoutResponse?.id;
+    const typeId = await firstValueFrom(this.typeCoutService.createTypeCout(type));
+    console.log('Type de coût créé avec succès :', typeId);
+    return typeId?.id;
   }
 
 
@@ -391,9 +400,9 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
 
 
     }
-    const uniteCoutResponse = await firstValueFrom(this.uniteService.create(unite));
-    console.log('Unite de coût créé avec succès id :', uniteCoutResponse.data.id);
-    return uniteCoutResponse?.id;
+    const uniteId = await firstValueFrom(this.uniteService.create(unite));
+    console.log('Unite de coût créé avec succès id :', uniteId.data.id);
+    return uniteId?.id;
   }
 
   async getOrAddComposant(ligne: any, user: any, typeId: number, fournId: string) {

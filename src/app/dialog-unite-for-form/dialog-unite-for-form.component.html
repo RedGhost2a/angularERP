@@ -26,11 +26,17 @@
 
       <mat-form-field appearance="standard">
         <mat-label>Désignation de l'unité</mat-label>
-        <input matInput formControlName="name" required>
+        <input type="text" matInput formControlName="name" [matAutocomplete]="auto" required>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let unit of filteredUnits | async" [value]="unit.name">
+            {{ unit.name }}
+          </mat-option>
+        </mat-autocomplete>
         <mat-error *ngIf="uniteForForm.get('name')?.hasError('required')">
           Le nom est obligatoire
         </mat-error>
       </mat-form-field>
+
       <!-- Ajout des champs pour le type et la catégorie -->
       <mat-form-field appearance="legacy">
         <mat-label>Type du composant</mat-label>
@@ -94,7 +100,7 @@
         <mat-label>Type du composant</mat-label>
         <mat-select (selectionChange)="getCategorieByType($event.value)">
           <mat-option *ngFor="let item of typeCout |unique:'type'" [value]="item.type"
-                      (click)="getUnitesByTypeCoutId(item.id)">
+                      (click)="getUnitesByTypeCoutId(item.type)">
             {{item.type}}
           </mat-option>
         </mat-select>

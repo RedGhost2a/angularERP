@@ -11,6 +11,7 @@ import {CoutDuDevis} from "../_models/cout-du-devis";
 import {CoutService} from "../_service/cout.service";
 import {OuvrageElementaireCoutService} from "../_service/ouvrage-elementaire-cout.service";
 import {DataSharingService} from "../_service/data-sharing-service.service";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-dialog-list-ouvrage-elementaire',
@@ -31,7 +32,7 @@ export class DialogListOuvrageElementaireComponent implements OnInit {
   selectedOuvrageElemIds: number[] = [];
   isChecked: boolean = false;
   coutDuDevis!: CoutDuDevis;
-
+ dataSource !:any
 
   constructor(private ouvrageElemnentaireService: OuvrageElementaireService,
               private ouvrageOuvrageElemService: OuvrageOuvragesElementairesService,
@@ -63,11 +64,26 @@ export class DialogListOuvrageElementaireComponent implements OnInit {
 
   getAll(entrepriseId: number): void {
     this.ouvrageElemnentaireService.getAll(entrepriseId).subscribe(data => {
-      this.ouvrageElementaire = data
-      console.log("OuvrageElementaire", this.ouvrageElementaire)
+      // this.ouvrageElementaire = data
+      this.dataSource =data
+      this.dataSource = new MatTableDataSource(this.dataSource)
+      console.log("OuvrageElementaire", this.dataSource)
     })
   }
-
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    console.log("dtasource",this.dataSource)
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const searchText = filter.trim().toLowerCase();
+      const designation = data.designation.toLowerCase();
+      console.log(data)
+      const unite = data.unite.toLowerCase();
+      const valuesToSearch = [designation, unite];
+      return valuesToSearch.some(value => value.includes(searchText));
+    };
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    console.log(this.ouvrageElementaire.filter)
+  }
 
   onCheck(idCout: number): void {
     if (this.selectedOuvrageElemIds.indexOf(idCout) !== -1) {
