@@ -77,7 +77,7 @@
         <mat-label>Fournisseur</mat-label>
         <mat-select formControlName="FournisseurId">
           <mat-option *ngFor="let item of fournisseur" [value]="item.id">
-            {{item.commercialName}} {{item.id}}
+            {{item.commercialName}}
           </mat-option>
         </mat-select>
         <mat-error *ngIf="this.myFormGroup.get('FournisseurId')?.hasError('required')">
