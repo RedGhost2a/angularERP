@@ -18,7 +18,7 @@ import {UniteForFormService} from "../_service/uniteForForm.service";
 })
 export class ListOuvrageComponent implements OnInit {
   dataSource!: MatTableDataSource<Ouvrage>;
-  columnsToDisplay = ["designation", "benefice", "aleas", "unite", "rendement", "uRatio", "prixUnitaire","entreprise", "boutons"];
+  columnsToDisplay = ["designation", "benefice", "aleas", "unite", "rendement", "uRatio", "prixUnitaire", "entreprise", "boutons"];
 
   constructor(private ouvrageService: OuvrageService, private ouvrageCoutService: OuvrageCoutService, private uniteForFormService: UniteForFormService,
               private dialog: MatDialog, private userService: UserService, private dataSharingService: DataSharingService) {
@@ -31,16 +31,33 @@ export class ListOuvrageComponent implements OnInit {
   getCurrentUser() {
     this.userService.currentUser.Entreprises.forEach((entreprise: Entreprise) => {
       this.ouvrageService.getAll(entreprise.id).subscribe((listOuvrage: Ouvrage []) => {
-        console.log("listouvrage",listOuvrage)
+        console.log("listouvrage", listOuvrage)
         this.ouvrageService.ouvrages = this.ouvrageService.ouvrages.concat(listOuvrage);
         this.dataSource = new MatTableDataSource(this.ouvrageService.ouvrages);
-        this.getPriceOuvrage()
       })
+      // this.getPriceOuvrage()
+      // this.getPriceOuvragesElementaire()
     });
   }
 
   getPriceOuvrage() {
-    this.ouvrageService.getPriceOuvrages()
+    // console.log("ouvrages . ouvrage", this.ouvrageService.ouvrages)
+    // this.ouvrageService.getPriceOuvrages()
+    // console.log("ouvrages . ouvrage 2", this.ouvrageService.ouvrages)
+    // this.ouvrageService.ouvrages.forEach(ouvrage => {
+    //   this.ouvrageService.update({prix: ouvrage.prix}, ouvrage.id).subscribe()
+    // })
+  }
+
+  async getPriceOuvragesElementaire() {
+    // if (this.ouvrageService.ouvrages.OuvragesElementaires) {
+    //   try {
+    //     this.ouvrageElementaireService.getPriceOuvragesElementaire(this.ouvrage.OuvragesElementaires)
+    //     this.getTotalPrice()
+    //   } catch (error) {
+    //     console.log(error)
+    //   }
+    // }
   }
 
   applyFilter(event: Event) {
@@ -61,7 +78,7 @@ export class ListOuvrageComponent implements OnInit {
   }
 
 
-  openDialogCreateOuvrage(ouvrage:  null) {
+  openDialogCreateOuvrage(ouvrage: null) {
     this.ouvrageService.openDialogCreate(ouvrage, () => {
       this.getCurrentUser()
     })
