@@ -24,6 +24,7 @@ export class OuvrageService {
   }
 
   getAll(entrepriseId: number): Observable<any> {
+
     this.ouvrages = []
     return this.http.get(baseUrl, {
       params: {
@@ -121,6 +122,7 @@ export class OuvrageService {
 
   getPriceOuvrage(ouvrage: Ouvrage){
     if (ouvrage.Couts && ouvrage.Couts?.length >= 1) {
+      ouvrage.prix = 0;
       ouvrage.prix = ouvrage.Couts.reduce((total, cout) => {
         if (cout.OuvrageCout?.ratio) {
           return total + cout.prixUnitaire * cout.OuvrageCout.ratio;
