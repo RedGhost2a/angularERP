@@ -29,10 +29,10 @@ export class OuvrageElementaireCoutService {
     return this.http.post(`${baseUrl}/new`, data);
   }
 
-  deleteByID(CoutId: any, OuvrageId: any): Observable<any> {
+  deleteByID(CoutId: any, OuvragesElementaireId: any): Observable<any> {
     // console.log(`${baseUrl}/${id}`)
-    console.log(`${baseUrl}/${CoutId}/${OuvrageId}`)
-    return this.http.delete(`${baseUrl}/${CoutId}/${OuvrageId}`)
+    console.log(`${baseUrl}/${CoutId}/${OuvragesElementaireId}`)
+    return this.http.delete(`${baseUrl}/${CoutId}/${OuvragesElementaireId}`)
   }
 
 
@@ -44,8 +44,8 @@ export class OuvrageElementaireCoutService {
     return this.http.get(`${baseUrl}/price/${ouvrageId}`)
   }
 
-  updateOuvrageCout(coutId: number, ouvrageId: number, ouvrageElemCout: OuvrageElementaireCout): Observable<OuvrageElementaireCout> {
-    return this.http.put<OuvrageElementaireCout>(`${baseUrl}/${coutId}/${ouvrageId}`, ouvrageElemCout)
+  updateOuvrageElemCout(coutId: number, OuvragesElementaireId: number, ouvrageElemCout: OuvrageElementaireCout): Observable<OuvrageElementaireCout> {
+    return this.http.put<OuvrageElementaireCout>(`${baseUrl}/${coutId}/${OuvragesElementaireId}`, ouvrageElemCout)
   }
 
   updateOuvrageCoutDuDevis(coutDuDeviId: number, OuvrElemDuDeviId: number, ouvrageCoutDuDevis: OuvrageCoutDuDevis): Observable<OuvrageCoutDuDevis> {
@@ -55,10 +55,12 @@ export class OuvrageElementaireCoutService {
 
   //A voir pour remplacer la fonction updateOuvrageCoutDuDevis dans le component createdevis.ts
   createOuvrageElemCoutDuDevis(data: any): Observable<any> {
+    console.log('data create ouvrage elementaire cout du devis',data)
     return this.http.post(`${baseUrl}DuDevis/new`, data)
   }
 
-  createOuvrageOuvrageElemDuDevis(data: any): Observable<any> {
+   createOuvrageOuvrageElemDuDevis(data: any): Observable<any> {
+    console.log("data create ouvrage ouvrage elementaire du devis ", data)
     return this.http.post(`${baseUrl}DuDevis/newOuvrage`, data)
   }
   createOuvrageCoutByDesignation(ouvrageDuDevisId:number, data:any):Observable<any>{
