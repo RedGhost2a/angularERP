@@ -64,6 +64,7 @@ export class OuvrageElementaireAddOuvrageComponent implements OnInit {
     this.ouvrageElemnentaireService.getAll(entrepriseId).subscribe(data=>{
       this.ouvrageElementaire=data
       console.log("OuvrageElementaire",this.ouvrageElementaire)
+      this.ouvrageElemnentaireService.getPriceOuvragesElementaire(this.ouvrageElementaire)
     })
   }
 
