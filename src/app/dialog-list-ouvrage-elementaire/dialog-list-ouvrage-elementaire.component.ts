@@ -18,7 +18,7 @@ import {DataSharingService} from "../_service/data-sharing-service.service";
   styleUrls: ['./dialog-list-ouvrage-elementaire.component.scss']
 })
 export class DialogListOuvrageElementaireComponent implements OnInit {
-  ouvrageElementaire: OuvrageElementaire[] = [];
+  ouvrageElementaire: OuvrageElementaire [] = [];
   columnsToDisplay = ["checkBox", "designation",
     "proportion",
     "unite",
@@ -62,7 +62,7 @@ export class DialogListOuvrageElementaireComponent implements OnInit {
 
 
   getAll(entrepriseId: number): void {
-    this.ouvrageElemnentaireService.getAll(entrepriseId).subscribe(data => {
+    this.ouvrageElemnentaireService.getAll(entrepriseId).subscribe((data: any) => {
       this.ouvrageElementaire = data
       console.log("OuvrageElementaire", this.ouvrageElementaire)
     })
@@ -82,7 +82,6 @@ export class DialogListOuvrageElementaireComponent implements OnInit {
 
 
   createOuvrageElementaireDuDevis() {
-    let prixOuvrage = 0;
     //boucle sur tous les ouvrages selectionner dans la modal
     this.selectedOuvrageElemIds.forEach((ouvrageElemId: any) => {
       //recupere les ouvrages grace a leurs id
@@ -91,7 +90,9 @@ export class DialogListOuvrageElementaireComponent implements OnInit {
         const allDataOuvrageDevis = {...data}
         this.ouvrageElemnentaireService.createOuvrageElementaireDuDevis(allDataOuvrageDevis).subscribe(response => {
           //recupere l'id de l'ouvrageElemDuDevis qui viens d'etre creer, et
-          data.OuvrageDuDeviId = response.OuvrageDuDevis?.id
+          data.OuvrageDuDeviId = response.OuvrageElemDuDevis.id
+          console.log("response create ouvrage elementaire du devis", response)
+          console.log("response create ouvrage elementaire du devis", response.OuvrageElemDuDevis.id)
           console.log(data.OuvrageDuDeviId)
           const ouvrageOuvrageElemDuDevis = {
             OuvrageDuDeviId: this.currentOuvrageId,
@@ -120,7 +121,7 @@ export class DialogListOuvrageElementaireComponent implements OnInit {
 
               //     //creer l'OuvrageCoutDuDevis grace au reponse des requetes de creation des couts et de l'ouvrage
               const ouvrageCout = {
-                OuvrElemDuDeviId: response.OuvrageDuDevis?.id,
+                OuvrElemDuDeviId: response.OuvrageElemDuDevis.id,
                 CoutDuDeviId: responseCout?.id,
                 ratio: 1,
                 uRatio: uRatio,
