@@ -1,6 +1,7 @@
 import {Fournisseur} from "./fournisseur";
 import {TypeCout} from "./type-cout";
 import {OuvrageCout} from "./ouvrageCout";
+import {OuvrageElementaireCout} from "./ouvrage-elementaire-cout";
 
 export interface Cout {
   id: number;
@@ -22,6 +23,8 @@ OuvrageCout?:OuvrageCout
   prixCalcHT?:number;
   prixUnitaireCalcHT?:number;
   totalDBS?:number;
+  OuvragesElementairesCouts ?: OuvrageElementaireCout
+  OuvrElemCoutsDuDevis ?:OuvrageElementaireCout
 
 
   //Fournisseurs: Fournisseur;
