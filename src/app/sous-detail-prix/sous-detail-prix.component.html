@@ -227,7 +227,7 @@
               *matCellDef="let ouvrageElem">
 
             <mat-form-field appearance="legacy" [formGroup]="formOuvrageOE" style="width: 80px">
-              <input (keyup.enter)="propChangeOuvrElem(ouvrageElem.id)" formControlName="proportion" matInput required
+              <input (keyup.enter)="propChangeOuvrElem(ouvrageElem)" formControlName="proportion" matInput required
                      [placeholder]="ouvrageElem.proportion">
             </mat-form-field>
 
@@ -239,10 +239,18 @@
           <td mat-cell routerLink="/ouvrages-elementaires-du-devis/{{ouvrageElem.id}}"
               *matCellDef="let ouvrageElem"> {{ouvrageElem.unite}} </td>
         </ng-container>
+        <ng-container matColumnDef="prixUnitaire">
+          <th mat-header-cell *matHeaderCellDef>PU HT</th>
+          <td mat-cell routerLink="/ouvrages-elementaires-du-devis/{{ouvrageElem.id}}"
+              *matCellDef="let ouvrageElem"> {{ouvrageElem.prixUnitaire | number: '1.2-2'}} €
+          </td>
+          <th mat-header-cell *matHeaderCellDef></th>
+        </ng-container>
         <ng-container matColumnDef="prix">
           <th mat-header-cell *matHeaderCellDef>Ds total</th>
           <td mat-cell routerLink="/ouvrages-elementaires-du-devis/{{ouvrageElem.id}}"
-              *matCellDef="let ouvrageElem"> {{ouvrageElem.prix}} </td>
+              *matCellDef="let ouvrageElem"> {{ouvrageElem.prix | number: '1.2-2'}} €
+          </td>
           <th mat-header-cell *matHeaderCellDef></th>
         </ng-container>
         <ng-container matColumnDef="uniteproportionOE">
@@ -269,7 +277,7 @@
               <!--                Modifier-->
               <!--              </button>-->
               <!--              <br>-->
-              <button (click)="deleteOuvrageElem(ouvrageElem.id)" mat-button color="warn">
+              <button (click)="deleteOuvrageElem(ouvrageElem)" mat-button color="warn">
                 <mat-icon>clear</mat-icon>
                 Supprimer
               </button>
@@ -292,7 +300,7 @@
 
     </ng-template>
 
-    <div *ngIf="this.currentOuvrage.CoutDuDevis && this.currentOuvrage.CoutDuDevis.length">
+    <div *ngIf="this.currentOuvrage.CoutDuDevis && this.currentOuvrage.CoutDuDevis.length ">
 
       <h5 class="titre2">Composant de l'ouvrage</h5>
       <table *ngIf="currentOuvrage " mat-table [dataSource]="currentOuvrage.CoutDuDevis">
@@ -409,10 +417,19 @@
                   </span>
           </td>
         </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
         <!--    <tr mat-header-row *matHeaderRowDef="columnsToDisplay" style="font-weight: normal;font-style: oblique" ></tr>-->
         <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
       </table>
+    </div>
+
+    <div *ngIf="currentOuvrage.CoutDuDevis">
+      <mat-card class="card-no-cout" *ngIf="currentOuvrage.CoutDuDevis.length === 0">
+        <mat-card-title-group class="group">
+          <mat-card-title>Aucun composant dans cet ouvrage</mat-card-title>
+        </mat-card-title-group>
+      </mat-card>
     </div>
     <ng-container *ngIf="isFormVisible" [formGroup]="this.myFormGroup" (keyup.enter)="createCoutDuDevis()">
       <!--  <button routerLink="/listCout" mat-raised-button color="accent">Retour</button>-->
@@ -576,23 +593,23 @@
       <hr>
 
       <div formArrayName="metres">
-        <!--        <div >-->
-        <div class="global-inputs inputs" *ngFor="let metre of tableau; let i = index" [formGroupName]="i">
+        <div class="global-inputs inputs" *ngFor="let metre of metresArray.controls; let i = index" [formGroupName]="i">
           <mat-form-field appearance="legacy">
             <mat-label>Longueur</mat-label>
-            <input (keydown.enter)="displayResultMetre();testpush(i)" matInput formControlName="longueur" type="number">
+            <input (keydown.enter)="displayResultMetre();createOrUpdateMetre(i)" matInput formControlName="longueur"
+                   type="number">
           </mat-form-field>
 
 
-          <mat-form-field appearance="legacy"
-                          *ngIf="this.currentOuvrage.unite === 'm3' || this.currentOuvrage.unite === 'm2'">
+          <mat-form-field appearance="legacy" *ngIf="metre.get('largeur')">
             <mat-label>Largeur</mat-label>
-            <input (keydown.enter)="displayResultMetre();testpush(i)" matInput formControlName="largeur" type="number">
+            <input (keydown.enter)="displayResultMetre();createOrUpdateMetre(i)" matInput formControlName="largeur"
+                   type="number">
           </mat-form-field>
 
-          <mat-form-field appearance="legacy" *ngIf="this.currentOuvrage.unite === 'm3'">
+          <mat-form-field appearance="legacy" *ngIf="metre.get('hauteur')">
             <mat-label>Hauteur</mat-label>
-            <input (keydown.enter)="displayResultMetre();testpush(i)" (keydown.entrer)="testpush(i)" matInput
+            <input (keydown.enter)="displayResultMetre();createOrUpdateMetre(i)" matInput
                    formControlName="hauteur" type="number">
           </mat-form-field>
           <p class="p-resultI"
@@ -600,17 +617,10 @@
 
         </div>
         <button class="float-left" mat-icon-button color="primary" aria-label="Add"
-                (click)="addMetreFormGroup()" matTooltip="Ajouter une nouvelle ligne de calcul">
+                (click)="addMetreFormGroup(true)" matTooltip="Ajouter une nouvelle ligne de calcul">
           <mat-icon>add_circle_outline</mat-icon>
         </button>
-        <!--          <button class="float-left" mat-icon-button color="primary" aria-label="Add"-->
-        <!--                  (click)="getMetreByOuvrage()" matTooltip="">-->
-        <!--            TEST-->
-        <!--          </button>-->
-        <!--          <button class="float-left" mat-icon-button color="primary" aria-label="Add"-->
-        <!--                  (click)="displayResultMetre()" matTooltip="Add">-->
-        <!--            btn-->
-        <!--          </button>-->
+
       </div>
     </div>
     <div class="container-detail-metre">
@@ -619,7 +629,6 @@
       </mat-card-header>
       <hr>
 
-      <!--            <p class="p-detail">fds</p>-->
       <h3 class="title-detail" *ngIf="displayArrayResultMetre(this.resultTotalMetre)">Quantité métré
         : {{this.resultTotalMetre | number : '1.2-2'}} {{this.currentOuvrage.unite}}</h3>
       <p class="p-detail">{{this.resultCalculMetre}}</p>
