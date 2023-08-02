@@ -49,19 +49,20 @@ export class DetailOuvrageComponent implements OnInit {
   formOuvrage!: FormGroup;
   listFournisseur !: Fournisseur[]
   listTypeCout !: TypeCout []
-  columnsToDisplayCout = ["type", "categorie", "designation", "ratio", "uRatio", "unite", "prixUnitaire", "fournisseur", "boutons"];
-  ouvrageElementaire:OuvrageElementaire[]=[];
+  columnsToDisplayCout = ["type", "categorie", "designation", "ratio", "uRatio", "unite", "prixUnitaire","debourseSecTotal", "fournisseur", "boutons"];
+  ouvrageElementaire: OuvrageElementaire[] = [];
   columnsToDisplayOuvrageElem = ["designation",
     "proportion",
-    "unite",
+    "unite", "uniteProportionOE",
+    "remarques","prixUnitaireOE",
     "prix", "boutons"
   ]
 
 
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute, private coutService: CoutService,
-              private ouvrageCoutService: OuvrageCoutService, private dialog: MatDialog, private typeCoutService : TypeCoutService,
-              private fournisseurService : FournisseurService,
-              private ouvrageElemnentaireService:OuvrageOuvragesElementairesService, private uniteForFormService : UniteForFormService) {
+              private ouvrageCoutService: OuvrageCoutService, private dialog: MatDialog, private typeCoutService: TypeCoutService,
+              private fournisseurService: FournisseurService, private ouvrageElementaireService: OuvrageElementaireService,
+              private ouvrageOuvrageElemnentaireService: OuvrageOuvragesElementairesService, private uniteForFormService: UniteForFormService) {
   }
 
   ngOnInit(): void {
@@ -80,7 +81,7 @@ export class DetailOuvrageComponent implements OnInit {
       unite: new FormControl(ouvrage.unite),
       ratio: new FormControl(ouvrage.ratio),
       uRatio: new FormControl(ouvrage.uRatio),
-      prix: new FormControl({value: ouvrage.prix, disabled: true})
+      prix: new FormControl({value: ouvrage.prix + " €", disabled: true})
     })
   }
 
@@ -92,15 +93,18 @@ export class DetailOuvrageComponent implements OnInit {
 
   getById(): void {
     this.route.params.subscribe(params => {
-      this.ouvrageService.getById(+params['id']).subscribe((ouvrage: Ouvrage) => {
+      this.ouvrageService.getById(+params['id']).subscribe(async (ouvrage: Ouvrage) => {
         this.ouvrage = ouvrage;
+        console.log('ouvrage ', ouvrage)
         this.uRatioUpdate(this.ouvrage)
-        this.getPriceOuvrage()
+        await this.getPriceOuvrage()
+
         this.formGroupOuvrage(ouvrage)
         this.formRatioOuvrageCout()
         this.getAllCout(ouvrage.EntrepriseId)
         this.getAllTypeCouts(ouvrage.EntrepriseId)
         this.getAllFournisseurs(ouvrage.EntrepriseId)
+        this.updateOuvrageOnChange()
         // this.ouvrage.fournisseur = data.Couts[0].Fournisseurs[0].commercialName
         // console.log("FOURNISSEUR",this.ouvrage.fournisseur)
       })
@@ -109,15 +113,49 @@ export class DetailOuvrageComponent implements OnInit {
 
 
   updateOuvrageOnChange() {
-    console.log("test")
-    this.ouvrageService.update(this.formOuvrage.getRawValue(), this.ouvrageID).subscribe(() => {
-        this.getById()
+    console.log("update ouvrage", this.formOuvrage.getRawValue())
+    this.ouvrageService.update(this.formOuvrage.getRawValue(), this.ouvrage.id).subscribe(() => {
+        // this.getById()
       }
     )
   }
 
-  getPriceOuvrage(): void {
-    this.ouvrageService.getPriceOuvrage(this.ouvrage)
+  async getPriceOuvrage(): Promise<void> {
+    try {
+      await this.ouvrageService.getPriceOuvrage(this.ouvrage)
+      this.getPriceOuvragesElementaire()
+      this.getTotalPriceCout()
+    } catch (erreur) {
+      console.log(erreur)
+    }
+  }
+  getTotalPriceCout(){
+    this.ouvrage.Couts?.forEach((cout:Cout)=>{
+      if(cout.OuvrageCout?.ratio)
+      cout.debourseSecTotal = cout.prixUnitaire * cout.OuvrageCout.ratio
+    })
+  }
+
+  async getPriceOuvragesElementaire() {
+    if (this.ouvrage.OuvragesElementaires) {
+      try {
+        this.ouvrageElementaireService.getPriceOuvragesElementaire(this.ouvrage.OuvragesElementaires)
+        this.getTotalPrice()
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+  getTotalPrice() {
+    let totalPrice = 0;
+    this.ouvrage.OuvragesElementaires?.forEach(element => {
+      console.log("element", element)
+      totalPrice += element.prix
+    })
+    console.log("ouvrage prix,", this.ouvrage.prix)
+    console.log("ouvrage elementaire total prix", totalPrice)
+    this.ouvrage.prix += totalPrice;
   }
 
 
@@ -127,7 +165,8 @@ export class DetailOuvrageComponent implements OnInit {
       if (cout.OuvrageCout) {
         cout.OuvrageCout.uRatio = `${cout.unite}/${ouvrage.unite}`
         console.log(`${cout.unite}/${ouvrage.unite}`)
-        this.ouvrageCoutService.updateOuvrageCout(cout.id, ouvrage.id, cout.OuvrageCout).subscribe()
+        this.ouvrageCoutService.updateOuvrageCout(cout.id, ouvrage.id, cout.OuvrageCout).subscribe(() => {
+        })
       }
     })
   }
@@ -146,6 +185,7 @@ export class DetailOuvrageComponent implements OnInit {
       uRatio: cout.OuvrageCout?.uRatio
     }
     this.ouvrageCoutService.updateOuvrageCout(cout.id, this.ouvrage.id, ouvrageCout).subscribe(() => {
+      // this.updateOuvrageOnChange()
       this.getById()
     })
   }
@@ -155,17 +195,21 @@ export class DetailOuvrageComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Appeler la fonction de suppression ici
-        this.ouvrageCoutService.deleteByID(id, this.ouvrage.id).subscribe(() => this.ngOnInit())
+        this.ouvrageCoutService.deleteByID(id, this.ouvrage.id).subscribe(() => {
+          this.coutService.deleteByID(id).subscribe()
+          this.getById()
+        })
 
       }
     });
   }
+
   deleteOuvrageElem(id: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Appeler la fonction de suppression ici
-        this.ouvrageElemnentaireService.deleteByID(id, this.ouvrage.id).subscribe(() => this.ngOnInit())
+        this.ouvrageOuvrageElemnentaireService.deleteByID(id, this.ouvrage.id).subscribe(() => this.ngOnInit())
 
       }
     });
@@ -174,16 +218,16 @@ export class DetailOuvrageComponent implements OnInit {
   openDialogCreate(cout: Cout | null) {
     this.coutService.openDialogCreate(cout, () => {
       this.getById()
-
-
     });
   }
+
   openDialogCreateCout() {
     this.getUniteByEnteprise(this.ouvrage.EntrepriseId)
     this.coutService.openDialogCreateCout(this.typeCoutService.typeCouts, this.fournisseurService.fournisseurs, this.ouvrage, () => {
       this.getById()
     })
   }
+
   openDialogCreateOuvrElem() {
     this.dialog.open(FormOuvrageElementaireComponent, {
       data: this.ouvrage,
@@ -197,6 +241,7 @@ export class DetailOuvrageComponent implements OnInit {
   openDialogImport() {
     this.ouvrageCoutService.openDialogImport(this.ouvrage, () => {
       this.getById()
+      // this.updateOuvrageOnChange()
 
     });
   }
@@ -204,6 +249,7 @@ export class DetailOuvrageComponent implements OnInit {
   getAllCout(entrepriseID: number): void {
     this.coutService.getAll(entrepriseID).subscribe(couts => {
         this.coutService.couts = couts;
+        console.log('couts ', couts)
       }
     )
   }
@@ -219,6 +265,7 @@ export class DetailOuvrageComponent implements OnInit {
       this.typeCoutService.typeCouts = typeCouts;
     })
   }
+
   // addOuvrageElementaireToOuvrage(entrepriseId:number):void
   // {
   //   this.ouvrageElemnentaireService.getAll(entrepriseId).subscribe(data=>{
@@ -228,7 +275,7 @@ export class DetailOuvrageComponent implements OnInit {
   // }
   openDialogImportOuvrageElementaire() {
     this.dialog.open(OuvrageElementaireAddOuvrageComponent, {
-      panelClass:"test",
+      panelClass: "test",
       data: this.ouvrage,
       width: '90%',
       height: '70%'
