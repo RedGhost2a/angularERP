@@ -95,6 +95,8 @@ import { OuvrageElementaireAddCoutComponent } from './ouvrage-elementaire-add-co
 import { OuvrageElementaireAddOuvrageComponent } from './ouvrage-elementaire-add-ouvrage/ouvrage-elementaire-add-ouvrage.component';
 import { DialogListOuvrageElementaireComponent } from './dialog-list-ouvrage-elementaire/dialog-list-ouvrage-elementaire.component';
 import { DetailOuvrageElementaireDuDevisComponent } from './detail-ouvrage-elementaire-du-devis/detail-ouvrage-elementaire-du-devis.component';
+import { MetreLenghtStrategy } from './metreForm/metre-lenght-strategy/metre-lenght-strategy';
+import { MetreInputsFactoryInterface } from './metreForm/metre-inputs-factory-interface/metre-inputs-factory-interface';
 
 
 const appRoutes: Routes = [];

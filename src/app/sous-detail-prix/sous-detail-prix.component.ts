@@ -37,9 +37,9 @@ import {Metre} from "../_models/metre";
 import {isNumber} from "chart.js/helpers";
 import {OuvrageElementaire} from "../_models/ouvrage-elementaire";
 import {
-  MetreInputsStategyFactoryComponent
-} from "../metreForm/metre-inputs-stategy-factory/metre-inputs-stategy-factory.component";
-import {MetreStrategyInterface} from "../_models/metre-strategy.interface";
+  MetreInputsFactoryInterface
+} from "../metreForm/metre-inputs-factory-interface/metre-inputs-factory-interface";
+import {MetreStrategyInterface} from "../metreForm/metre-strategy-interface/metre-strategy.interface";
 
 @Component({
   selector: 'app-sous-detail-prix',
@@ -244,7 +244,7 @@ export class SousDetailPrixComponent implements OnInit {
         this.changeTextButton()
         console.log("dd finish initCalcul")
 
-        const factory = new MetreInputsStategyFactoryComponent(this.metreService)
+        const factory = new MetreInputsFactoryInterface(this.metreService)
         this.strategy = factory.createStrategy(this.currentOuvrage.unite)
         this.formMetre = this.strategy.createFormBuilder(this.formBuilder)
         const test = typeof this.strategy;
