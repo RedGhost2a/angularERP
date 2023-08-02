@@ -3,6 +3,6 @@ export interface OuvrageElementaireCout {
   OuvragesElementaireId:number;
   CoutId:number;
   ratio?:number;
-  uRatio?:number;
+  uRatio?:string;
   efficience?:number;
 }
