@@ -88,10 +88,7 @@ body {
         color: #334E68;
         padding-right: 0px;
       }
-      .global-td-hover:hover {
-        background-color: #EEF9FF;
-        cursor: pointer;
-      }
+
       .global-td-hover-designation{
         max-width: 20vw;
       }
@@ -102,6 +99,10 @@ body {
       }
     }
   }
+}
+.global-td-hover:hover {
+  background-color: #EEF9FF;
+  cursor: pointer;
 }
 //style for form
 .global-form-container{
