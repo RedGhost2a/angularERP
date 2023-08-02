@@ -42,6 +42,11 @@
           <th class="global-th" mat-header-cell *matHeaderCellDef>Remarques</th>
           <td class="global-td " mat-cell routerLink="/ouvrages-elementaires-detail/{{ouvrage.id}}" *matCellDef="let ouvrage"> {{ouvrage.remarques}} </td>
         </ng-container>
+        <ng-container matColumnDef="entreprise">
+          <th class="global-th" mat-header-cell *matHeaderCellDef> Entreprise</th>
+          <td class="global-td " mat-cell routerLink="/ouvrages-elementaires-detail/{{ouvrage.id}}"
+              *matCellDef="let ouvrage">{{ouvrage.Entreprise.denomination}}</td>
+        </ng-container>
 
 
         <ng-container matColumnDef="boutons">
