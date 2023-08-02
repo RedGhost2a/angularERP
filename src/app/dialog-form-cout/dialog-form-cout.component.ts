@@ -32,6 +32,7 @@ export class DialogFormCoutComponent implements OnInit {
   isChecked: boolean = false;
   isInDevis: boolean = true;
   regexDetailOuvrage = new RegExp(`^/ouvrageDetail`)
+  regexDetailOuvrageElementaire = new RegExp(`^/ouvrages-elementaires-detail`)
   categories: any[] = [];
   typeCout !: TypeCout[];
   isCout: boolean = true;
@@ -58,11 +59,10 @@ export class DialogFormCoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("daaaataaa", this.data)
     this.getAllTypeCouts(this.data[2].EntrepriseId)
     console.log(this.data[2])
     // this.getUniteByEnteprise(this.dataSharingService.entrepriseId)
-    if (this.regexDetailOuvrage.test(window.location.pathname)) {
+    if (this.regexDetailOuvrage.test(window.location.pathname) || this.regexDetailOuvrageElementaire.test(window.location.pathname)) {
       this.isInDevis = false;
     }
 
@@ -149,8 +149,8 @@ export class DialogFormCoutComponent implements OnInit {
             uRatio: this.myFormGroup.getRawValue().uRatio,
           }
           this.ouvrageCoutService.createOuvrageCoutDuDevis(ouvrageCoutDuDevis).subscribe(() => {
-            this.dialogRef.close({prixUnitaire: responseCout.prixUnitaire, ratio: this.myFormGroup.getRawValue().ratio})
           })
+          this.dialogRef.close({prixUnitaire: responseCout.prixUnitaire, ratio: this.myFormGroup.getRawValue().ratio})
         }
       )
       if (this.isChecked === false) {
@@ -168,11 +168,11 @@ export class DialogFormCoutComponent implements OnInit {
 
 
       }
-    } else {
+    } if(!this.isInDevis && !this.regexDetailOuvrageElementaire.test(window.location.pathname)) {
       this.myFormGroup.controls["EntrepriseId"].setValue(this.data[2].EntrepriseId)
       this.cout = this.myFormGroup.getRawValue();
       this.cout.FournisseurId = this.myFormGroup.getRawValue().FournisseurId[2]
-      this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[2]
+      this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[0]
 
       this.coutService.create(this.cout).subscribe((res: any) => {
         const ouvrageCout: OuvrageCout = {
@@ -186,8 +186,34 @@ export class DialogFormCoutComponent implements OnInit {
         this.closeDialog()
 
       })
+    }if(this.regexDetailOuvrageElementaire.test(window.location.pathname)){
+      this.createCoutInOuvrageElementaire()
     }
 
+  }
+
+  createCoutInOuvrageElementaire() {
+    if (this.regexDetailOuvrageElementaire.test(window.location.pathname)) {
+      this.myFormGroup.controls["EntrepriseId"].setValue(this.data[2].EntrepriseId)
+      this.cout = this.myFormGroup.getRawValue();
+      this.cout.FournisseurId = this.myFormGroup.getRawValue().FournisseurId[2]
+      this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[0]
+      console.log('form get raw value', this.myFormGroup.getRawValue())
+      this.coutService.create(this.cout).subscribe((res: any) => {
+        console.log("data response cout create : ", res)
+        const ouvrageElementaireCout = {
+          OuvragesElementaireId: this.data[2].id,
+          CoutId: res.cout.id,
+          ratio: this.myFormGroup.getRawValue().ratio,
+          uRatio: this.myFormGroup.getRawValue().uRatio
+        }
+        this.ouvrageElementaireCoutService.create(ouvrageElementaireCout).subscribe()
+        this.closeDialog()
+
+
+      })
+
+    }
   }
 
   getUnitesByTypeCoutId(id: number) {
