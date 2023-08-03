@@ -21,11 +21,16 @@
 }
 .container .example-card .detailList {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
+  text-align: center;
+  margin-top: 10px;
 }
 .container .example-card .detailList .subTitle {
   margin-top: 0;
   margin-left: 40px;
+}
+.container label {
+  font-weight: 500;
 }
 .container .card-no-cout {
   margin: 1% 5% 0 5%;

@@ -34,6 +34,7 @@ export class EditDevisComponent implements OnInit {
   filteredOptions!: Observable<string[]>;
   options: string[] = [];
   hideClientField: boolean = false;
+  EntrepriseId!: number;
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: Devis,
@@ -68,7 +69,9 @@ export class EditDevisComponent implements OnInit {
     const currentUrl = this.router.url;
     if (currentUrl.includes('clients')) {
       this.clientId = this.data.ClientId;
-      console.log(this.clientId)
+      this.EntrepriseId = this.data.EntrepriseId;
+
+      console.log(this.data)
       this.myFormGroup = new FormGroup({
         id: new FormControl(),
         name: new FormControl("", Validators.required),
@@ -96,6 +99,8 @@ export class EditDevisComponent implements OnInit {
         aleasInPercent: new FormControl(),
       });
       this.hideClientField = true;
+      this.myFormGroup.get('EntrepriseId')?.setValue(this.EntrepriseId);
+
 
     }else {
       this.myFormGroup = new FormGroup({
@@ -177,6 +182,7 @@ export class EditDevisComponent implements OnInit {
       // this.myFormGroup.controls['uRatio'].setValue(`${unite}/h`)
       const currentUrl = this.router.url;
       if (!currentUrl.includes('clients')) {
+
         this.myFormGroup.controls['ClientId'].setValue(data[0].id)
       }
       this.devisService.create(this.myFormGroup.getRawValue())

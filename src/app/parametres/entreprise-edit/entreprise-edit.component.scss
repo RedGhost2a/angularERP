@@ -23,7 +23,20 @@
 
 
 }
+.image-preview{
+  width: 60px;
+  height: 60px;
+  border: solid 1px #2e6da4;
+  padding: 20px;
+  background: #80808036;
+  border-radius: 25px;
+}
 
+.flex-column{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .form-row {
   display: flex;
   flex-direction: row;

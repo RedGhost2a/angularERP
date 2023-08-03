@@ -4,6 +4,17 @@
     <h3>{{titleModal}}</h3>
     <p>L'ajout d'un ouvrage élementaires au sein de la bibliothèque permet de l'utiliser ultérieurement lors de la création
       de devis</p>
+    <div>
+      <button mat-flat-button color="primary" (click)="openUniteForFormDialog()" matTooltip="Creation d'une nouvelle unité">
+        <mat-icon    >add_circle</mat-icon>
+        Creation unité
+
+      </button>
+
+
+
+    </div>
+
     <div class="inputs">
 
       <mat-form-field appearance="legacy" style="width: 250px">
@@ -57,13 +68,7 @@
         </mat-error>
       </mat-form-field>
 
-      <span>
-        <mat-icon style="
-    color: deepskyblue;
-    margin-left: 20px;
-;
-" (click)="openUniteForFormDialog()">+</mat-icon>
-</span>
+<!--      <span>  <mat-icon  matTooltip="Creation d'une nouvelle unité" style="color: deepskyblue; margin-left: 20px; border: 1px solid; border-radius: 50%" (click)="openUniteForFormDialog()">+</mat-icon></span>-->
 
 
     </div>

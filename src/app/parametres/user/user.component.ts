@@ -38,7 +38,7 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.accountService.userValue;
-    // console.log(this.user)
+    console.log(this.user)
     this.getCurrentUser()
     this.getDevisByUser(this.user.id)
     this.getNoteByUser(this.user.id)
@@ -104,6 +104,20 @@ export class UserComponent implements OnInit {
       default:
         return 'white';
     }
+  }
+
+  openDialogCreate(user: User | null) {
+    this.accountService.openDialogCreate(user, ()=>{
+      // this.getAll()
+    })
+  }
+
+
+  openDialogUpdatePassword() {
+    this.accountService.openDialogUpdatePassword( ()=>{
+      // this.getAll()
+    })
+
   }
 
 }

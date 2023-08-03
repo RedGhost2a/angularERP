@@ -95,7 +95,7 @@
           <mat-label>Fournisseur</mat-label>
           <mat-select formControlName="FournisseurId">
             <!--                  <mat-select formControlName="Fournisseurs">-->
-            <mat-option *ngFor="let item of initialData[1]" [value]="[item.commercialName, item.remarque, item.id]">
+            <mat-option *ngFor="let item of listFournisseur" [value]="[item.commercialName, item.remarque, item.id]">
               {{item.commercialName}}
             </mat-option>
           </mat-select>

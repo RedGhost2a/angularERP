@@ -18,4 +18,5 @@ export class Client {
   // country!: string;
   adresse!: Adresse;
   Devis!:Devis;
+  createdAt!:Date;
 }

@@ -2,9 +2,10 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: stretch;
-  color: #0c5593;
   padding: 20px;
+  align-items: center;
+  font-size: 18px;
+  text-align: center;
 }
 
 .card-user {
@@ -16,7 +17,6 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 250px;
 }
 
 .mat-list-item {
@@ -24,17 +24,98 @@
 }
 
 mat-icon {
-  color: #ffc107;
+  color: #0c5593;
 }
 
-.header {
+.card {
+  width: 25%;
+  height: 120px;
+  border: solid 1px #6b97bc;
+  border-radius: 18px;
+  background-color: #6b97bc;
+  padding: 13px;
+  color: #000512;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.card-column {
+  width: 25%;
+  height: 160px;
+  border: solid 1px #6b97bc;
+  border-radius: 18px;
+  background-color: #6b97bc;
+  padding: 13px;
+  color: #000512;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* align-content: space-between; */
   text-align: center;
-  font-size: 90px;
-  margin: 30px 0;
+}
+
+.card-titre {
+  color: white;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
 }
 
 .titre {
-  font-size: 30px;
+  margin-top: 10px;
+  padding: 10px;
+  text-align: center;
+  color: rgb(8, 31, 44);
+  font-size: 1.2rem;
+  font-weight: 500;
+  font-family: Michroma;
+  border-top: 10px solid #0c5593;
+}
+
+.column-headers {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.column-headers p {
+  width: 250px;
+  text-align: center;
+}
+
+.global-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.global-container .global-table {
+  width: 90%;
+  margin-top: 30px;
+}
+.global-container .global-table .global-td {
+  color: #334E68;
+  padding-right: 0px;
+  text-align: center;
+}
+.global-container .global-table .global-td-hover:hover {
+  background-color: #EEF9FF;
+  cursor: pointer;
+}
+.global-container .global-table .global-td-hover-designation {
+  max-width: 20vw;
+}
+.global-container .global-table .global-th {
+  color: #334E68;
+  font-size: 0.9rem;
+  padding-right: 0px;
+  text-align: center;
 }
 
 /*# sourceMappingURL=super-admin-list.component.css.map */

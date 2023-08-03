@@ -7,6 +7,7 @@ import {StorageService} from "./storage.service";
 import {environment} from '../../environments/environment';
 import {UserEditComponent} from "../parametres/user-edit/user-edit.component";
 import {MatDialog} from "@angular/material/dialog";
+import {UserEditPasswordComponent} from "../parametres/user-edit-password/user-edit-password.component";
 
 
 @Injectable({
@@ -45,10 +46,7 @@ export class UserService {
     return this.userSubject.value;
   }
 
-  public isSuperAdmin():boolean{
-    if(this.currentUser.role === 'Super Admin') return true
-    else return false
-  }
+
 
 
 
@@ -61,15 +59,10 @@ export class UserService {
         let string = JSON.stringify(user)
         console.log("user",user)
         let encryptUser = this.storageService.encrypt(string)
-        console.log("encrypt",encryptUser)
         localStorage.setItem('user', encryptUser);
         localStorage.setItem('coef', String(1));
         this.userSubject.next(user);
 
-
-        let crypt = this.storageService.encrypt('blalblabla')
-        let decrypt = this.storageService.decrypt(crypt)
-        console.log("crypt", crypt, "decrypt", decrypt)
         return user;
 
       }));
@@ -116,12 +109,27 @@ export class UserService {
   openDialogCreate(user: User | null, refreshData : any) {
     this.dialog.open(UserEditComponent, {
       data:user,
-      width: '70%',
-      height: '78%'
+      width: '700px',
+      height: '50%'
     }).afterClosed().subscribe(async result => {
       refreshData()
     });
   }
 
+  openDialogUpdatePassword(refreshData : any) {
+    const dialogRef =  this.dialog.open(UserEditPasswordComponent, {
+      width: '300px',
+      height: '300px'
+    }).afterClosed().subscribe(async result => {
+      refreshData()
+    });
+  }
+
+  updatePassword(id: string, oldPassword: string, password: string) {
+    return this.http.put(`${environment.apiUrl}/users/update-password/${id}`, {
+      oldPassword: oldPassword,
+      password: password
+    });
+  }
 
 }

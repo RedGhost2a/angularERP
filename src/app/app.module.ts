@@ -95,6 +95,8 @@ import { OuvrageElementaireAddCoutComponent } from './ouvrage-elementaire-add-co
 import { OuvrageElementaireAddOuvrageComponent } from './ouvrage-elementaire-add-ouvrage/ouvrage-elementaire-add-ouvrage.component';
 import { DialogListOuvrageElementaireComponent } from './dialog-list-ouvrage-elementaire/dialog-list-ouvrage-elementaire.component';
 import { DetailOuvrageElementaireDuDevisComponent } from './detail-ouvrage-elementaire-du-devis/detail-ouvrage-elementaire-du-devis.component';
+import { UserEditPasswordComponent } from './parametres/user-edit-password/user-edit-password.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 const appRoutes: Routes = [];
@@ -158,11 +160,13 @@ declare const toastr: Toastr;
     OuvrageElementaireAddOuvrageComponent,
     DialogListOuvrageElementaireComponent,
     DetailOuvrageElementaireDuDevisComponent,
+    UserEditPasswordComponent,
 
 
   ],
   imports: [
     BrowserModule,
+    MatSnackBarModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,

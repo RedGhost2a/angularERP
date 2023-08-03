@@ -1,138 +1,25 @@
-<!--<div class="container">-->
 
-<!--  <div class="header">-->
-<!--    <div class="sub-header">-->
-<!--      <mat-form-field appearance="legacy">-->
-<!--        <mat-label>Rechercher un ouvrage</mat-label>-->
-<!--        <input matInput (keyup)="applyFilter($event)" placeholder="Ex: Béton de propreté">-->
-
-<!--      </mat-form-field>-->
-<!--      <button color="primary" mat-flat-button (click)="closeDialog()">-->
-<!--        Valider-->
-<!--      </button>-->
-
-
-<!--    </div>-->
-<!--    <h1>Liste des ouvrages</h1>-->
-<!--  </div>-->
-<!--  <mat-accordion class="accordion" *ngFor="let ouvrage of data">-->
-<!--    <mat-checkbox [name]="ouvrage.id"-->
-<!--                  (change)="onSelectionChange(ouvrage.id, $event.checked)">-->
-<!--      Importer-->
-<!--    </mat-checkbox>-->
-
-<!--    <mat-expansion-panel hideToggle>-->
-<!--      <mat-expansion-panel-header>-->
-
-<!--        <mat-panel-title>-->
-<!--          #{{ouvrage.id|number}}-->
-<!--        </mat-panel-title>-->
-<!--        <mat-panel-description class="panel-description">-->
-<!--&lt;!&ndash;          <table mat-table [dataSource]="dataSource">&ndash;&gt;-->
-<!--&lt;!&ndash;            <ng-container matColumnDef="designation">&ndash;&gt;-->
-<!--&lt;!&ndash;              <th mat-header-cell *matHeaderCellDef> Désignation</th>&ndash;&gt;-->
-<!--&lt;!&ndash;              <td  mat-cell *matCellDef="let ouvrage"> {{ouvrage.designation}} </td>&ndash;&gt;-->
-<!--              &lt;!&ndash;    <td mat-cell *matCellDef="let ouvrage"> {{ouvrage.cout[0].prixUnitaire}} </td>&ndash;&gt;-->
-<!--&lt;!&ndash;            </ng-container>&ndash;&gt;-->
-<!--        </mat-panel-description>-->
-<!--      </mat-expansion-panel-header>-->
-
-<!--      <mat-card class="example-card">-->
-<!--        <mat-card-title-group class="group">-->
-<!--          <mat-card-title>Information de l'ouvrage</mat-card-title>-->
-<!--          <div *ngIf="ouvrage" class="detailList">-->
-<!--            <div class="detail">-->
-<!--              <mat-card-subtitle class="subTitle">Désignation</mat-card-subtitle>-->
-<!--              <p>{{ouvrage.designation}}</p>-->
-<!--            </div>-->
-<!--            <div class="detail">-->
-<!--              <mat-card-subtitle class="subTitle">Bénéfices</mat-card-subtitle>-->
-<!--              <p>{{ouvrage.benefice}}</p>-->
-<!--            </div>-->
-<!--            <div class="detail">-->
-<!--              <mat-card-subtitle class="subTitle">Aléas</mat-card-subtitle>-->
-<!--              <p>{{ouvrage.aleas}}</p>-->
-<!--            </div>-->
-<!--            <div class="detail">-->
-<!--              <mat-card-subtitle class="subTitle">Unité</mat-card-subtitle>-->
-<!--              <p>{{ouvrage.unite}}</p>-->
-<!--            </div>-->
-<!--            <div class="detail">-->
-<!--              <mat-card-subtitle class="subTitle">Ratio</mat-card-subtitle>-->
-<!--              <p>{{ouvrage.ratio}}</p>-->
-<!--            </div>-->
-<!--            <div class="detail">-->
-<!--              <mat-card-subtitle class="subTitle">U/Ratio</mat-card-subtitle>-->
-<!--              <p>{{ouvrage.uRatio}}</p>-->
-<!--            </div>-->
-<!--            &lt;!&ndash;            <div class="detail">&ndash;&gt;-->
-<!--            &lt;!&ndash;              <mat-card-subtitle class="subTitle">Prix Unitaire HT</mat-card-subtitle>&ndash;&gt;-->
-<!--            &lt;!&ndash;              <p>{{prixOuvrage}}</p>&ndash;&gt;-->
-<!--            &lt;!&ndash;            </div>&ndash;&gt;-->
-<!--          </div>-->
-<!--        </mat-card-title-group>-->
-<!--      </mat-card>-->
-<!--    </mat-expansion-panel>-->
-<!--    <mat-expansion-panel (opened)="panelOpenState = true"-->
-<!--                         (closed)="panelOpenState = false">-->
-<!--      <mat-expansion-panel-header>-->
-
-<!--        <mat-panel-description *ngFor="let data of ouvrage.CoutDuDevis">-->
-
-<!--          &lt;!&ndash;          Currently I am {{panelOpenState ? 'open' : 'closed'}}&ndash;&gt;-->
-<!--        </mat-panel-description>-->
-<!--        <mat-panel-title>-->
-<!--          Composants-->
-<!--        </mat-panel-title>-->
-<!--      </mat-expansion-panel-header>-->
-<!--      <ng-container class="detailList" *ngFor="let data of ouvrage.CoutDuDevis;first as isFirst">-->
-<!--        <div class="list">-->
-<!--          <div class="detail">-->
-<!--            <mat-card-subtitle class="subTitle">Type</mat-card-subtitle>-->
-<!--            &lt;!&ndash;              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>&ndash;&gt;-->
-<!--            <p>{{data.type|uppercase}}</p>-->
-<!--          </div>-->
-<!--          <div class="detail">-->
-<!--            <mat-card-subtitle class="subTitle">Catégorie</mat-card-subtitle>-->
-<!--            <p>{{data.categorie|uppercase}}</p>-->
-<!--          </div>-->
-<!--          <div class="detail">-->
-<!--            <mat-card-subtitle class="subTitle">Désignation</mat-card-subtitle>-->
-<!--            <p>{{data.designation|uppercase}}</p>-->
-<!--          </div>-->
-<!--          <div class="detail">-->
-<!--            <mat-card-subtitle class="subTitle">Unité</mat-card-subtitle>-->
-<!--            <p>{{data.unite}}</p>-->
-<!--          </div>-->
-<!--          <div class="detail">-->
-<!--            <mat-card-subtitle class="subTitle">Prix Unitaire HT</mat-card-subtitle>-->
-<!--            <p>{{data.prixUnitaire}}</p>-->
-<!--          </div>-->
-<!--          <div class="detail">-->
-<!--            <mat-card-subtitle class="subTitle">Fournisseur</mat-card-subtitle>-->
-<!--            <p>{{data.fournisseur|uppercase}}</p>-->
-<!--          </div>-->
-<!--          <div class="detail">-->
-<!--            <mat-card-subtitle class="subTitle">Remarque</mat-card-subtitle>-->
-<!--            <p>{{data.remarque}}</p>-->
-<!--          </div>-->
-
-<!--        </div>-->
-<!--      </ng-container>-->
-<!--    </mat-expansion-panel>-->
-
-<!--  </mat-accordion>-->
-
-<!--</div>-->
 <div class="container">
-  <div class="subContainer">
-    <h1>Ajout d'un ou plusieurs ouvrage dans votre devis</h1>
-    <p>Veuillez sélectionner un ou plusieurs ouvrages à associer a votre sous-lot.</p>
-          <mat-form-field appearance="legacy">
-            <mat-label>Rechercher un ouvrage</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="Ex: Béton de propreté">
-          </mat-form-field>
+  <div class="flex-row">
+    <div class="subContainer">
+      <h1>Ajout d'un ou plusieurs ouvrage dans votre devis</h1>
+      <p>Veuillez sélectionner un ou plusieurs ouvrages à associer a votre sous-lot.</p>
+      <mat-form-field  appearance="legacy">
+        <mat-label>Rechercher un ouvrage</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex: Béton de propreté">
+      </mat-form-field>
+    </div>
+    <div class="divButton">
+      <button class="btnBack" (click)="closeDialog()" mat-raised-button  color="primary" >Retour</button>
+      <button  class='button' (click)="closeDialog()" mat-raised-button color="primary" >Importer ces ouvrages </button>
+      <!--    <button  class='button' (click)="addCoutOuvrageDuDevis();closeDialog()" mat-raised-button color="primary" [disabled]="selectedCoutIds.length === 0 ? true : false" [innerHTML]="selectedCoutIds.length > 1 ? 'Importer ces composants' : 'Importer ce composant'">Importer ce composant </button>-->
+      <!--    <button  class='button' routerLink="/ouvrageDetail/{{ouvrageId}}" (click)="addCoutOuvrage()" mat-raised-button color="primary">Valider </button>-->
+
+
+    </div>
+
   </div>
+
   <div class="table-ouvrage">
 
 <table mat-table
@@ -236,13 +123,5 @@
 </table>
   </div>
 
-  <div class="divButton">
-    <button class="btnBack" (click)="closeDialog()" mat-stroked-button color="primary" >Retour</button>
-    <button  class='button' (click)="closeDialog()" mat-raised-button color="primary" >Importer ces ouvrages </button>
-    <!--    <button  class='button' (click)="addCoutOuvrageDuDevis();closeDialog()" mat-raised-button color="primary" [disabled]="selectedCoutIds.length === 0 ? true : false" [innerHTML]="selectedCoutIds.length > 1 ? 'Importer ces composants' : 'Importer ce composant'">Importer ce composant </button>-->
-    <!--    <button  class='button' routerLink="/ouvrageDetail/{{ouvrageId}}" (click)="addCoutOuvrage()" mat-raised-button color="primary">Valider </button>-->
-
-
-  </div>
 </div>
 

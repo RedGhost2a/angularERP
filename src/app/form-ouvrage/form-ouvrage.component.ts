@@ -15,6 +15,7 @@ import {DevisService} from "../_service/devis.service";
 import {Devis} from "../_models/devis";
 import {Entreprise} from "../_models/entreprise";
 import {Unit} from "chart.js/dist/scales/scale.time";
+import {catchError, map, Observable, of, startWith, switchMap} from "rxjs";
 
 @Component({
   selector: 'app-form-ouvrage',
@@ -32,6 +33,7 @@ export class FormOuvrageComponent implements OnInit {
   titleModal: string = "Ajout d'un ouvrage dans la bibliothèque de prix";
   uniteList!: UniteForForm[];
   currentEntreprise: Entreprise [] = [];
+  filteredUnites!: Observable<UniteForForm[]>;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { sousLotId: number, devisId: number },
               private formBuilder: FormBuilder,
@@ -57,20 +59,49 @@ export class FormOuvrageComponent implements OnInit {
     }
     if(this.isOuvrage){
       this.selectUniteByEntreprise()
+      this.myFormGroup.controls['EntrepriseId'].valueChanges.pipe(
+        switchMap((entrepriseId: number) => {
+          if (entrepriseId) {
+            return this.uniteForForm.getUniteByEntreprise(entrepriseId).pipe(
+              catchError(err => {
+                console.error(err);
+                return of([] as UniteForForm[]);  // En cas d'erreur, retourner une liste vide
+              })
+            );
+          } else {
+            return of([] as UniteForForm[]);
+          }
+        })
+      ).subscribe((unites: UniteForForm[]) => {
+        let uniteControl = this.myFormGroup.get('unite');
+        if (uniteControl) {
+          this.filteredUnites = uniteControl.valueChanges
+            .pipe(
+              startWith(''),
+              map(value => this._filterUnites(value, unites))
+            );
+        }
+      });
+
     }
     this.titleModal = "Ajout d'un ouvrage";
+
   }
 
   selectUniteByEntreprise() {
     if (this.myFormGroup.controls['EntrepriseId'].value !== "") {
       this.myFormGroup.controls['unite'].enable()
       this.getUniteByEnteprise(this.myFormGroup.controls['EntrepriseId'].value)
+
     } else {
       this.myFormGroup.controls['unite'].disable()
     }
   }
 
-
+  _filterUnites(value: string, unites: UniteForForm[]): UniteForForm[] {
+    const filterValue = value.toLowerCase();
+    return unites.filter(unite => unite.name.toLowerCase().includes(filterValue));
+  }
   openUniteForFormDialog(): void {
     this.uniteForForm.openCreateUniteForFormDialog()
   }
@@ -184,8 +215,9 @@ export class FormOuvrageComponent implements OnInit {
 
   getUniteByEnteprise(entrepriseId: number): void {
     this.uniteForForm.getUniteByEntreprise(entrepriseId).subscribe((listUnite: UniteForForm []) => {
-      this.uniteList = listUnite
-    })
+      console.log('listUnite:', listUnite);
+      this.uniteList = listUnite;
+    });
   }
 
 }

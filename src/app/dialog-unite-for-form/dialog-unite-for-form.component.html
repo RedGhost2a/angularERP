@@ -40,8 +40,8 @@
       <!-- Ajout des champs pour le type et la catégorie -->
       <mat-form-field appearance="legacy">
         <mat-label>Type du composant</mat-label>
-        <mat-select formControlName="type" (selectionChange)="getCategorieByType($event.value)">
-          <mat-option *ngFor="let item of typeCout |unique:'type'" [value]="item.type">
+        <mat-select formControlName="TypeCoutId" (selectionChange)="getCategorieByType($event.value)">
+          <mat-option *ngFor="let item of typeCout |unique:'type'" [value]="item.id">
             {{item.type}}
           </mat-option>
         </mat-select>
@@ -50,17 +50,17 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="legacy">
-        <mat-label>Catégorie du composant</mat-label>
-        <mat-select formControlName="TypeCoutId">
-          <mat-option *ngFor="let item of categories" [value]="item.id">
-            {{item.categorie}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="this.uniteForForm.get('TypeCoutId')?.hasError('required')">
-          Vous devez entrer une categorie.
-        </mat-error>
-      </mat-form-field>
+<!--      <mat-form-field appearance="legacy">-->
+<!--        <mat-label>Catégorie du composant</mat-label>-->
+<!--        <mat-select formControlName="TypeCoutId">-->
+<!--          <mat-option *ngFor="let item of categories" [value]="item.id">-->
+<!--            {{item.categorie}}-->
+<!--          </mat-option>-->
+<!--        </mat-select>-->
+<!--        <mat-error *ngIf="this.uniteForForm.get('TypeCoutId')?.hasError('required')">-->
+<!--          Vous devez entrer une categorie.-->
+<!--        </mat-error>-->
+<!--      </mat-form-field>-->
 
 
     </form>
@@ -109,17 +109,17 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="legacy">
-        <mat-label>Catégorie du composant</mat-label>
-        <mat-select>
-          <mat-option *ngFor="let item of categories" [value]="item.id">
-            {{item.categorie}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="this.uniteForForm.get('TypeCoutId')?.hasError('required')">
-          Vous devez entrer une categorie.
-        </mat-error>
-      </mat-form-field>
+<!--      <mat-form-field appearance="legacy">-->
+<!--        <mat-label>Catégorie du composant</mat-label>-->
+<!--        <mat-select>-->
+<!--          <mat-option *ngFor="let item of categories" [value]="item.id">-->
+<!--            {{item.categorie}}-->
+<!--          </mat-option>-->
+<!--        </mat-select>-->
+<!--        <mat-error *ngIf="this.uniteForForm.get('TypeCoutId')?.hasError('required')">-->
+<!--          Vous devez entrer une categorie.-->
+<!--        </mat-error>-->
+<!--      </mat-form-field>-->
       <mat-selection-list [(ngModel)]="selectedUnite">
         <mat-list-option *ngFor="let unite of uniteListTypeCategorie" [value]="unite.id">
           {{ unite.name }}

@@ -338,8 +338,6 @@ export class SousDetailPrixComponent implements OnInit {
       this.initialCalcul();
       this.calculQUantiteOE();
     });
-
-
   }
 
   quantityChange() {

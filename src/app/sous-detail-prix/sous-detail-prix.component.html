@@ -225,7 +225,6 @@
           <th mat-header-cell *matHeaderCellDef> Proportion d'OE/U d'ouvrage</th>
           <td mat-cell
               *matCellDef="let ouvrageElem">
-
             <mat-form-field appearance="legacy" [formGroup]="formOuvrageOE" style="width: 80px">
               <input (keyup.enter)="propChangeOuvrElem(ouvrageElem.id)" formControlName="proportion" matInput required
                      [placeholder]="ouvrageElem.proportion">

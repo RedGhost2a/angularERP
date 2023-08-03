@@ -130,6 +130,7 @@ export class DetailDevisComponent implements OnInit {
     this.devisService.getByIdForDetail(id).subscribe((devis: Devis) => {
       console.log("devis get by id", devis)
       this.devis = devis;
+      console.log(this.devis)
       this.devisService.currentDevis = devis;
       this.validityDevis(devis)
     })

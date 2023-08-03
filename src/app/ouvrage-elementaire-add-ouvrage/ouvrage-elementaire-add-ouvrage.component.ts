@@ -8,6 +8,7 @@ import {User} from "../_models/users";
 import {OuvrageElementaireCout} from "../_models/ouvrage-elementaire-cout";
 import {OuvrageOuvragesElementairesService} from "../_service/ouvrage-ouvrages-elementaires.service";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-ouvrage-elementaire-add-ouvrage',
@@ -28,6 +29,7 @@ export class OuvrageElementaireAddOuvrageComponent implements OnInit {
   currentOuvrageId!:number;
   ouvrageElemChecked: number[] = [];
   ouvrageElemOuvrage !: any ;
+  dataSource!: any;
 
 
 
@@ -63,11 +65,22 @@ export class OuvrageElementaireAddOuvrageComponent implements OnInit {
   {
     this.ouvrageElemnentaireService.getAll(entrepriseId).subscribe(data=>{
       this.ouvrageElementaire=data
+      this.dataSource = new MatTableDataSource(data);
+
       console.log("OuvrageElementaire",this.ouvrageElementaire)
     })
   }
 
-
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const searchText = filter.trim().toLowerCase();
+      const designation = data.designation.toLowerCase();
+      const valuesToSearch = [ designation];
+      return valuesToSearch.some(value => value.includes(searchText));
+    };
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
   addOuvrageElemToOuvrage() {
     console.log("id de l'ouvrage courant",this.initialData.id )

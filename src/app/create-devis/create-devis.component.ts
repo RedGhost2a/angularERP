@@ -88,10 +88,15 @@ export class CreateDevisComponent implements OnInit {
   hiddenLotId2 !: number;
   hiddenCout: Cout [] = [];
   @ViewChild('aForm') aForm !: ElementRef;
+  @ViewChild('aForm2') aForm2 !: ElementRef;
   @ViewChild('f') f !: NgForm;
   hidden: boolean = false;
   hiddenSousLotForOuvrageId !: number;
   hiddenSousLotForCoutId !: number;
+  isEditMode: boolean = false;
+  isEditMode2: boolean = false;
+
+
 
 
 //TODO ON NE PEUT METTRE QUE UN SEUL ET MEME OUVRAGE PAR SOUS_LOT; //
@@ -156,6 +161,19 @@ export class CreateDevisComponent implements OnInit {
     // this.getSousLotHiddenForCoutId()
   }
 
+  updateDesignationLot(lot: Lot, id: number): void {
+    const updatedLot = {...lot, };
+    this.lotService.update(updatedLot, id)
+      .subscribe(() => this.isEditMode = false);
+  }
+
+  updateDesignationSL(sublot: SousLot, id: number): void {
+    const updatedSLot = {...sublot, };
+    this.sousLotService.update(updatedSLot, id)
+      .subscribe(() => this.isEditMode2 = false);
+  }
+
+
 
   ngOnDestroy() {
     // this.updateDevisOnDestroy()
@@ -201,7 +219,10 @@ export class CreateDevisComponent implements OnInit {
       console.log("after close prix de l'ouvrage calculer", prixOuvrage)
 
       this.sousLotOuvrageService.updatedPrice(sousLotOuvrageDuDevisId, {prixOuvrage: prixOuvrage}).subscribe((response) => {
+        console.log("RESPONSE?",response)
         this.getAllLots()
+        this.getLotFraisDeChantier()
+
       })
 
     });
@@ -216,6 +237,61 @@ export class CreateDevisComponent implements OnInit {
       this.openDialogCreate(sousLotData.sousLot.id)
     }, (error) => {
       console.error('Erreur lors de la création du sous-lot: ', error);
+    })
+
+  }
+  createHiddenSousLotAndOuvrageForFraisDeChantier(lotId:number){
+
+    let dataForSousLot = {
+      designation: `SousLotHiddenFraisDeChantier${this.devis.id}`,
+      devisId: this.devis.id
+    }
+    this.sousLotService.create(dataForSousLot, lotId).subscribe(responseSousLot => {
+      console.log("souslotRes",responseSousLot)
+
+
+      let dataForOuvrage = {
+        designation: `OuvrageHiddenFraisDeChantierForCout${this.devisId}`,
+        benefice: this.devis.beneficeInPercent,
+        aleas: this.devis.aleasInPercent,
+        unite: 'hiddenUnite',
+        ratio: 1,
+        uRatio: 'hiddenUnite',
+        prix: 0,
+        alteredBenefOrAleas: false,
+        EntrepriseId: this.sharedData.entrepriseId,
+      };
+      this.ouvrageService.createOuvrageDuDevis(dataForOuvrage).subscribe(response => {
+        console.log("response",response)
+        let sousLotFraisDeChantierOuvrageDuDevis = {
+          SousLotId: responseSousLot.sousLot.id,
+          OuvrageDuDeviId: response.OuvrageDuDevis?.id,
+          prixOuvrage: response.prix,
+          prixUniVenteHT: 0,
+          prixVenteHT: 0,
+          quantityOuvrage: 1,
+          prixUniHT: 0,
+          prixEquiHT: 0,
+          prixUniEquiHT: 0,
+          beneficeInEuro: 0,
+          aleasInEuro: 0,
+          prixCalcHT: 0,
+          prixUniCalcHT: 0
+        }
+        this.ouvrageService.createSousLotOuvrageForDevis(sousLotFraisDeChantierOuvrageDuDevis).subscribe((data) => {
+          console.log("data278",data)
+          this.typeCoutService.getAllTypeCouts(this.sharedData.entrepriseId).subscribe(typeCouts => {
+            console.log("liste des type de couts : ", typeCouts)
+            this.fournisseurService.getAllFournisseurs(this.sharedData.entrepriseId).subscribe(fournisseurs => {
+
+              this.openDialogCreateCout(typeCouts, fournisseurs, response.OuvrageDuDevis, data[0].id)
+
+            })
+          })
+
+        })
+      })
+
     })
 
   }
@@ -238,7 +314,6 @@ export class CreateDevisComponent implements OnInit {
         alteredBenefOrAleas: false,
         EntrepriseId: this.sharedData.entrepriseId,
       };
-
       this.ouvrageService.createOuvrageDuDevis(dataForOuvrage).subscribe(response => {
         this.sousLotOuvrageDuDevis = {
           SousLotId: sousLotData.sousLot.id,
@@ -255,7 +330,6 @@ export class CreateDevisComponent implements OnInit {
           prixCalcHT: 0,
           prixUniCalcHT: 0
         }
-
         this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe((data) => {
           this.typeCoutService.getAllTypeCouts(this.sharedData.entrepriseId).subscribe(typeCouts => {
             this.fournisseurService.getAllFournisseurs(this.sharedData.entrepriseId).subscribe(fournisseurs => {
@@ -310,7 +384,7 @@ export class CreateDevisComponent implements OnInit {
       EntrepriseId: this.sharedData.entrepriseId,
     };
     this.ouvrageService.createOuvrageDuDevis(dataForOuvrage).subscribe(response => {
-      this.sousLotOuvrageDuDevis = {
+      let sousLotOuvrageDuDevis = {
         SousLotId: sousLotId,
         OuvrageDuDeviId: response.OuvrageDuDevis?.id,
         prixOuvrage: response.prix,
@@ -325,7 +399,7 @@ export class CreateDevisComponent implements OnInit {
         prixCalcHT: 0,
         prixUniCalcHT: 0
       }
-      this.ouvrageService.createSousLotOuvrageForDevis(this.sousLotOuvrageDuDevis).subscribe((data) => {
+      this.ouvrageService.createSousLotOuvrageForDevis(sousLotOuvrageDuDevis).subscribe((data) => {
         console.log("console", data)
         this.typeCoutService.getAllTypeCouts(this.sharedData.entrepriseId).subscribe(typeCouts => {
           this.fournisseurService.getAllFournisseurs(this.sharedData.entrepriseId).subscribe(fournisseurs => {
@@ -338,7 +412,6 @@ export class CreateDevisComponent implements OnInit {
 
 
   }
-
 
   createHiddenLotAndSousLotAndOvrage() {
     console.log('this devis ', this.devis)
@@ -570,7 +643,6 @@ export class CreateDevisComponent implements OnInit {
 
             await this.testAsync(ouvrageDuDevis.SousLotOuvrage)
 
-
             // console.log("prix unitaire arrondi ", ouvrageDuDevis.SousLotOuvrage.prixUniVenteHT)
             // console.log("prix unitaire calcule ", ouvrageDuDevis.SousLotOuvrage.prixUniCalcHT)
             // console.log("prix arrondi ", ouvrageDuDevis.SousLotOuvrage.prixVenteHT)
@@ -643,6 +715,7 @@ export class CreateDevisComponent implements OnInit {
 
     this.lotFraisDeChantier.SousLots.forEach(sousLot => {
       sousLot.OuvrageDuDevis.forEach(async ouvrageDuDevis => {
+
         if (ouvrageDuDevis.SousLotOuvrage) {
           // ouvrageDuDevis.SousLotOuvrage.prixUniArrondi = 0;
           await this.sharedData.prixEquilibreHT(ouvrageDuDevis.SousLotOuvrage)
@@ -766,6 +839,8 @@ export class CreateDevisComponent implements OnInit {
 
       this.sousLotOuvrageService.update(sousLotOuvrage.id, sousLotOuvrage).subscribe(() => {
         this.getSommeSousLot(sousLot, lot)
+        this.calculFraisDeChantierWithPrixChange()
+
       })
     }
   }
@@ -863,12 +938,14 @@ export class CreateDevisComponent implements OnInit {
   getLotFraisDeChantier(): void {
     this.devisService.getLotFraisDeChantier(this.devisId).subscribe(data => {
       this.lotFraisDeChantier = data.Lots[0];
+      console.log(this.lotFraisDeChantier)
       this.lotFraisDeChantier.SousLots.forEach(sousLot => {
         sousLot.prix = 0;
         this.getSommeSousLot(sousLot, this.lotFraisDeChantier)
       })
       // this.getAllOuvrageFraisDeChantier(data.EntrepriseId)
       this.getSommeOuvrageFraisDeChantier()
+      this.calculFraisDeChantierWithPrixChange()
 
     })
 
@@ -906,31 +983,45 @@ export class CreateDevisComponent implements OnInit {
 
 
   deleteLot(id: number): void {
-    this.lotService.deleteByID(id).subscribe(() => {
-      this.success("Lot effacer!")
-      this.getAllLots()
-      this.getLotFraisDeChantier()
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.lotService.deleteByID(id).subscribe(() => {
+          this.success("Lot effacer!")
+          // this.getAllLots()
+          // this.getLotFraisDeChantier()
+          this.ngOnInit()
 
-    })
+        })      }
+    });
+
   }
 
   deleteOuvrageDuDevis(id: number): void {
-    this.ouvrageService.deleteOuvrageDuDevisByID(id).subscribe((res) => {
-      this.success("Ouvrage effacer!")
-      this.getAllLots()
-      this.getLotFraisDeChantier()
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.ouvrageService.deleteOuvrageDuDevisByID(id).subscribe((res) => {
+          this.success("Ouvrage effacer!")
+         this.ngOnInit()
 
-    })
+        })      }
+    });
+
   }
 
   deleteSousLot(id: number): void {
-    this.sousLotService.deleteByID(id).subscribe(() => {
-      this.success("sous-lot effacer!")
-      this.getAllLots()
-      this.getLotFraisDeChantier()
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.sousLotService.deleteByID(id).subscribe(() => {
+          this.success("sous-lot effacer!")
+          this.ngOnInit()
 
 
+        });      }
     });
+
   }
 
 
@@ -1104,6 +1195,13 @@ export class CreateDevisComponent implements OnInit {
     this.showForm = true;
     setTimeout(() => {
       this.aForm.nativeElement.focus();
+    }, 100)
+  }
+  autoFocus2() {
+    this.form.controls['designation'].setValue('');
+    this.showForm = true;
+    setTimeout(() => {
+      this.aForm2.nativeElement.focus();
     }, 100)
   }
 

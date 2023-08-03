@@ -1,6 +1,6 @@
 .big-container {
   background-color: #F0F4F8;
-  height: 90vh;
+  height: 100%;
 }
 
 .container {
@@ -31,6 +31,7 @@
   background-color: #FFFFFF;
   color: rgb(8, 31, 44);
   font-family: Michroma;
+  margin: 10px;
 }
 
 .example-card {

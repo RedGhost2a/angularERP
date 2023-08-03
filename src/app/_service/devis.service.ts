@@ -89,11 +89,11 @@ export class DevisService {
   }
 
   //utilisé pour la creation d'un devis depuis la liste des devis
-  openDialogCreateDevis(ClientId : number | null ,refreshData:any) {
+  openDialogCreateDevis(ClientId:number| null ,EntrepriseId:number| null,refreshData:any) {
     this.dialog.open(EditDevisComponent, {
       width: '70%',
       height: '37%',
-      data: {ClientId: ClientId}
+      data: {ClientId: ClientId,EntrepriseId:EntrepriseId}
     }).afterClosed().subscribe(async result => {
       refreshData()
     });

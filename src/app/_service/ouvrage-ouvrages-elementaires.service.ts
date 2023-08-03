@@ -46,10 +46,6 @@ export class OuvrageOuvragesElementairesService {
     return this.http.put<OuvrageElementaireCout>(`${baseUrl}/${coutId}/${ouvrageId}`, ouvrageElemCout)
   }
 
-  // updateOuvrageCoutDuDevis(coutDuDeviId: number, ouvrageDuDeviId: number, ouvrageCoutDuDevis: OuvrageCoutDuDevis): Observable<OuvrageCoutDuDevis> {
-  //   return this.http.put<OuvrageCoutDuDevis>(`${baseUrl}DuDevis/${coutDuDeviId}/${ouvrageDuDeviId}`, ouvrageCoutDuDevis)
-  // }
-
   //A voir pour remplacer la fonction updateOuvrageCoutDuDevis dans le component createdevis.ts
   createOuvrageCoutDuDevis(data: any): Observable<any> {
     return this.http.post(`${baseUrl}DuDevis/new`, data)

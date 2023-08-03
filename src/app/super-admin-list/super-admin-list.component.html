@@ -1,49 +1,52 @@
-<mat-tab-group mat-stretch-tabs style="padding: 10px">
+<mat-tab-group mat-stretch-tabs style="padding: 10px;margin: 10px">
 
   <mat-tab *ngIf="entreprise">
     <ng-template mat-tab-label>
       <button mat-flat-button >
-        <mat-icon style="color: #0c5593" [routerLink]="'/admin/'">arrow_back</mat-icon>
+        <mat-icon style="color: #0c5593" [routerLink]="'/admin'">arrow_back</mat-icon>
       </button>
       <mat-icon class="example-tab-icon">business</mat-icon>
       Liste des clients
     </ng-template>
-    <h1>Clients de {{ entreprise.denomination }}</h1>
+      <h1 class="titre">      Liste des clients
+      </h1>
+    <div class="global-container">
 
-    <mat-accordion>
-      <mat-expansion-panel *ngFor="let cl of client| unique:'Client.id'" [expanded]="false">
-        <p>{{cl.Client.denomination}}</p>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            N°:{{ cl.id | number }}
-          </mat-panel-title>
-          <mat-panel-title> {{ cl.Client.denomination | uppercase }} </mat-panel-title>
-          <mat-panel-description>
-            {{ cl.Client.lastName | uppercase
-            }} {{ cl.Client.firstName | uppercase
-            }}
-          </mat-panel-description>
-          <mat-panel-description>
-            {{ cl.Client.Adresse.adresses }} {{ cl.Client.Adresse.city }}
-          </mat-panel-description>
+      <table mat-table
+             [dataSource]="dataSource" multiTemplateDataRows
+             class="mat-elevation-z8 global-table">
+        <ng-container matColumnDef="denomination">
+          <th class="global-th" mat-header-cell *matHeaderCellDef>Dénomination</th>
+          <td class="global-td"  (click)="openDialogCreateClient(client, true)"  mat-cell *matCellDef="let client">{{client.denomination}}{{client.id}}</td>
+        </ng-container>
+        <ng-container matColumnDef="adresse">
+          <th class="global-th" mat-header-cell *matHeaderCellDef>Adresse</th>
+          <td class="global-td"  (click)="openDialogCreateClient(client, true)" mat-cell *matCellDef="let client">{{client.Adresse.adresses}}</td>
+        </ng-container>
+        <ng-container matColumnDef="city">
+          <th class="global-th" mat-header-cell *matHeaderCellDef>Ville</th>
+          <td class="global-td"  (click)="openDialogCreateClient(client, true)"  mat-cell *matCellDef="let client">{{client.Adresse.city}}</td>
+        </ng-container>
+        <ng-container matColumnDef="identity">
+          <th class="global-th" mat-header-cell *matHeaderCellDef>Nom Prénom</th>
+          <td class="global-td"  (click)="openDialogCreateClient(client, true)"  mat-cell *matCellDef="let client">{{client.lastName}} {{client.firstName}}</td>
+        </ng-container>
 
-        </mat-expansion-panel-header>
-        <mat-card-content class="container">
-          <span class="devis-row">Email: {{ cl.Client.email | uppercase
-            }}</span>
-          <span class="devis-row">Téléphone: {{ cl.Client.phonenumber
-            }}</span>
-          <span class="devis-row">Type: {{ cl.Client.type | uppercase
-            }}</span>
-          <span>Crée Le: {{
-            cl.createdAt | date : "dd/MM/yyyy HH:mm:ss"
-            }}</span>
-        </mat-card-content>
-        <mat-card-actions>
 
-        </mat-card-actions>
-      </mat-expansion-panel>
-    </mat-accordion>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let client; columns: displayedColumns;"
+            class="global-td-hover">
+          <!--          [class.example-expanded-row]="expandedElement === client"-->
+          <!--          (click)="expandedElement = expandedElement === client ? null : client"-->
+          <!--          >>-->
+        </tr>
+      </table>
+
+    </div>
+
+
   </mat-tab>
 
   <mat-tab *ngIf="entreprise">
@@ -51,31 +54,87 @@
       <mat-icon class="example-tab-icon">inventory</mat-icon>
       Liste des devis
     </ng-template>
-    <h1>Devis de {{ entreprise.denomination }}</h1>
+    <h1 class="titre">Devis de {{ entreprise.denomination }}</h1>
+<div class="global-container">
 
-    <mat-accordion>
-      <mat-expansion-panel *ngFor="let devis of devisAll" [expanded]="false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{ devis.id | number }}
-          </mat-panel-title>
-          <mat-panel-title>{{ devis.name | uppercase }}</mat-panel-title>
-          <mat-panel-description>
-            <span>Statut {{ devis.status }}</span>
-          </mat-panel-description>
-          <mat-panel-description><span>Le: {{
-            devis.createdAt | date : "dd/MM/yyyy HH:mm:ss"
-            }}</span></mat-panel-description>
+  <mat-accordion>
 
-        </mat-expansion-panel-header>
-        <mat-card-content class="container">
-          <p class="devis-row">Nom client:</p>
-        </mat-card-content>
+    <mat-expansion-panel *ngFor="let devis of devisAll" [expanded]="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <p>
+          {{ devis.id | number }}
+        </p>
+        </mat-panel-title>
+        <mat-panel-title>{{ devis.name | uppercase }}</mat-panel-title>
+        <mat-panel-title>
+          <p> {{ devis.status }}</p>
+        </mat-panel-title>
+        <mat-panel-title>
+          <p> {{
+          devis.createdAt | date : "dd/MM/yyyy HH:mm:ss"
+          }}</p>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-card-content class="container">
+        <div class="card">
+          <div class="flex-column">
+            <p class="card-titre">Total des dépenses</p>
+            <p> {{devis.totalDepense}}€</p>
+          </div>
+          <div class="flex-column">
+            <p class="card-titre">Prix de vente HT</p>
+            <p> {{devis.prixVenteHT}}€</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="flex-column">
+            <p class="card-titre">Bénéfice en euro</p>
+            <p> {{devis.beneficeInEuro}}€</p>
+          </div>
+          <div class="flex-column">
+            <p class="card-titre">Aléas en euro</p>
+            <p> {{devis.aleasInEuro}}€</p>
+          </div>
+
+
+        </div>
+        <div class="card">
+          <div class="flex-column">
+            <p class="card-titre">Coefficient d'équilibre</p>
+            <p> {{devis.coeffEquilibre}}</p>
+          </div>
+          <div class="flex-column">
+            <p class="card-titre">Pourcentage des frais généraux</p>
+            <p> {{devis.percentFraisGeneraux}}%</p>
+          </div>
+          <div class="flex-column">
+            <p class="card-titre">Temps de validité</p>
+            <p> {{devis.validityTime}} mois</p>
+          </div>
+
+
+        </div>
+
         <mat-card-actions>
-          <button mat-stroked-button color="danger">Supprimer</button>
+          <div class="">
+            <div class="flex-column">
+              <button style="margin: 5px" mat-flat-button color="warn" (click)="deleteItem(devis.id)">Supprimer</button>
+              <button  style="margin: 5px" mat-flat-button color="primary" routerLink="/devisDetail/{{devis.id}}">Modifier</button>
+            </div>
+          </div>
+
+
         </mat-card-actions>
-      </mat-expansion-panel>
-    </mat-accordion>
+
+
+      </mat-card-content>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+</div>
+
   </mat-tab>
 
   <mat-tab *ngIf="entreprise">
@@ -83,84 +142,27 @@
       <mat-icon class="example-tab-icon">groups</mat-icon>
       Liste des utilisateurs
     </ng-template>
-    <h1>Utilisateurs {{ entreprise.denomination }}</h1>
-    <mat-accordion>
-      <mat-expansion-panel *ngFor="let user of userAll" [expanded]="false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{ user.id | number }}
-          </mat-panel-title>
-          <mat-panel-title>{{ user.title | uppercase }}</mat-panel-title>
-          <mat-panel-description class="container">
-            {{ user.firstName | uppercase }} {{ user.lastName | uppercase }}
+    <h1 class="titre">Utilisateurs {{ entreprise.denomination }}</h1>
 
-          </mat-panel-description>
-          <mat-panel-description>Crée le :
-            {{
-            user.createdAt | date : "dd/MM/yyyy HH:mm:ss"
-            }}</mat-panel-description>
-        </mat-expansion-panel-header>
-        <mat-card-content class="container">
-          <p class="devis-row"> Role {{ user.role }}</p>
-          <p class="devis-row"> Email {{ user.email }}</p>
-        </mat-card-content>
-        <mat-card-actions>
-          <button mat-stroked-button color="danger">Supprimer</button>
-        </mat-card-actions>
-      </mat-expansion-panel>
-    </mat-accordion>
+    <div class="flex-row" style="    justify-content: space-evenly;
+">
 
+    <mat-card class=" card-column avatar" *ngFor="let user of userAll">
+      <mat-card-header class="user_header" *ngIf="user">
+        <mat-card-title>{{user.title|uppercase}}</mat-card-title>
+        <mat-card-subtitle>{{user.firstName}} {{user.lastName}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content class="content">
+        <p>
+          E-mail: {{user.email}}
+        </p>
+        <p>
+          Rôle: {{user.role}}
+        </p>
+      </mat-card-content>
+      <mat-card-subtitle>Profil crée le : {{user.createdAt|date:"dd/mm/yy HH:MM"}}</mat-card-subtitle>
+    </mat-card>
+    </div>
   </mat-tab>
 
 </mat-tab-group>
-
-<!--<div *ngIf="entreprise">-->
-<!--  <h1 class="header">{{entreprise.commercialName}}</h1>-->
-<!--</div>-->
-<!--<div class="container" *ngIf="entreprise ">-->
-
-<!--  <div class="card-devis">-->
-<!--    <mat-list>-->
-<!--      <div class="titre" mat-subheader>Liste des devis</div>-->
-<!--      <mat-list-item *ngFor="let devis of devisAll">-->
-<!--        <mat-icon matListItemIcon>folder</mat-icon>-->
-<!--        <div matListItemTitle>{{devis.name}} </div>-->
-<!--        <div></div>-->
-<!--        <span matListItemLine>{{devis.createdAt | date}}</span>-->
-<!--      </mat-list-item>-->
-<!--    </mat-list>-->
-<!--  </div>-->
-
-<!--  <div class="card-client">-->
-<!--    <mat-list>-->
-<!--      <div class="titre" mat-subheader>Liste des clients</div>-->
-<!--      <mat-list-item *ngFor="let cl of client| unique:'Client.id'">-->
-
-<!--        <div>{{cl.Client.id}}</div>-->
-<!--        <div matLine>-->
-<!--          <mat-icon>person</mat-icon>-->
-<!--          {{cl.Client.firstName}}</div>-->
-<!--        <div matLine>{{cl.Client.createdAt | date}}</div>-->
-<!--      </mat-list-item>-->
-<!--    </mat-list>-->
-<!--  </div>-->
-
-<!--  <div>-->
-<!--    <mat-list class="card-user">-->
-<!--      <div class="titre" mat-subheader>Liste des utilisateurs</div>-->
-<!--      <mat-list-item *ngFor="let user of userAll">-->
-<!--        <div class="flex-row" [routerLink]="['/users', user.id]">-->
-<!--          <p>-->
-<!--            <mat-icon matListItemIcon>folder</mat-icon>-->
-<!--          </p>-->
-<!--          <p matListItemTitle>{{user.title}} </p>-->
-<!--          <p matListItemTitle>{{user.firstName}} </p>-->
-<!--          <p matListItemTitle>{{user.lastName}} </p>-->
-<!--          <p matListItemLine>{{user.role }}</p>-->
-<!--        </div>-->
-
-<!--      </mat-list-item>-->
-<!--    </mat-list>-->
-<!--  </div>-->
-
-<!--</div>-->

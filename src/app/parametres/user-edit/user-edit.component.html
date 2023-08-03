@@ -184,29 +184,27 @@
       </mat-form-field>
     </div>
 
-    <div class="global-inputs">
+<!--    <div class="global-inputs">-->
 
-      <mat-form-field class="input-group">
-        <mat-label class="mat-label">Password</mat-label>
-        <input type="password" matInput formControlName="password" autocomplete="current-password">
-        <mat-error *ngIf="userForm.get('password')?.hasError('required')">
-          Ce champs est requis.
-        </mat-error>
-      </mat-form-field>
+<!--      <mat-form-field class="input-group">-->
+<!--        <mat-label class="mat-label">Password</mat-label>-->
+<!--        <input type="password" matInput formControlName="password" autocomplete="current-password">-->
+<!--        <mat-error *ngIf="userForm.get('password')?.hasError('required')">-->
+<!--          Ce champs est requis.-->
+<!--        </mat-error>-->
+<!--      </mat-form-field>-->
 
-      <mat-form-field class="input-group">
-        <mat-label class="mat-label">Confirmation password</mat-label>
-        <input type="password" matInput formControlName="passwordConfirm">
-        <mat-error *ngIf="userForm.get('passwordConfirm')?.hasError('required')">
-          Les mots de passe ne correspondent pas.
-        </mat-error>
-      </mat-form-field>
-      <div></div>
+<!--      <mat-form-field class="input-group">-->
+<!--        <mat-label class="mat-label">Confirmation password</mat-label>-->
+<!--        <input type="password" matInput formControlName="passwordConfirm">-->
+<!--        <mat-error *ngIf="userForm.get('passwordConfirm')?.hasError('required')">-->
+<!--          Les mots de passe ne correspondent pas.-->
+<!--        </mat-error>-->
+<!--      </mat-form-field>-->
 
-    </div>
+<!--    </div>-->
 
     <div class="global-form-buttons">
-
       <button mat-stroked-button (click)="closeDialog()" color="primary">Retour</button>
       <button mat-raised-button (click)="createAndUpdate()" color="primary">Valider</button>
       <!--      <button mat-stroked-button color="primary" (click)="closeDialog()">Retour</button>-->

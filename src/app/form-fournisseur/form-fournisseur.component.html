@@ -21,7 +21,7 @@
       <mat-form-field appearance="legacy" >
         <mat-label>Entreprise</mat-label>
         <mat-select formControlName="EntrepriseId"  >
-          <mat-option [value]=+entreprise.id
+          <mat-option [value]=entreprise.id
                       *ngFor="let entreprise of this.currentEntreprise">{{entreprise.denomination}}</mat-option>
         </mat-select>
         <mat-error *ngIf="this.myFormGroup.get('EntrepriseId')?.hasError('required')">

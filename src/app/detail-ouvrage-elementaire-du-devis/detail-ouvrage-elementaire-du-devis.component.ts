@@ -86,7 +86,7 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
     this.ouvrageElementaire = data;
     this.coutOfOuvrageElem = data.CoutDuDevis
     // this.ouvrageId = data.OuvrageDuDevis[0].OuvrOuvrElemDuDevis.OuvrageDuDeviId
-    console.log("datza", this.coutOfOuvrageElem)
+    // console.log("datza", this.coutOfOuvrageElem)
 
     await this.calculEtMiseAjourCoutTotal();
 
@@ -123,35 +123,22 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
     this.location.back();
   }
 
-  ratioChange(coutDuDevis: number) {
-    // console.log("form",this.formCout.getRawValue())
-    if (this.formCout.getRawValue().ratio !== null) {
-
-      this.ouvrageCoutDuDevis = {
-        // OuvrElemDuDeviId: this.currentOuvrage.id,
-        // CoutDuDeviId: coutDuDevis,
-        ratio: +this.formCout.getRawValue().ratio,
-
-      }
-
-      if (coutDuDevis)
-        this.ouvrageElementaireCoutService.updateOuvrageCoutDuDevis(coutDuDevis, this.ouvrageElementaireID, this.ouvrageCoutDuDevis).subscribe(() => this.ngOnInit())
+  ratioChange(coutDuDevisId: number, newRatio: number) {
+    this.ouvrageCoutDuDevis = {
+      ratio: newRatio,
     }
+    this.ouvrageElementaireCoutService.updateOuvrageCoutDuDevis(coutDuDevisId, this.ouvrageElementaireID, this.ouvrageCoutDuDevis).subscribe(() => this.ngOnInit())
   }
 
-  efficienceChange(coutDuDevis: number) {
-    console.log("efficience", this.formCout.getRawValue().efficience)
-    if (this.formCout.getRawValue().efficience !== null) {
 
-      this.ouvrageCoutDuDevis = {
-        // OuvrElemDuDeviId: this.currentOuvrage.id,
-        // CoutDuDeviId: coutDuDevis.id,
-        efficience: +this.formCout.getRawValue().efficience,
-      }
-      if (coutDuDevis)
-        this.ouvrageElementaireCoutService.updateOuvrageCoutDuDevis(coutDuDevis, this.ouvrageElementaireID, this.ouvrageCoutDuDevis).subscribe(() => this.ngOnInit())
+  efficienceChange(coutDuDevisId: number, newEfficience: number) {
+    this.ouvrageCoutDuDevis = {
+      efficience: newEfficience,
     }
+
+    this.ouvrageElementaireCoutService.updateOuvrageCoutDuDevis(coutDuDevisId, this.ouvrageElementaireID, this.ouvrageCoutDuDevis).subscribe(() => this.ngOnInit())
   }
+
 
 
   async calculEtMiseAjourCoutTotal(): Promise<void> {
@@ -182,18 +169,7 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
     });
   }
 
-  // quantityCoutOE(): void {
-  //   if (this.coutOfOuvrageElem) {
-  //     console.log('aaaa', this.coutOfOuvrageElem);
-  //
-  //     this.coutOfOuvrageElem.forEach((coutDuDevis: any) => {
-  //       if (coutDuDevis.OuvragesElementairesCoutsDuDevis?.ratio && this.ouvrageElementaire.quantite) {
-  //          coutDuDevis.quantite = coutDuDevis.OuvragesElementairesCoutsDuDevis?.ratio * this.ouvrageElementaire?.quantite
-  //
-  //       }
-  //
-  //     })
-  //   }}
+
 
   openDialogCreateCout() {
     this.dialog.open(DialogFormCoutComponent, {
@@ -224,55 +200,7 @@ export class DetailOuvrageElementaireDuDevisComponent implements OnInit {
   }
 
 
-  //
-  //  debousesSecTotalCout() {
-  //   this.totalDBS.prixOuvrage = 0;
-  //     this.coutOfOuvrageElem.forEach((coutDuDevis: any) => {
-  //   if (coutDuDevis.OuvragesElementairesCoutsDuDevis?.ratio && this.ouvrageElementaire.quantite) {
-  //     if (coutDuDevis.OuvragesElementairesCoutsDuDevis?.ratio && this.ouvrageElementaire?.quantite) {
-  //       coutDuDevis.debourseSecTotal = coutDuDevis.prixUnitaire * (coutDuDevis.OuvragesElementairesCoutsDuDevis?.ratio * this.ouvrageElementaire?.quantite)
-  //       this.totalDBS.prixOuvrage += coutDuDevis.debourseSecTotal
-  //
-  //     }
-  //   }
-  //     })
-  //     }
-  //
-  // prixEquilibreHTCout(): void {
-  //   if (this.coutOfOuvrageElem) {
-  //     this.coutOfOuvrageElem.forEach(coutDuDevis => {
-  //       if (coutDuDevis.debourseSecTotal)
-  //         coutDuDevis.prixEquiHT = coutDuDevis.debourseSecTotal * this.dataSharingService.coefEqui
-  //     })
-  //   }
-  // }
-  // prixUnitaireEquilibreHTCout(): void {
-  //     this.coutOfOuvrageElem.forEach(coutDuDevis => {
-  //       if (coutDuDevis.prixEquiHT &&  this.ouvrageElementaire?.quantite)
-  //         coutDuDevis.prixUnitaireEquiHT = coutDuDevis.prixEquiHT /  this.ouvrageElementaire?.quantite
-  //     })
-  //   }
-  //
-  // prixCalculeHTCout(): void {
-  //   if (this.coutOfOuvrageElem) {
-  //     this.coutOfOuvrageElem.forEach(coutDuDevis => {
-  //       if (coutDuDevis.prixEquiHT)
-  //         coutDuDevis.prixCalcHT = coutDuDevis.prixEquiHT * (1 + (this.ouvrageElementaire.OuvrageDuDevis[0].benefice / 100) + (this.ouvrageElementaire.OuvrageDuDevis[0].aleas / 100))
-  //       console.log("coutDuDevis.prixCalculeHTCout",coutDuDevis.prixCalcHT)
-  //     })
-  //   }
-  // }
-  //
-  //
-  // prixUnitaireCalculeHTCout(): void {
-  //   if (this.coutOfOuvrageElem) {
-  //     this.coutOfOuvrageElem.forEach(coutDuDevis => {
-  //       if (coutDuDevis.prixCalcHT &&  this.ouvrageElementaire?.quantite)
-  //         coutDuDevis.prixUnitaireCalcHT = coutDuDevis.prixCalcHT /  this.ouvrageElementaire?.quantite
-  //       console.log("coutDuDevis.prixUnitaireCalculeHTCout",coutDuDevis.prixUnitaireCalcHT)
-  //     })
-  //   }
-  // }
+
 
 
 }

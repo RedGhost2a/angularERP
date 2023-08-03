@@ -54,8 +54,8 @@ export class ListClientComponent implements OnInit {
   }
 
 
-  openDialogCreateDevis(ClientId:number | null){
-    this.devisService.openDialogCreateDevis(ClientId ,()=>{})
+  openDialogCreateDevis(ClientId:number| null ,EntrepriseId:number| null){
+    this.devisService.openDialogCreateDevis(ClientId ,EntrepriseId,()=>{})
   }
 
   getAll(entrepriseId: number): void {
@@ -64,6 +64,8 @@ export class ListClientComponent implements OnInit {
         //permet de trier les client par l'id (du plus recent au plus ancien)
         this.clientService.clients.sort((a,b) => b.id - a.id)
         this.dataSource = new MatTableDataSource(this.clientService.clients);
+        console.log(this.clientService.clients);
+
 
 
       }

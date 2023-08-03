@@ -14,6 +14,7 @@ export class Entreprise {
   email!: string;
   phoneNumber!: number;
   capital!: number;
+  logo!:any;
   AdresseId!: number
   // adresses!: string;
   // zipcode!: number;

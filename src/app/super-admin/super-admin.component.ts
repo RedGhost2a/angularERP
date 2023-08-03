@@ -24,6 +24,7 @@ import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
 import {DialogUniteForFormComponent} from "../dialog-unite-for-form/dialog-unite-for-form.component";
 import {firstValueFrom} from "rxjs";
 import {UniteForFormService} from "../_service/uniteForForm.service";
+import {EntrepriseEditComponent} from "../parametres/entreprise-edit/entreprise-edit.component";
 
 
 @Component({
@@ -44,7 +45,7 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
 
   listEntreprise !: Entreprise[];
   dataSourceEntreprise = new MatTableDataSource<Entreprise>([]);
-  displayedColumnsEntreprise: string[] = ['nEntreprise', 'commercialName', 'denomination', 'siret', 'phoneNumber'];
+  displayedColumnsEntreprise: string[] = ['nEntreprise', 'commercialName', 'denomination', 'siret', 'phoneNumber',"action"];
 
   listUser !: User[];
   user!: string;
@@ -72,6 +73,8 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
   importedFiles!: ImportExcel[];
   progressValue!: number;
   visible: boolean = false;
+  showInfo: boolean = false;
+
 
 
   constructor(private entrepriseService: EntrepriseService,
@@ -123,6 +126,10 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
     // this.uploadData()
     this.getAllImportExcel()
 
+  }
+
+  toggleInfo() {
+    this.showInfo = !this.showInfo;
   }
 
   getAllImportExcel() {
@@ -236,7 +243,6 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
 
   deleteItem(id: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
-
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Appeler la fonction de suppression ici
@@ -244,6 +250,18 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
       }
     });
   }
+  updateCompany(id: number|null) {
+    const dialogRef = this.dialog.open(EntrepriseEditComponent, {
+      data: { id: id }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Appeler la fonction de suppression ici
+        this.getAll();
+      }
+    });
+  }
+
 
   onNoteResolutionChanged(note: Notes) {
     this.notesService.updateNoteResolution(note).subscribe(
@@ -441,91 +459,6 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
   }
 
 
-  // async uploadData(): Promise<void> {
-  //   const file = this.importedFiles.find(f => f.checked);
-  //   if (!file) {
-  //     console.log('Aucun fichier sélectionné');
-  //     this.toastr.error('Erreur', 'Aucun fichier sélectionné');
-  //     return;
-  //   }
-  //   console.log('Fichier sélectionné :', file);
-  //
-  //   try {
-  //     const data = await firstValueFrom(this.importExcelService.getById(file.id));
-  //     console.log('Données récupérées :', data);
-  //
-  //     for (let i = 1; i < data.data.length; i++) {
-  //       const ligne = data.data[i];
-  //       console.log('Ligne traitée :', ligne);
-  //
-  //       let fournId;
-  //       let user;
-  //       let typeId;
-  //       user = await firstValueFrom(this.userService.getById(this.userService.userValue.id));
-  //       const userId = user.id;
-  //       console.log('ID de l\'utilisateur :', userId);
-  //       try {
-  //         fournId = await firstValueFrom(this.fournisseurService.getFournisseurIdByName(ligne[3]));
-  //         console.log('ID du fournisseur trouvé :', fournId);
-  //       } catch (error) {
-  //         const err = error as { status: number }; // assertion de type ici
-  //         if (err.status === 404) { // vérifiez le champ correct pour le code d'erreur
-  //           const fourn = {
-  //             id: 0,
-  //             commercialName: ligne[3],
-  //             remarque: "Néant",
-  //             EntrepriseId: user.Entreprises[0].id,
-  //           }
-  //           const fournisseurResponse = await firstValueFrom(this.fournisseurService.createFournisseur(fourn));
-  //           console.log('Fournisseur créé avec succès :', fournisseurResponse);
-  //           fournId = fournisseurResponse?.id; // Suppose que la réponse contient le nouvel id
-  //         } else {
-  //           throw error;
-  //         }
-  //       }
-  //       try {
-  //         typeId = await firstValueFrom(this.typeCoutService.getTypeCoutIdByLabel(ligne[0]));
-  //         console.log('ID du type de coût trouvé :', typeId);
-  //       } catch (error) {
-  //         const err = error as { status: number }; // assertion de type ici
-  //
-  //         if (err.status === 404) {
-  //           const typeCout = {
-  //             id: 0,
-  //             type: ligne[0],
-  //             categorie: ligne[1],
-  //             EntrepriseId: user.Entreprises[0].id,
-  //           };
-  //           const typeCoutResponse = await firstValueFrom(this.typeCoutService.createTypeCout(typeCout));
-  //           console.log('Type de coût créé avec succès :', typeCoutResponse);
-  //           typeId = typeCoutResponse?.id; // Suppose que la réponse contient le nouvel id
-  //         } else {
-  //           throw error;
-  //         }
-  //       }
-  //
-  //
-  //       const cout = {
-  //         id: 0,
-  //         TypeCoutId: typeId,
-  //         designation: ligne[2],
-  //         EntrepriseId: user.Entreprises[0].id,
-  //         prixUnitaire: ligne[6],
-  //         unite: ligne[5],
-  //         FournisseurId: fournId
-  //       };
-  //       console.log('Nouveau coût à ajouter :', cout);
-  //
-  //       await firstValueFrom(this.coutService.create(cout));
-  //       console.log('Le coût a été ajouté avec succès.');
-  //       this.toastr.success('Parfait', 'Ajout à la bibliothèque réussie');
-  //     }
-  //   } catch (error) {
-  //     console.error('Erreur lors de l\'importation :', error);
-  //     this.toastr.error('Attention', 'Une erreur est survenue');
-  //   }
-  // }
-
   openUniteForFormDialog(): void {
     const dialogRef = this.dialog.open(DialogUniteForFormComponent, {
       height: '50%',
@@ -544,5 +477,13 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
 
   }
 
+  delete(id: number) {
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.entrepriseService.deleteByID(id).subscribe(()=>this.ngOnInit())
+      }
+    });
 
-}
+
+}}

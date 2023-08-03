@@ -11,11 +11,24 @@
       </ng-template>
       <h3 class="bold">Options d'administration</h3>
       <div class="wrapper">
+        <mat-icon  (click)="toggleInfo()" class=" iconInfo">info</mat-icon>
+
+        <p *ngIf="showInfo" class="pInfo">
+          Bienvenue sur la page de gestion des entreprises. Cet espace vous permet d'accéder à différentes fonctionnalités associées à la gestion de votre entreprise :
+
+          1. <strong>Ajouter une entreprise</strong> : Cliquez sur le bouton  <mat-icon class="icn">add</mat-icon> pour enregistrer une nouvelle entreprise dans le système.<br>
+          2. <strong>Liste des devis</strong> : Cliquez sur l'icône<mat-icon class="icn">list</mat-icon> pour accéder à la liste complète de tous les devis enregistrés.<br>
+          3. <strong>Ajouter un utilisateur</strong> : Cliquez sur l'icône<mat-icon class="icn">create</mat-icon> pour ajouter un nouvel utilisateur à une entreprise.<br>
+          4. <strong>Importer des données</strong> : Utilisez l'option <mat-icon class="icn"> import_export</mat-icon> pour importer des données pertinentes pour votre entreprise à partir d'un fichier externe.<br>
+          5. <strong>Créer une unité</strong> : Cliquez sur <mat-icon class="icn">playlist_add</mat-icon> pour créer et enregistrer une nouvelle unité pour votre entreprise.<br>
+
+          Naviguez à travers ces options pour gérer efficacement les informations de votre entreprise.
+        </p>
 
         <div class="card">
 
           <div class="row">
-            <button class="btn" [routerLink]="'/entreprises/new'">
+            <button class="btn" (click)="updateCompany(null)">
               <mat-icon class="icn">add</mat-icon>
             </button>
             <p>Ajouter une entreprise</p>
@@ -59,12 +72,18 @@
     <mat-tab>
       <ng-template mat-tab-label>
         <mat-icon class="example-tab-icon">business</mat-icon>
-        Entreprises
+        Gestion des entreprises
       </ng-template>
-      <h3 class="bold">Liste des entreprises </h3>
-      <div class="wrapper">
+      <h3 class="bold">Gestion des entreprises </h3>
+      <div class="global-container">
+          <mat-icon  (click)="toggleInfo()" class=" iconInfo">info</mat-icon>
+
+        <p *ngIf="showInfo" class="pInfo">
+          Bienvenue à la page de gestion des entreprises. Ici, vous pouvez consulter et gérer l'ensemble de vos entreprises enregistrées. En sélectionnant une entreprise spécifique, vous pourrez accéder aux détails de celle-ci, comme la gestion des devis, des utilisateurs et des clients associés. Explorez et profitez des fonctionnalités !
+        </p>
+
         <table mat-table
-               [dataSource]="dataSourceEntreprise">
+               [dataSource]="dataSourceEntreprise"   >
 
           <ng-container matColumnDef="nEntreprise">
             <th mat-header-cell *matHeaderCellDef>N°</th>
@@ -96,6 +115,15 @@
                 *matCellDef="let entreprise">{{entreprise.phoneNumber}} </td>
           </ng-container>
 
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> Action</th>
+            <td  mat-cell
+                *matCellDef="let entreprise">
+              <button  mat-flat-button color="warn" (click)="delete(entreprise.id)" style="margin-right: 5px">  Supprimer</button>
+              <button  mat-flat-button color="primary" (click)="updateCompany(entreprise.id)">  Modifier</button>
+            </td>
+          </ng-container>
+
 
           <tr mat-header-row *matHeaderRowDef="displayedColumnsEntreprise"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumnsEntreprise;">
@@ -113,33 +141,54 @@
       </ng-template>
       <h3 class="bold">Liste des tickets inter-entreprises</h3>
 
-      <mat-accordion>
-        <mat-expansion-panel *ngFor="let note of this.notes;" [expanded]="false">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              {{note.id|number}}
-            </mat-panel-title>
-            <mat-panel-title>{{note.title|uppercase}}</mat-panel-title>
-            <mat-panel-description>{{note.typeError}} {{note?.optionsTypeError}}</mat-panel-description>
-            <mat-panel-description>Le: {{note.createdAt | date:'dd/MM/yyyy HH:mm:ss'}}</mat-panel-description>
-            <mat-panel-description *ngIf="note.errorLogs && note.errorLogs.length > 0" matBadge="!"
-                                   matBadgePosition="before"
-                                   matBadgeColor="accent" matBadgeOverlap="false">Log
+<div class="global-container">
+  <mat-icon  (click)="toggleInfo()" class=" iconInfo">info</mat-icon>
 
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <mat-card-content>
-            <p class="devis-row">Sujet:  {{note.text|uppercase}}</p>
-            <div *ngFor="let log of note.errorLogs;">
-              <p class="devis-row">{{log.message}}</p>
-            </div>
-          </mat-card-content>
-          <mat-card-actions>
-            <button mat-stroked-button color="danger" (click)="deleteItem(note.id)">Supprimer</button>
-            <mat-checkbox [(ngModel)]="note.resolution" (change)="onNoteResolutionChanged(note)">Résolu !</mat-checkbox>
-          </mat-card-actions>
-        </mat-expansion-panel>
-      </mat-accordion>
+  <p *ngIf="showInfo" class="pInfo">
+    Vous vous trouvez actuellement sur l'onglet de <strong>Gestion des tickets</strong>. Cet espace vous permet de consulter et de gérer les tickets inter-entreprises. Voici un aperçu de ce que vous pouvez faire :
+
+    1. <strong>Consulter les tickets</strong> : Chaque ticket est présenté dans un panneau déroulant. Le titre du ticket, le type d'erreur, la date de création, et un badge indiquant la présence de logs sont affichés en tête de chaque panneau.
+
+    2. <strong>Consulter les détails du ticket</strong> : Cliquez sur un panneau pour le dérouler et consulter plus de détails sur le ticket, y compris le sujet et les messages de log associés.
+
+    3. <strong>Marquer un ticket comme résolu</strong> : Cochez la case 'Résolu !' pour indiquer qu'un ticket a été résolu. Cette action peut être inversée en décochant la case si nécessaire.
+
+    4. <strong>Supprimer un ticket</strong> : Si un ticket n'est plus pertinent ou nécessaire, vous pouvez le supprimer en cliquant sur le bouton 'Supprimer'.
+
+    Utilisez ces fonctionnalités pour assurer un suivi efficace des tickets et maintenir une communication fluide entre les entreprises.
+  </p>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let note of this.notes;" [expanded]="false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{note.id|number}}
+        </mat-panel-title>
+        <mat-panel-title>{{note.title|uppercase}}</mat-panel-title>
+        <mat-panel-description>{{note.typeError}} {{note?.optionsTypeError}}</mat-panel-description>
+        <mat-panel-description>Le: {{note.createdAt | date:'dd/MM/yyyy HH:mm:ss'}}</mat-panel-description>
+        <mat-panel-description *ngIf="note.errorLogs && note.errorLogs.length > 0" matBadge="!"
+                               matBadgePosition="before"
+                               matBadgeColor="accent" matBadgeOverlap="false">Log
+
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-card-content>
+        <p class="devis-row">Sujet:  {{note.text|uppercase}}</p>
+        <div *ngFor="let log of note.errorLogs;">
+
+          <p class="devis-row">{{log.message}}</p>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="flex-row"  style="justify-content: space-around">
+          <mat-checkbox [(ngModel)]="note.resolution" (change)="onNoteResolutionChanged(note)" style="font-size: 16px">Résolu !</mat-checkbox>
+          <button mat-flat-button color="warn" (click)="deleteItem(note.id)">Supprimer</button>
+        </div>
+      </mat-card-actions>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+</div>
 
     </mat-tab>
 
@@ -150,7 +199,14 @@
       </ng-template>
       <h3 class="bold">Gestion des erreurs inter-entreprises</h3>
       <div class="container">
+        <mat-icon  (click)="toggleInfo()" class=" iconInfo">info</mat-icon>
 
+        <p *ngIf="showInfo" class="pInfo">
+          Vous vous trouvez actuellement sur l'onglet de <strong>Gestion des erreurs</strong>. Cet espace vous permet de consulter et de gérer les erreurs survenues.
+
+
+          Utilisez ces fonctionnalités pour assurer un suivi efficace des erreurs .
+        </p>
 
         <mat-form-field>
           <mat-label>Recherche d'une erreur</mat-label>
@@ -239,6 +295,14 @@
         Gestion des imports
       </ng-template>
       <h3 class="bold">Liste des imports/exports</h3>
+      <mat-icon  (click)="toggleInfo()" class=" iconInfo">info</mat-icon>
+
+      <p *ngIf="showInfo" class="pInfo">
+        Vous vous trouvez actuellement sur l'onglet de <strong>Gestion des erreurs</strong>. Cet espace vous permet de consulter et de gérer les erreurs survenues.
+
+
+        Utilisez ces fonctionnalités pour assurer un suivi efficace des erreurs .
+      </p>
       <div class="wrapper-bis">
         <div class="flex-column">
 
@@ -288,30 +352,14 @@
       </ng-template>
       <h3 class="bold">Liste des logs inter-entreprise </h3>
       <div class="container">
-        <!--      <div *ngFor="let log of this.logEntries">-->
-        <!--        <div class="flex-row ">-->
-        <!--          <p class="margin-right">Id:-->
-        <!--            <mat-label style="color: blue">{{log.id}}</mat-label>-->
-        <!--          </p>-->
-        <!--          <p class="margin-right">Level: <strong>{{log.level}}</strong></p>-->
-        <!--          <p class="margin-right">Type de requête:-->
-        <!--            <span [ngStyle]="{'color': methodColors[log.method]}"><strong>{{log.method}}</strong></span></p>-->
+        <mat-icon  (click)="toggleInfo()" class=" iconInfo">info</mat-icon>
 
-        <!--          <p class="margin-right">Le: <strong>{{log.createdAt|date}}</strong></p>-->
-        <!--          <p class="margin-right">Url: <a [href]="log.url"><strong>{{log.url}}</strong></a></p>-->
-        <!--          <p class="margin-right">Utilisateur: <strong>{{log.UserId}}</strong></p>-->
-        <!--          <p class="margin-right">Statut: <strong>{{log.status}}</strong></p>-->
-        <!--          <p class="margin-right">Durée: <span-->
-        <!--            [style.color]="getDurationColor(log.duration)"><strong>{{log.duration}}</strong>-->
-        <!--            ms</span></p>-->
-        <!--          <p class="margin-right">-->
-        <!--            <mat-icon *ngIf="log.level==='6'" matTooltip="{{ log.method }}">info</mat-icon>-->
-        <!--          </p>-->
-        <!--          <p class="margin-right">-->
-        <!--            <mat-icon *ngIf="log.level==='5'" matTooltip="{{ log.message }}">info</mat-icon>-->
-        <!--          </p>-->
-        <!--        </div>-->
-        <!--      </div>-->
+        <p *ngIf="showInfo" class="pInfo">
+          Vous vous trouvez actuellement sur l'onglet de <strong>Gestion des erreurs</strong>. Cet espace vous permet de consulter et de gérer les erreurs survenues.
+
+
+          Utilisez ces fonctionnalités pour assurer un suivi efficace des erreurs .
+        </p>
         <mat-form-field>
           <mat-label>Recherche d'un log</mat-label>
           <input matInput (keyup)="applyFilter($event)" placeholder="Ex. POST..." #input>

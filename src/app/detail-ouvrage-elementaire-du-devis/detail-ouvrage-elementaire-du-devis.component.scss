@@ -26,7 +26,10 @@
 
     .detailList {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
+      text-align: center;
+      margin-top: 10px;
+
 
 
       .subTitle {
@@ -36,6 +39,10 @@
 
     }
   }
+label{
+  font-weight: 500;
+}
+
   .card-no-cout{
     margin:1% 5% 0 5%;
     color: #334E68;

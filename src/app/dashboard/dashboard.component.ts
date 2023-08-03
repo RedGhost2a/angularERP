@@ -41,8 +41,8 @@ export class DashboardComponent implements OnInit {
     if (this.user.role === 'Super Admin') {
     console.log("ngOninit super admin")
       this.getPrixVenteHT();
-    }else if (this.user.role === 'Admin'){
-    console.log("ngOninit admin")
+    }else  {
+    console.log("ngOninit admin user")
       this.getIdEntreprise();
     }
 
@@ -54,6 +54,7 @@ export class DashboardComponent implements OnInit {
     this.userService.getById(this.user.id).subscribe(data => {
       this.entrepriseId = data.Entreprises.map((item: { id: any; }) => item.id);
       const id = this.entrepriseId[this.currentEntrepriseIndex];
+
 
       this.getPrixVenteHTForAdmin();
         })
@@ -96,16 +97,17 @@ export class DashboardComponent implements OnInit {
 
     const id = this.entrepriseId[this.currentEntrepriseIndex];
     this.devisService.getDevisByEnterprise(id).subscribe(data => {
-      this.devis = data.Devis;
-      this.denomination = data.denomination; // Affectation de la propriété denomination
+      this.devis = data;
+      this.denomination = data[this.currentEntrepriseIndex].Entreprise.denomination;
+      console.log(this.denomination)
 
       console.log("DATA : ", data)
-      this.frais = data.Devis.map((item: { debourseSecTotal: any; }) => item.debourseSecTotal);
+      this.frais = this.devis.map((item: { debourseSecTotal: any; }) => item.debourseSecTotal);
       console.log('test get prix vente')
       console.log("DATA : ", this.frais)
-      this.nomDevis = data.Devis.map((item: { name: any; }) => item.name);
-      this.prixVenteHT = data.Devis.map((item: { prixVenteHT: any; }) => item.prixVenteHT);
-      this.moyenneBenefAleas = data.Devis.map((item: { moyenneBeneficeAleas: any; }) => item.moyenneBeneficeAleas);
+      this.nomDevis = this.devis.map((item: { name: any; }) => item.name);
+      this.prixVenteHT = this.devis.map((item: { prixVenteHT: any; }) => item.prixVenteHT);
+      this.moyenneBenefAleas = this.devis.map((item: { moyenneBeneficeAleas: any; }) => item.moyenneBeneficeAleas);
       this.moyenneDeLaMoyenneBenefAleas = this.moyenneBenefAleas.reduce((a: any, b: any) => a + b, 0) / this.moyenneBenefAleas.length;
       this.prixVenteHTCalculer = this.prixVenteHT.reduce((a: any, b: any) => a + b, 0);
       this.fraisCalculer = this.frais.reduce((a: any, b: any) => a + b, 0);

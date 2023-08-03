@@ -28,6 +28,7 @@ export class EntrepriseService {
 
 
   update(entreprise: Entreprise, id: string): Observable<any> {
+    console.log(id)
     return this.http.put(`${environment.apiUrl}/entreprises/${id}`, entreprise)
   }
 

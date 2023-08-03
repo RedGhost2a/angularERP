@@ -8,6 +8,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {UserEditComponent} from "../user-edit/user-edit.component";
 import {DataSharingService} from "../../_service/data-sharing-service.service";
 import {Devis} from "../../_models/devis";
+import {DialogConfirmSuppComponent} from "../../dialog-confirm-supp/dialog-confirm-supp.component";
 
 @Component({
   selector: 'app-user-list',
@@ -15,7 +16,7 @@ import {Devis} from "../../_models/devis";
   styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'title', 'firstName', 'lastName', 'email', 'role','entreprise', 'boutons'];
+  displayedColumns: string[] = ['id', 'title', 'firstName', 'lastName', 'email', 'role','EntrepriseId', 'boutons'];
   dataSource!: MatTableDataSource<User> ;
 
 
@@ -27,12 +28,17 @@ export class UserListComponent implements OnInit {
     this.getAll()
   }
 
-  delete(id: any): void {
-    this.userService.deleteByID(id).subscribe(() => this.getAll())
+
+
+  delete(id: number) {
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userService.deleteByID(id).subscribe(() => this.getAll())
+      }
+    });
   }
-  update(user: User, id: number): void {
-    this.userService.update(user, id).subscribe(() => this.getAll())
-  }
+
   applyFilter(event: Event) {
     this.dataShingService.applyFilter(event,this.dataSource)
   }

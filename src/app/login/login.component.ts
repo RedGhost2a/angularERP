@@ -70,10 +70,10 @@ export class LoginComponent implements OnInit {
           data => {
             // console.log(data.role)
             this.success("Connecté !")
-            if (data.role === "Super Admin") {
-              this.router.navigate(['/admin']);
-            } else
-              this.router.navigate([this.returnUrl]);
+            // if (data.role === "Super Admin") {
+              this.router.navigate(['/dashboard']);
+            // } else
+            //   this.router.navigate([this.returnUrl]);
           },
           error => {
             this.warning("Mot de passe et ou email inconnu !")

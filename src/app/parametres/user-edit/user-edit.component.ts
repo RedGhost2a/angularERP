@@ -7,6 +7,7 @@ import {AlertService} from "../../_service/alert.service";
 import {EntrepriseService} from "../../_service/entreprise.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {DialogComponent} from "../../dialogListOuvrage/dialog.component";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -28,7 +29,8 @@ export class UserEditComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private userService: UserService, private formBuilder: FormBuilder, private alerteService: AlertService,
               private route: ActivatedRoute, private router: Router, @Inject(TOASTR_TOKEN) private toastr: Toastr, private entrepriseService: EntrepriseService,
-              private dialogRef: MatDialogRef<DialogComponent>) {
+              private dialogRef: MatDialogRef<DialogComponent>,
+              private snackBar: MatSnackBar) {
 
     this.initialData = data;
   }
@@ -38,6 +40,8 @@ export class UserEditComponent implements OnInit {
     this.getUserById()
     this.getEntrepriseForUser();
     this.createFormUser()
+    console.log(this.initialData)
+
     if (this.initialData !== null) {
       console.log(this.initialData)
       this.generateFormUpdate()
@@ -48,8 +52,8 @@ export class UserEditComponent implements OnInit {
     console.log(this.userService.userValue.role)
     this.userForm = new FormGroup({
       email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', Validators.required),
-      passwordConfirm: new FormControl('', Validators.required),
+      password: new FormControl('', ),
+      // passwordConfirm: new FormControl('', Validators.required),
       title: new FormControl('', Validators.required),
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
@@ -97,10 +101,19 @@ export class UserEditComponent implements OnInit {
     // console.log(this.avatars)
     return this.avatars;
   }
+  generatePassword(firstName: string, lastName: string, entrepriseId: string): string {
+    // Retirez tous les espaces et prenez les trois premières lettres de chaque chaîne
+    let password = firstName.replace(/\s/g, '').substring(0, 3) +
+      lastName.replace(/\s/g, '').substring(0, 3) +
+      entrepriseId.replace(/\s/g, '').substring(0, 3);
+
+    // Convertir en minuscules
+    password = password.toLowerCase();
+
+    return password;
+  }
 
   createAndUpdate(): void {
-    const password = this.userForm.get('password')?.value;
-    const confirmPassword = this.userForm.get('passwordConfirm')?.value;
     this.userForm.markAllAsTouched();
     if (this.userForm.invalid) {
       // Form is invalid, show error message
@@ -108,11 +121,28 @@ export class UserEditComponent implements OnInit {
       return;
     }
     if (this.initialData === null) {
+      const password = this.generatePassword(this.userForm.getRawValue().firstName, this.userForm.getRawValue().lastName, this.userForm.getRawValue().EntrepriseId.toString());
+
+      let pass =  this.userForm.get('password')
+      if (this.userForm && pass) {
+        pass.patchValue(password);
+      }
+      console.log(this.userForm.getRawValue())
       this.userService.register(this.userForm.getRawValue()).subscribe(data => {
+
         this.closeDialog();
+//         alert(`Le mot de passe pour ${this.userForm.getRawValue().firstName} ${this.userForm.getRawValue().lastName} est : <strong>${password}</strong>
+// <br> Merci de garder ce mot de passe en securité, il sera demandé à l'utilisateur lors de sa premiere connexion.`);
+        this.snackBar.open(`Le mot de passe pour ${this.userForm.getRawValue().firstName} ${this.userForm.getRawValue().lastName} est: ${password}.
+         Merci de garder ce mot de passe en securité, il sera demandé à l'utilisateur lors de sa première connexion.`, 'Fermer', {
+          panelClass: ['red-snackbar']
+        });
+
       });
     } else {
+      console.log(this.userForm.getRawValue())
       this.userService.update(this.userForm.getRawValue(), this.initialData.id).subscribe(data => {
+
         this.closeDialog();
       });
     }
@@ -123,14 +153,14 @@ export class UserEditComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  previewAvatar(event: any) {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.avatarUrl = e.target.result;
-    }
-    reader.readAsDataURL(file);
-  }
+  // previewAvatar(event: any) {
+  //   const file = event.target.files[0];
+  //   const reader = new FileReader();
+  //   reader.onload = (e: any) => {
+  //     this.avatarUrl = e.target.result;
+  //   }
+  //   reader.readAsDataURL(file);
+  // }
 
   getUserById(): void {
     this.userService.getById(this.userId).subscribe(data => {

@@ -18,6 +18,8 @@ import {UniteForForm} from "../_models/uniteForForm";
 import {UniteForFormService} from "../_service/uniteForForm.service";
 import {Router} from "@angular/router";
 import {OuvrageElementaireCoutService} from "../_service/ouvrage-elementaire-cout.service";
+import {FournisseurService} from "../_service/fournisseur.service";
+import {Fournisseur} from "../_models/fournisseur";
 
 @Component({
   selector: 'app-dialog-form-cout',
@@ -36,7 +38,7 @@ export class DialogFormCoutComponent implements OnInit {
   typeCout !: TypeCout[];
   isCout: boolean = true;
   uniteList!:any[];
-  // private unite: string[];
+  listFournisseur !: Fournisseur[]
 
 
 
@@ -51,7 +53,9 @@ export class DialogFormCoutComponent implements OnInit {
               private uniteForFormService: UniteForFormService,
               @Inject(TOASTR_TOKEN) private toastr: Toastr,
               private router:Router,
-              private ouvrageElementaireCoutService: OuvrageElementaireCoutService
+              private ouvrageElementaireCoutService: OuvrageElementaireCoutService,
+              private fournisseurService: FournisseurService,
+
   ) {
     this.initialData = this.data;
     transformVirguletoPoint()
@@ -60,9 +64,8 @@ export class DialogFormCoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("daaaataaa",this.data)
+    this.getAllFournissuer();
     this.getAllTypeCouts(this.data[2].EntrepriseId)
-    console.log(this.data[2])
     // this.getUniteByEnteprise(this.dataSharingService.entrepriseId)
     if (this.regexDetailOuvrage.test(window.location.pathname)) {
       this.isInDevis = false;
@@ -125,14 +128,13 @@ export class DialogFormCoutComponent implements OnInit {
 
 
         this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe(responseCout => {
-
-
             if (this.router.url.includes('/ouvrages-elementaires-du-devis')) {
               console.log("responseCout", responseCout)
               const ouvrageCout = {
                 OuvrElemDuDeviId: this.initialData[2].id,
                 CoutDuDeviId: responseCout?.id,
-
+                ratio:this.myFormGroup.getRawValue().ratio,
+                uRatio: this.myFormGroup.getRawValue().uRatio,
               }
               this.ouvrageElementaireCoutService.createOuvrageElemCoutDuDevis(ouvrageCout).subscribe(this.ngOnInit)
               // this.cout = this.myFormGroup.getRawValue();
@@ -225,6 +227,13 @@ export class DialogFormCoutComponent implements OnInit {
   closeDialog() {
     // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
     this.dialogRef.close();
+  }
+  getAllFournissuer() {
+    this.fournisseurService.getAllFournisseurs(this.data[2].EntrepriseId).subscribe(data => {
+      this.listFournisseur = data
+      console.log("fourn",this.listFournisseur)
+    })
+
   }
 
   setValueURatio(){

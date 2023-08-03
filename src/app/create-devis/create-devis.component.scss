@@ -374,7 +374,9 @@
 .buttonSup {
   color: red;
 }
-
+.margin-top{
+  margin-top: 5px;
+}
 .buttonImport {
   color: green;
 
@@ -385,6 +387,8 @@
 }
 
 .menuBoutonSl {
+  display: flex;
+  flex-direction: column;
   width: min-content;
   margin: 5px;
   padding: 5px;

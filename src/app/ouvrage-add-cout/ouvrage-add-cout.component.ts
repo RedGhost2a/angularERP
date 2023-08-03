@@ -11,6 +11,7 @@ import {OuvrageCout} from "../_models/ouvrageCout";
 import {Ouvrage} from "../_models/ouvrage";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DialogComponent} from "../dialogListOuvrage/dialog.component";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-ouvrage-add-cout',
@@ -32,6 +33,8 @@ export class OuvrageAddCoutComponent implements OnInit {
   currentOuvrageId!:number;
   ouvrageCout !: OuvrageCout ;
   initialData!: Ouvrage;
+  dataSource!: any;
+
 
 
   constructor(private route: ActivatedRoute, private coutService: CoutService,
@@ -44,15 +47,11 @@ export class OuvrageAddCoutComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log(this.initialData)
     this.route.params.subscribe(params =>{
-      console.log("params",params)
       this.currentOuvrageId = +params['id']
-      // console.log("current ouvrage id ",this.currentOuvrageId)
     })
     this.currentUser = this.userService.userValue;
     this.userService.getById(this.currentUser.id).subscribe(data =>{
-      console.log("user by id ", data)
       this.getAll(data.Entreprises[0].id)
     })
   }
@@ -60,10 +59,23 @@ export class OuvrageAddCoutComponent implements OnInit {
   getAll(entrepriseId: number): void {
     this.coutService.getAll(entrepriseId).subscribe(data => {
       this.listCout = data
-      console.log("dATA", data)
+      this.dataSource = new MatTableDataSource(data);
     })
   }
 
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const searchText = filter.trim().toLowerCase();
+      const type = data.TypeCout.type.toLowerCase();
+      const designation = data.designation.toLowerCase();
+      const categories = data.TypeCout.categorie.toLowerCase();
+      const valuesToSearch = [type, designation, categories];
+      return valuesToSearch.some(value => value.includes(searchText));
+    };
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
   addCoutOuvrage() {
     console.log("id de l'ouvrage courant",this.currentOuvrageId )

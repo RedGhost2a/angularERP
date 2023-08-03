@@ -16,6 +16,7 @@ import {OuvrageElementaireCout} from "../_models/ouvrage-elementaire-cout";
 import {OuvrageElementaire} from "../_models/ouvrage-elementaire";
 import {OuvrageElementaireService} from "../_service/ouvrage-elementaire.service";
 import {DataSharingService} from "../_service/data-sharing-service.service";
+import {MatTableDataSource} from "@angular/material/table";
 
 @Component({
   selector: 'app-ouvrage-elementaire-add-cout',
@@ -36,6 +37,7 @@ export class OuvrageElementaireAddCoutComponent implements OnInit {
   currentOuvrageId!:number;
   ouvrageCout !: OuvrageElementaireCout ;
   initialData!: OuvrageElementaire;
+  dataSource!: any;
 
 
   constructor(private route: ActivatedRoute, private coutService: CoutService,
@@ -49,6 +51,7 @@ export class OuvrageElementaireAddCoutComponent implements OnInit {
               ) {
 
     this.initialData = this.data;
+
   }
 
 
@@ -69,10 +72,26 @@ export class OuvrageElementaireAddCoutComponent implements OnInit {
   getAll(entrepriseId: number): void {
     this.coutService.getAll(entrepriseId).subscribe(data => {
       this.listCout = data
+      this.dataSource = new MatTableDataSource(data);
+
       console.log("dATA", data)
     })
   }
 
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const searchText = filter.trim().toLowerCase();
+      const type = data.TypeCout.type.toLowerCase();
+      // console.log(type)
+      const designation = data.designation.toLowerCase();
+      const categories = data.TypeCout.categorie.toLowerCase();
+      const valuesToSearch = [type, designation, categories];
+      return valuesToSearch.some(value => value.includes(searchText));
+    };
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    console.log(this.dataSource.filter)
+  }
 
   addCoutOuvrage() {
 

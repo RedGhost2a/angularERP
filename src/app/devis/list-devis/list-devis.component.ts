@@ -8,7 +8,7 @@ import {EditDevisComponent} from "../edit-devis/edit-devis.component";
 import {UserService} from "../../_service/user.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {EditComponent} from "../../clients/edit/edit.component";
-import {Observable} from "rxjs";
+import {concatMap, from, Observable, toArray} from "rxjs";
 import {User} from "../../_models/users";
 import {Entreprise} from "../../_models/entreprise";
 import {tap} from "rxjs/operators";
@@ -65,10 +65,21 @@ export class ListDevisComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  isSuperAdmin():boolean{
+    if(this.userService.currentUser.role === 'Super Admin') {
+      console.log(this.userService.currentUser.role)
+      return true
+    }
+    else {
+      return false
+
+    }
+  }
   getDeviswithRole() {
-    if (this.userService.isSuperAdmin()) {
+    if (this.isSuperAdmin()) {
       this.devisService.getAll().subscribe((listDevis : Devis [])=>{
-          this.dataSource = new MatTableDataSource(listDevis);
+          this.dataSource = new MatTableDataSource(listDevis.reverse());
+        console.log(this.dataSource)
         console.log(listDevis)
       })
     } else {
@@ -79,16 +90,20 @@ export class ListDevisComponent implements OnInit {
 
 
   getDevisByEntreprise() {
-    this.userService.currentUser.Entreprises.forEach((entreprise: Entreprise) => {
-      this.devisService.getDevisByEnterprise(entreprise.id).subscribe((listDevis: Devis[]) => {
-        this.devisService.devis = this.devisService.devis.concat(listDevis);
-        this.dataSource = new MatTableDataSource(this.devisService.devis);
-      });
-    });
+    this.devisService.devis = [];
+    from(this.userService.currentUser.Entreprises).pipe(
+      concatMap((entreprise: Entreprise) => this.devisService.getDevisByEnterprise(entreprise.id)),
+      toArray(),
+      tap((listDevis: Devis[]) => {
+        this.devisService.devis = this.devisService.devis.concat(...listDevis);
+        this.dataSource = new MatTableDataSource(this.devisService.devis.reverse());
+      })
+    ).subscribe();
   }
 
+
   openDialogCreateDevis() {
-    this.devisService.openDialogCreateDevis(null,()=>{
+    this.devisService.openDialogCreateDevis(null,null,()=>{
       this.getDeviswithRole()
     })
   }

@@ -9,7 +9,7 @@ export class Devis {
   status!: string;
   EntrepriseId!: number;
   Entreprise!:Entreprise;
-  createdAt?: Date;
+  createdAt!: Date;
   Client!: Client;
   adresse!: Adresse;
   ClientId!: number;

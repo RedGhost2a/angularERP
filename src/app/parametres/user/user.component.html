@@ -12,9 +12,13 @@
         <!--        <mat-card-title>Avatar</mat-card-title>-->
         <mat-card class="avatar card">
           <img class="images" src="./assets/avatar96px/{{user.avatarUrl}}" alt="Photo of a user">
-          <button class="btn" mat-stroked-button [routerLink]="['/users', user.id]">
+          <button class="btn" mat-flat-button (click)="openDialogCreate(curentUser)">
             <mat-icon>create</mat-icon>
-            MODIFIER
+            MODIFIER VOTRE PROFIL
+          </button>
+          <button class="btn" mat-flat-button color="warn" (click)="openDialogUpdatePassword()">
+            <mat-icon>create</mat-icon>
+            MODIFIER VOTRE MOT DE PASSE
           </button>
         </mat-card>
       </div>
@@ -220,66 +224,42 @@
         <mat-icon class="example-tab-icon">apartment</mat-icon>
         Mon entreprise
       </ng-template>
-      <div *ngFor="let entreprise of userEntreprise">
-        <h1></h1>
-        <mat-card class="entreprise">
-          <img class="image" mat-card-md-image src="./assets/images/GrazianiGTP.jpg"
-               alt="Photo of a company">
-          <div>
+      <div  class="flex-row" *ngFor="let entreprise of userEntreprise">
+  <mat-card class="entreprise">
+    <div class="card-header">
+      <img class="image" mat-card-md-image src="./assets/images/GrazianiGTP.jpg" alt="Photo of a company">
+      <div class="title-section">
+        <mat-card-title>{{entreprise.denomination | uppercase}}</mat-card-title>
+        <mat-card-subtitle>{{entreprise.formeJuridique}}</mat-card-subtitle>
+      </div>
+    </div>
 
-            <mat-card-title>{{entreprise.denomination|uppercase}}</mat-card-title>
-            <mat-card-subtitle>{{entreprise.formeJuridique}}</mat-card-subtitle>
-          </div>
+    <div class="card-body">
+      <div class="info-section">
+        <mat-card-title>Infos</mat-card-title>
+        <p>Capital: {{entreprise.capital}}</p>
+        <p>Naf Code: {{entreprise.nafCode}}</p>
+        <p>Rcs: {{entreprise.rcs}}</p>
+        <p>Siret: {{entreprise.siret}}</p>
+        <p>Tva: {{entreprise.tvaNumber}}</p>
+      </div>
 
+      <div class="address-section">
+        <mat-card-title>Adresse</mat-card-title>
+        <p>Adresse: {{entreprise.Adresse.adresses | uppercase}}</p>
+        <p>Code postal: {{entreprise.Adresse.zipcode}}</p>
+        <p>Ville: {{entreprise.Adresse.city | uppercase}}</p>
+        <p>Pays: {{entreprise.Adresse.country | uppercase}}</p>
+      </div>
 
-          <div>
-            <mat-card-title>Infos</mat-card-title>
-            <p>
-              Capital: {{entreprise.capital}}
-            </p>
-            <p>
-              Naf Code: {{entreprise.nafCode}}
-            </p>
-            <p>
-              Rcs: {{entreprise.rcs}}
-            </p>
-            <p>
-              Siret: {{entreprise.siret}}
-            </p>
-            <p>
-              Tva: {{entreprise.tvaNumber}}
-            </p>
-          </div>
+      <div class="contact-section">
+        <mat-card-title>Contact</mat-card-title>
+        <p>E-mail: {{entreprise.email}}</p>
+        <p>Téléphone: {{entreprise.phoneNumber}}</p>
+      </div>
+    </div>
+  </mat-card>
 
-
-          <div>
-            <mat-card-title>Adresse</mat-card-title>
-            <p>
-              Adresse: {{entreprise.Adresse.adresses|uppercase}}
-            </p>
-            <p>
-              Code postal: {{entreprise.Adresse.zipcode}}
-            </p>
-            <p>
-              Ville: {{entreprise.Adresse.city|uppercase}}
-            </p>
-            <p>
-              Pays: {{entreprise.Adresse.country|uppercase}}
-            </p>
-          </div>
-
-          <div>
-            <mat-card-title>Contact</mat-card-title>
-            <p>
-              E-mail: {{entreprise.email}}
-            </p>
-            <p>
-              Téléphone: {{entreprise.phoneNumber}}
-            </p>
-          </div>
-
-
-        </mat-card>
       </div>
     </mat-tab>
 

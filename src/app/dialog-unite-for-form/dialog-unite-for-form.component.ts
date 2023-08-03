@@ -67,6 +67,7 @@ export class DialogUniteForFormComponent implements OnInit {
 
     return this.unitelist.filter(unit => unit.name.toLowerCase().includes(filterValue));
   }
+
 getId(): void {
   this.userService.getById(this.user).subscribe(data=>{
     data.Entreprises.forEach((entreprise: Entreprise) =>{

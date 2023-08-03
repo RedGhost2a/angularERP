@@ -38,6 +38,9 @@ export class FormFournisseurComponent implements OnInit {
     this.getUserById()
     if (this.initialData !== null)
       this.generateFormUpdate();
+    this.myFormGroup.get('EntrepriseId')?.valueChanges.subscribe(value => {
+      console.log('EntrepriseId changed:', value);
+    });
 
   }
 
@@ -65,6 +68,7 @@ export class FormFournisseurComponent implements OnInit {
     if (this.initialData === null) {
       this.fournisseurService.createFournisseur(this.myFormGroup.getRawValue()).subscribe(() => this.closeDialog() );
     } else {
+      console.log(this.myFormGroup.getRawValue())
       this.fournisseurService.updateFournisseur(this.initialData.id, this.myFormGroup.getRawValue()).subscribe(()=> this.closeDialog());
     }
   }

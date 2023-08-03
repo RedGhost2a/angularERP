@@ -47,10 +47,11 @@ body {
 }
 .testcontainer, .global-height{
     min-height: calc(100vh - 64px);
+  background-color: #F0F4F8;
+
 }
 // style for list/table
 .global-big-container{
-  background-color: #F0F4F8;
   height: 100%;
   .global-title{
     display: flex;

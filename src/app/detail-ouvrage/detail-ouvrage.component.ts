@@ -187,8 +187,7 @@ export class DetailOuvrageComponent implements OnInit {
   openDialogCreateOuvrElem() {
     this.dialog.open(FormOuvrageElementaireComponent, {
       data: this.ouvrage,
-      width: '55%',
-      height: '60%'
+      width: '70%',
     }).afterClosed().subscribe(async result => {
       this.ngOnInit()
     });

@@ -44,26 +44,13 @@
       </mat-form-field>
 
       <mat-form-field appearance="legacy">
-
         <mat-label>Unité</mat-label>
-
-        <mat-select formControlName="unite" (blur)="setValueURatio()" >
-          <mat-option [value]=unite.name
-                      *ngFor="let unite of this.uniteList">{{unite.name}}</mat-option>
-        </mat-select>
-        <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">
-          Vous devez entrer une unité.
-        </mat-error>
-
-
-<!--        <select formControlName="unite" matNativeControl required (blur)="setValueURatio()">-->
-<!--          <option *ngFor="let unite of uniteList" value="{{unite.name}}"> {{unite.name}}</option>-->
-<!--        </select>-->
-<!--        <mat-error *ngIf="this.myFormGroup.get('unite')?.hasError('required')">-->
-<!--          Vous devez entrer une unité.-->
-<!--        </mat-error>-->
-
+        <input type="text" matInput formControlName="unite"  [matAutocomplete]="auto" (blur)="setValueURatio()">
+        <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
+          <mat-option *ngFor="let unite of filteredUnites | async" [value]="unite.name">{{unite.name}}</mat-option>
+        </mat-autocomplete>
       </mat-form-field>
+
 
       <span>    <mat-icon style="
     color: deepskyblue;

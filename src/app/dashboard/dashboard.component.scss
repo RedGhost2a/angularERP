@@ -6,7 +6,9 @@
 .flex-row{
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
+  padding: 10px;
+
   //flex-wrap: wrap;
   .wrap{
     flex-wrap: wrap;
@@ -14,9 +16,9 @@
 }
 
 .chart-container{
-  width: 100%;
-  height: 100%;
-  //padding: 20px;
+  width: 60%;
+  height: 70%;
+  //margin-right: 50px;
 }
 .devis-flex-row{
   display: flex;
@@ -31,4 +33,22 @@
 
 .card-text{
   font-size: 30px;color: #D9E2EC;
+}
+h1{
+  text-align: center;
+  font-size: 35px;
+  font-family: "Michroma";
+  color:  #2a5d93;
+
+}
+.flex-column{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  overflow: hidden;
+  width: 100%;
+
 }

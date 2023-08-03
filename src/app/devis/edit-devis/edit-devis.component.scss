@@ -31,11 +31,16 @@
 //  margin-top: 60px;
 //}
 //
+
+.mat-form-field{
+  text-align: center;
+}
 .container {
   display: flex;
   flex-direction: column;
   color: #334E68;
   //margin-top: 3%;
+
 
   h3 {
     font-size: 1.2rem;

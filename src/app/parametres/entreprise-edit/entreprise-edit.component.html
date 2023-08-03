@@ -4,6 +4,13 @@
       <h1 class="form-group-title">{{textButton}}</h1>
     </div>
     <form class="form" [formGroup]="myFormGroup">
+      <div class="form-row" >
+          <img [src]="previewUrl" *ngIf="previewUrl" class="image-preview" />
+        <div class="flex-column">
+          <input type="file" formControlName="logo" (change)="onFileSelected($event)" [placeholder]="selectedFileName">
+          <mat-hint align="end">Taille de fichier max : 1MB</mat-hint>
+        </div>
+      </div>
       <div class="form-row">
         <mat-form-field>
           <mat-label> Nom commerciale</mat-label>
@@ -17,9 +24,21 @@
           </mat-error>
         </mat-form-field>
         <mat-form-field>
-          <mat-label> Forme Juridique </mat-label>
-          <input matInput placeholder="Entrer la forme juridique" formControlName="formeJuridique">
+          <mat-label>Forme Juridique</mat-label>
+          <mat-select formControlName="formeJuridique">
+            <mat-option value="SA">Société Anonyme (SA)</mat-option>
+            <mat-option value="SAS">Société par Actions Simplifiée (SAS)</mat-option>
+            <mat-option value="SARL">Société à Responsabilité Limitée (SARL)</mat-option>
+            <mat-option value="EURL">Entreprise Unipersonnelle à Responsabilité Limitée (EURL)</mat-option>
+            <mat-option value="SASU">Société par Actions Simplifiée Unipersonnelle (SASU)</mat-option>
+            <mat-option value="SCI">Société Civile Immobilière (SCI)</mat-option>
+            <mat-option value="SCOP">Société Coopérative de Production (SCOP)</mat-option>
+            <mat-option value="SCP">Société Civile Professionnelle (SCP)</mat-option>
+            <mat-option value="SNC">Société en Nom Collectif (SNC)</mat-option>
+            <mat-option value="auto-entrepreneur">Auto-entrepreneur</mat-option>
+          </mat-select>
         </mat-form-field>
+
         <mat-form-field>
           <mat-label> Capital</mat-label>
           <input matInput placeholder="Entrer le capital" formControlName="capital">
@@ -54,12 +73,15 @@
         <mat-form-field>
           <mat-label>Code postal</mat-label>
           <input matInput formControlName="zipcode">
+          <mat-error *ngIf="myFormGroup.get('Adresse.zipcode')?.hasError('required')">
+            Vous devez renseigner un code postal.
+          </mat-error>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Ville</mat-label>
           <input matInput formControlName="city">
           <mat-error *ngIf="myFormGroup.get('Adresse.city')?.hasError('required')">
-            Vous devez choisir une ville.
+            Vous devez inscrire une ville.
           </mat-error>
         </mat-form-field>
         <mat-form-field>
@@ -83,7 +105,7 @@
       </div>
 
     </form>
-    <button class="button" mat-flat-button color="primary" (click)="createAndUpdate()"
+    <button class="button" mat-flat-button color="primary" (click)="createOrUpdate()"
             type="submit">{{textButton}}</button>
   </ng-container>
 </div>
