@@ -41,8 +41,19 @@ export class FormTypeCoutComponent implements OnInit {
   ngOnInit(): void {
     this.createFormTypeCout();
     this.getUserEntreprise();
-    if (this.initialData !== null)
+    console.log(this.initialData)
+    if (this.initialData){
+    this.getAllTypeCouts(this.initialData.EntrepriseId)
       this.generateFormUpdate();
+
+    }else {
+      this.myFormGroup.get('EntrepriseId')!.valueChanges.subscribe(entrepriseId => {
+        if (entrepriseId) {
+          this.getAllTypeCouts(entrepriseId);
+        }
+      });
+
+    }
     this.filteredOptions = this.myFormGroup.get('type')!.valueChanges
       .pipe(
         startWith(''),
@@ -81,6 +92,7 @@ export class FormTypeCoutComponent implements OnInit {
 
   getUserEntreprise(): void {
     this.currentEntreprise = this.userService.currentUser.Entreprises;
+    console.log(this.currentEntreprise)
   }
 
 

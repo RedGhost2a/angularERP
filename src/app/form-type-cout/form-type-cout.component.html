@@ -51,7 +51,16 @@
     <h3>{{titreForm}}</h3>
     <p>{{textForm}}</p>
     <div class="inputs">
-
+      <mat-form-field appearance="legacy" >
+        <mat-label>Entreprise</mat-label>
+        <mat-select formControlName="EntrepriseId"  >
+          <mat-option [value]=+entreprise.id
+                      *ngFor="let entreprise of this.currentEntreprise">{{entreprise.denomination}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="this.myFormGroup.get('EntrepriseId')?.hasError('required')">
+          Vous devez choisir une entreprise.
+        </mat-error>
+      </mat-form-field>
       <mat-form-field appearance="legacy">
         <mat-label>Type</mat-label>
         <input formControlName="type" matInput [matAutocomplete]="auto" placeholder="Ex: Fourniture">
@@ -75,16 +84,7 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="legacy" >
-        <mat-label>Entreprise</mat-label>
-        <mat-select formControlName="EntrepriseId"  >
-          <mat-option [value]=+entreprise.id
-                      *ngFor="let entreprise of this.currentEntreprise">{{entreprise.denomination}}</mat-option>
-        </mat-select>
-        <mat-error *ngIf="this.myFormGroup.get('EntrepriseId')?.hasError('required')">
-          Vous devez choisir une entreprise.
-        </mat-error>
-      </mat-form-field>
+
 
     </div>
 
