@@ -2,7 +2,8 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import { UserService } from "../../_service/user.service";
 import {Toastr, TOASTR_TOKEN} from "../../_service/toastr.service";
-import {MatDialog} from "@angular/material/dialog"; // Assurez-vous d'importer le UserService
+import {MatDialog} from "@angular/material/dialog";
+import {User} from "../../_models/users"; // Assurez-vous d'importer le UserService
 
 @Component({
   selector: 'app-user-edit-password',
@@ -10,12 +11,13 @@ import {MatDialog} from "@angular/material/dialog"; // Assurez-vous d'importer l
   styleUrls: ['./user-edit-password.component.scss']
 })
 export class UserEditPasswordComponent implements OnInit {
-
+currentUser!:User
 
   userForm = new FormGroup({
     oldPassword:new FormControl ('', [Validators.required]),
     password: new FormControl ('', [Validators.required,Validators.minLength(8)]),
     confirmNewPassword: new FormControl ('', [Validators.required,Validators.minLength(8)]),
+    firstConnexion: new FormControl()
   })
 
 
@@ -28,25 +30,26 @@ export class UserEditPasswordComponent implements OnInit {
 
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.currentUser = this.userService.userValue
+  }
 
 
 
 
   onSubmit() {
     if (this.userForm.valid) {
-      if( this.userForm.getRawValue().password===this.userForm.getRawValue().confirmNewPassword
-    ) {
-        // Les mots de passe correspondent
-        // Utilisez le UserService pour mettre à jour le mot de passe
+      if(this.userForm.getRawValue().password === this.userForm.getRawValue().confirmNewPassword) {
         let password = this.userForm.getRawValue().password;
         let oldPassword = this.userForm.getRawValue().oldPassword;
-        if(password && oldPassword) {
-          this.userService.updatePassword(this.userService.userValue.id, oldPassword, password)
+        let firstConnexion = this.userForm.get('firstConnexion');
+        if(password && oldPassword && firstConnexion) {
+          firstConnexion.setValue(false);
+          this.userService.updatePassword(this.userService.userValue.id, oldPassword, password, firstConnexion.value)
             .subscribe(
               success => {
-                this.toastr.success('Vous avez bien modifier votre mot de passe', "Succès");
-              this.dialog.closeAll()
+                this.toastr.success('Vous avez bien modifié votre mot de passe', "Succès");
+                this.dialog.closeAll();
               },
               error => {
                 this.toastr.error('Votre ancien mot de passe est incorrect', "Erreur");
@@ -57,8 +60,7 @@ export class UserEditPasswordComponent implements OnInit {
         }
       } else {
         // Les mots de passe ne correspondent pas, montrer une erreur
-        this.toastr.warning('Les mot de passe ne correspondent pas', "Attention");
+        this.toastr.warning('Les mots de passe ne correspondent pas', "Attention");
       }
     }
-  }
-}
+  }}

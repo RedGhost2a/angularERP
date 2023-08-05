@@ -54,6 +54,12 @@ export class UserService {
     console.log('mot de passe ',password)
     return this.http.post<User>(`${environment.apiUrl}/users/authenticate`, {email, password})
       .pipe(map(user => {
+        if (user.firstConnexion === true){
+          this.dialog.open(UserEditPasswordComponent, { disableClose: true }).afterClosed().subscribe(()=>{
+            this.logout()
+            this.router.navigate(['/login'])
+          })
+        }
 
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         let string = JSON.stringify(user)
@@ -78,6 +84,7 @@ export class UserService {
   }
 
   register(user: User): Observable<any> {
+    console.log(user)
     this.users = []
     return this.http.post(`${environment.apiUrl}/users/new`, user);
   }
@@ -125,10 +132,11 @@ export class UserService {
     });
   }
 
-  updatePassword(id: string, oldPassword: string, password: string) {
+  updatePassword(id: string, oldPassword: string, password: string,firstConnexion:boolean) {
     return this.http.put(`${environment.apiUrl}/users/update-password/${id}`, {
       oldPassword: oldPassword,
-      password: password
+      password: password,
+      firstConnexion:firstConnexion
     });
   }
 

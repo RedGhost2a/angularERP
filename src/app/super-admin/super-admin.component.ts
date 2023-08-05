@@ -211,8 +211,8 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
 
   getNotesAndLogsByTimestamp(): void {
     this.notesService.getAllNote().subscribe((notes: any[]) => {
-      this.notes = notes.filter(note => note.typeError === 'J\'ai rencontré une erreur !');
-      // console.log('Notes :', this.notes);
+      this.notes = notes.filter(note =>note.typeError === "J'ai une demande / suggestion !" ||  note.typeError === 'J\'ai rencontré une erreur !');
+      console.log('Notes :', this.notes);
 
       this.logService.getLogs().subscribe(logs => {
         // const errorLogs: { [noteId: string]: Log[] } = {};
@@ -234,7 +234,7 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
             }
           });
 
-          // console.log('Error logs for note', note.id, ':', note.errorLogs);
+          console.log('Error logs for note', note.id, ':', note.errorLogs);
         });
       });
     });

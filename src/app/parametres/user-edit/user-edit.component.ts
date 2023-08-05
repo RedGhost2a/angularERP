@@ -59,7 +59,8 @@ export class UserEditComponent implements OnInit {
       lastName: new FormControl('', Validators.required),
       role: new FormControl('', Validators.required),
       avatarUrl: new FormControl('', Validators.required),
-      EntrepriseId: new FormControl('', Validators.required)
+      EntrepriseId: new FormControl('', Validators.required),
+      firstConnexion: new FormControl()
     });
   }
 
@@ -124,17 +125,20 @@ export class UserEditComponent implements OnInit {
       const password = this.generatePassword(this.userForm.getRawValue().firstName, this.userForm.getRawValue().lastName, this.userForm.getRawValue().EntrepriseId.toString());
 
       let pass =  this.userForm.get('password')
-      if (this.userForm && pass) {
+      let firstConnexion = this.userForm.get('firstConnexion')
+      if (this.userForm && pass && firstConnexion) {
         pass.patchValue(password);
+        firstConnexion.patchValue(true)
       }
       console.log(this.userForm.getRawValue())
+
       this.userService.register(this.userForm.getRawValue()).subscribe(data => {
 
         this.closeDialog();
 //         alert(`Le mot de passe pour ${this.userForm.getRawValue().firstName} ${this.userForm.getRawValue().lastName} est : <strong>${password}</strong>
 // <br> Merci de garder ce mot de passe en securité, il sera demandé à l'utilisateur lors de sa premiere connexion.`);
-        this.snackBar.open(`Le mot de passe pour ${this.userForm.getRawValue().firstName} ${this.userForm.getRawValue().lastName} est: ${password}.
-         Merci de garder ce mot de passe en securité, il sera demandé à l'utilisateur lors de sa première connexion.`, 'Fermer', {
+        this.snackBar.open(`Le mot de passe pour ${this.userForm.getRawValue().firstName} ${this.userForm.getRawValue().lastName} avec comme email${this.userForm.getRawValue().email} est: ${password}.
+         Merci de garder ce mot de passe en securité, ainsi que sont adresse mail il lui seront demandé lors de sa première connexion.`, 'Fermer', {
           panelClass: ['red-snackbar']
         });
 

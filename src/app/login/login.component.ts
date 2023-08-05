@@ -68,6 +68,7 @@ export class LoginComponent implements OnInit {
         .pipe(first())
         .subscribe(
           data => {
+
             // console.log(data.role)
             this.success("Connecté !")
             // if (data.role === "Super Admin") {

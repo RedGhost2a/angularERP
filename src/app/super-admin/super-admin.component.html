@@ -10,7 +10,7 @@
         Paramètres
       </ng-template>
       <h3 class="bold">Options d'administration</h3>
-      <div class="wrapper">
+      <div class="global-container">
         <mat-icon  (click)="toggleInfo()" class=" iconInfo">info</mat-icon>
 
         <p *ngIf="showInfo" class="pInfo">
@@ -25,41 +25,46 @@
           Naviguez à travers ces options pour gérer efficacement les informations de votre entreprise.
         </p>
 
-        <div class="card">
+        <div class="card ">
 
-          <div class="row">
-            <button class="btn" (click)="updateCompany(null)">
+          <div class="flex-row">
+            <button class="btn blue" (click)="updateCompany(null)">
               <mat-icon class="icn">add</mat-icon>
+              <p class="paramP">Ajouter une entreprise</p>
             </button>
-            <p>Ajouter une entreprise</p>
-          </div>
 
-          <div class="row">
-            <button class="btn" [routerLink]="'/devis/'">
+
+
+          <div class="">
+            <button class="btn green" [routerLink]="'/devis/'">
               <mat-icon class="icn">list</mat-icon>
+              <p class="paramP">Liste des devis</p>
             </button>
-            <p>Liste des devis</p>
+          </div>
           </div>
 
-          <div class="row">
-            <button class="btn" (click)="openDialogCreate(null)">
+          <div class="flex-row">
+            <button class="btn yellow" (click)="openDialogCreate(null)">
               <mat-icon class="icn">create</mat-icon>
+              <p class="paramP">Ajouter un utilisateur</p>
             </button>
-            <p>Ajouter un utilisateur</p>
-          </div>
 
-          <div class="row">
-            <button class="btn" (click)="openImportDialog()">
+
+          <div class="">
+            <button class="btn orange" (click)="openImportDialog()">
               <mat-icon class="icn"> import_export</mat-icon>
+              <p class="paramP">Importer des données</p>
             </button>
-            <p>Importer des données</p>
+
+          </div>
           </div>
 
-          <div class="row">
-            <button class="btn" (click)="openUniteForFormDialog()">
+          <div class="flex-row">
+            <button class="btn pink" (click)="openUniteForFormDialog()">
               <mat-icon class="icn">playlist_add</mat-icon>
+              <p class="paramP">Créer une unité</p>
             </button>
-            <p>Créer une unité</p>
+
           </div>
 
         </div>
@@ -141,52 +146,41 @@
       </ng-template>
       <h3 class="bold">Liste des tickets inter-entreprises</h3>
 
-<div class="global-container">
+<div  class="flex-row">
   <mat-icon  (click)="toggleInfo()" class=" iconInfo">info</mat-icon>
-
   <p *ngIf="showInfo" class="pInfo">
-    Vous vous trouvez actuellement sur l'onglet de <strong>Gestion des tickets</strong>. Cet espace vous permet de consulter et de gérer les tickets inter-entreprises. Voici un aperçu de ce que vous pouvez faire :
+    Bienvenue dans la section de <strong >Gestion de tickets</strong>. Cette interface présente vos tickets inter-entreprises sous forme de cartes colorées.<br>
 
-    1. <strong>Consulter les tickets</strong> : Chaque ticket est présenté dans un panneau déroulant. Le titre du ticket, le type d'erreur, la date de création, et un badge indiquant la présence de logs sont affichés en tête de chaque panneau.
+    <strong style="color: red">Cartes Rouges</strong> : Représentent les erreurs rencontrées. Chaque carte affiche le titre, la date de création et un insigne indiquant la présence de logs d'erreurs.<br>
 
-    2. <strong>Consulter les détails du ticket</strong> : Cliquez sur un panneau pour le dérouler et consulter plus de détails sur le ticket, y compris le sujet et les messages de log associés.
+    <strong style="color: #00a9f4">Cartes Bleues</strong> : Signalent les suggestions ou demandes des utilisateurs pour améliorer le site. Elles portent le titre du ticket, le type de demande et la date de création.<br>
 
-    3. <strong>Marquer un ticket comme résolu</strong> : Cochez la case 'Résolu !' pour indiquer qu'un ticket a été résolu. Cette action peut être inversée en décochant la case si nécessaire.
-
-    4. <strong>Supprimer un ticket</strong> : Si un ticket n'est plus pertinent ou nécessaire, vous pouvez le supprimer en cliquant sur le bouton 'Supprimer'.
-
-    Utilisez ces fonctionnalités pour assurer un suivi efficace des tickets et maintenir une communication fluide entre les entreprises.
+    Sur chaque carte, vous pouvez marquer un ticket comme résolu ou le supprimer si nécessaire. Utilisez ces fonctionnalités pour gérer efficacement vos tickets.
   </p>
-  <mat-accordion>
-    <mat-expansion-panel *ngFor="let note of this.notes;" [expanded]="false">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{note.id|number}}
-        </mat-panel-title>
-        <mat-panel-title>{{note.title|uppercase}}</mat-panel-title>
-        <mat-panel-description>{{note.typeError}} {{note?.optionsTypeError}}</mat-panel-description>
-        <mat-panel-description>Le: {{note.createdAt | date:'dd/MM/yyyy HH:mm:ss'}}</mat-panel-description>
-        <mat-panel-description *ngIf="note.errorLogs && note.errorLogs.length > 0" matBadge="!"
-                               matBadgePosition="before"
-                               matBadgeColor="accent" matBadgeOverlap="false">Log
-
-        </mat-panel-description>
-      </mat-expansion-panel-header>
+  <div *ngFor="let note of this.notes;" class="card-ticket">
+    <mat-card [ngClass]="{'error-note': note.typeError === 'J\'ai rencontré une erreur !', 'suggestion-note': note.typeError === 'J\'ai une demande / suggestion !'}">
+      <mat-card-header>
+        <mat-card-title>{{note.title|uppercase}}</mat-card-title>
+        <mat-card-subtitle>{{note.typeError}} {{note?.optionsTypeError}}</mat-card-subtitle>
+        <mat-card-subtitle>Le: {{note.createdAt | date:'dd/MM/yyyy HH:mm:ss'}}</mat-card-subtitle>
+        <mat-card-subtitle *ngIf="note.errorLogs && note.errorLogs.length > 0" matBadge="!" matBadgePosition="before"
+                           matBadgeColor="accent" matBadgeOverlap="false">Log
+        </mat-card-subtitle>
+      </mat-card-header>
       <mat-card-content>
-        <p class="devis-row">Sujet:  {{note.text|uppercase}}</p>
+        <p>Sujet:<br>  {{note.text|uppercase}}</p>
         <div *ngFor="let log of note.errorLogs;">
-
-          <p class="devis-row">{{log.message}}</p>
+          <p>{{log.message}}</p>
         </div>
       </mat-card-content>
       <mat-card-actions>
         <div class="flex-row"  style="justify-content: space-around">
-          <mat-checkbox [(ngModel)]="note.resolution" (change)="onNoteResolutionChanged(note)" style="font-size: 16px">Résolu !</mat-checkbox>
+          <mat-checkbox [(ngModel)]="note.resolution" *ngIf=" note.typeError === 'J\'ai rencontré une erreur !'" (change)="onNoteResolutionChanged(note)" style="font-size: 16px">Résolu !</mat-checkbox>
           <button mat-flat-button color="warn" (click)="deleteItem(note.id)">Supprimer</button>
         </div>
       </mat-card-actions>
-    </mat-expansion-panel>
-  </mat-accordion>
+    </mat-card>
+  </div>
 
 </div>
 
@@ -295,15 +289,19 @@
         Gestion des imports
       </ng-template>
       <h3 class="bold">Liste des imports/exports</h3>
-      <mat-icon  (click)="toggleInfo()" class=" iconInfo">info</mat-icon>
 
-      <p *ngIf="showInfo" class="pInfo">
-        Vous vous trouvez actuellement sur l'onglet de <strong>Gestion des erreurs</strong>. Cet espace vous permet de consulter et de gérer les erreurs survenues.
-
-
-        Utilisez ces fonctionnalités pour assurer un suivi efficace des erreurs .
-      </p>
       <div class="wrapper-bis">
+        <mat-icon  (click)="toggleInfo()" class=" iconInfo">info</mat-icon>
+
+        <p *ngIf="showInfo" class="pInfo">
+          Bienvenue dans l'onglet de <strong>Gestion des Imports</strong>. Cette section vous offre la possibilité d'importer différents types de fichiers Excel.
+
+          Pour une extraction efficace des données, vos fichiers Excel doivent respecter une structure spécifique. Cette structure est nécessaire que vous importiez des bibliothèques de composants, d'ouvrages ou de types. Cet outil permet également d'extraire les fournisseurs.
+
+         <br> Notez bien : si une entrée de votre base de données est déjà présente, elle ne sera pas ajoutée lors de l'importation.
+
+          Utilisez cet outil pour assurer uen bibliothèque en lien avec vos precedents outils.
+        </p>
         <div class="flex-column">
 
           <button style="margin: 5px" mat-raised-button color="primary" (click)="openImportDialog()">Importer des
@@ -355,10 +353,10 @@
         <mat-icon  (click)="toggleInfo()" class=" iconInfo">info</mat-icon>
 
         <p *ngIf="showInfo" class="pInfo">
-          Vous vous trouvez actuellement sur l'onglet de <strong>Gestion des erreurs</strong>. Cet espace vous permet de consulter et de gérer les erreurs survenues.
+          Vous vous trouvez actuellement sur l'onglet de <strong>Gestion des logs</strong>. Cet espace vous permet de consulter et de gérer tout les logs concernant votre application.
 
 
-          Utilisez ces fonctionnalités pour assurer un suivi efficace des erreurs .
+          Utilisez ces fonctionnalités pour assurer un suivi efficace. .
         </p>
         <mat-form-field>
           <mat-label>Recherche d'un log</mat-label>
