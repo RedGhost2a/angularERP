@@ -33,6 +33,7 @@ import {FournisseurService} from "../_service/fournisseur.service";
 import {TypeCoutService} from "../_service/typeCout.service";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
 import {DialogListCoutComponent} from "../dialog-list-cout/dialog-list-cout.component";
+declare var introJs: any;
 
 // import {Json2CsvTransform} from "json2csv";
 
@@ -118,7 +119,16 @@ export class CreateDevisComponent implements OnInit {
 
   }
 
-
+  startIntro() {
+    introJs().setOptions({
+      tooltipClass: 'customTooltip',
+      nextLabel: 'Suivant',
+      prevLabel: 'Précédent',
+      skipLabel: 'x',
+      doneLabel: 'Terminer',
+      showProgress: true,
+      exitOnOverlayClick: false
+    }).start()  }
   ngOnInit() {
 
     console.log('url', this.router.url)

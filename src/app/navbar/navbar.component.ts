@@ -40,6 +40,7 @@ export class NavbarComponent {
   }
 
 
+
   toggleSubnav(data: any) {
     console.log(data)
     if (data.children) {
@@ -65,6 +66,8 @@ export class NavbarComponent {
 
       });
     }, 1000); // mise à jour toutes les secondes
+
+
   }
 
 

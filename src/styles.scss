@@ -129,3 +129,52 @@ body {
 
 }
 
+//style for help
+
+body .customTooltip *{
+  text-align: center;
+  font-size: 20px;
+  color: #0a41c9;
+  font-family: Michroma;
+
+}
+.customTooltip .introjs-bullets ul li a {
+  width: 15px;
+  background: #911e1e;
+}
+
+.customTooltip {
+  background-color: #c6d2d7!important;
+  //color: #173b5a !important;
+}
+.introjs-tooltiptext {
+  color: #173b5a !important;
+}
+.introjs-tooltipbuttons{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.customTooltip .introjs-nextbutton {
+  margin: 5px;
+
+  //background-color: #FF5733; /* Couleur de fond pour le bouton "Suivant" */
+  //color: white; /* Couleur du texte pour le bouton "Suivant" */
+}
+
+.customTooltip .introjs-prevbutton {
+  margin: 5px;
+
+  //background-color: #33FF57; /* Couleur de fond pour le bouton "Précédent" */
+  //color: white; /* Couleur du texte pour le bouton "Précédent" */
+}
+
+.customTooltip .introjs-skipbutton {
+  color: #f60628; /* Couleur de fond pour le bouton "Passer" */
+  //color: white; /* Couleur du texte pour le bouton "Passer" */
+}
+
+.customTooltip .introjs-donebutton {
+  background-color: #33A2FF; /* Couleur de fond pour le bouton "Terminer" */
+  color: white; /* Couleur du texte pour le bouton "Terminer" */
+}

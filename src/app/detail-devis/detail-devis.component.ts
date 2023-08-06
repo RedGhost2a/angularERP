@@ -12,6 +12,7 @@ import {FormBuilder, FormGroup} from "@angular/forms";
 import {OuvrageService} from "../_service/ouvrage.service";
 import {SousLotService} from "../_service/sous-lot.service";
 import {Ouvrage} from "../_models/ouvrage";
+declare var introJs: any;
 
 @Component({
   selector: 'app-detail-devis',
@@ -50,6 +51,17 @@ export class DetailDevisComponent implements OnInit {
     this.getRouteParams()
 
   }
+  startIntro() {
+    introJs().setOptions({
+      tooltipClass: 'customTooltip',
+      nextLabel: 'Suivant',
+      prevLabel: 'Précédent',
+      skipLabel: 'x',
+      doneLabel: 'Terminer',
+      showProgress: true,
+      exitOnOverlayClick: false
+    }).start()  }
+
 
   getRouteParams() {
     this.route.params.subscribe(params => {

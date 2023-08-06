@@ -84,6 +84,7 @@ export class DashboardComponent implements OnInit {
         this.prixVenteHT =data.map((item: { prixVenteHT: any; }) => item.prixVenteHT);
         this.moyenneBenefAleas =data.map((item: { moyenneBeneficeAleas: any; }) => item.moyenneBeneficeAleas);
         this.moyenneDeLaMoyenneBenefAleas = this.moyenneBenefAleas.reduce((a: any, b: any) => a + b, 0)/this.moyenneBenefAleas.length;
+        console.log(this.devis)
         this.prixVenteHTCalculer = this.prixVenteHT.reduce((a: any, b: any) => a + b, 0);
         this.fraisCalculer = this.frais.reduce((a: any, b: any) => a + b, 0);
         this.createChart();
@@ -141,7 +142,8 @@ export class DashboardComponent implements OnInit {
         ]
       },
       options: {
-        aspectRatio: 2
+        aspectRatio: 2,
+
       }
     });
   }}

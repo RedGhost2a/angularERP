@@ -29,9 +29,13 @@
             ],
             "styles": [
               "src/styles.scss",
-              "node_modules/ngx-toastr/toastr.css"
+              "node_modules/ngx-toastr/toastr.css",
+              "node_modules/intro.js/introjs.css"
+
             ],
             "scripts": [
+              "node_modules/intro.js/intro.js"
+
             ]
           },
           "configurations": {
@@ -98,10 +102,14 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/intro.js/introjs.css"
+
             ],
             "scripts": [
-              "node_modules/chart.js/dist/chart.min.js"
+              "node_modules/chart.js/dist/chart.min.js",
+              "node_modules/intro.js/intro.js"
+
 
             ]
           }

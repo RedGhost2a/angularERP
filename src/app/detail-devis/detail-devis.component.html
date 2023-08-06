@@ -2,8 +2,8 @@
 
 
   <div class="container-header">
-    <h3 class="title"> Détail du devis</h3>
-    <h3 class="title2">{{devis.name|uppercase}}</h3>
+    <h3 class="title" data-step="1" data-title="Bienvenue ! 👋 " data-intro=" Vous étes sur la page de qui récapitule les information générale de votre étude de prix !"> Détail du devis</h3>
+    <h3 class="title2"  data-step="2" data-intro="La dénomination de votre étude de prix!">{{devis.name|uppercase}}</h3>
     <!--    <button mat-flat-button class="btn">-->
     <!--      <mat-icon [routerLink]="'/'">arrow_back</mat-icon>-->
     <!--    </button>-->
@@ -11,10 +11,10 @@
 
 
   <div class="container" *ngIf="devis">
-    <mat-card class="example-card">
+    <mat-card class="example-card"  data-step="3" data-intro="Ici vous retrouverez quelques informations élémentaires globales concernant votre etude de prix !">
       <mat-card-title-group class="group">
         <div class="bouton">
-          <mat-card-title class="title">Details du devis</mat-card-title>
+          <mat-card-title class="title"  >Details du devis</mat-card-title>
         </div>
         <div class="subContainer">
           <div class="group1">
@@ -25,7 +25,7 @@
                 <p>{{devis.id}}</p>
               </div>
             </div>
-            <div class="detailList">
+            <div class="detailList" >
               <div class="detail">
                 <mat-card-subtitle class="subTitle">Client</mat-card-subtitle>
                 <!--              <p *ngFor="let cout of ouvrage.cout">{{cout.type}}</p>-->
@@ -48,7 +48,7 @@
               </div>
             </div>
           </div>  <div class="group2">
-            <div class="detailList">
+            <div class="detailList" data-step="5" data-intro="Cliquer sur les bénéfices ou aléas pour modifier directement les valeurs !">
               <!-- HTML -->
               <div class="detail">
                 <mat-card-subtitle class="subTitle">Bénéfice en % <mat-icon style="margin-bottom: -7px">info</mat-icon></mat-card-subtitle>
@@ -76,12 +76,12 @@
         </div>
 
       </mat-card-title-group>
-      <mat-card-subtitle style="margin-top: 20px"><mat-icon style="margin-bottom: -7px" >info</mat-icon> Les champs pourvus de cette icone sont modifiable.</mat-card-subtitle>
+      <mat-card-subtitle style="margin-top: 20px"><mat-icon style="margin-bottom: -7px;color: #00a9f4" (click)="startIntro()" >info</mat-icon> Help</mat-card-subtitle>
 
     </mat-card>
 
 
-    <mat-card class="example-card">
+    <mat-card class="example-card" data-step="6" data-intro="Ici vous retrouverez quelques informations concernant l'état de votre etude de prix !">
       <mat-card-title-group class="group">
         <div class="bouton">
           <mat-card-title class="title">Etat du devis</mat-card-title>
@@ -90,7 +90,7 @@
           <div class="group3">
             <div class="detailList2">
 
-              <div class="detail">
+              <div class="detail" data-step="7" data-intro="Cliquer sur le statut  pour deployer une liste déroulante avec des elements pré-enregistrer !">
                 <mat-card-subtitle class="subTitle">Statut<mat-icon style="margin-bottom: -7px" >info</mat-icon></mat-card-subtitle>
                 <ng-container *ngIf="!isEditMode3; else editModeTemplate3">
                 <p class="sous-detail"  (click)="isEditMode3 = true">{{devis.status}}</p>
@@ -110,7 +110,7 @@
                 <p class="sous-detail">{{devis.createdAt |date:'dd/MM/yyyy '}}</p>
               </div>
 
-              <div class="detail">
+              <div class="detail" data-step="8" data-intro="Optimiser la durée de validité de votre etude de prix simplement en donnant une durée differente !">
                 <mat-card-subtitle class="subTitle">Durée validité<mat-icon style="margin-bottom: -7px" >info</mat-icon></mat-card-subtitle>
                   <ng-container *ngIf="!isEditMode4; else editModeTemplate4">
                     <p class="sous-detail"(click)="isEditMode4 = true">{{devis.validityTime}}</p>
@@ -131,7 +131,7 @@
             </div>
           </div>
           <div class="btnUpdate">
-            <button mat-raised-button color="primary" (click)="createLOT(devis.id)">Modifier le devis</button>
+            <button mat-raised-button color="primary" (click)="createLOT(devis.id)"  data-step="9" data-intro="Dernière etapes concernant cette page accedez à votre étude de prix ici !">Modifier le devis</button>
             <!--          <button mat-raised-button routerLink="/devisCreate/{{devis.id}}">Modifier le devis</button>-->
           </div>
         </div>

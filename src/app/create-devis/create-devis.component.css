@@ -336,4 +336,10 @@
   justify-content: space-between;
 }
 
+.helpButton {
+  position: absolute;
+  top: 0;
+  right: 90px;
+}
+
 /*# sourceMappingURL=create-devis.component.css.map */

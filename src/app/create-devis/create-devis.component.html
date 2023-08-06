@@ -6,9 +6,14 @@
 
   <mat-tab-group animationDuration="0ms" class="onglet" [(selectedIndex)]="selectedIndex">
 
-    <mat-tab label="Frais de chantier" *ngIf="lotFraisDeChantier !== undefined" id="tab1">
+    <mat-tab label="Frais de chantier"  *ngIf="lotFraisDeChantier !== undefined" id="tab1" >
+      <ng-template mat-tab-label >
+        <button mat-raised-button  data-step="1" data-intro="Ici vous retrouverez  la partie frais de chantier pour vos frais annexe neccessaire au calcul de votre etude de prix !"  >
+          Frais de chantier
+        </button>
+      </ng-template>
       <form [formGroup]="form" (ngSubmit)="onSubmit()" [hidden]="!showForm">
-        <mat-form-field appearance="outline" color="primary">
+        <mat-form-field appearance="outline" color="primary" >
           <mat-label>Designation</mat-label>
           <input #aForm2 matInput formControlName="designation" placeholder="Entrer le nom."/>
         </mat-form-field>
@@ -60,7 +65,7 @@
             <span class="designation-lot-frais-chantier">{{ lotFraisDeChantier.designation | titlecase }}</span>
             <span class="designation-lot-frais-chantier">{{ lotFraisDeChantier.prix | number }} €</span>
             <mat-icon [matMenuTriggerFor]="boutonLOT">more_vert</mat-icon>
-            <mat-menu #boutonLOT>
+            <mat-menu #boutonLOT  >
               <div class="menuBoutonSl">
                 <button mat-flat-button color="primary" *ngIf="lotFraisDeChantier"
                         (click)="autoFocus2(); isLot = true; curentLotId= lotFraisDeChantier.id">
@@ -340,7 +345,12 @@
     </mat-tab>
 
 
-    <mat-tab class="devis" label="Devis" *ngIf="lotFraisDeChantier !== undefined " id="tab2">
+    <mat-tab class="devis" label="Devis" *ngIf="lotFraisDeChantier !== undefined " id="tab2" >
+      <ng-template mat-tab-label >
+        <button mat-raised-button  data-step="2" data-intro="Ici vous retrouverez la partie centrale de votre etude de prix !"  >
+          Devis
+        </button>
+      </ng-template>
       <form [formGroup]="form" (ngSubmit)="onSubmit()" [hidden]="!showForm">
         <!-- Formulaire avec champ de saisie et bouton de validation -->
         <mat-form-field appearance="outline" color="primary">
@@ -828,6 +838,11 @@
 
 
     <mat-tab label="Paramètre de chantier" *ngIf="lotFraisDeChantier !== undefined" id="tab3">
+      <ng-template mat-tab-label >
+        <button mat-raised-button  data-step="3" data-intro="Ici vous retrouverez les paramètres de chantier avec un récapitulatif de certaine donnée liée a votre étude de prix ainsi que les réglages des frais généraux !"  >
+          Paramètre de chantier
+        </button>
+      </ng-template>
       <div class="bigContainerParams">
         <div class="ContainerParamsFraisDevis">
           <mat-card class="cardParams">
@@ -992,12 +1007,16 @@
 
     <mat-tab disabled label="Export" *ngIf="lotFraisDeChantier !== undefined && devis !== undefined">
       <ng-template mat-tab-label>
-        <button mat-raised-button color="primary" (click)="dynamicDownloadTxt()">
+        <button mat-raised-button color="primary" (click)="dynamicDownloadTxt()" data-step="4" data-intro="A la cloture de votre etude de prix vous pouvez decider de l'exporter au format CSV en cliquant simplement ici !" >
           Exporter l'étude de prix au format CSV
         </button>
+        <button mat-flat-button class="" style="color: #00a9f4" (click)="startIntro()">Help</button>
+
       </ng-template>
     </mat-tab>
 
+
   </mat-tab-group>
+
 
 </ng-template>
