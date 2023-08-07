@@ -1,17 +1,17 @@
 <div class="big-container">
 
-  <h1 class="title">Administration </h1>
+  <h1 class="title"  data-step="1" data-title="Bienvenue !<br> 👋 " data-intro=" Vous étes sur la page Administration, cet espace vous permet d'accéder à différentes fonctionnalités associées à la gestion de votre entreprise !">Administration </h1>
   <mat-tab-group mat-stretch-tabs>
 
 
     <mat-tab>
-      <ng-template mat-tab-label>
+      <ng-template mat-tab-label  >
         <mat-icon class="example-tab-icon">settings</mat-icon>
         Paramètres
       </ng-template>
-      <h3 class="bold">Options d'administration</h3>
+      <h3 class="bold" >Options d'administration</h3>
       <div class="global-container">
-        <mat-icon  (click)="toggleInfo()" class=" iconInfo">info</mat-icon>
+        <mat-icon  (click)="startIntro()" class=" iconInfo">info</mat-icon>
 
         <p *ngIf="showInfo" class="pInfo">
           Bienvenue sur la page de gestion des entreprises. Cet espace vous permet d'accéder à différentes fonctionnalités associées à la gestion de votre entreprise :
@@ -27,15 +27,15 @@
 
         <div class="card ">
 
-          <div class="flex-row">
-            <button class="btn blue" (click)="updateCompany(null)">
+          <div class="flex-row"  >
+            <button class="btn blue" (click)="updateCompany(null)" data-step="2" data-intro="Cliquez sur le bouton  pour enregistrer une nouvelle entreprise dans le système.">
               <mat-icon class="icn">add</mat-icon>
               <p class="paramP">Ajouter une entreprise</p>
             </button>
 
 
 
-          <div class="">
+          <div class="" data-step="3" data-intro="Cliquez ici pour accéder à la liste complète de tous les devis enregistrés.">
             <button class="btn green" [routerLink]="'/devis/'">
               <mat-icon class="icn">list</mat-icon>
               <p class="paramP">Liste des devis</p>
@@ -44,14 +44,14 @@
           </div>
 
           <div class="flex-row">
-            <button class="btn yellow" (click)="openDialogCreate(null)">
+            <button class="btn yellow" (click)="openDialogCreate(null)" data-step="4" data-intro="Ici pour ajouter un nouvel utilisateur à une entreprise.">
               <mat-icon class="icn">create</mat-icon>
               <p class="paramP">Ajouter un utilisateur</p>
             </button>
 
 
           <div class="">
-            <button class="btn orange" (click)="openImportDialog()">
+            <button class="btn orange" (click)="openImportDialog()" data-step="5" data-intro="Utilisez ce bouton pour importer des données pertinentes pour votre entreprise à partir d'un fichier externe.<br>* Vos données dans voter fichier Excel doivent respecter un certain format">
               <mat-icon class="icn"> import_export</mat-icon>
               <p class="paramP">Importer des données</p>
             </button>
@@ -60,7 +60,7 @@
           </div>
 
           <div class="flex-row">
-            <button class="btn pink" (click)="openUniteForFormDialog()">
+            <button class="btn pink" (click)="openUniteForFormDialog()" data-step="6" data-intro=" Et enfin cliquez ici  pour créer et enregistrer une nouvelle unité pour votre entreprise. Ces unités sont nécessaires a la création de données dans vos différentes bibliothèques">
               <mat-icon class="icn">playlist_add</mat-icon>
               <p class="paramP">Créer une unité</p>
             </button>
@@ -79,7 +79,7 @@
         <mat-icon class="example-tab-icon">business</mat-icon>
         Gestion des entreprises
       </ng-template>
-      <h3 class="bold">Gestion des entreprises </h3>
+      <h3 class="bold" >Gestion des entreprises </h3>
       <div class="global-container">
           <mat-icon  (click)="toggleInfo()" class=" iconInfo">info</mat-icon>
 
@@ -147,7 +147,7 @@
       <h3 class="bold">Liste des tickets inter-entreprises</h3>
 
 <div  class="flex-row">
-  <mat-icon  (click)="toggleInfo()" class=" iconInfo">info</mat-icon>
+  <mat-icon  (click)="startIntro()" class=" iconInfo">info</mat-icon>
   <p *ngIf="showInfo" class="pInfo">
     Bienvenue dans la section de <strong >Gestion de tickets</strong>. Cette interface présente vos tickets inter-entreprises sous forme de cartes colorées.<br>
 

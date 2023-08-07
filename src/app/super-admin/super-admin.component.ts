@@ -25,6 +25,7 @@ import {DialogUniteForFormComponent} from "../dialog-unite-for-form/dialog-unite
 import {firstValueFrom} from "rxjs";
 import {UniteForFormService} from "../_service/uniteForForm.service";
 import {EntrepriseEditComponent} from "../parametres/entreprise-edit/entreprise-edit.component";
+declare var introJs: any;
 
 
 @Component({
@@ -112,6 +113,16 @@ export class SuperAdminComponent implements OnInit, AfterViewInit {
     })
 
   }
+  startIntro() {
+    introJs().setOptions({
+      tooltipClass: 'customTooltip',
+      nextLabel: 'Suivant',
+      prevLabel: 'Précédent',
+      skipLabel: 'x',
+      doneLabel: 'Terminer',
+      showProgress: true,
+      exitOnOverlayClick: false
+    }).start()  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
