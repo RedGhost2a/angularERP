@@ -68,6 +68,7 @@ export class OuvrageElementaireAddOuvrageComponent implements OnInit {
       this.dataSource = new MatTableDataSource(data);
 
       console.log("OuvrageElementaire",this.ouvrageElementaire)
+      this.ouvrageElemnentaireService.getPriceOuvragesElementaire(this.ouvrageElementaire)
     })
   }
 

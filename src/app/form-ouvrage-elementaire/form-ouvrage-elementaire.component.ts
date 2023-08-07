@@ -15,6 +15,7 @@ import {OuvrageElementaire} from "../_models/ouvrage-elementaire";
 import {Ouvrage} from "../_models/ouvrage";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 import {OuvrageElementaireCoutService} from "../_service/ouvrage-elementaire-cout.service";
+import {Entreprise} from "../_models/entreprise";
 
 @Component({
   selector: 'app-form-ouvrage-elementaire',
@@ -26,9 +27,10 @@ export class FormOuvrageElementaireComponent implements OnInit {
   titleModal:string;
   private currentUser!: User;
   uniteList!: UniteForForm[];
-  entrepriseId!: number;
+  currentEntreprise: Entreprise [] = [];
   ouvrageID!:number;
   initialData!: Ouvrage;
+  inputEntreprise : boolean = true;
 
 
 
@@ -57,6 +59,7 @@ export class FormOuvrageElementaireComponent implements OnInit {
     console.log("data4",this.data)
     this.createFormOuvrageElementaire()
     this.getUserById();
+    this.selectUniteByEntreprise()
 
 
   }
@@ -104,6 +107,8 @@ export class FormOuvrageElementaireComponent implements OnInit {
 
 
           if (this.router.url.includes('/sousDetailPrix')) {
+            this.inputEntreprise = false;
+
             console.log('Inside /sousDetailPrix condition');
 
             // Créer un OuvrageElementaireDuDevis
@@ -149,7 +154,7 @@ export class FormOuvrageElementaireComponent implements OnInit {
             console.log("echo",ouvrageElemOuvrage)
             this.ouvrageOuvrageElemService.create(ouvrageElemOuvrage).subscribe()
             this.closeDialog()
-            this.router.navigate([`/ouvrages-elementaires-detail/${data.id}`])
+            //this.router.navigate([`/ouvrages-elementaires-detail/${data.id}`])
           }
         })
     this.closeDialog()
@@ -164,16 +169,29 @@ export class FormOuvrageElementaireComponent implements OnInit {
   getUserById(): void {
     this.currentUser = this.userService.userValue;
     this.userService.getById(this.currentUser.id).subscribe(data => {
-      this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id)
-      this.entrepriseId = data.Entreprises[0].id
-      if (this.entrepriseId) {
-        this.getUniteByEnteprise();
-      }
+      // this.myFormGroup.controls["EntrepriseId"].setValue(data.Entreprises[0].id)
+      this.currentEntreprise = this.userService.currentUser.Entreprises
+      // if (this.entrepriseId) {
+        // this.getUniteByEnteprise();
+      // }
     })
   }
 
-  getUniteByEnteprise(): void {
-    this.uniteForForm.getUniteByEntreprise(this.entrepriseId).subscribe(data => {
+  selectUniteByEntreprise() {
+    if(this.router.url.includes('/ouvrageDetail')){
+      this.myFormGroup.controls['EntrepriseId'].setValue(this.data.EntrepriseId)
+    }
+    if (this.myFormGroup.controls['EntrepriseId'].value !== "") {
+      this.myFormGroup.controls['unite'].enable()
+      this.getUniteByEnteprise(this.myFormGroup.controls['EntrepriseId'].value)
+    } else {
+      this.myFormGroup.controls['unite'].disable()
+    }
+  }
+
+
+  getUniteByEnteprise(entrepriseId:number): void {
+    this.uniteForForm.getUniteByEntreprise(entrepriseId).subscribe(data => {
       this.uniteList = data
       console.log(this.uniteList)
 

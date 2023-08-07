@@ -9,6 +9,7 @@ import {FormOuvrageComponent} from "../form-ouvrage/form-ouvrage.component";
 import {MatDialog} from "@angular/material/dialog";
 import {FormOuvrageElementaireComponent} from "../form-ouvrage-elementaire/form-ouvrage-elementaire.component";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
+import {Entreprise} from "../_models/entreprise";
 
 @Component({
   selector: 'app-list-ouvrage-elementaire',
@@ -19,8 +20,8 @@ export class ListOuvrageElementaireComponent implements OnInit {
   ouvrageElementaire:OuvrageElementaire[]=[]
   dataSource!: any;
   currentUser!: User;
-  columnsToDisplay = ["designation", "proportion", "unite", "prix",    "uniteProportionOE",
-    "remarques", "boutons"];
+  columnsToDisplay = ["designation", "proportion", "unite", "prix", "uniteProportionOE",
+    "remarques","entreprise", "boutons"];
 
 
 
@@ -33,8 +34,32 @@ export class ListOuvrageElementaireComponent implements OnInit {
     this.currentUser = this.userService.userValue;
     this.userService.getById(this.currentUser.id).subscribe(data => {
       console.log("user by id ", data)
-      this.getAllOuvrageElementaire(data.Entreprises[0].id)
+      this.getAllOuvrageElementaire()
     })
+  }
+  getPriceOuvragesElementaire(){
+    this.ouvrageElementaire.forEach((ouvrageElem: OuvrageElementaire) => {
+      if (ouvrageElem.Couts && ouvrageElem.Couts?.length >= 1) {
+        ouvrageElem.prix = ouvrageElem.Couts.reduce((total, cout) => {
+          if (cout.OuvragesElementairesCouts?.ratio) {
+            return total + cout.prixUnitaire * cout.OuvragesElementairesCouts.ratio;
+          } else {
+            return total;
+          }
+        }, 0);
+      }
+    });
+  }
+  getAllOuvrageElementaire() {
+    this.ouvrageElementaire = []
+    this.userService.currentUser.Entreprises.forEach((entreprise: Entreprise) => {
+      this.ouvrageElementaireService.getAll(entreprise.id).subscribe((listOuvrageElem: OuvrageElementaire []) => {
+        console.log("listOuvrageElem", listOuvrageElem)
+        this.ouvrageElementaire = this.ouvrageElementaire.concat(listOuvrageElem);
+        this.dataSource = new MatTableDataSource(this.ouvrageElementaire);
+        this.getPriceOuvragesElementaire()
+      })
+    });
   }
 
   applyFilter(event: Event) {
@@ -52,13 +77,24 @@ export class ListOuvrageElementaireComponent implements OnInit {
     // console.log(this.ouvrageElementaire.filter)
   }
 
-  getAllOuvrageElementaire(entrepriseId:number){
-    this.ouvrageElementaireService.getAll(entrepriseId).subscribe(data => {
-      this.ouvrageElementaire = data;
-      this.dataSource = new MatTableDataSource(this.ouvrageElementaire);
-      // console.log(this.dataSource)
-  })
-  }
+  // getAllOuvrageElementaire(entrepriseId:number){
+  //   this.ouvrageElementaireService.getAll(entrepriseId).subscribe(data => {
+  //     this.ouvrageElementaire = data;
+  //     this.dataSource = new MatTableDataSource(this.ouvrageElementaire);
+  //     // console.log(this.dataSource)
+  // })
+  // }
+
+  // getAllOuvrageElementaire(entrepriseId:number){
+  //   this.ouvrageElementaireService.getAll(entrepriseId).subscribe((listOuvrageElem : OuvrageElementaire []) => {
+  //     this.ouvrageElementaire = []
+  //     this.ouvrageElementaire = this.ouvrageElementaire.concat(listOuvrageElem);
+  //     console.log("liste ouvrage elementaire",listOuvrageElem)
+  //     this.dataSource = new MatTableDataSource(this.ouvrageElementaire);
+  //
+  //     // console.log(this.dataSource)
+  // })
+  // }
   deleteItem(id: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
     dialogRef.afterClosed().subscribe(result => {

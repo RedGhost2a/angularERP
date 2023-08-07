@@ -97,6 +97,8 @@ import { DialogListOuvrageElementaireComponent } from './dialog-list-ouvrage-ele
 import { DetailOuvrageElementaireDuDevisComponent } from './detail-ouvrage-elementaire-du-devis/detail-ouvrage-elementaire-du-devis.component';
 import { UserEditPasswordComponent } from './parametres/user-edit-password/user-edit-password.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { MetreLenghtStrategy } from './metreForm/metre-lenght-strategy/metre-lenght-strategy';
+import { MetreInputsFactoryInterface } from './metreForm/metre-inputs-factory-interface/metre-inputs-factory-interface';
 
 
 const appRoutes: Routes = [];

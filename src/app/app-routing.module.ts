@@ -45,6 +45,7 @@ import {
 const routes: Routes = [
   {
     path: '',
+    canActivate: [AuthGuard],
     component: HomeComponent,
     data: {title: 'Home',}
   },
@@ -165,7 +166,7 @@ const routes: Routes = [
   {path: 'aide', component: AideComponent},
 
 
-  // {path: '**', redirectTo: ''}
+  {path: '**', redirectTo: ''}
 
 
 ];

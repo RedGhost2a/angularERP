@@ -3,6 +3,7 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '
 
 import {UserService} from '../_service/user.service';
 import {Toastr, TOASTR_TOKEN} from "../_service/toastr.service";
+import {isEmpty} from "rxjs";
 
 
 @Injectable({providedIn: 'root'})
@@ -16,7 +17,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const user = this.accountService.userValue;
-    if (user) {
+    if (user.email) {
       // console.log(route.data['roles'] && route.data['roles'].indexOf(user.role) === -1)
       if (route.data['roles'] && route.data['roles'].indexOf(user.role) === -1) {
         // role not authorised so redirect to home page
@@ -27,6 +28,8 @@ export class AuthGuard implements CanActivate {
         return false;
       }
       // authorised so return true
+      // this.router.navigate(['/dashboard'])
+
       return true;
     } else {
       // not logged in so redirect to login page with the return url

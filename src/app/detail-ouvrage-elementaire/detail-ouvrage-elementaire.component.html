@@ -9,41 +9,37 @@
       <h1 style="font-weight: 500">Ouvrage élémentaire : {{ouvrageElementaire.designation}}</h1>
     </div>
 
-    <mat-card class="example-card">
+    <mat-card class="example-card"  [formGroup]="formOuvrageElementaire">
       <mat-card-title-group class="group">
         <mat-card-title>Information de l'ouvrage elementaire</mat-card-title>
         <div *ngIf="ouvrageElementaire" class="detailList">
 
           <mat-form-field appearance="legacy" style="width: 400px">
             <mat-label style="font-size: 1.1rem">Désignation</mat-label>
-            <input formControlName="designation" matInput [value]="ouvrageElementaire.designation" >
+            <input  formControlName="designation" matInput [value]="ouvrageElementaire.designation" >
           </mat-form-field>
 
           <mat-form-field appearance="legacy" style="width: 60px">
             <mat-label style="font-size: 1.1rem">Proportion</mat-label>
-            <input type="number" [value]="ouvrageElementaire.proportion"  formControlName="proportion" matInput>
+            <input type="number" (blur)="updateOuvrageElementaireOnChange()" [value]="ouvrageElementaire.proportion"  formControlName="proportion" matInput>
           </mat-form-field>
 
 
           <mat-form-field appearance="legacy" style="width: 60px">
             <mat-label style="font-size: 1.1rem">Unité</mat-label>
-            <input formControlName="unite" matInput [value]="ouvrageElementaire.unite">
+            <input (blur)="updateOuvrageElementaireOnChange()" formControlName="unite" matInput [value]="ouvrageElementaire.unite">
           </mat-form-field>
 
           <mat-form-field appearance="legacy" style="width: 60px">
             <mat-label style="font-size: 1.1rem">Unite proportion OE</mat-label>
-            <input formControlName="uniteproportionOE" matInput [value]="ouvrageElementaire.uniteproportionOE">
+            <input (blur)="updateOuvrageElementaireOnChange()" formControlName="uniteproportionOE" matInput [value]="ouvrageElementaire.uniteproportionOE">
           </mat-form-field>
 
 
           <mat-form-field appearance="legacy" style="width: 250px">
             <mat-label style="font-size: 1.1rem">Remarques</mat-label>
-            <input formControlName="remarques" matInput [value]="ouvrageElementaire.remarques">
+            <input (blur)="updateOuvrageElementaireOnChange()" formControlName="remarques" matInput [value]="ouvrageElementaire.remarques">
           </mat-form-field>
-
-
-
-
 
 
 
@@ -91,16 +87,22 @@
           <th mat-header-cell *matHeaderCellDef> Unité</th>
           <td mat-cell *matCellDef="let cout"> {{cout.unite}} </td>
         </ng-container>
+
         <ng-container matColumnDef="ratio">
           <th mat-header-cell *matHeaderCellDef> Ratio</th>
           <td mat-cell *matCellDef="let cout">
             <!--          {{cout.OuvrageCout.ratio}}-->
-
+            <mat-form-field appearance="legacy" [formGroup]="myFormGroup" style="width: 60px">
+              <input [placeholder]="cout.OuvragesElementairesCouts.ratio" formControlName="ratioCout" matInput required
+                     (keyup.enter)="ratioChange(cout)">
+            </mat-form-field>
           </td>
         </ng-container>
+
         <ng-container matColumnDef="uRatio">
           <th mat-header-cell *matHeaderCellDef> U/Ratio</th>
           <td mat-cell *matCellDef="let cout">
+            {{cout.OuvragesElementairesCouts.uRatio}}
 
           </td>
         </ng-container>
@@ -109,9 +111,15 @@
 
         <ng-container matColumnDef="prixUnitaire">
           <th mat-header-cell *matHeaderCellDef> PU HT</th>
-          <td mat-cell *matCellDef="let cout"> {{cout.prixUnitaire}}
+          <td mat-cell *matCellDef="let cout"> {{cout.prixUnitaire | number :'1.2-2'}} €
 
 
+          </td>
+
+        </ng-container>
+        <ng-container matColumnDef="debourseSecTotal">
+          <th mat-header-cell *matHeaderCellDef> DS Total</th>
+          <td mat-cell *matCellDef="let cout"> {{cout.debourseSecTotal | number :'1.2-2'}} €
           </td>
 
         </ng-container>
@@ -123,19 +131,19 @@
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let cout">
 
-<!--            <mat-icon [matMenuTriggerFor]="boutonCout">more_vert</mat-icon>-->
-<!--            <mat-menu class="menuBoutonCout" #boutonCout>-->
-<!--              &lt;!&ndash;          <button [routerLink]="['/cout', cout.id]" mat-button color="primary" >&ndash;&gt;-->
-<!--              <button (click)="openDialogCreate(cout)" mat-button color="primary">-->
-<!--                <mat-icon>create</mat-icon>-->
-<!--                Modifier-->
-<!--              </button>-->
-<!--              <br>-->
-<!--              <button (click)="deleteItem(cout.id)" mat-button color="warn">-->
-<!--                <mat-icon>clear</mat-icon>-->
-<!--                Supprimer-->
-<!--              </button>-->
-<!--            </mat-menu>-->
+            <mat-icon [matMenuTriggerFor]="boutonCout">more_vert</mat-icon>
+            <mat-menu class="menuBoutonCout" #boutonCout>
+              <!--          <button [routerLink]="['/cout', cout.id]" mat-button color="primary" >-->
+              <button (click)="openDialogCreate(cout)" mat-button color="primary">
+                <mat-icon>create</mat-icon>
+                Modifier
+              </button>
+              <br>
+              <button (click)="deleteItem(cout.id)" mat-button color="warn">
+                <mat-icon>clear</mat-icon>
+                Supprimer
+              </button>
+            </mat-menu>
 
           </td>
         </ng-container>

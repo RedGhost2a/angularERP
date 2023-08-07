@@ -41,7 +41,7 @@ export class OuvrageElementaireAddCoutComponent implements OnInit {
 
 
   constructor(private route: ActivatedRoute, private coutService: CoutService,
-              private ouvrageService: OuvrageService, private ouvrageCoutService: OuvrageElementaireCoutService,
+              private ouvrageService: OuvrageService,
               private userService : UserService,@Inject(MAT_DIALOG_DATA) public data: any,
               private dialogRef: MatDialogRef<DialogComponent>,
               private router: Router,
@@ -105,10 +105,11 @@ export class OuvrageElementaireAddCoutComponent implements OnInit {
         this.ouvrageCout = {
           OuvragesElementaireId: this.initialData.id,
           CoutId: cout,
+          ratio : 1
         }
         console.log("this.ouvrageCout", this.ouvrageCout)
 
-        this.ouvrageCoutService.create(this.ouvrageCout).subscribe()
+        this.ouvrageElementaireCoutService.create(this.ouvrageCout).subscribe()
 
 
       })
@@ -128,14 +129,13 @@ export class OuvrageElementaireAddCoutComponent implements OnInit {
           const uRatio = `${this.coutDuDevis.unite}/${this.dataSharingService.ouvrage.unite}`
         this.coutService.createCoutDuDevis(response).subscribe(response=>{
 
-          const ouvrageCout = {
+          const ouvrageElementaireCout = {
                           OuvrElemDuDeviId: this.initialData.id,
                           CoutDuDeviId: response?.id,
                           ratio: 1,
                           uRatio: uRatio,
-
                         }
-          this.ouvrageElementaireCoutService.createOuvrageElemCoutDuDevis(ouvrageCout).subscribe(this.ngOnInit)
+          this.ouvrageElementaireCoutService.createOuvrageElemCoutDuDevis(ouvrageElementaireCout).subscribe(this.ngOnInit)
 
         })
       })

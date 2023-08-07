@@ -16,6 +16,16 @@
     </div>
 
     <div class="inputs">
+      <mat-form-field appearance="legacy" *ngIf="inputEntreprise">
+        <mat-label>Entreprise</mat-label>
+        <mat-select formControlName="EntrepriseId"  (ngModelChange)="selectUniteByEntreprise()">
+          <mat-option [value]=+entreprise.id
+                      *ngFor="let entreprise of this.currentEntreprise">{{entreprise.denomination}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="this.myFormGroup.get('EntrepriseId')?.hasError('required')">
+          Vous devez choisir une entreprise.
+        </mat-error>
+      </mat-form-field>
 
       <mat-form-field appearance="legacy" style="width: 250px">
         <mat-label>Désignation</mat-label>
@@ -36,13 +46,7 @@
           Vous devez entrer une proportion.
         </mat-error>
       </mat-form-field>
-      <mat-form-field appearance="legacy" style="width: 120px">
-        <mat-label>Prix</mat-label>
-        <input type="number" formControlName="unite" matInput placeholder="Ex: 5%">
-        <mat-error *ngIf="this.myFormGroup.get('prix')?.hasError('required')">
-          Vous devez entrer un prix.
-        </mat-error>
-      </mat-form-field>
+
 
       <mat-form-field appearance="legacy" style="width: 120px">
         <mat-label>Unité</mat-label>
@@ -58,6 +62,13 @@
         <input type="string" formControlName="uniteproportionOE" matInput placeholder="Ex: m3/h">
         <mat-error *ngIf="this.myFormGroup.get('uniteproportionOE')?.hasError('required')">
           Vous devez entrer une unite proportion OE.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="legacy" style="width: 120px">
+        <mat-label>Prix</mat-label>
+        <input type="number" formControlName="prix" matInput placeholder="Ex: 5%">
+        <mat-error *ngIf="this.myFormGroup.get('prix')?.hasError('required')">
+          Vous devez entrer un prix.
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="legacy" id="remarques" style="width: 250px">

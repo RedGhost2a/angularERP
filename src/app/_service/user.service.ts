@@ -80,7 +80,7 @@ export class UserService {
     localStorage.removeItem('user');
     localStorage.removeItem('coef');
     this.userSubject.next(null!);
-    this.router.navigate(['']);
+    this.router.navigate(['/login']);
   }
 
   register(user: User): Observable<any> {

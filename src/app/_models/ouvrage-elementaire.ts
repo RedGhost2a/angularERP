@@ -13,6 +13,7 @@ export interface OuvrageElementaire {
   uniteproportionOE:string;
   remarques:string;
   quantite?:number;
+  prixUnitaire?:number;
 
 
 

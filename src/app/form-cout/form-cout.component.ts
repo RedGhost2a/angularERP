@@ -106,19 +106,23 @@ getEntrepriseByUser(){
       this.coutService.create(this.myFormGroup.getRawValue()).subscribe(data => {
         this.closeDialog()
       });
-    }
-    if (this.regexCout.test(window.location.pathname)) {
-      console.log("form", this.myFormGroup.getRawValue())
+    }else{
       this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(() => {
-        this.closeDialog()
-      });
+            this.closeDialog()
+          });
     }
-    if (this.regexOuvrageDetail.test(window.location.pathname) || this.regexSousDetail.test(window.location.pathname)) {
-      console.log("form", this.myFormGroup.getRawValue())
-      this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(() => {
-        this.closeDialog()
-      });
-    }
+    // if (this.regexCout.test(window.location.pathname)) {
+    //   console.log("form", this.myFormGroup.getRawValue())
+    //   this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(() => {
+    //     this.closeDialog()
+    //   });
+    // }
+    // if (this.regexOuvrageDetail.test(window.location.pathname) || this.regexSousDetail.test(window.location.pathname)) {
+    //   console.log("form", this.myFormGroup.getRawValue())
+    //   this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(() => {
+    //     this.closeDialog()
+    //   });
+    // }
 
   }
 
