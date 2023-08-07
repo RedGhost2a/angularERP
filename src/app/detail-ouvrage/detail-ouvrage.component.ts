@@ -8,23 +8,15 @@ import {OuvrageCout} from "../_models/ouvrageCout";
 import {FormControl, FormGroup} from "@angular/forms";
 import {DialogConfirmSuppComponent} from "../dialog-confirm-supp/dialog-confirm-supp.component";
 import {MatDialog} from "@angular/material/dialog";
-import {FormCoutComponent} from "../form-cout/form-cout.component";
 import {CoutService} from "../_service/cout.service";
-import {DialogListCoutComponent} from "../dialog-list-cout/dialog-list-cout.component";
-import {OuvrageAddCoutComponent} from "../ouvrage-add-cout/ouvrage-add-cout.component";
-import {DialogFormCoutComponent} from "../dialog-form-cout/dialog-form-cout.component";
 import {Fournisseur} from "../_models/fournisseur";
 import {TypeCout} from "../_models/type-cout";
 import {TypeCoutService} from "../_service/typeCout.service";
 import {FournisseurService} from "../_service/fournisseur.service";
 import {UniteForFormService} from "../_service/uniteForForm.service";
 import {UniteForForm} from "../_models/uniteForForm";
-import {UserService} from "../_service/user.service";
 import {OuvrageElementaireService} from "../_service/ouvrage-elementaire.service";
 import {OuvrageElementaire} from "../_models/ouvrage-elementaire";
-import {
-  OuvrageElementaireAddCoutComponent
-} from "../ouvrage-elementaire-add-cout/ouvrage-elementaire-add-cout.component";
 import {
   OuvrageElementaireAddOuvrageComponent
 } from "../ouvrage-elementaire-add-ouvrage/ouvrage-elementaire-add-ouvrage.component";
@@ -156,6 +148,7 @@ export class DetailOuvrageComponent implements OnInit {
     console.log("ouvrage prix,", this.ouvrage.prix)
     console.log("ouvrage elementaire total prix", totalPrice)
     this.ouvrage.prix += totalPrice;
+    this.ouvrageService.update(this.ouvrage,this.ouvrage.id).subscribe()
   }
 
 

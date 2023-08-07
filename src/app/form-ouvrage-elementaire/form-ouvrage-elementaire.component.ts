@@ -30,7 +30,7 @@ export class FormOuvrageElementaireComponent implements OnInit {
   currentEntreprise: Entreprise [] = [];
   ouvrageID!:number;
   initialData!: Ouvrage;
-  inputEntreprise : boolean = false;
+  inputEntreprise : boolean = true;
 
 
 
@@ -107,6 +107,8 @@ export class FormOuvrageElementaireComponent implements OnInit {
 
 
           if (this.router.url.includes('/sousDetailPrix')) {
+            this.inputEntreprise = false;
+
             console.log('Inside /sousDetailPrix condition');
 
             // Créer un OuvrageElementaireDuDevis
@@ -145,7 +147,6 @@ export class FormOuvrageElementaireComponent implements OnInit {
 
 
           if (this.router.url.includes('/ouvrageDetail')) {
-            this.inputEntreprise = true;
             const ouvrageElemOuvrage = {
               OuvragesElementaireId:data.id,
               OuvrageId:  this.initialData.id,

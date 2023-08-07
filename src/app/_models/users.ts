@@ -15,7 +15,6 @@ export class User {
   createdAt!: Date;
   EntrepriseId!: number;
   token!: string;
-  Adresse!: Adresse;
   // Entreprises!: Entreprise;
 
   Entreprises: Entreprise[] = [];

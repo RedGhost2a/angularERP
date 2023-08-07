@@ -60,6 +60,7 @@ export class ListClientComponent implements OnInit {
 
   getAll(entrepriseId: number): void {
     this.clientService.getAllByEntreprise(entrepriseId).subscribe((listClient: Client[]) => {
+      console.log('liste des clients ',listClient)
         this.clientService.clients = this.clientService.clients.concat(listClient);
         //permet de trier les client par l'id (du plus recent au plus ancien)
         this.clientService.clients.sort((a,b) => b.id - a.id)

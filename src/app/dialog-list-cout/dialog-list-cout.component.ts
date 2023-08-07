@@ -16,6 +16,7 @@ import {SousLotService} from "../_service/sous-lot.service";
 import {Ouvrage} from "../_models/ouvrage";
 import {da} from "date-fns/locale";
 import {isNumber} from "chart.js/helpers";
+import {DevisService} from "../_service/devis.service";
 
 @Component({
   selector: 'app-dialog-list-cout',
@@ -43,7 +44,8 @@ export class DialogListCoutComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<DialogComponent>, private ouvrageService: OuvrageService,
               private coutService: CoutService, private dataSharingService: DataSharingService, private ouvrageCoutService: OuvrageCoutService,
-              private sousLotOuvrageService: SousLotOuvrageService, private route: ActivatedRoute, private sousLotService: SousLotService) {
+              private sousLotOuvrageService: SousLotOuvrageService, private route: ActivatedRoute, private sousLotService: SousLotService,
+              private devisService : DevisService) {
     this.initialData = this.data;
     this.dataSource = new MatTableDataSource(this.initialData[0]);
 
@@ -51,7 +53,7 @@ export class DialogListCoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    console.log("devis " ,this.devisService.currentDevis)
     // console.log("rooute ", window.location.pathname)
     // console.log("ouvrage ", this.dataSharingService.ouvrage)
     // this.dataSource = new MatTableDataSource(this.data);
@@ -68,8 +70,8 @@ export class DialogListCoutComponent implements OnInit {
 
         let dataForOuvrage = {
           designation: `OuvrageHiddenForCoutInLot${this.initialData[3]}`,
-          benefice: 11,
-          aleas: 11,
+          benefice: this.devisService.currentDevis.beneficeInPercent,
+          aleas: this.devisService.currentDevis.aleasInPercent,
           unite: 'hiddenUnite',
           ratio: 1,
           uRatio: 'hiddenUnite',

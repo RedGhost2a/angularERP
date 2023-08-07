@@ -585,14 +585,14 @@
 
   <!--</div>-->
 
-  <mat-card class="card-metre">
+  <mat-card class="card-metre" *ngIf="strategy">
     <div class="global-form-container container-card" [formGroup]="formMetre">
       <mat-card-header>
         <mat-card-title>Métré</mat-card-title>
       </mat-card-header>
       <hr>
 
-      <div formArrayName="metres">
+      <div formArrayName="metres" >
         <div class="global-inputs inputs" *ngFor="let metre of metresArray.controls; let i = index" [formGroupName]="i">
           <mat-form-field appearance="legacy">
             <mat-label>Longueur</mat-label>

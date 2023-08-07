@@ -204,11 +204,13 @@ export class SousDetailPrixComponent implements OnInit {
     this.route.params.subscribe(async params => {
       this.ouvrageID = +params['id'];
       await this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe(async (data: any) => {
+        console.log("this ouvrage ", data)
         // console.log("this currentOuvrage ", data.SousLots[0].Lots[0].Devis[0].id)
         // this.dataSharingService.deviId = data.SousLots[0].Lots[0].Devis[0].id
         this.currentOuvrage = data;
         if (this.currentOuvrage.CoutDuDevis?.length === 0 && this.currentOuvrage.OuvrElemDuDevis?.length === 0) {
           this.currentOuvrage.prix = 0
+          console.log("log")
           this.ouvrageService.updateOuvrageDuDevis(this.currentOuvrage, this.currentOuvrage.id).subscribe()
         }
         console.log('rhis current ouvrage ', this.currentOuvrage)
@@ -216,6 +218,8 @@ export class SousDetailPrixComponent implements OnInit {
           console.log('ouvrageElement', ouvrageElem)
           this.getPrixUnitaireOuvrageElementaire(ouvrageElem)
         })
+        console.log("log")
+
         this.dataSharingService.ouvrage = data;
         this.dataSharingService.deviId = data.SousLots[0].Lots[0].Devis[0].id
         // this.dataShared.ouvrage.SousLotOuvrage?.prixOuvrage = 10;
@@ -226,6 +230,8 @@ export class SousDetailPrixComponent implements OnInit {
         if (data.SousLots) {
           this.currentOuvrage.SousLotOuvrage = data.SousLots[0].SousLotOuvrage
         }
+        console.log("log")
+
         await this.debousesSecTotalCout()
         this.getCurrentUser()
         await this.prixUnitaireHT()
@@ -243,20 +249,29 @@ export class SousDetailPrixComponent implements OnInit {
         this.prixVenteHT()
         this.changeTextButton()
         console.log("dd finish initCalcul")
+        console.log("log")
+
 
         const factory = new MetreInputsFactoryInterface(this.metreService)
         this.strategy = factory.createStrategy(this.currentOuvrage.unite)
-        this.formMetre = this.strategy.createFormBuilder(this.formBuilder)
-        const test = typeof this.strategy;
-        console.log("type de strategie ?", test)
+        console.log("this startegy", this.strategy)
+        if (this.strategy) {
+          this.formMetre = this.strategy.createFormBuilder(this.formBuilder);
+        } else {
+          // Gérer le cas où l'unité n'est pas gérée par le switch case
+          console.error(`L'unité de l'ouvrage est inconnue : ${this.currentOuvrage.unite}`);
+        }
+        // this.formMetre = this.strategy.createFormBuilder(this.formBuilder)
         console.log("form group ? form metre", this.formMetre)
         console.log("form builder ? form builder", this.formBuilder)
         // this.dynamicFormMetre()
 
 
+        console.log("log")
         await this.getMetreByOuvrage()
         this.calculQUantiteOE()
         console.log("metre array ?",this.metresArray)
+
       })
     })
   }

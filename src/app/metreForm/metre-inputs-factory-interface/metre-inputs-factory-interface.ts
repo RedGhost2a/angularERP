@@ -17,6 +17,7 @@ export class MetreInputsFactoryInterface {
       case 'm3':
         return new MetreLenghtWidthHeightStrategy(this.metreService);
       default:
+        console.log('default?')
         throw new Error(`L'unité de l'ouvrage est inconnu.`);
     }
   }

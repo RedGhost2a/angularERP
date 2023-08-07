@@ -53,6 +53,7 @@ export class EditComponent implements OnInit {
 
   getUserEntreprise() {
     this.currentEntreprise = this.userService.currentUser.Entreprises
+    console.log("current ",this.userService.currentUser)
   }
 
 
@@ -94,7 +95,13 @@ export class EditComponent implements OnInit {
       return;
     }
     if (this.initialData[0] === null) {
-      this.clientService.register(this.myFormGroup.getRawValue()).subscribe(data => {
+      //creer le client , avec la response je recupere client.id et je creer l'adresse
+      const adresseControl = this.myFormGroup.get('Adresse') as FormGroup;
+      console.log("adresse", this.myFormGroup.get('Adresse'))
+      console.log("adresse control", adresseControl.getRawValue())
+      this.clientService.register(this.myFormGroup.getRawValue()).subscribe(response => {
+        console.log("response client adresse", response.client.id)
+
         this.closeDialog();
       });
     } else {
@@ -113,13 +120,19 @@ export class EditComponent implements OnInit {
     this.textForm = "La modification de ce client sera valable sur l'ensemble des devis sur lesquels il est associé."
     this.textButton = "Modifier le client"
     this.myFormGroup.patchValue(this.initialData[0])
+    const adresseControl = this.myFormGroup.get('Adresse') as FormGroup;
+    adresseControl.patchValue(this.initialData[0].Adresses[0])
+
   }
 
   generateFormRead() {
     this.titreForm = "Détail du client"
     this.textForm = ""
     this.textButton = "Modifier le client"
+    console.log("initial data ", this.initialData)
     this.myFormGroup.patchValue(this.initialData[0])
+    const adresseControl = this.myFormGroup.get('Adresse') as FormGroup;
+    adresseControl.patchValue(this.initialData[0].Adresses[0])
     Object.keys(this.myFormGroup.controls).forEach(async key => {
       if (this.myFormGroup.controls[key].value === "" || this.myFormGroup.controls[key].value === null || this.myFormGroup.controls[key].value === undefined) {
         this.myFormGroup.controls[key].setValue('-')

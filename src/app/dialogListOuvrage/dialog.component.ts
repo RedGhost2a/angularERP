@@ -46,7 +46,7 @@ export class DialogComponent implements OnInit {
     console.log(this.initialData)
     this.dataSource = new MatTableDataSource(this.initialData)
     // this.dataSource = this.initialData
-    this.setPriceOuvrage()
+    // this.setPriceOuvrage()
 
   }
   expandedRows: { [key: number]: boolean } = {};

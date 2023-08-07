@@ -123,6 +123,7 @@ export class CreateDevisComponent implements OnInit {
   ngOnInit() {
 
     console.log('url', this.router.url)
+    console.log('tetststsetetst')
     transformVirguletoPoint()
     this.route.params.subscribe(params => {
       this.devis.id = +params['id'];
@@ -130,16 +131,17 @@ export class CreateDevisComponent implements OnInit {
       this.sharedData.deviId = this.devisId;
       this.devisService.getById(this.devisId).subscribe((devis: Devis) => {
           //215 ms
+        console.log("devis",devis.percentFraisGeneraux)
+          this.formFraisGeneraux(devis.percentFraisGeneraux)
           this.devis = devis;
-          this.devisExport.client = {
-            denomination: devis.Client.denomination,
-            adresses: devis.Client.Adresse.adresses,
-            ville: devis.Client.Adresse.city
-          }
-          this.devisExport.entreprise = {
-            denomination: devis.Entreprise.denomination
-          };
-          this.formFraisGeneraux()
+        //   this.devisExport.client = {
+        //     denomination: devis.Client.denomination,
+        //     adresses: devis.Client.Adresse.adresses,
+        //     ville: devis.Client.Adresse.city
+        //   }
+        //   this.devisExport.entreprise = {
+        //     denomination: devis.Entreprise.denomination
+        //   };
         }
       )
       this.form = new FormGroup({
@@ -147,6 +149,8 @@ export class CreateDevisComponent implements OnInit {
         devisId: new FormControl(this.devisId)
       });
     });
+    // this.formFraisGeneraux()
+
     this.formBeneAndAleasOuvrageHidden()
     this.formQuantityOuvrage()
     this.formPrixArrondiOuvrage()
@@ -288,6 +292,7 @@ export class CreateDevisComponent implements OnInit {
 
 
   openDialogImportCouts(lotId: number | null, sousLotId: number | null) {
+    this.devisService.currentDevis = this.devis
     console.log("devis id ", this.devis.id)
     this.dialog.open(DialogListCoutComponent, {
 
@@ -519,9 +524,10 @@ export class CreateDevisComponent implements OnInit {
     })
   }
 
-  formFraisGeneraux(): void {
+  formFraisGeneraux(percent:number): void {
+    console.log("frais generaux",this.devis.percentFraisGeneraux)
     this.myFormFraisGeneraux = new FormGroup({
-      percentFraisGeneraux: new FormControl(this.devis.percentFraisGeneraux),
+      percentFraisGeneraux: new FormControl(percent),
     });
   }
 
@@ -817,10 +823,12 @@ export class CreateDevisComponent implements OnInit {
   //recuperation de tous les lots du devis SAUF les lot "Frais de chantier" pour l'onglet DEVIS;
   getAllLots() {
     this.devisService.getByIdExceptFrais(this.devisId).subscribe(data => {
+      console.log("all lot", data)
+
       this.devisExport.client = {
         denomination: data.Client.denomination,
-        adresses: data.Client.Adresse.adresses,
-        ville: data.Client.Adresse.city
+        adresses: data.Client.Adresses[0].adresses,
+        ville: data.Client.Adresses[0].city
       }
       this.devisExport.entreprise = {
         denomination: data.Entreprise.denomination
@@ -831,6 +839,7 @@ export class CreateDevisComponent implements OnInit {
       this.devis.moyenneAleas = 0;
       this.testLots = data.Lots;
       this.testLots.forEach(lot => {
+        console.log("lot : " ,lot)
         lot.SousLots.forEach(sousLot => {
           console.log("----------------->", sousLot)
           sousLot.prix = 0;
@@ -868,6 +877,7 @@ export class CreateDevisComponent implements OnInit {
 
   getLotFraisDeChantier(): void {
     this.devisService.getLotFraisDeChantier(this.devisId).subscribe(data => {
+      console.log('fraisd de chantier',data)
       this.lotFraisDeChantier = data.Lots[0];
       this.lotFraisDeChantier.SousLots.forEach(sousLot => {
         sousLot.prix = 0;
