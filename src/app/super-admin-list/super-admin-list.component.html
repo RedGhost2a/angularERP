@@ -21,11 +21,11 @@
         </ng-container>
         <ng-container matColumnDef="adresse">
           <th class="global-th" mat-header-cell *matHeaderCellDef>Adresse</th>
-          <td class="global-td"  (click)="openDialogCreateClient(client, true)" mat-cell *matCellDef="let client">{{client.Adresse.adresses}}</td>
+          <td class="global-td"  (click)="openDialogCreateClient(client, true)" mat-cell *matCellDef="let client">{{client.Adresses[0].adresses}}</td>
         </ng-container>
         <ng-container matColumnDef="city">
           <th class="global-th" mat-header-cell *matHeaderCellDef>Ville</th>
-          <td class="global-td"  (click)="openDialogCreateClient(client, true)"  mat-cell *matCellDef="let client">{{client.Adresse.city}}</td>
+          <td class="global-td"  (click)="openDialogCreateClient(client, true)"  mat-cell *matCellDef="let client">{{client.Adresses[0].city}}</td>
         </ng-container>
         <ng-container matColumnDef="identity">
           <th class="global-th" mat-header-cell *matHeaderCellDef>Nom Prénom</th>

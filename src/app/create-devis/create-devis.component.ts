@@ -833,6 +833,7 @@ export class CreateDevisComponent implements OnInit {
 
   quantityChange(event: any, sousLotOuvrage: SousLotOuvrage | undefined, sousLot: SousLot, lot: Lot, prixOuvrages: { id: 0, prix: 0 }[]) {
     //verifie que le sous lot contient au moins un ouvrage
+    console.log("sous lot ouvrage",sousLotOuvrage)
     if (sousLotOuvrage !== undefined && sousLotOuvrage.id) {
       //si la valeur de l'input est superieur a 0
       if (event > 0) {
@@ -840,6 +841,7 @@ export class CreateDevisComponent implements OnInit {
         for (let element of prixOuvrages) {
           //verifie si l'id du tableau de prix est egale a l'id de sousLotOuvrage
           if (element.id === sousLotOuvrage.OuvrageDuDeviId) {
+            console.log("element",element)
             //si oui on attribut le nouveau prix de l'ouvrage au sousLotOuvrage
             sousLotOuvrage.prixOuvrage = element.prix * event
           }
@@ -948,7 +950,10 @@ export class CreateDevisComponent implements OnInit {
       this.getAllOuvrage(data.EntrepriseId);
       this.getAllCouts(data.EntrepriseId)
       // this.getAllOuvrageFraisDeChantier(data.EntrepriseId)
-      // this.getSommeOuvrage()
+
+      this.getSommeOuvrage()
+
+
       this.getSommeOuvrageFraisDeChantier()
       this.moyenneBeneficeAleasTotal()
 
@@ -1228,7 +1233,7 @@ export class CreateDevisComponent implements OnInit {
       })
 
     });
-    //this.getSommeOuvrage()
+    this.getSommeOuvrage()
     this.getSommeOuvrageFraisDeChantier()
   }
 

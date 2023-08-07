@@ -226,6 +226,7 @@
                         <input type="number" formControlName="quantityOuvrage" matInput required
                                [placeholder]="ouvrage.SousLotOuvrage.quantityOuvrage.toString()"
                                (ngModelChange)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lotFraisDeChantier, prixOuvrage)">
+
                         <!--                             (keyup.enter)="quantityChange($event, ouvrage?.SousLotOuvrage, sublot, lot, prixOuvrage)">-->
                       </mat-form-field>
                     </div>
@@ -304,6 +305,7 @@
                       <span
                         class="designation-ouvrage-frais-chantier">
                       <mat-form-field [formGroup]="myFormGroup" id="prix-arrondi-ouvrage-devis2">
+
                                             <input type="number" formControlName="quantityOuvrage" matInput required
                                                    placeholder="{{ouvrage.SousLotOuvrage.prixUniVenteHT.toString() | number: '1.2-2'}}"
                                                    (ngModelChange)="onPrixUnitaireCalculeHtChange($event, ouvrage.SousLotOuvrage)">
