@@ -3,9 +3,15 @@ import {Metre} from "../../_models/metre";
 import {Ouvrage} from "../../_models/ouvrage";
 
 export interface MetreStrategyInterface {
-  createFormBuilder(formBuilder: FormBuilder): FormGroup;
+   formGroup:FormGroup;
+
+  createFormBuilder(formBuilder: FormBuilder):void;
   dynamicInputs(formBuilder: FormBuilder): FormGroup;
-  setValueInForm(formGroup:FormGroup, metre: Metre):void;
-  concatMetre(bool: boolean, i : number,resultCalculMetre:string,resultMetre:number[], longueurFormControl:FormControl, largeurFormControl?:FormControl, hauteurFormControl?:FormControl ):string;
-  createOrUpdateMetre(ouvrageDuDevis:Ouvrage, metreIdFormControl: FormControl,longueurFormControl:FormControl, largeurFormControl?:FormControl, hauteurFormControl?:FormControl):void;
+  setValueInForm(index: number,metre: Metre):void;
+  concatMetre(bool: boolean, i : number, resultCalculMetre:string,
+              resultMetre:number[], longForm:FormControl,
+              largForm?:FormControl, hautForm?:FormControl ):string;
+  createOrUpdateMetre(ouvrage:Ouvrage, metreIdForm: FormControl,
+                      longForm:FormControl, largForm?:FormControl,
+                      hautForm?:FormControl):void;
 }

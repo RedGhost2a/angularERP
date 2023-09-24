@@ -27,6 +27,7 @@ export class ListCoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserEntreprise();
+
   }
 
   private getFilterPredicate(): (data: any, filter: string) => boolean {

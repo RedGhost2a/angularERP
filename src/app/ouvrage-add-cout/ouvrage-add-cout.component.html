@@ -50,8 +50,5 @@
   <div class="divButton">
     <button class="btnBack" routerLink="/listOuvrage" mat-stroked-button color="primary" >Retour</button>
     <button  class='button' (click)="addCoutOuvrage();closeDialog()" mat-raised-button color="primary" [disabled]="coutChecked.length === 0 ? true : false" [innerHTML]="coutChecked.length > 1 ? 'Importer ces composants' : 'Importer ce composant'">Importer ce composant </button>
-<!--    <button  class='button' routerLink="/ouvrageDetail/{{ouvrageId}}" (click)="addCoutOuvrage()" mat-raised-button color="primary">Valider </button>-->
-
-
   </div>
 </div>

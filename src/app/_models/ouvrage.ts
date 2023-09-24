@@ -5,7 +5,6 @@ import {SousLot} from "./sous-lot";
 import {OuvrageElementaire} from "./ouvrage-elementaire";
 
 export interface Ouvrage {
-  // cout: any;
   id?:any;
   designation: string;
   benefice: number;

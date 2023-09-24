@@ -225,7 +225,7 @@
         Mon entreprise
       </ng-template>
       <div  class="flex-row">
-        <div  *ngFor="let entreprise of userEntreprise">
+        <div  *ngFor="let entreprise of user.Entreprises">
           <mat-card class="entreprise">
             <div class="card-header">
               <img class="image" mat-card-md-image         src="{{entreprise.logo ? entreprise.logo : 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1473&q=80'}}"
@@ -246,13 +246,13 @@
                 <p>Tva: {{entreprise.tvaNumber}}</p>
               </div>
 
-              <div class="address-section">
-                <mat-card-title>Adresse</mat-card-title>
-                <p>Adresse: {{entreprise.Adresse.adresses | uppercase}}</p>
-                <p>Code postal: {{entreprise.Adresse.zipcode}}</p>
-                <p>Ville: {{entreprise.Adresse.city | uppercase}}</p>
-                <p>Pays: {{entreprise.Adresse.country | uppercase}}</p>
-              </div>
+<!--              <div class="address-section">-->
+<!--                <mat-card-title>Adresse</mat-card-title>-->
+<!--                <p>Adresse: {{entreprise.Adresse.adresses | uppercase}}</p>-->
+<!--                <p>Code postal: {{entreprise.Adresse.zipcode}}</p>-->
+<!--                <p>Ville: {{entreprise.Adresse.city | uppercase}}</p>-->
+<!--                <p>Pays: {{entreprise.Adresse.country | uppercase}}</p>-->
+<!--              </div>-->
 
               <div class="contact-section">
                 <mat-card-title>Contact</mat-card-title>

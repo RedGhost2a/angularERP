@@ -1,14 +1,17 @@
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Metre} from "../../_models/metre";
 import {MetreStrategyInterface} from "../metre-strategy-interface/metre-strategy.interface";
 import {Ouvrage} from "../../_models/ouvrage";
 import {MetreService} from "../../_service/metre.service";
 
 export class MetreLenghtWidthHeightStrategy implements MetreStrategyInterface {
-  constructor(private metreService : MetreService) {
+    formGroup!: FormGroup
+
+  constructor(private metreService: MetreService) {
   }
-  createFormBuilder(formBuilder: FormBuilder): FormGroup {
-    return formBuilder.group({
+
+  createFormBuilder(formBuilder: FormBuilder) {
+    this.formGroup = formBuilder.group({
       metres: formBuilder.array([
         this.dynamicInputs(formBuilder)
       ])
@@ -18,42 +21,50 @@ export class MetreLenghtWidthHeightStrategy implements MetreStrategyInterface {
   dynamicInputs(formBuilder: FormBuilder): FormGroup {
     return formBuilder.group({
       longueur: new FormControl("L", Validators.required),
-      largeur: new FormControl("L", Validators.required),
+      largeur: new FormControl("l", Validators.required),
       hauteur: new FormControl("H", Validators.required),
       metreId: new FormControl("")
     })
   }
 
-  setValueInForm(formGroup: FormGroup, metre: Metre): void {
-    formGroup.controls['longueur'].setValue(metre.longueur)
-    formGroup.controls['largeur'].setValue(metre.largeur)
-    formGroup.controls['hauteur'].setValue(metre.hauteur)
-    formGroup.controls['metreId'].setValue(metre.id)
+  setValueInForm(index: number, metre: Metre): void {
+    const metresArray = this.formGroup.get('metres') as FormArray;
+    let formGroupArray = metresArray.controls[index] as FormGroup
+    formGroupArray.controls['longueur'].setValue(metre.longueur)
+    formGroupArray.controls['largeur'].setValue(metre.largeur)
+    formGroupArray.controls['hauteur'].setValue(metre.hauteur)
+    formGroupArray.controls['metreId'].setValue(metre.id)
   }
 
-  concatMetre(bool: boolean, i: number, resultCalculMetre: string, resultMetre: number[], longueurFormControl: FormControl, largeurFormControl: FormControl, hauteurFormControl: FormControl): string {
-    const result = parseFloat(longueurFormControl.value) * parseFloat(largeurFormControl.value) * parseFloat(hauteurFormControl.value);
+  concatMetre(bool: boolean, i: number, resultCalculMetre: string,
+              resultMetre: number[], longForm: FormControl,
+              largForm: FormControl, hautForm: FormControl): string {
+
+    const result = parseFloat(longForm.value)
+                  * parseFloat(largForm.value)
+                  * parseFloat(hautForm.value);
     resultMetre[i] = result;
-    const calculString = `(${longueurFormControl.value} x ${largeurFormControl.value} x ${hauteurFormControl.value})`;
+    const calculString = `(${longForm.value}
+                        x ${largForm.value}
+                        x ${hautForm.value})`;
 
     if (!bool) resultCalculMetre = calculString;
-      else resultCalculMetre += ` + ${calculString}`;
+    else resultCalculMetre += ` + ${calculString}`;
     return resultCalculMetre;
 
   }
 
-  createOrUpdateMetre(ouvrageDuDevis:Ouvrage, metreIdFormControl: FormControl,longueurFormControl:FormControl, largeurFormControl:FormControl, hauteurFormControl:FormControl):void{
+  createOrUpdateMetre(ouvrage: Ouvrage, metreIdForm: FormControl, longForm: FormControl, largForm: FormControl, hautForm: FormControl): void {
     const metrePush: Metre = {
-      id: metreIdFormControl.value === '' ? 0 : metreIdFormControl.value,
-      longueur: longueurFormControl.value,
-      largeur: largeurFormControl.value,
-      hauteur: hauteurFormControl.value,
-      OuvrageDuDeviId: ouvrageDuDevis.id
+      id: metreIdForm.value === '' ? 0 : metreIdForm.value,
+      longueur: longForm.value,
+      largeur: largForm.value,
+      hauteur: hautForm.value,
+      OuvrageDuDeviId: ouvrage.id
     };
-
-    if (metreIdFormControl.value === '') this.metreService.createMetre(metrePush).subscribe();
+    if (metreIdForm.value === '') this.metreService.createMetre(metrePush).subscribe((res: any) => {
+      metreIdForm.setValue(res.metre.id)
+    });
     else this.metreService.updateMetre(metrePush, metrePush.id).subscribe();
   }
-
-
 }

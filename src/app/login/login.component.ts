@@ -55,6 +55,8 @@ export class LoginComponent implements OnInit {
 
 
   onSubmit() {
+    console.log('value ?')
+    console.log(this.f['email'].value, this.f['password'].value)
     this.submitted = true;
     // reset alerts on submit
     this.alertService.clear();

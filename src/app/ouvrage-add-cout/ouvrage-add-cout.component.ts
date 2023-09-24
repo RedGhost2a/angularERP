@@ -22,7 +22,6 @@ export class OuvrageAddCoutComponent implements OnInit {
 
 
   @Input() listCout!: Cout[]
-  coutOuvrage!: Cout;
   coutChecked: number[] = [];
   ouvrageId!: number
   columnsToDisplay = ["checkBox", "type", "categorie", "designation", "unite", "prixUnitaire", "fournisseur",
@@ -78,52 +77,16 @@ export class OuvrageAddCoutComponent implements OnInit {
   }
 
   addCoutOuvrage() {
-    console.log("id de l'ouvrage courant",this.currentOuvrageId )
     this.coutChecked.forEach(cout => {
-      console.log("valeur de cout", cout)
       this.ouvrageCout = {
         OuvrageId: this.initialData.id,
         CoutId: cout,
         ratio: 1,
-        // uRatio: `${this.initialData.unite}`
       }
        this.ouvrageCoutService.create(this.ouvrageCout).subscribe()
     })
-
-    // console.log(this.ouvrageCout)
-    //
-    // for (let val of this.coutChecked) {
-    //   // console.log(val);
-    //   // console.log('valeur')
-    //   //this.ouvrageCoutService.addCoutOuvrage(val, this.ouvrageId).subscribe()
-    //   console.log('OUVRAGE AJOUT COUT')
-    //   this.coutService.getById(val).subscribe(data => {
-    //     this.coutOuvrage = data;
-    //     console.log("data", data)
-    //     //console.log(typeof(data.Fournisseurs));
-    //
-    //     const {Fournisseurs}: any = data;
-    //     const {TypeCout}: any = data;
-    //     if (Fournisseurs[0].remarque === null) {
-    //       Fournisseurs[0].remarque = "";
-    //     }
-    //     this.coutDuDevis = {
-    //       OuvrageId: this.ouvrageId,
-    //       type: TypeCout.type,
-    //       categorie: TypeCout.categorie,
-    //       designation: data.designation,
-    //       unite: data.unite,
-    //       prixUnitaire: data.prixUnitaire,
-    //       fournisseur: Fournisseurs[0].commercialName,
-    //       remarque: Fournisseurs[0].remarque
-    //     }
-    //
-    //     this.coutService.createCoutDuDevis(this.coutDuDevis).subscribe()
-//       })
-// }
   }
   closeDialog() {
-    // Renvoyez la valeur de selectedOuvrageIds lors de la fermeture du dialogListOuvrage
     this.dialogRef.close();
   }
 

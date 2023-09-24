@@ -16,15 +16,12 @@ const baseUrl = `${environment.apiUrl}/ouvrages`;
 export class OuvrageService {
   ouvrages: Ouvrage [] = [];
 
-  constructor(private http: HttpClient, private dialog: MatDialog) {
-  }
-
+  constructor(private http: HttpClient, private dialog: MatDialog) {}
   getOuvrageDuDevisById(id: number): Observable<Ouvrage> {
     return this.http.get<Ouvrage>(`${baseUrl}DuDevis/${id}`)
   }
 
   getAll(entrepriseId: number): Observable<any> {
-
     this.ouvrages = []
     return this.http.get(baseUrl, {
       params: {

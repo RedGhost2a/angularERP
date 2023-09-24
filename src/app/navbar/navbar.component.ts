@@ -67,7 +67,6 @@ export class NavbarComponent {
       });
     }, 1000); // mise à jour toutes les secondes
 
-
   }
 
 

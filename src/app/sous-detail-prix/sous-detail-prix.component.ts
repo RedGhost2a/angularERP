@@ -34,12 +34,15 @@ import {OuvrageElementaireService} from "../_service/ouvrage-elementaire.service
 import {MetreService} from "../_service/metre.service";
 import {Metre} from "../_models/metre";
 
-import {isNumber} from "chart.js/helpers";
 import {OuvrageElementaire} from "../_models/ouvrage-elementaire";
 import {
-  MetreInputsFactoryInterface
-} from "../metreForm/metre-inputs-factory-interface/metre-inputs-factory-interface";
+  MetreContext,
+  // MetreInputsFactory
+} from "../metreForm/contexte-metre/contexte-metre";
 import {MetreStrategyInterface} from "../metreForm/metre-strategy-interface/metre-strategy.interface";
+import {MetreFactory} from "../metreForm/metre-factory/metre-factory";
+
+// import {ConcreteMetreInputsFactory} from "../metreForm/contexte-metre/contexte-metre";
 
 @Component({
   selector: 'app-sous-detail-prix',
@@ -105,7 +108,7 @@ export class SousDetailPrixComponent implements OnInit {
   resultTotalMetre: number = 0;
   metre !: Metre []
   @ViewChild('aForm') aForm !: ElementRef;
-  strategy!: MetreStrategyInterface
+  metreContexte !: MetreContext;
 
 
   constructor(private ouvrageService: OuvrageService, private route: ActivatedRoute,
@@ -131,8 +134,9 @@ export class SousDetailPrixComponent implements OnInit {
     this.createFormOuvrage()
     this.createFormOuvrageELem()
     this.route.params.subscribe(async params => {
-      this.ouvrageID = +params['id'];
-      await this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe(async (data: any) => {
+      // this.ouvrageID = +params['id'];
+      await this.ouvrageService.getOuvrageDuDevisById(+params['id']).subscribe(async (data: any) => {
+        console.log('ouvrage du devis ? ', data)
         this.dataSharingService.deviId = data.SousLots[0].Lots[0].Devis[0].id
         this.currentOuvrage = data;
         this.dataSharingService.ouvrage = data;
@@ -179,13 +183,9 @@ export class SousDetailPrixComponent implements OnInit {
     this.createFormOuvrage()
     this.createFormOuvrageELem()
     this.route.params.subscribe(async params => {
-      this.ouvrageID = +params['id'];
-      await this.ouvrageService.getOuvrageDuDevisById(this.ouvrageID).subscribe(async (data: any) => {
+      this.ouvrageService.getOuvrageDuDevisById(+params['id']).subscribe((data: any) => {
         this.currentOuvrage = data;
-        if (this.currentOuvrage.CoutDuDevis?.length === 0 && this.currentOuvrage.OuvrElemDuDevis?.length === 0) {
-          this.currentOuvrage.prix = 0
-          this.ouvrageService.updateOuvrageDuDevis(this.currentOuvrage, this.currentOuvrage.id).subscribe()
-        }
+        this.setPriceCurrentOuvrage()
         this.currentOuvrage.OuvrElemDuDevis?.forEach((ouvrageElem: OuvrageElementaire) => {
           this.getPrixUnitaireOuvrageElementaire(ouvrageElem)
         })
@@ -194,9 +194,9 @@ export class SousDetailPrixComponent implements OnInit {
         if (data.SousLots) {
           this.currentOuvrage.SousLotOuvrage = data.SousLots[0].SousLotOuvrage
         }
-        await this.debousesSecTotalCout()
+        this.debousesSecTotalCout()
         this.getCurrentUser()
-        await this.prixUnitaireHT()
+        this.prixUnitaireHT()
         this.prixEquilibreHT()
         this.prixUnitaireEquilibreHT()
         this.beneficePercentToEuro()
@@ -210,30 +210,45 @@ export class SousDetailPrixComponent implements OnInit {
         this.prixUnitaireCalculeHTCout()
         this.prixVenteHT()
         this.changeTextButton()
-
-        const factory = new MetreInputsFactoryInterface(this.metreService)
-        this.strategy = factory.createStrategy(this.currentOuvrage.unite)
-        await this.getMetreByOuvrage()
+        this.createFormBuilderMetre()
+        this.getMetreByOuvrage()
         this.calculQUantiteOE()
       })
     })
   }
 
-  get metresArray(): FormArray {
-    return this.formMetre.get('metres') as FormArray;
+  createFormBuilderMetre() {
+    this.metreContexte = new MetreContext()
+    this.metreContexte.runStrategy(this.currentOuvrage.unite,
+                                    this.metreService)
+    this.metreContexte.execute(this.formBuilder);
   }
 
-  async getMetreByOuvrage() {
-    this.metreService.getMetreByOuvrage(this.currentOuvrage.id).subscribe((data) => {
+  get metresArray(): FormArray {
+    return this.metreContexte.metreStrategyInterface.formGroup.get('metres') as FormArray;
+  }
+
+
+
+  getMetreByOuvrage() {
+    this.metreService.getMetreByOuvrage(this.currentOuvrage.id)
+      .subscribe((data) => {
       this.metre = data
-      const metresArray = this.formMetre.get('metres') as FormArray; // Récupérer le FormArray
       this.metre.forEach((metre: Metre, index: number) => {
-        console.log("index ", index)
         this.addMetreFormGroup(this.verifyIndex(index))
-        this.strategy.setValueInForm(metresArray.controls[index] as FormGroup, metre)
+        this.metreContexte.metreStrategyInterface.setValueInForm(
+                                                    index, metre)
+        this.displayResultMetre()
       })
-      this.displayResultMetre()
     })
+  }
+
+  setPriceCurrentOuvrage() {
+    if (this.currentOuvrage.CoutDuDevis?.length === 0 && this.currentOuvrage.OuvrElemDuDevis?.length === 0) {
+      this.currentOuvrage.prix = 0
+      this.ouvrageService.updateOuvrageDuDevis(this.currentOuvrage, this.currentOuvrage.id).subscribe()
+    }
+
   }
 
 
@@ -245,6 +260,7 @@ export class SousDetailPrixComponent implements OnInit {
 
 
   ratioChange(coutDuDevis: CoutDuDevis) {
+    console.log("ratio cout", this.formCout.getRawValue().ratio)
     if (this.formCout.getRawValue().ratio !== null) {
       this.ouvrageCoutDuDevis = {
         OuvrageDuDeviId: this.currentOuvrage.id,
@@ -275,7 +291,7 @@ export class SousDetailPrixComponent implements OnInit {
 
 
   ratioOuvrageChange() {
-    console.log(this.formOuvrage.getRawValue().ratioOuvrage)
+    console.log("ratio", this.formOuvrage.getRawValue().ratioOuvrage)
     if (this.formOuvrage.getRawValue().ratioOuvrage !== null) {
       this.ouvrageService.updateOuvrageDuDevis({ratio: this.formOuvrage.getRawValue().ratioOuvrage}, this.currentOuvrage.id).subscribe(() => {
         this.initialCalcul()
@@ -363,32 +379,55 @@ export class SousDetailPrixComponent implements OnInit {
 
   public addMetreFormGroup(bool: Boolean) {
     if (bool) {
-      const metres = this.formMetre.get('metres') as FormArray
+      const metres = this.metreContexte.metreStrategyInterface.formGroup.get('metres') as FormArray
       if (!metres.invalid) {
-        metres.push(this.strategy.dynamicInputs(this.formBuilder))
-        setTimeout(() => {
-          this.aForm.nativeElement.children[(this.tableau.length - 1)].children[0].children[0].children[0].children[0].children[0].focus();
-        }, 200)
+        metres.push(this.metreContexte.metreStrategyInterface.dynamicInputs(this.formBuilder))
       }
     }
+  }
 
+  deleteMetreFormGroup(index: number) {
+    const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
+    const metresArray = this.metreContexte.metreStrategyInterface.
+                        formGroup.get('metres') as FormArray;
+    const metreFormGroup = metresArray.controls[index] as FormGroup;
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.metreService.deleteMetre(metreFormGroup.controls['metreId'].value)
+          .subscribe(() => {
+            this.metreService.deleteFormGroup(metresArray,index)
+            this.getMetreByOuvrage()
+          })
+      }
+    });
   }
 
   displayResultMetre() {
-    const metresArray = this.formMetre.get('metres') as FormArray;
+    const metresArray = this.metreContexte.metreStrategyInterface.
+                                formGroup.get('metres') as FormArray;
+    this.resultMetre = [];
     for (let i = 0; i < metresArray.length; i++) {
       const metreFormGroup = metresArray.controls[i] as FormGroup;
-      this.resultCalculMetre = this.strategy.concatMetre(this.verifyIndex(i), i, this.resultCalculMetre, this.resultMetre, metreFormGroup.controls['longueur'] as FormControl,
-        metreFormGroup.controls['largeur'] as FormControl, metreFormGroup.controls['hauteur'] as FormControl)
-      this.resultTotalMetre = this.resultMetre.reduce((acc, cur) => acc + cur, 0);
+      this.resultCalculMetre = this.metreContexte.metreStrategyInterface.concatMetre(
+    this.verifyIndex(i), i, this.resultCalculMetre, this.resultMetre,
+        metreFormGroup.controls['longueur'] as FormControl,
+        metreFormGroup.controls['largeur'] as FormControl,
+        metreFormGroup.controls['hauteur'] as FormControl)
     }
-
+    this.resultTotalMetre = this.resultMetre.reduce(
+      (acc, cur) => acc + cur, 0);
   }
 
   createOrUpdateMetre(index: number) {
-    const metresArray = this.formMetre.get('metres') as FormArray;
+    const metresArray = this.metreContexte.metreStrategyInterface.
+                        formGroup.get('metres') as FormArray;
     const metreFormGroup = metresArray.controls[index] as FormGroup;
-    this.strategy.createOrUpdateMetre(this.currentOuvrage,metreFormGroup.controls['metreId'] as FormControl,metreFormGroup.controls['longueur'] as FormControl,metreFormGroup.controls['largeur'] as FormControl,metreFormGroup.controls['hauteur'] as FormControl)
+    this.metreContexte.metreStrategyInterface.createOrUpdateMetre(
+      this.currentOuvrage,
+      metreFormGroup.controls['metreId'] as FormControl,
+      metreFormGroup.controls['longueur'] as FormControl,
+      metreFormGroup.controls['largeur'] as FormControl,
+      metreFormGroup.controls['hauteur'] as FormControl)
   }
 
 
@@ -562,7 +601,6 @@ export class SousDetailPrixComponent implements OnInit {
   }
 
 
-
   calculQUantiteOE() {
     if (this.currentOuvrage.OuvrElemDuDevis) {
       const updatePromises = this.currentOuvrage.OuvrElemDuDevis.map((OuvrageElementaire: OuvrageElementaire) => {
@@ -605,7 +643,7 @@ export class SousDetailPrixComponent implements OnInit {
     console.log(this.ouvrageID)
     this.dialog.open(DialogListOuvrageElementaireComponent, {
       panelClass: 'test',
-      data: this.ouvrageID,
+      data: ouvragDuDevisId,
       width: '90%',
       height: '70%'
     }).afterClosed().subscribe(async result => {

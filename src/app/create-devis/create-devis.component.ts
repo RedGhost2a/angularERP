@@ -1122,13 +1122,16 @@ export class CreateDevisComponent implements OnInit {
   }
 
   createOuvrageDuDevis(sousLotId: number) {
+    console.log("sous lot id ", sousLotId)
     let prixOuvrage = 0;
     //boucle sur tous les ouvrages selectionner dans la modal
     this.selectedOuvrageIds.forEach((ouvrageId: any) => {
       //recupere les ouvrages grace a leurs id
       this.ouvrageService.getById(ouvrageId).subscribe(data => {
+        // console.log("ouvrage", data)
         //creer un ouvrageDuDevis avec les données de l'ouvrage
         const allDataOuvrageDevis = {...data, alteredBenefOrAleas: true}
+        console.log("ouvrage", allDataOuvrageDevis)
         this.ouvrageService.createOuvrageDuDevis(allDataOuvrageDevis).subscribe(response => {
           console.log("ouvrage du devis",response)
           data.OuvragesElementaires.forEach((ouvrageElem:OuvrageElementaire)=>{

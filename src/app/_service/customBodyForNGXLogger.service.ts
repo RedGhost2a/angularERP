@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {INGXLoggerMetadata, NGXLoggerServerService} from 'ngx-logger';
 import {UserService} from "./user.service";
 import {HttpBackend} from "@angular/common/http";
@@ -6,8 +6,8 @@ import {HttpBackend} from "@angular/common/http";
 @Injectable()
 export class CustomBodyForNGXLoggerService extends NGXLoggerServerService {
 
-  constructor(private userService: UserService, httpBackend: HttpBackend) {
-    super(httpBackend);
+  constructor(private userService: UserService, httpBackend: HttpBackend, ngZone : NgZone) {
+    super(httpBackend, ngZone);
   }
 
   public override customiseRequestBody(metadata: INGXLoggerMetadata): any {

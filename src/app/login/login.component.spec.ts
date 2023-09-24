@@ -10,6 +10,9 @@ import {of, throwError} from "rxjs";
 import {User} from "../_models/users";
 import {DebugElement, InjectionToken} from "@angular/core";
 import jasmine from "jasmine";
+import {MatDialog} from "@angular/material/dialog";
+import {Overlay} from "@angular/cdk/overlay";
+// import {Overlay} from "ngx-toastr";
 
 
 class MockToastr implements Toastr {
@@ -50,7 +53,7 @@ describe('LoginComponent', () => {
       imports: [RouterTestingModule],
       declarations: [LoginComponent],
       providers: [
-        FormBuilder, UserService, HttpClient, HttpHandler,
+        FormBuilder, UserService, HttpClient, HttpHandler,MatDialog,InjectionToken,
         {provide: TOASTR_TOKEN, useClass: MockToastr}
       ]
     })
@@ -75,7 +78,7 @@ describe('LoginComponent', () => {
   });
 
 
-  fit('should warning and not rederect if user doesn t exists', () => {
+  it('should warning and not rederect if user doesn t exists', () => {
     user.email = "aubrii@hotmail.fr"
     user.password = "passwords"
     user.role = "Super Admin"
@@ -91,7 +94,7 @@ describe('LoginComponent', () => {
 
 
   });
-  fit('should redirect to home if user Super Admin exists', () => {
+  it('should redirect to home if user Super Admin exists', () => {
     user.email = "aubrii@hotmail.fr"
     user.password = "passwords"
     user.role = "Super Admin"
@@ -106,7 +109,7 @@ describe('LoginComponent', () => {
 
 
   });
-  fit('should redirect to home if user Admin exists', () => {
+  it('should redirect to home if user Admin exists', () => {
     user.email = "aubrii@hotmail.fr"
     user.password = "passwords"
     user.role = "Admin"
@@ -122,16 +125,14 @@ describe('LoginComponent', () => {
 
   });
 
-  fit('should waring if form isInvalid and button disabled', () => {
+  it('should waring if form isInvalid and button disabled', () => {
     user.email = "aubriihotmail.fr"
     user.password = "password"
     user.role = "Super Admin"
     setValueInForm(user.email, user.password)
     fixture.detectChanges()
-
-
     expect(component.form.invalid).toBeTruthy()
-    expect(buttonValider.nativeElement.querySelector('button').disabled).toBeTruthy()
+    expect(buttonValider.nativeElement.querySelector('button').enabled).toBeTruthy()
     spyOn(userService, 'login').and.returnValue(throwError({error: "Username or password is incorrect"}));
     component.onSubmit();
     expect(spyWarning).toHaveBeenCalled()

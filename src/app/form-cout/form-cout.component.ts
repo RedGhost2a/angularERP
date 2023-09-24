@@ -18,6 +18,7 @@ import {UniteForForm} from "../_models/uniteForForm";
 import {OuvrageCoutService} from "../_service/ouvrageCout.service";
 import {da} from "date-fns/locale";
 import {Entreprise} from "../_models/entreprise";
+import {DomSanitizer} from "@angular/platform-browser";
 
 
 interface FournisseurCout {
@@ -111,18 +112,6 @@ getEntrepriseByUser(){
             this.closeDialog()
           });
     }
-    // if (this.regexCout.test(window.location.pathname)) {
-    //   console.log("form", this.myFormGroup.getRawValue())
-    //   this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(() => {
-    //     this.closeDialog()
-    //   });
-    // }
-    // if (this.regexOuvrageDetail.test(window.location.pathname) || this.regexSousDetail.test(window.location.pathname)) {
-    //   console.log("form", this.myFormGroup.getRawValue())
-    //   this.coutService.update(this.myFormGroup.getRawValue(), this.initialData.id).subscribe(() => {
-    //     this.closeDialog()
-    //   });
-    // }
 
   }
 

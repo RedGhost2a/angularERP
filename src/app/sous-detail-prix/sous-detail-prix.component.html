@@ -12,8 +12,6 @@
       <mat-card class="cardParams">
         <mat-card-header>
           <mat-card-title>Ratio & quantité</mat-card-title>
-
-          <!--        <mat-card-subtitle>Start</mat-card-subtitle>-->
         </mat-card-header>
         <hr>
         <mat-card-content>
@@ -26,12 +24,10 @@
                          required
                          [placeholder]="this.currentOuvrage.ratio.toString()">
                 </mat-form-field>
-                <!--            <p>{{this.currentOuvrage.ratio}}</p>-->
                 <p>{{this.currentOuvrage.uRatio}}</p>
               </div>
               <mat-card-subtitle>Quantité marché</mat-card-subtitle>
               <div class="itemsParams" *ngIf="this.currentOuvrage.SousLotOuvrage !== undefined">
-                <!--            <p>{{this.currentOuvrage.SousLotOuvrage?.quantityOuvrage}}</p>-->
                 <mat-form-field appearance="legacy" [formGroup]="formOuvrage" style="width: 80px">
                   <input (keyup.enter)="quantityChange()" formControlName="quantity" matInput required
                          [placeholder]="this.currentOuvrage.SousLotOuvrage.quantityOuvrage.toString()">
@@ -584,21 +580,26 @@
 
   <!--</div>-->
 
-  <mat-card class="card-metre" *ngIf="strategy">
-    <div class="global-form-container container-card" [formGroup]="formMetre">
+  <!--  <mat-card class="card-metre" *ngIf="this.metreContexte.metreStrategyInterface" >-->
+  <mat-card class="card-metre"
+            *ngIf="this.metreContexte.metreStrategyInterface">
+    <div class="global-form-container container-card"
+         [formGroup]="this.metreContexte.metreStrategyInterface.formGroup">
       <mat-card-header>
         <mat-card-title>Métré</mat-card-title>
       </mat-card-header>
       <hr>
+      <div formArrayName="metres">
+        <div class="global-inputs inputs"
+             *ngFor="let metre of metresArray.controls; let i = index"
+             [formGroupName]="i">
 
-      <div formArrayName="metres" >
-        <div class="global-inputs inputs" *ngFor="let metre of metresArray.controls; let i = index" [formGroupName]="i">
+
           <mat-form-field appearance="legacy">
             <mat-label>Longueur</mat-label>
             <input (keydown.enter)="displayResultMetre();createOrUpdateMetre(i)" matInput formControlName="longueur"
                    type="number">
           </mat-form-field>
-
 
           <mat-form-field appearance="legacy" *ngIf="metre.get('largeur')">
             <mat-label>Largeur</mat-label>
@@ -611,9 +612,13 @@
             <input (keydown.enter)="displayResultMetre();createOrUpdateMetre(i)" matInput
                    formControlName="hauteur" type="number">
           </mat-form-field>
-          <p class="p-resultI"
-             *ngIf="displayArrayResultMetre(this.resultMetre[i])">{{this.resultMetre[i] | number : '1.2-2'}} {{this.currentOuvrage.unite}}</p>
 
+          <p class="p-resultI"
+             *ngIf="displayArrayResultMetre(this.resultMetre[i])"> {{this.resultMetre[i] | number : '1.2-2'}} {{this.currentOuvrage.unite}}</p>
+          <button class="float-left" mat-icon-button color="primary" aria-label="Del"
+                  (click)="deleteMetreFormGroup(i)" matTooltip="Supprimer la ligne de calcul">
+            <mat-icon>close</mat-icon>
+          </button>
         </div>
         <button class="float-left" mat-icon-button color="primary" aria-label="Add"
                 (click)="addMetreFormGroup(true)" matTooltip="Ajouter une nouvelle ligne de calcul">

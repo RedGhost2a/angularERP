@@ -1,14 +1,15 @@
 import {MetreStrategyInterface} from "../metre-strategy-interface/metre-strategy.interface";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Metre} from "../../_models/metre";
 import {Ouvrage} from "../../_models/ouvrage";
 import {MetreService} from "../../_service/metre.service";
 
 export class MetreLenghtWidhtStrategy implements MetreStrategyInterface {
+  formGroup!:FormGroup
   constructor(private metreService:MetreService) {
   }
-  createFormBuilder(formBuilder: FormBuilder): FormGroup {
-    return formBuilder.group({
+  createFormBuilder(formBuilder: FormBuilder){
+    this.formGroup = formBuilder.group({
       metres: formBuilder.array([
         this.dynamicInputs(formBuilder)
       ])
@@ -16,18 +17,19 @@ export class MetreLenghtWidhtStrategy implements MetreStrategyInterface {
   }
 
   dynamicInputs(formBuilder: FormBuilder): FormGroup {
-    console.log('L l ???')
     return formBuilder.group({
       longueur: new FormControl("L", Validators.required),
-      largeur: new FormControl("L", Validators.required),
+      largeur: new FormControl("l", Validators.required),
       metreId: new FormControl("")
     })
   }
 
-  setValueInForm(formGroup: FormGroup, metre: Metre): void {
-    formGroup.controls['longueur'].setValue(metre.longueur)
-    formGroup.controls['largeur'].setValue(metre.largeur)
-    formGroup.controls['metreId'].setValue(metre.id)
+  setValueInForm(index: number, metre: Metre): void {
+    const metresArray = this.formGroup.get('metres') as FormArray;
+    let formGroupArray = metresArray.controls[index] as FormGroup
+    formGroupArray.controls['longueur'].setValue(metre.longueur)
+    formGroupArray.controls['largeur'].setValue(metre.largeur)
+    formGroupArray.controls['metreId'].setValue(metre.id)
   }
 
   concatMetre(bool: boolean, i: number, resultCalculMetre: string, resultMetre: number[], longueurFormControl: FormControl, largeurFormControl: FormControl): string {
@@ -49,7 +51,9 @@ export class MetreLenghtWidhtStrategy implements MetreStrategyInterface {
       OuvrageDuDeviId: ouvrageDuDevis.id
     };
 
-    if (metreIdFormControl.value === '') this.metreService.createMetre(metrePush).subscribe();
+    if (metreIdFormControl.value === '') this.metreService.createMetre(metrePush).subscribe((res:any)=>{
+      metreIdFormControl.setValue(res.metre.id)
+    });
     else this.metreService.updateMetre(metrePush, metrePush.id).subscribe();
   }
 

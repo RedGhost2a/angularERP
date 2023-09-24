@@ -8,9 +8,9 @@
 
     <mat-tab label="Frais de chantier"  *ngIf="lotFraisDeChantier !== undefined" id="tab1" >
       <ng-template mat-tab-label >
-        <button mat-raised-button  data-step="1" data-intro="Ici vous retrouverez  la partie frais de chantier pour vos frais annexe neccessaire au calcul de votre etude de prix !"  >
+<!--        <button mat-raised-button  data-step="1" data-intro="Ici vous retrouverez  la partie frais de chantier pour vos frais annexe neccessaire au calcul de votre etude de prix !"  >-->
           Frais de chantier
-        </button>
+<!--        </button>-->
       </ng-template>
       <form [formGroup]="form" (ngSubmit)="onSubmit()" [hidden]="!showForm">
         <mat-form-field appearance="outline" color="primary" >
@@ -67,7 +67,7 @@
             <mat-icon [matMenuTriggerFor]="boutonLOT">more_vert</mat-icon>
             <mat-menu #boutonLOT  >
               <div class="menuBoutonSl">
-                <button mat-flat-button color="primary" *ngIf="lotFraisDeChantier"
+                <button mat-button color="primary" *ngIf="lotFraisDeChantier"
                         (click)="autoFocus2(); isLot = true; curentLotId= lotFraisDeChantier.id">
                   Créer un sous-lot
                 </button>
@@ -89,23 +89,23 @@
               <!--          </div>-->
               <mat-menu #boutonSL>
                 <div class="menuBoutonSl">
-                  <button (click)="openDialogSousLot(sublot);" mat-flat-button
+                  <button (click)="openDialogSousLot(sublot);" mat-button
                           color="primary">
                     Modifier ce sous-lot
                   </button>
                   <br>
-                  <button (click)="openDialogFraisDeChantier(sublot.id);currentSousLotId = sublot.id" mat-flat-button
+                  <button (click)="openDialogFraisDeChantier(sublot.id);currentSousLotId = sublot.id" mat-button
                           color="primary">
                     Importer un ouvrage
                   </button>
                   <br>
-                  <button (click)="openDialogCreate(sublot.id);currentSousLotId = sublot.id" mat-flat-button
+                  <button (click)="openDialogCreate(sublot.id);currentSousLotId = sublot.id" mat-button
                           color="primary">
                     <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
                     Creer un ouvrage
                   </button>
                   <br>
-                  <button mat-flat-button color="warn" *ngIf="lotFraisDeChantier"
+                  <button mat-button color="warn" *ngIf="lotFraisDeChantier"
                           (click)="deleteSousLot(sublot.id)">
                     <!--                  (click)="handleSousLotClick(sublot.id); currentLot = lot; deleteSousLot(sublot.id)">-->
                     Effacer ce sous-lot
@@ -199,11 +199,11 @@
                   <mat-icon [matMenuTriggerFor]="boutonOuv">more_vert</mat-icon>
                 <mat-menu #boutonOuv>
                   <div class="menuBoutonSl">
-                    <button mat-flat-button color="primary" routerLink="/sousDetailPrix/{{ouvrage.id}}"
+                    <button mat-button color="primary" routerLink="/sousDetailPrix/{{ouvrage.id}}"
                             (click)="onTabChanged(0)">
                     Voir le detail de l'ouvrage
                   </button><br>
-                  <button mat-flat-button color="warn" (click)="deleteOuvrageDuDevis(ouvrage.id)">
+                  <button mat-button color="warn" (click)="deleteOuvrageDuDevis(ouvrage.id)">
                     Effacer cet ouvrage
                   </button>
                   </div>
@@ -349,9 +349,9 @@
 
     <mat-tab class="devis" label="Devis" *ngIf="lotFraisDeChantier !== undefined " id="tab2" >
       <ng-template mat-tab-label >
-        <button mat-raised-button  data-step="2" data-intro="Ici vous retrouverez la partie centrale de votre etude de prix !"  >
+<!--        <button mat-raised-button  data-step="2" data-intro="Ici vous retrouverez la partie centrale de votre etude de prix !"  >-->
           Devis
-        </button>
+<!--        </button>-->
       </ng-template>
       <form [formGroup]="form" (ngSubmit)="onSubmit()" [hidden]="!showForm">
         <!-- Formulaire avec champ de saisie et bouton de validation -->
@@ -476,35 +476,35 @@
             <mat-icon [matMenuTriggerFor]="boutonLOT">more_vert</mat-icon>
             <mat-menu #boutonLOT>
               <div class="menuBoutonSl">
-                <button mat-flat-button color="primary" *ngIf="lotFraisDeChantier"
+                <button mat-button color="primary" *ngIf="lotFraisDeChantier"
                         (click)="openDialogLot(lot)">
                   Modifier ce lot
                 </button>
-                <button class="margin-top" mat-flat-button color="primary" *ngIf="lotFraisDeChantier"
+                <button class="margin-top" mat-button color="primary" *ngIf="lotFraisDeChantier"
                         (click)="autoFocus(); isLot = true; curentLotId= lot.id">
                   Créer un sous-lot
                 </button>
                 <br>
-                <button mat-flat-button color="primary" *ngIf="lotFraisDeChantier"
+                <button mat-button color="primary" *ngIf="lotFraisDeChantier"
                         (click)="createSousLotHiddenForOuvrageInLot(lot.id); isLot = true; curentLotId= lot.id">
                   Créer un ouvrage
                 </button>
-                <button class="margin-top" (click)="importOuvrageInLot(lot.id)" mat-flat-button
+                <button class="margin-top" (click)="importOuvrageInLot(lot.id)" mat-button
                         color="primary">
                   <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
                   Importer un ouvrage
                 </button>
                 <br>
-                <button mat-flat-button color="primary" *ngIf="lotFraisDeChantier"
+                <button mat-button color="primary" *ngIf="lotFraisDeChantier"
                         (click)="createHiddenSousLotAndOuvrageForCoutInLot(lot.id); isLot = true; curentLotId= lot.id">
                   Créer un cout
                 </button>
-                <button class="margin-top" mat-flat-button color="primary" *ngIf="lotFraisDeChantier"
+                <button class="margin-top" mat-button color="primary" *ngIf="lotFraisDeChantier"
                         (click)="this.openDialogImportCouts(lot.id,null); isLot = true; curentLotId= lot.id">
                   Importer un cout
                 </button>
                 <br>
-                <button mat-flat-button color="warn" class="" *ngIf="lot"
+                <button mat-button color="warn" class="" *ngIf="lot"
                         (click)="deleteLot(lot.id)">
                   Effacer ce lot
                 </button>
@@ -545,37 +545,37 @@
 
               <mat-menu class="" #boutonSL>
                 <div class="menuBoutonSl">
-                  <button (click)="openDialogSousLot(sublot);" mat-flat-button
+                  <button (click)="openDialogSousLot(sublot);" mat-button
                           color="primary">
                     <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
                     Modifier ce sous-lot
                   </button>
                   <br>
-                  <button (click)="openDialog(sublot.id);currentSousLotId = sublot.id" mat-flat-button
+                  <button (click)="openDialog(sublot.id);currentSousLotId = sublot.id" mat-button
                           color="primary">
                     <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
                     Importer un ouvrage
                   </button>
                   <button class="margin-top" (click)="openDialogCreate(sublot.id);currentSousLotId = sublot.id"
-                          mat-flat-button
+                          mat-button
                           color="primary">
                     <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
                     Creer un ouvrage
                   </button>
                   <br>
                   <button (click)="createHiddenOuvrageForCoutInSousLot(sublot.id);currentSousLotId = sublot.id"
-                          mat-flat-button
+                          mat-button
                           color="primary">
                     <!--          <button (click)="openDialog();handleSousLotClick(sublot.id)" mat-menu-item class="buttonImport">-->
                     Creer un cout
                   </button>
-                  <button class="margin-top" mat-flat-button color="primary" *ngIf="lotFraisDeChantier"
+                  <button class="margin-top" mat-button color="primary" *ngIf="lotFraisDeChantier"
                           (click)="this.openDialogImportCouts(null,sublot.id);  currentSousLotId= sublot.id">
                     Importer un cout
                   </button>
                   <br>
 
-                  <button mat-flat-button color="warn" *ngIf="lotFraisDeChantier"
+                  <button mat-button color="warn" *ngIf="lotFraisDeChantier"
                           (click)="deleteSousLot(sublot.id)">
                     <!--                  (click)="handleSousLotClick(sublot.id); currentLot = lot; deleteSousLot(sublot.id)">-->
                     Effacer ce sous-lot
@@ -686,12 +686,12 @@
                   <mat-icon [matMenuTriggerFor]="boutonOuv">more_vert</mat-icon>
                 <mat-menu #boutonOuv>
                   <div class="menuBoutonSl">
-                    <button mat-flat-button color="primary" routerLink="/sousDetailPrix/{{ouvrage.id}}"
+                    <button mat-button color="primary" routerLink="/sousDetailPrix/{{ouvrage.id}}"
                             (click)="onTabChanged(1)">
                     Voir le detail de l'ouvrage
                   </button>
                     <br>
-                  <button mat-flat-button color="warn" (click)="deleteOuvrageDuDevis(ouvrage.id)">
+                  <button mat-button color="warn" (click)="deleteOuvrageDuDevis(ouvrage.id)">
                     Effacer cet ouvrage
                   </button>
                   </div>
@@ -841,9 +841,9 @@
 
     <mat-tab label="Paramètre de chantier" *ngIf="lotFraisDeChantier !== undefined" id="tab3">
       <ng-template mat-tab-label >
-        <button mat-raised-button  data-step="3" data-intro="Ici vous retrouverez les paramètres de chantier avec un récapitulatif de certaine donnée liée a votre étude de prix ainsi que les réglages des frais généraux !"  >
+<!--        <button mat-raised-button  data-step="3" data-intro="Ici vous retrouverez les paramètres de chantier avec un récapitulatif de certaine donnée liée a votre étude de prix ainsi que les réglages des frais généraux !"  >-->
           Paramètre de chantier
-        </button>
+<!--        </button>-->
       </ng-template>
       <div class="bigContainerParams">
         <div class="ContainerParamsFraisDevis">

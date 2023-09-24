@@ -36,6 +36,7 @@ export class UserEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     console.log("user com")
     this.getUserById()
     this.getEntrepriseForUser();

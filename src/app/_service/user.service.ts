@@ -63,7 +63,7 @@ export class UserService {
 
         // store user details and jwt token in local storage to keep user logged in between page refreshes
         let string = JSON.stringify(user)
-        console.log("user",user)
+        console.log("user",user.token)
         let encryptUser = this.storageService.encrypt(string)
         localStorage.setItem('user', encryptUser);
         localStorage.setItem('coef', String(1));
@@ -94,9 +94,10 @@ export class UserService {
   }
 
   getAll(): Observable<any> {
+    console.log(this.userValue.token)
     this.users = []
-    return this.http.get(`${environment.apiUrl}/users`)
-
+    // Utilisez l'objet headers dans la requête GET
+    return this.http.get(`${environment.apiUrl}/users`);
   }
 
   update(user: User, id: any): Observable<any> {

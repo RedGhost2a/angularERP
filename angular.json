@@ -107,7 +107,6 @@
 
             ],
             "scripts": [
-              "node_modules/chart.js/dist/chart.min.js",
               "node_modules/intro.js/intro.js"
 
 
