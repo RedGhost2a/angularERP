@@ -67,7 +67,7 @@ export class FormCoutComponent implements OnInit {
 
 
   ngOnInit(): void {
-    console.log("67", this.initialData)
+    console.log("initial", this.initialData)
     this.createFormCout();
     transformVirguletoPoint()
     // this.getUserById();
@@ -97,6 +97,7 @@ getEntrepriseByUser(){
   //Determine si c'est l'ajout d'un nouveau cout ou la modification d'un cout existant au click
   createAndUpdate(): void {
     // console.log(this.myFormGroup.getRawValue())
+      console.log("testdsfsd")
     this.myFormGroup.markAllAsTouched();
     if (this.myFormGroup.invalid) {
       // Form is invalid, show error message
@@ -104,7 +105,9 @@ getEntrepriseByUser(){
       return;
     }
     if (this.initialData === null) {
+      console.log("test")
       this.coutService.create(this.myFormGroup.getRawValue()).subscribe(data => {
+        console.log(this.myFormGroup)
         this.closeDialog()
       });
     }else{
@@ -190,9 +193,11 @@ getEntrepriseByUser(){
     this.titreForm = "Modification d'un composant de la bibliothèque de prix"
     this.textForm = "La modification de ce composant va impacter les ouvrages de la bibliothèque de prix associés. Les devis déjà existants ne seront pas modifiés."
     this.textButton = "Modifier ce composant"
-    console.log(this.initialData)
-    if (!this.isCout)
-      this.myFormGroup.controls["uRatio"].setValue(this.initialData.OuvrageCout.uRatio)
+    console.log("cou",this.initialData)
+    if (!this.isCout){
+      this.myFormGroup.controls["uRatio"].setValue(this.initialData.OuvrageCoutDuDevis.uRatio)
+      this.myFormGroup.controls["EntreprseId"].setValue(this.initialData.OuvrageCoutDuDevis.uRatio)
+    }
     this.myFormGroup.patchValue(this.initialData)
     this.getUserById()
     console.log("inital data", this.initialData);

@@ -181,7 +181,10 @@ export class DialogFormCoutComponent implements OnInit {
 
       }
     } if(!this.isInDevis && !this.regexDetailOuvrageElementaire.test(window.location.pathname)) {
+      console.log("data",this.data)
+      console.log("data form",this.myFormGroup.getRawValue())
       this.myFormGroup.controls["EntrepriseId"].setValue(this.data[2].EntrepriseId)
+      // this.myFormGroup.controls["EntrepriseId"].setValue(1)
       this.cout = this.myFormGroup.getRawValue();
       this.cout.FournisseurId = this.myFormGroup.getRawValue().FournisseurId[2]
       this.cout.TypeCoutId = this.myFormGroup.getRawValue().TypeCoutId[0]

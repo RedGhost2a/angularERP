@@ -3,8 +3,6 @@ import {MetreService} from "../../_service/metre.service";
 import {MetreStrategyInterface} from "../metre-strategy-interface/metre-strategy.interface";
 import {FormBuilder} from "@angular/forms";
 
-
-
 export class MetreContext {
    metreStrategyInterface !: MetreStrategyInterface;
 

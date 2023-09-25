@@ -220,7 +220,7 @@ export class SousDetailPrixComponent implements OnInit {
   createFormBuilderMetre() {
     this.metreContexte = new MetreContext()
     this.metreContexte.runStrategy(this.currentOuvrage.unite,
-                                    this.metreService)
+      this.metreService)
     this.metreContexte.execute(this.formBuilder);
   }
 
@@ -229,18 +229,16 @@ export class SousDetailPrixComponent implements OnInit {
   }
 
 
-
   getMetreByOuvrage() {
     this.metreService.getMetreByOuvrage(this.currentOuvrage.id)
       .subscribe((data) => {
-      this.metre = data
-      this.metre.forEach((metre: Metre, index: number) => {
-        this.addMetreFormGroup(this.verifyIndex(index))
-        this.metreContexte.metreStrategyInterface.setValueInForm(
-                                                    index, metre)
-        this.displayResultMetre()
+        this.metre = data
+        this.metre.forEach((metre: Metre, index: number) => {
+          this.addMetreFormGroup(this.verifyIndex(index))
+          this.metreContexte.metreStrategyInterface.setValueInForm(index, metre)
+          this.displayResultMetre()
+        })
       })
-    })
   }
 
   setPriceCurrentOuvrage() {
@@ -388,14 +386,13 @@ export class SousDetailPrixComponent implements OnInit {
 
   deleteMetreFormGroup(index: number) {
     const dialogRef = this.dialog.open(DialogConfirmSuppComponent);
-    const metresArray = this.metreContexte.metreStrategyInterface.
-                        formGroup.get('metres') as FormArray;
+    const metresArray = this.metreContexte.metreStrategyInterface.formGroup.get('metres') as FormArray;
     const metreFormGroup = metresArray.controls[index] as FormGroup;
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.metreService.deleteMetre(metreFormGroup.controls['metreId'].value)
           .subscribe(() => {
-            this.metreService.deleteFormGroup(metresArray,index)
+            this.metreService.deleteFormGroup(metresArray, index)
             this.getMetreByOuvrage()
           })
       }
@@ -403,13 +400,12 @@ export class SousDetailPrixComponent implements OnInit {
   }
 
   displayResultMetre() {
-    const metresArray = this.metreContexte.metreStrategyInterface.
-                                formGroup.get('metres') as FormArray;
+    const metresArray = this.metreContexte.metreStrategyInterface.formGroup.get('metres') as FormArray;
     this.resultMetre = [];
     for (let i = 0; i < metresArray.length; i++) {
       const metreFormGroup = metresArray.controls[i] as FormGroup;
       this.resultCalculMetre = this.metreContexte.metreStrategyInterface.concatMetre(
-    this.verifyIndex(i), i, this.resultCalculMetre, this.resultMetre,
+        this.verifyIndex(i), i, this.resultCalculMetre, this.resultMetre,
         metreFormGroup.controls['longueur'] as FormControl,
         metreFormGroup.controls['largeur'] as FormControl,
         metreFormGroup.controls['hauteur'] as FormControl)
@@ -419,8 +415,7 @@ export class SousDetailPrixComponent implements OnInit {
   }
 
   createOrUpdateMetre(index: number) {
-    const metresArray = this.metreContexte.metreStrategyInterface.
-                        formGroup.get('metres') as FormArray;
+    const metresArray = this.metreContexte.metreStrategyInterface.formGroup.get('metres') as FormArray;
     const metreFormGroup = metresArray.controls[index] as FormGroup;
     this.metreContexte.metreStrategyInterface.createOrUpdateMetre(
       this.currentOuvrage,

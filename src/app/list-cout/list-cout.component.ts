@@ -8,7 +8,6 @@ import {MatDialog} from "@angular/material/dialog";
 import {Entreprise} from "../_models/entreprise";
 import {DataSharingService} from "../_service/data-sharing-service.service";
 
-
 @Component({
   selector: 'app-list-cout',
   templateUrl: './list-cout.component.html',
@@ -52,6 +51,7 @@ export class ListCoutComponent implements OnInit {
 
   getAllCouts(entrepriseId: number): void {
     this.coutService.getAllForList(entrepriseId).subscribe((listCout : Cout []) => {
+      console.log('list cout',listCout)
       this.coutService.couts = this.coutService.couts.concat(listCout);
       this.dataSource = new MatTableDataSource(this.coutService.couts );
       console.log(this.coutService.couts)

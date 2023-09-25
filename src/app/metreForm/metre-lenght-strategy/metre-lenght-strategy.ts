@@ -7,7 +7,6 @@ import {Ouvrage} from "../../_models/ouvrage";
 
 export class MetreLenghtStrategy implements MetreStrategyInterface {
   formGroup!: FormGroup;
-
   constructor(private metreService: MetreService) {
   }
 

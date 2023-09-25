@@ -26,6 +26,7 @@ export class CoutService {
   }
 
   getAll(entrepriseId: number): Observable<Cout[]> {
+    this.couts = [];
     return this.http.get<Cout[]>(`${environment.apiUrl}/couts`, {
       params: {
         EntrepriseId: entrepriseId
